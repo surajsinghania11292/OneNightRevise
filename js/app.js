@@ -1,129 +1,135 @@
 /* ═══════════════════════════════════════════════════════════════
-   APP.JS — Master Controller: Reads data.js, builds DOM elements,
-            mounts visualizers, and starts UI listeners
+   APP.JS — Render Engine for SauceLabs-Style Focused Study Cards
    ═══════════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderSidebar();
-  renderContent();
-  renderFaq();
+  renderQuickJumpBar();
+  renderTopics();
 
-  // Initialize UI & Interactive Visualizers
+  // Initialize UI & Simulators
   UI.init();
   Visualizers.init();
 });
 
-/* ── 1. RENDER SIDEBAR TABLE OF CONTENTS ──────────────────────── */
-function renderSidebar() {
-  const tocList = document.getElementById('toc-list');
-  if (!tocList) return;
+/* ── 1. RENDER QUICK JUMP CAPSULE BAR ─────────────────────────── */
+function renderQuickJumpBar() {
+  const jumpMount = document.getElementById('quick-jump-mount');
+  if (!jumpMount) return;
 
-  let html = '';
-  SYSTEM_DESIGN_NOTES.topics.forEach((topic, idx) => {
+  let html = ``;
+  SYSTEM_DESIGN_NOTES.topics.forEach((t, i) => {
     html += `
-      <li>
-        <a href="#${topic.id}" class="toc-link ${idx === 0 ? 'active' : ''}">
-          <span class="toc-num">0${idx + 1}</span>
-          <span>${topic.title}</span>
-        </a>
-      </li>
+      <a href="#${t.id}" class="jump-pill ${i === 0 ? 'active' : ''}">
+        ${t.number}. ${t.title}
+      </a>
     `;
   });
 
-  // Add Visualizers and Interview FAQ links
   html += `
-    <li>
-      <a href="#interactive-visualizers" class="toc-link">
-        <span class="toc-num">⚡</span>
-        <span>Interactive Architecture Simulators</span>
-      </a>
-    </li>
-    <li>
-      <a href="#interview-qa" class="toc-link">
-        <span class="toc-num">🎯</span>
-        <span>FAANG Interview Q&A</span>
-      </a>
-    </li>
+    <a href="#interactive-simulator" class="jump-pill" style="border:1px solid var(--border); font-weight:600;">
+      ⚡ Live Simulator
+    </a>
   `;
 
-  tocList.innerHTML = html;
+  jumpMount.innerHTML = html;
 }
 
-/* ── 2. RENDER TOPIC SECTIONS ─────────────────────────────────── */
-function renderContent() {
-  const contentMount = document.getElementById('content-mount');
-  if (!contentMount) return;
+/* ── 2. RENDER THE 6 TOPIC CARDS ──────────────────────────────── */
+function renderTopics() {
+  const mount = document.getElementById('topics-mount');
+  if (!mount) return;
 
   let html = '';
 
-  SYSTEM_DESIGN_NOTES.topics.forEach((topic, tIdx) => {
+  SYSTEM_DESIGN_NOTES.topics.forEach((topic) => {
     html += `
-      <section class="note-section" id="${topic.id}">
-        <div class="section-eyebrow">${topic.badge}</div>
-        <h2 class="section-title">${topic.title}</h2>
-        <p class="section-lead">${topic.lead}</p>
+      <section class="topic-card" id="${topic.id}">
+        <!-- Focus Header Bar -->
+        <div class="topic-header-bar">
+          <div class="topic-kicker">
+            <span class="pulse-dot"></span>
+            <span>${topic.kicker}</span>
+          </div>
+          <span class="topic-progress-badge">TOPIC ${topic.number} OF 06</span>
+        </div>
 
-        <div class="topic-body">
+        <div>
+          <h2 class="topic-title">${topic.number}. ${topic.title}</h2>
+          <p class="topic-subtitle">${topic.lead}</p>
+        </div>
     `;
 
-    // Render internal sub-sections
-    topic.sections.forEach(sec => {
-      html += `
-        <div class="card" style="margin-bottom: 2rem;">
-          <h3 style="font-family: var(--font-display); font-size: 1.4rem; color: var(--text-primary); margin-bottom: 1rem;">
-            ${sec.heading}
-          </h3>
-          <div style="color: var(--text-secondary); line-height: 1.8;">
-            ${sec.content}
-          </div>
-      `;
+    // Render Subsections
+    topic.sections.forEach((sec) => {
+      html += `<div style="display:flex; flex-direction:column; gap:0.85rem;">`;
 
-      // Render Callouts if present
-      if (sec.callouts && sec.callouts.length > 0) {
-        sec.callouts.forEach(c => {
-          const icon = c.type === 'junior' ? '🐣' : (c.type === 'senior' ? '📐' : (c.type === 'warning' ? '⚠️' : '🎯'));
-          html += `
-            <div class="callout callout--${c.type}">
-              <div class="callout__header">
-                <span class="callout__icon">${icon}</span>
-                <span>${c.title}</span>
-              </div>
-              <div class="callout__body">${c.text}</div>
-            </div>
-          `;
-        });
+      if (sec.title) {
+        html += `<h3 style="font-family:var(--font-display); font-size:1.35rem; color:var(--text-primary); margin-top:0.5rem;">${sec.title}</h3>`;
       }
 
-      // Render Cards grid if present
-      if (sec.items && sec.items.length > 0) {
-        html += `<div class="grid-2" style="margin-top: 1.5rem; gap: 1rem;">`;
+      if (sec.content) {
+        html += `<div style="color:var(--text-secondary); line-height:1.8;">${sec.content}</div>`;
+      }
+
+      if (sec.rule) {
+        html += sec.rule;
+      }
+
+      // Render 3 Bottlenecks or 3 Solutions Grid
+      if (sec.items && (sec.type === 'bottlenecks' || sec.type === 'solutions' || sec.type === 'gateway-features')) {
+        html += `<div class="sub-card-grid-3">`;
         sec.items.forEach(item => {
           html += `
-            <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--r-md); padding: 1.25rem;">
-              <h4 style="font-size: 1.05rem; font-weight: 600; color: var(--accent); margin-bottom: 0.5rem;">
-                ${item.title}
-              </h4>
-              <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7;">
-                ${item.desc}
-              </p>
+            <div class="sub-box">
+              <div class="sub-box__tag">${item.tag}</div>
+              <div class="sub-box__title">${item.title}</div>
+              <div class="sub-box__body">${item.desc}</div>
             </div>
           `;
         });
         html += `</div>`;
       }
 
-      // Render Step timeline if present (Strangler Fig)
-      if (sec.steps && sec.steps.length > 0) {
-        html += `<div class="step-timeline">`;
+      // Render 4 Migration Patterns Grid
+      if (sec.items && sec.type === 'patterns') {
+        html += `<div class="sub-card-grid-2">`;
+        sec.items.forEach(item => {
+          html += `
+            <div class="sub-box" style="border-left: 3px solid var(--accent);">
+              <div class="sub-box__tag">${item.tag}</div>
+              <div class="sub-box__title">${item.title}</div>
+              <div class="sub-box__body">${item.desc}</div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+
+      // Render Myths vs Reality Cards
+      if (sec.items && sec.type === 'myths') {
+        sec.items.forEach(item => {
+          html += `
+            <div class="myth-card">
+              <div class="myth-header">
+                <span>⚠️ MYTH EXAMINATION</span>
+              </div>
+              <div class="myth-text">${item.myth}</div>
+              <div class="fact-text"><strong>Reality:</strong> ${item.fact}</div>
+            </div>
+          `;
+        });
+      }
+
+      // Render 6-Step Workflow Stack
+      if (sec.steps && sec.type === 'workflow') {
+        html += `<div class="workflow-stack">`;
         sec.steps.forEach(st => {
           html += `
-            <div class="step-item">
-              <div class="step-node">${st.step}</div>
-              <div class="step-content">
-                <div class="step-title">
-                  <span>${st.title}</span>
-                </div>
-                <div class="step-desc">${st.desc}</div>
+            <div class="workflow-step">
+              <div class="step-circle">${st.num}</div>
+              <div>
+                <div class="workflow-step__title">${st.title}</div>
+                <div class="workflow-step__desc">${st.desc}</div>
               </div>
             </div>
           `;
@@ -131,37 +137,11 @@ function renderContent() {
         html += `</div>`;
       }
 
-      html += `</div>`; // Close card
+      html += `</div>`;
     });
 
-    html += `
-        </div>
-      </section>
-    `;
+    html += `</section>`;
   });
 
-  contentMount.innerHTML = html;
-}
-
-/* ── 3. RENDER INTERVIEW FAQ ACCORDION ────────────────────────── */
-function renderFaq() {
-  const faqMount = document.getElementById('faq-mount');
-  if (!faqMount) return;
-
-  let html = '';
-  SYSTEM_DESIGN_NOTES.interviewFaq.forEach(item => {
-    html += `
-      <div class="accordion">
-        <button class="accordion__trigger">
-          <span>${item.q}</span>
-          <span class="accordion__icon">▼</span>
-        </button>
-        <div class="accordion__content">
-          <p>${item.a}</p>
-        </div>
-      </div>
-    `;
-  });
-
-  faqMount.innerHTML = html;
+  mount.innerHTML = html;
 }

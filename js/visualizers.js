@@ -1,17 +1,22 @@
 /* ═══════════════════════════════════════════════════════════════
    VISUALIZERS.JS — Interactive Architecture Simulators
-   1. Multi-Region Global Traffic & Edge Routing (Handling Millions of Requests)
-   2. Strangler Fig Pattern Migration Stepper
+   1. End-to-End High-Scale Request Flow (DNS Region ➔ Gateway AZ ➔ LB Instance)
+   2. Strangler Fig & Canary Deployment Stepper with Instant Rollback
    ═══════════════════════════════════════════════════════════════ */
 
 const Visualizers = (() => {
 
   let isSimulating = false;
   let clientLocation = 'california'; // 'california' or 'massachusetts'
-  let region1Down = false;
+  let az1Down = false;
 
   /* ─────────────────────────────────────────────────────────────
-     1. GLOBAL ARCHITECTURE SIMULATOR (Millions of Requests)
+     1. END-TO-END HIGH-SCALE REQUEST FLOW SIMULATOR
+     Matches:
+     1. Client Action (POST /api/v1/order)
+     2. DNS Load Balancer (Region Selection: CA vs MA)
+     3. API Gateway + Eureka (AZ Selection: LA AZ1 vs SF AZ2)
+     4. Internal LB (Instance Selection: Order-1, Order-2, Order-3)
      ───────────────────────────────────────────────────────────── */
   function initRequestSimulator() {
     const container = document.getElementById('request-sim-mount');
@@ -22,17 +27,17 @@ const Visualizers = (() => {
         <div class="visualizer-header">
           <div class="visualizer-title">
             <span class="pulse-dot"></span>
-            <span>Live Architecture Simulation: Edge Routing to Microservices</span>
+            <span>Live High-Scale Request Flow: Region ➔ AZ ➔ Instance</span>
           </div>
           <div class="visualizer-controls">
-            <button id="btn-toggle-loc" class="btn-secondary" title="Change client origin">
-              📍 Origin: <strong id="loc-display">California (US-West)</strong>
+            <button id="btn-toggle-loc" class="sim-btn-outline" title="Change client geographic location">
+              📍 Origin: <strong id="loc-display">California</strong>
             </button>
-            <button id="btn-toggle-outage" class="btn-secondary" title="Simulate regional data center failure">
-              ⚡ <span id="outage-display">Simulate SF Outage</span>
+            <button id="btn-toggle-az" class="sim-btn-outline" title="Simulate data center failure">
+              ⚡ <span id="az-display">Simulate AZ1 Outage</span>
             </button>
-            <button id="btn-send-request" class="btn-primary">
-              ▶ Send Request (GET /api/v1/order)
+            <button id="btn-send-request" class="sim-btn-pill">
+              ▶ Send Request (POST /api/v1/order)
             </button>
           </div>
         </div>
@@ -43,88 +48,66 @@ const Visualizers = (() => {
 
           <!-- Architecture Grid -->
           <div class="sim-grid">
-            <!-- Col 1: Client Ingress -->
+            <!-- 1. Client -->
             <div class="sim-col">
               <div class="sim-box sim-node" id="node-client">
-                <div class="sim-box-tag">Client Application</div>
+                <div class="sim-box-tag">Step 1 · Client Action</div>
                 <div class="sim-box-title">Client Device</div>
-                <div class="sim-box-desc" id="client-loc-text">Location: California (US-West)</div>
-                <div class="sim-box-sub mono">GET /api/v1/order</div>
+                <div class="sim-box-desc" id="client-loc-text">Location: California</div>
+                <div class="sim-box-sub mono">POST /api/v1/order</div>
               </div>
             </div>
 
-            <!-- Col 2: Global Anycast DNS -->
+            <!-- 2. DNS Load Balancer -->
             <div class="sim-col">
               <div class="sim-box sim-node" id="node-dns">
-                <div class="sim-box-tag">Global Traffic Manager</div>
-                <div class="sim-box-title">AWS Route 53 / Azure TM</div>
-                <div class="sim-box-desc">Geo-DNS & Latency Routing</div>
-                <div class="sim-box-sub mono" id="dns-action">Resolves nearest healthy edge</div>
+                <div class="sim-box-tag">Step 2 · Region Selection</div>
+                <div class="sim-box-title">DNS Load Balancer</div>
+                <div class="sim-box-desc">Proximity & Geo-Routing</div>
+                <div class="sim-box-sub mono" id="dns-action">Returns closest Regional IP</div>
               </div>
             </div>
 
-            <!-- Col 3: Regional Data Centers -->
+            <!-- 3. Regional API Gateway & Availability Zones -->
             <div class="sim-col sim-col--regions">
-              <!-- Region 1: California / SF (AZ-2) -->
-              <div class="sim-region-card" id="region-sf">
+              <!-- Region 1: California -->
+              <div class="sim-region-card" id="region-ca">
                 <div class="sim-region-header">
-                  <span>Region 1: US-West / San Francisco (AZ-2)</span>
-                  <span class="badge badge--success" id="badge-sf">HEALTHY</span>
+                  <span>Region: US-California</span>
+                  <span class="badge badge--success" id="badge-ca">PRIMARY REGION</span>
                 </div>
                 <div class="sim-region-inner">
                   <!-- API Gateway A -->
-                  <div class="sim-box sim-node" id="node-gw-a">
-                    <div class="sim-box-tag">Regional Ingress</div>
+                  <div class="sim-box sim-node" id="node-gw-ca">
+                    <div class="sim-box-tag">Step 3 · Service Ingress</div>
                     <div class="sim-box-title">API Gateway A</div>
                     <div class="sim-box-sub mono">18.10.5.22</div>
-                    <div class="sim-pills-row">
-                      <span class="micro-pill">SSL Term</span>
-                      <span class="micro-pill">JWT Verify</span>
-                      <span class="micro-pill">Rate Limit (Token Bucket)</span>
+                    <div style="font-size:0.72rem; color:var(--text-muted); margin-top:4px;">
+                      Queries Service Discovery (Eureka) for healthy AZ
                     </div>
                   </div>
 
-                  <!-- Internal LB + Service Pods -->
+                  <!-- AZ1 & AZ2 Clusters -->
                   <div class="sim-sub-cluster">
-                    <div class="sim-box sim-node" id="node-lb-a">
-                      <div class="sim-box-tag">Internal L7 Load Balancer</div>
-                      <div class="sim-box-title">AZ-2 ALB + Service Discovery</div>
+                    <!-- AZ 1: Los Angeles -->
+                    <div class="sim-box sim-node" id="node-az1">
+                      <div class="sim-box-tag">Step 4 · Instance Selection</div>
+                      <div class="sim-box-title">AZ1: Los Angeles (ALB)</div>
+                      <div class="sim-services-row" style="margin-top:6px;">
+                        <div class="sim-service-pill sim-node" id="node-order-1">Order-1</div>
+                        <div class="sim-service-pill sim-node" id="node-order-2">Order-2</div>
+                        <div class="sim-service-pill sim-node" id="node-order-3">Order-3</div>
+                      </div>
                     </div>
-                    <div class="sim-services-row">
-                      <div class="sim-service-pill sim-node" id="node-order-a">📦 Order Service (3 Pods)</div>
-                      <div class="sim-service-pill sim-node" id="node-user-a">👤 User Service (2 Pods)</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
-              <!-- Region 2: Massachusetts / Boston (AZ-1) -->
-              <div class="sim-region-card" id="region-boston">
-                <div class="sim-region-header">
-                  <span>Region 2: US-East / Massachusetts (AZ-1)</span>
-                  <span class="badge badge--success" id="badge-boston">HEALTHY</span>
-                </div>
-                <div class="sim-region-inner">
-                  <!-- API Gateway B -->
-                  <div class="sim-box sim-node" id="node-gw-b">
-                    <div class="sim-box-tag">Regional Ingress</div>
-                    <div class="sim-box-title">API Gateway B</div>
-                    <div class="sim-box-sub mono">35.90.45.88</div>
-                    <div class="sim-pills-row">
-                      <span class="micro-pill">Eureka Registry</span>
-                      <span class="micro-pill">JWT Verify</span>
-                    </div>
-                  </div>
-
-                  <!-- Internal LB + Service Pods -->
-                  <div class="sim-sub-cluster">
-                    <div class="sim-box sim-node" id="node-lb-b">
-                      <div class="sim-box-tag">Internal L7 Load Balancer</div>
-                      <div class="sim-box-title">AZ-1 ALB + Service Discovery</div>
-                    </div>
-                    <div class="sim-services-row">
-                      <div class="sim-service-pill sim-node" id="node-order-b">📦 Order Service (3 Pods)</div>
-                      <div class="sim-service-pill sim-node" id="node-user-b">👤 User Service (2 Pods)</div>
+                    <!-- AZ 2: San Francisco (Backup AZ) -->
+                    <div class="sim-box sim-node" id="node-az2" style="opacity:0.85;">
+                      <div class="sim-box-tag">Failover AZ</div>
+                      <div class="sim-box-title">AZ2: San Francisco (ALB)</div>
+                      <div class="sim-services-row" style="margin-top:6px;">
+                        <div class="sim-service-pill sim-node" id="node-order-sf1">Order-SF1</div>
+                        <div class="sim-service-pill sim-node" id="node-order-sf2">Order-SF2</div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -135,7 +118,7 @@ const Visualizers = (() => {
 
         <!-- Telemetry Log Bar -->
         <div class="visualizer-telemetry">
-          <div id="sim-log">System Ready. Click <strong>"Send Request"</strong> to trace network path.</div>
+          <div id="sim-log">Ready. Click <strong>"Send Request"</strong> to trace execution from Region to AZ to Instance.</div>
           <div id="sim-metric" class="mono">
             <span class="telemetry-tag">STATUS:</span> IDLE | <span class="telemetry-tag">LATENCY:</span> --ms
           </div>
@@ -145,7 +128,7 @@ const Visualizers = (() => {
 
     document.getElementById('btn-send-request').addEventListener('click', runSimulation);
     document.getElementById('btn-toggle-loc').addEventListener('click', toggleLocation);
-    document.getElementById('btn-toggle-outage').addEventListener('click', toggleOutage);
+    document.getElementById('btn-toggle-az').addEventListener('click', toggleAzOutage);
   }
 
   function toggleLocation() {
@@ -154,34 +137,31 @@ const Visualizers = (() => {
     const locDisplay = document.getElementById('loc-display');
     const clientDesc = document.getElementById('client-loc-text');
     if (clientLocation === 'california') {
-      locDisplay.textContent = 'California (US-West)';
-      clientDesc.textContent = 'Location: California (US-West)';
+      locDisplay.textContent = 'California';
+      clientDesc.textContent = 'Location: California';
     } else {
-      locDisplay.textContent = 'Massachusetts (US-East)';
-      clientDesc.textContent = 'Location: Massachusetts (US-East)';
+      locDisplay.textContent = 'Massachusetts';
+      clientDesc.textContent = 'Location: Massachusetts';
     }
   }
 
-  function toggleOutage() {
+  function toggleAzOutage() {
     if (isSimulating) return;
-    region1Down = !region1Down;
-    const regionSf = document.getElementById('region-sf');
-    const badgeSf = document.getElementById('badge-sf');
-    const outageBtn = document.getElementById('outage-display');
+    az1Down = !az1Down;
+    const nodeAz1 = document.getElementById('node-az1');
+    const azBtn = document.getElementById('az-display');
 
-    if (region1Down) {
-      regionSf.classList.add('region-offline');
-      badgeSf.className = 'badge badge--warning';
-      badgeSf.textContent = 'OUTAGE / OFFLINE';
-      outageBtn.textContent = 'Recover SF Region';
+    if (az1Down) {
+      nodeAz1.style.opacity = '0.35';
+      nodeAz1.style.borderStyle = 'dashed';
+      azBtn.textContent = 'Recover AZ1 (Los Angeles)';
       document.getElementById('sim-log').innerHTML =
-        '<strong>Region 1 Failure Simulated:</strong> Route 53 health check detects heartbeat failure; traffic automatically fails over to Region 2 (Boston).';
+        '<strong>AZ1 Outage Active:</strong> Los Angeles data center down. API Gateway + Eureka will dynamically route to <strong>AZ2 (San Francisco)</strong>.';
     } else {
-      regionSf.classList.remove('region-offline');
-      badgeSf.className = 'badge badge--success';
-      badgeSf.textContent = 'HEALTHY';
-      outageBtn.textContent = 'Simulate SF Outage';
-      document.getElementById('sim-log').innerHTML = 'Region 1 (San Francisco) restored online.';
+      nodeAz1.style.opacity = '1';
+      nodeAz1.style.borderStyle = 'solid';
+      azBtn.textContent = 'Simulate AZ1 Outage';
+      document.getElementById('sim-log').innerHTML = 'AZ1 (Los Angeles) restored healthy.';
     }
   }
 
@@ -196,15 +176,9 @@ const Visualizers = (() => {
 
     const nodeClient = document.getElementById('node-client');
     const nodeDns = document.getElementById('node-dns');
-
-    let targetRegion = 'sf';
-    if (clientLocation === 'massachusetts' || region1Down) {
-      targetRegion = 'boston';
-    }
-
-    const nodeGw = (targetRegion === 'sf') ? document.getElementById('node-gw-a') : document.getElementById('node-gw-b');
-    const nodeLb = (targetRegion === 'sf') ? document.getElementById('node-lb-a') : document.getElementById('node-lb-b');
-    const nodeService = (targetRegion === 'sf') ? document.getElementById('node-order-a') : document.getElementById('node-order-b');
+    const nodeGw = document.getElementById('node-gw-ca');
+    const targetAz = az1Down ? document.getElementById('node-az2') : document.getElementById('node-az1');
+    const targetOrder = az1Down ? document.getElementById('node-order-sf1') : document.getElementById('node-order-2');
 
     function getCenter(el) {
       const cRect = canvas.getBoundingClientRect();
@@ -219,64 +193,62 @@ const Visualizers = (() => {
       const pt = getCenter(targetEl);
       packet.style.left = `${pt.x}px`;
       packet.style.top = `${pt.y}px`;
-      setTimeout(callback, 550);
+      setTimeout(callback, 500);
     }
 
-    // Step 1: Client initiates request
+    // Step 1: Client action
     const startPt = getCenter(nodeClient);
     packet.style.left = `${startPt.x}px`;
     packet.style.top = `${startPt.y}px`;
     packet.classList.add('active');
     nodeClient.classList.add('hit');
 
-    logEl.innerHTML = `[1/5] Client initiates <code>GET /api/v1/order</code> via TLS 1.3...`;
-    metricEl.innerHTML = `<span class="telemetry-tag">STATUS:</span> 100 CONTINUE | <span class="telemetry-tag">LATENCY:</span> 8ms`;
+    logEl.innerHTML = `[1/4] Client clicks Place Order ➔ <code>POST /api/v1/order</code> initiated.`;
+    metricEl.innerHTML = `<span class="telemetry-tag">STEP 1:</span> CLIENT DISPATCH | <span class="telemetry-tag">TIME:</span> 4ms`;
 
-    // Step 2: Route 53 DNS Resolution
+    // Step 2: DNS Region Selection
     setTimeout(() => {
       nodeClient.classList.remove('hit');
       nodeDns.classList.add('hit');
       movePacket(nodeDns, () => {
-        if (targetRegion === 'sf') {
-          logEl.innerHTML = `[2/5] DNS Route 53: Geo-routing resolved closest endpoint <strong>Region 1 (18.10.5.22)</strong>.`;
-        } else if (region1Down) {
-          logEl.innerHTML = `[2/5] DNS Route 53: Region 1 failed health check. Automatic failover routed to <strong>Region 2 (35.90.45.88)</strong>.`;
-        } else {
-          logEl.innerHTML = `[2/5] DNS Route 53: Geo-routing resolved East Coast endpoint <strong>Region 2 (35.90.45.88)</strong>.`;
-        }
-        metricEl.innerHTML = `<span class="telemetry-tag">STATUS:</span> DNS RESOLVED | <span class="telemetry-tag">LATENCY:</span> 18ms`;
+        logEl.innerHTML = `[2/4] <strong>DNS Load Balancer:</strong> Region selection! Resolved closest region <strong>California (18.10.5.22)</strong>.`;
+        metricEl.innerHTML = `<span class="telemetry-tag">STEP 2:</span> REGION SELECTED | <span class="telemetry-tag">TIME:</span> 12ms`;
 
-        // Step 3: Ingress API Gateway
+        // Step 3: API Gateway + Eureka (AZ Selection)
         setTimeout(() => {
           nodeDns.classList.remove('hit');
           nodeGw.classList.add('hit');
           movePacket(nodeGw, () => {
-            logEl.innerHTML = `[3/5] API Gateway: Terminated SSL, verified JWT signature, checked Token Bucket rate limiter (Passed).`;
-            metricEl.innerHTML = `<span class="telemetry-tag">STATUS:</span> AUTH OK | <span class="telemetry-tag">LATENCY:</span> 26ms`;
+            if (az1Down) {
+              logEl.innerHTML = `[3/4] <strong>API Gateway + Eureka:</strong> AZ1 is DOWN. Eureka resolves healthy failover <strong>AZ2 (San Francisco)</strong>.`;
+            } else {
+              logEl.innerHTML = `[3/4] <strong>API Gateway + Eureka:</strong> Identifies Order Service. Eureka resolves healthy <strong>AZ1 (Los Angeles)</strong> ALB IP.`;
+            }
+            metricEl.innerHTML = `<span class="telemetry-tag">STEP 3:</span> AZ RESOLVED | <span class="telemetry-tag">TIME:</span> 22ms`;
 
-            // Step 4: Internal Load Balancer
+            // Step 4: Internal LB Instance Selection
             setTimeout(() => {
               nodeGw.classList.remove('hit');
-              nodeLb.classList.add('hit');
-              movePacket(nodeLb, () => {
-                logEl.innerHTML = `[4/5] Internal ALB: Queried Service Discovery (Eureka), selected healthy pod <code>order-service-pod-2</code>.`;
-                metricEl.innerHTML = `<span class="telemetry-tag">STATUS:</span> ROUTING | <span class="telemetry-tag">LATENCY:</span> 32ms`;
+              targetAz.classList.add('hit');
+              movePacket(targetAz, () => {
+                logEl.innerHTML = `[4/4] <strong>Internal Load Balancer:</strong> Instance selection! Checks load & routes to <strong>${targetOrder.textContent}</strong>.`;
+                metricEl.innerHTML = `<span class="telemetry-tag">STEP 4:</span> INSTANCE SELECTED | <span class="telemetry-tag">TIME:</span> 30ms`;
 
-                // Step 5: Service Execution
+                // Land on Pod
                 setTimeout(() => {
-                  nodeLb.classList.remove('hit');
-                  nodeService.classList.add('hit');
-                  movePacket(nodeService, () => {
-                    logEl.innerHTML = `[5/5] <strong>Order Service Processed:</strong> Order record committed, returning <code>200 OK</code> response.`;
-                    metricEl.innerHTML = `<span class="telemetry-tag">STATUS:</span> 200 OK | <span class="telemetry-tag">TOTAL RTT:</span> 38ms`;
+                  targetAz.classList.remove('hit');
+                  targetOrder.classList.add('hit');
+                  movePacket(targetOrder, () => {
+                    logEl.innerHTML = `🎉 <strong>Order Placed Successfully:</strong> <code>Order-2</code> committed record to DB. Returned <code>201 Created</code>!`;
+                    metricEl.innerHTML = `<span class="telemetry-tag">STATUS:</span> 201 CREATED | <span class="telemetry-tag">TOTAL RTT:</span> 36ms`;
 
                     setTimeout(() => {
-                      nodeService.classList.remove('hit');
+                      targetOrder.classList.remove('hit');
                       packet.classList.remove('active');
                       isSimulating = false;
-                    }, 1200);
+                    }, 1400);
                   });
-                }, 250);
+                }, 200);
               });
             }, 250);
           });
@@ -286,7 +258,7 @@ const Visualizers = (() => {
   }
 
   /* ─────────────────────────────────────────────────────────────
-     2. STRANGLER FIG PATTERN INTERACTIVE STEPPER
+     2. STRANGLER FIG & CANARY TRAFFIC ROLLOUT STEPPER
      ───────────────────────────────────────────────────────────── */
   function initStranglerVisualizer() {
     const container = document.getElementById('strangler-sim-mount');
@@ -294,95 +266,72 @@ const Visualizers = (() => {
 
     const stages = [
       {
-        step: 0,
-        title: "Stage 0: The Unified Monolith",
-        desc: "All business logic (User, Order, Payment, Inventory) resides in a single deployable artifact and accesses a single monolithic database. Tightly coupled, high blast radius.",
+        percent: "0.1%",
+        title: "Canary Stage 1: 0.1% Pilot Traffic",
+        desc: "The proxy routes 0.1% of live traffic to the new Payment microservice and 99.9% to the Monolith. Real-time telemetry evaluates memory, CPU, and error budgets.",
         diagram: `
-          <div class="arch-box" style="border-left: 3px solid var(--warning);">
-            <div class="arch-box__title">Monolithic Application Core</div>
-            <div class="arch-sub-boxes">
-              <div class="arch-unit">User Module</div>
-              <div class="arch-unit">Order Module</div>
-              <div class="arch-unit">Payment Module</div>
-              <div class="arch-unit">Inventory Module</div>
+          <div class="sub-card-grid-2">
+            <div class="sub-box" style="border-left: 3px solid var(--accent);">
+              <div class="sub-box__tag">Traffic Split</div>
+              <div class="sub-box__title">99.9% Monolith · 0.1% Canary</div>
+              <div class="sub-box__body">Payment Microservice receives synthetic / small pilot traffic. Zero user impact if bugs surface.</div>
             </div>
-            <div class="arch-db">Shared Monolith Database (ACID / Single Point of Failure)</div>
-          </div>
-        `
-      },
-      {
-        step: 1,
-        title: "Stage 1: Interceptor Proxy Placement",
-        desc: "An API Gateway / Reverse Proxy is placed in front of the existing Monolith. All client ingress flows through the gateway, but 100% of requests are still routed to the Monolith. Zero production risk.",
-        diagram: `
-          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
-            <div class="arch-box" style="border-left: 3px solid var(--accent);">
-              <div class="arch-box__title">API Gateway (Edge Interceptor)</div>
-              <div style="font-size: 0.82rem; color: var(--text-secondary);">Rule: Default (/*) ➔ Forward 100% to Monolith</div>
-            </div>
-            <div style="text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent);">⬇ 100% Ingress Traffic</div>
-            <div class="arch-box">
-              <div class="arch-box__title">Existing Monolith</div>
-              <div class="arch-db">Monolith Database</div>
+            <div class="sub-box" style="border-left: 3px solid var(--success);">
+              <div class="sub-box__tag">Data Sync</div>
+              <div class="sub-box__title">Transactional Outbox + Kafka</div>
+              <div class="sub-box__body">Monolith database payment table mutations stream asynchronously to the Microservice DB.</div>
             </div>
           </div>
         `
       },
       {
-        step: 2,
-        title: "Stage 2: Carve Out First Bounded Context (Order Microservice)",
-        desc: "The Order domain is decoupled into an autonomous service with its own database. Data is synchronized in real time using Change Data Capture (CDC via Debezium + Kafka). The gateway canary-routes traffic to the new service.",
+        percent: "5%",
+        title: "Canary Stage 2: 5% Production Load",
+        desc: "Traffic is increased to 5%. p99 latency is verified against the monolith baseline. SAGA compensating transactions tested for failure rollbacks.",
         diagram: `
-          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
-            <div class="arch-box" style="border-left: 3px solid var(--accent);">
-              <div class="arch-box__title">API Gateway (Path-Based Routing)</div>
-              <div style="display: flex; gap: 0.5rem; margin-top: 0.25rem;">
-                <span class="badge badge--success">/api/v1/order ➔ Order Microservice</span>
-                <span class="badge">All other routes ➔ Legacy Monolith</span>
-              </div>
+          <div class="sub-card-grid-2">
+            <div class="sub-box" style="border-left: 3px solid var(--accent);">
+              <div class="sub-box__tag">Traffic Split</div>
+              <div class="sub-box__title">95% Monolith · 5% Microservice</div>
+              <div class="sub-box__body">Significant real-world user distribution. Edge proxy verifies auth tokens and routes reliably.</div>
             </div>
-            <div class="arch-comparison-grid" style="margin-top: 0.5rem;">
-              <div class="arch-box" style="border-left: 3px solid var(--success);">
-                <div class="arch-box__title">Order Microservice</div>
-                <div class="arch-unit">Independent Order Pods</div>
-                <div class="arch-db">Dedicated Order Database</div>
-              </div>
-              <div class="arch-box">
-                <div class="arch-box__title">Monolith (Shrinking)</div>
-                <div class="arch-unit">User, Payment, Inventory</div>
-                <div class="arch-db">Monolith Database</div>
-              </div>
+            <div class="sub-box" style="border-left: 3px solid var(--warning);">
+              <div class="sub-box__tag">Instant Rollback Guarantee</div>
+              <div class="sub-box__title">Strangler Proxy Dial</div>
+              <div class="sub-box__body">If error rates cross 0.5%, the controller instantly dials traffic back to 0% with no deployment needed.</div>
             </div>
           </div>
         `
       },
       {
-        step: 3,
-        title: "Stage 3: Full Decomposition & Legacy Retirement",
-        desc: "All remaining bounded contexts (User, Payment, Inventory) are extracted into independent services. The legacy monolith code is deprecated, and its database tables are safely dropped.",
+        percent: "50%",
+        title: "Canary Stage 3: 50% High-Scale Ingress",
+        desc: "Equal split between Monolith and Payment microservice. Elastic auto-scaling verifies that Payment pods scale up smoothly under peak demand.",
         diagram: `
-          <div style="display: flex; flex-direction: column; gap: 0.85rem;">
-            <div class="arch-box" style="border-left: 3px solid var(--accent);">
-              <div class="arch-box__title">API Gateway + Service Mesh</div>
-              <div style="font-size: 0.82rem; color: var(--text-secondary);">Dynamic Service Discovery & Full Edge Routing</div>
+          <div class="sub-card-grid-2">
+            <div class="sub-box" style="border-left: 3px solid var(--accent);">
+              <div class="sub-box__tag">Traffic Split</div>
+              <div class="sub-box__title">50% Monolith · 50% Microservice</div>
+              <div class="sub-box__body">Microservice handles half of global payments. Dedicated PostgreSQL DB handles load cleanly.</div>
             </div>
-            <div class="arch-sub-boxes" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem;">
-              <div class="arch-box" style="border-left: 2px solid var(--success);">
-                <div class="arch-box__title">Order Service</div>
-                <div class="arch-db">Order DB</div>
-              </div>
-              <div class="arch-box" style="border-left: 2px solid var(--success);">
-                <div class="arch-box__title">User Service</div>
-                <div class="arch-db">User DB</div>
-              </div>
-              <div class="arch-box" style="border-left: 2px solid var(--success);">
-                <div class="arch-box__title">Payment Service</div>
-                <div class="arch-db">Payment DB</div>
-              </div>
-              <div class="arch-box" style="border-left: 2px solid var(--success);">
-                <div class="arch-box__title">Inventory Service</div>
-                <div class="arch-db">Inventory DB</div>
-              </div>
+            <div class="sub-box" style="border-left: 3px solid var(--success);">
+              <div class="sub-box__tag">Health Assertion</div>
+              <div class="sub-box__title">Zero Data Drift Confirmed</div>
+              <div class="sub-box__body">Dual-write reconciliation scripts confirm 100% financial transaction parity across stores.</div>
+            </div>
+          </div>
+        `
+      },
+      {
+        percent: "100%",
+        title: "Canary Stage 4: 100% Full Cutover & Monolith Decommission",
+        desc: "100% of live production traffic now flows to the Payment Microservice. The old payment module inside the monolith is safely removed and deprecated.",
+        diagram: `
+          <div class="sub-box" style="border-left: 3px solid var(--success); text-align:center;">
+            <div class="sub-box__tag">Migration Complete</div>
+            <div class="sub-box__title">100% Traffic on Autonomous Microservice</div>
+            <div class="sub-box__body">
+              The Payment module inside the monolith codebase is safely decommissioned. Congratulations! You migrated with zero user downtime and zero data loss.
             </div>
           </div>
         `
@@ -391,14 +340,14 @@ const Visualizers = (() => {
 
     function renderStage(idx) {
       const s = stages[idx];
-      document.getElementById('strangle-stage-title').textContent = s.title;
-      document.getElementById('strangle-stage-desc').textContent = s.desc;
-      document.getElementById('strangle-stage-visual').innerHTML = s.diagram;
+      document.getElementById('canary-stage-title').textContent = s.title;
+      document.getElementById('canary-stage-desc').textContent = s.desc;
+      document.getElementById('canary-stage-visual').innerHTML = s.diagram;
 
       for (let i = 0; i < 4; i++) {
-        const btn = document.getElementById(`btn-strangle-${i}`);
+        const btn = document.getElementById(`btn-canary-${i}`);
         if (btn) {
-          btn.className = (i === idx) ? 'btn-primary' : 'btn-secondary';
+          btn.className = (i === idx) ? 'sim-btn-pill' : 'sim-btn-outline';
         }
       }
     }
@@ -407,26 +356,26 @@ const Visualizers = (() => {
       <div class="visualizer-container">
         <div class="visualizer-header">
           <div class="visualizer-title">
-            <span>Strangler Fig Migration Architecture (Interactive Phases)</span>
+            <span>Canary Deployment & Strangler Fig Rollout (Interactive Traffic Dial)</span>
           </div>
           <div class="visualizer-controls">
-            <button id="btn-strangle-0" class="btn-primary">Phase 0: Monolith</button>
-            <button id="btn-strangle-1" class="btn-secondary">Phase 1: Ingress Proxy</button>
-            <button id="btn-strangle-2" class="btn-secondary">Phase 2: Service Carve-out</button>
-            <button id="btn-strangle-3" class="btn-secondary">Phase 3: Autonomous Mesh</button>
+            <button id="btn-canary-0" class="sim-btn-pill">0.1% Pilot</button>
+            <button id="btn-canary-1" class="sim-btn-outline">5% Traffic</button>
+            <button id="btn-canary-2" class="sim-btn-outline">50% Traffic</button>
+            <button id="btn-canary-3" class="sim-btn-outline">100% Full Cutover</button>
           </div>
         </div>
 
-        <div class="visualizer-canvas" style="min-height: 340px;">
-          <h4 id="strangle-stage-title" style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--accent);"></h4>
-          <p id="strangle-stage-desc" style="color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.7; font-size: 0.92rem;"></p>
-          <div id="strangle-stage-visual"></div>
+        <div class="visualizer-canvas" style="min-height: 280px; padding: 1.75rem;">
+          <h4 id="canary-stage-title" style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.35rem; color: var(--accent);"></h4>
+          <p id="canary-stage-desc" style="color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.7; font-size: 0.94rem;"></p>
+          <div id="canary-stage-visual"></div>
         </div>
       </div>
     `;
 
     for (let i = 0; i < 4; i++) {
-      document.getElementById(`btn-strangle-${i}`).addEventListener('click', () => renderStage(i));
+      document.getElementById(`btn-canary-${i}`).addEventListener('click', () => renderStage(i));
     }
 
     renderStage(0);

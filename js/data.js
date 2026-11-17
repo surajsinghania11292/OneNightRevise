@@ -1,471 +1,375 @@
 /* ═══════════════════════════════════════════════════════════════
-   DATA.JS — System Architecture & Distributed Systems Reference
+   DATA.JS — System Architecture Master Study Notes
+   Authored for focused, distraction-free study (SauceLabs-style clarity)
    ═══════════════════════════════════════════════════════════════ */
 
 const SYSTEM_DESIGN_NOTES = {
   meta: {
-    title: "System Architecture Engineering Reference",
-    version: "Chapters 01–03",
-    status: "Production Ready",
-    readingTime: "18 mins"
+    title: "System Architecture Master Notes",
+    course: "Distributed Systems & Architecture Reference",
+    totalTopics: 6,
+    readingTime: "16 mins"
   },
 
   topics: [
+    /* ── TOPIC 1: MONOLITHIC ARCHITECTURE ── */
     {
-      id: "topic-1-fundamentals",
-      badge: "Chapter 01",
-      title: "Distributed System Fundamentals & Scalability",
-      lead: "Core architectural principles required to scale services from initial deployment to millions of concurrent requests.",
+      id: "topic-1-monolith",
+      number: "01",
+      kicker: "Topic 01 / 06 · Architecture Fundamentals",
+      title: "Monolithic Architecture",
+      lead: "All application domains compile into a single codebase with a single entry point and share a centralized database.",
       sections: [
         {
-          heading: "1. Core Definition & The Scaling Challenge",
-          type: "text",
+          type: "overview",
+          title: "Core Structure & Lifecycle",
           content: `
-            <p><strong>System Design</strong> is the discipline of defining the hardware boundaries, network topologies, software modularity, and data persistence models of an application to fulfill business requirements under massive concurrency, strict latency budgets, and hardware failures.</p>
-            <p>In simple terms: building code is constructing an individual service that works for 10 users. System design is ensuring that service continues operating with 99.99% reliability when 100,000 requests per second hit the cluster simultaneously across multiple global continents.</p>
-          `,
-          callouts: [
-            {
-              type: "junior",
-              title: "Mental Model",
-              text: "Premature optimization is the enemy of good design. System design begins by identifying the primary bottleneck: Is the system <strong>I/O bound</strong> (waiting on databases or external APIs) or <strong>CPU bound</strong> (heavy computations, image/video compression)? Add infrastructure only to resolve confirmed bottlenecks."
-            },
-            {
-              type: "senior",
-              title: "Architectural Principle",
-              text: "Every distributed system design is a study in trade-offs governed by the CAP theorem and PACELC theorem. You cannot maximize consistency, latency, and throughput simultaneously across a partitioned network. Good architecture documents these trade-offs explicitly."
-            }
-          ]
-        },
-        {
-          heading: "2. High-Level Design (HLD) vs Low-Level Design (LLD)",
-          type: "comparison",
-          content: `
-            <div class="table-wrapper">
-              <table class="custom-table">
-                <thead>
-                  <tr>
-                    <th>Architectural Layer</th>
-                    <th>High-Level Design (HLD)</th>
-                    <th>Low-Level Design (LLD)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Scope</strong></td>
-                    <td>Macro-system architecture & network topology</td>
-                    <td>Micro-component logic & internal software contracts</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Primary Entities</strong></td>
-                    <td>API Gateways, Load Balancers, Message Brokers (Kafka), Caches (Redis), Service Clusters</td>
-                    <td>Class diagrams, interface contracts, relational schemas, design patterns (Strategy, Factory, Circuit Breaker)</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Core Concerns</strong></td>
-                    <td>Horizontal scalability, high availability, failover mechanisms, partition tolerance</td>
-                    <td>Maintainability, thread safety, SOLID principles, algorithm complexity</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Deliverable</strong></td>
-                    <td>System architecture blueprints & data flow diagrams</td>
-                    <td>Executable class implementations, database migrations, and unit test suites</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <p><strong>Structure:</strong> All application modules (<code>Auth</code>, <code>Course</code>, <code>Cart</code>, <code>Payment</code>, <code>Order</code>) reside in a single codebase with a single entry point (e.g., a single <code>server.js</code> or <code>main()</code> entry) and typically share a single database containing all tables.</p>
+            <p><strong>Lifecycle:</strong> Tightly coupled — all modules must be built, tested, run, and deployed together in one unified package.</p>
           `
         },
         {
-          heading: "3. The 4 Non-Negotiable Pillars of System Architecture",
-          type: "cards",
+          type: "bottlenecks",
+          title: "3 Major Bottlenecks of Monoliths",
           items: [
             {
-              title: "1. Scalability: Vertical vs Horizontal",
-              desc: "<strong>Vertical Scaling (Scale Up):</strong> Provisioning larger compute instances (e.g., 16 cores ➔ 128 cores). Zero distributed network overhead, but hits a hard hardware ceiling and produces a severe Single Point of Failure (SPOF).<br><br><strong>Horizontal Scaling (Scale Out):</strong> Deploying dozens of stateless commodity instances behind load balancers. Enables elastic auto-scaling, regional redundancy, and zero-downtime rolling deployments."
+              tag: "Bottleneck 1",
+              title: "Single Point of Failure (SPOF)",
+              desc: "An unhandled bug, unmanaged exception, or memory leak in one module (e.g., the Payment module crashing under 1M users) brings down the entire server process, simultaneously knocking Auth, Cart, and Orders offline."
             },
             {
-              title: "2. High Availability (The Nines of Uptime)",
-              desc: "Availability represents the operational uptime percentage over a trailing 365-day period:<br>• <strong>99.9% (Three Nines):</strong> ~8.76 hours downtime/year (standard internal tools)<br>• <strong>99.99% (Four Nines):</strong> ~52.6 minutes downtime/year (enterprise cloud standard)<br>• <strong>99.999% (Five Nines):</strong> ~5.26 minutes downtime/year (mission-critical telecommunications and payment rails)"
+              tag: "Bottleneck 2",
+              title: "Deployment Bottleneck",
+              desc: "Adding a minor feature or bugfix (e.g., adding credit card support in Payment) requires rebuilding the entire application, running the complete test suite, and redeploying the entire server."
             },
             {
-              title: "3. Reliability & Fault Tolerance",
-              desc: "Reliability is the probability that a system performs its specified function without failure. Fault tolerance is the architectural capability to survive component crashes (disk failures, network timeouts, power loss) via automatic retries, exponential backoff with jitter, and dead letter queues."
-            },
-            {
-              title: "4. Latency Budgets vs Throughput",
-              desc: "<strong>Latency:</strong> Time elapsed to process a single request from client transmission to response receipt (e.g. p99 < 50ms).<br><strong>Throughput:</strong> Total volume of requests or transactions processed per unit of time (e.g. 75,000 QPS). Tuning for throughput often sacrifices tail latency due to batching."
+              tag: "Bottleneck 3",
+              title: "Inefficient Scaling",
+              desc: "You cannot scale a high-traffic module (e.g., Payment receiving 20M requests) independently. You are forced to duplicate the entire monolithic application onto larger, expensive machines, wasting RAM/CPU and driving up cloud costs."
             }
           ]
         }
       ]
     },
 
+    /* ── TOPIC 2: MICROSERVICES ARCHITECTURE ── */
     {
-      id: "topic-2-monolith-microservices",
-      badge: "Chapter 02",
-      title: "Decomposing the Monolith: The Strangler Fig Migration",
-      lead: "Strategic trade-offs between unified monoliths and distributed microservices, including zero-downtime production migration patterns.",
+      id: "topic-2-microservices",
+      number: "02",
+      kicker: "Topic 02 / 06 · Decoupled Domains",
+      title: "Microservices Architecture",
+      lead: "Decomposing the business into autonomous, loosely coupled services with independent lifecycles and dedicated data stores.",
       sections: [
         {
-          heading: "1. Monolith vs Microservices: Structural Analysis",
-          type: "text",
+          type: "overview",
+          title: "Structure & Polyglot Persistence",
           content: `
-            <p>A <strong>Monolithic Architecture</strong> compiles all domain capabilities (Authentication, User Management, Order Processing, Payment Settlement, Notifications) into a unified binary communicating via in-memory function calls and backed by a single relational database.</p>
-            <p>A <strong>Microservices Architecture</strong> decouples business domains into autonomous, independently deployable services communicating over strict network interfaces (gRPC, REST, Kafka). Each service strictly adheres to the <strong>Database-per-Service</strong> pattern.</p>
-
-            <!-- Vector Architectural Diagram -->
-            <div class="arch-diagram">
-              <div class="arch-diagram__header">
-                <span>Figure 2.1 — Structural Topology: Monolith vs Microservices</span>
-                <span>Architectural Boundary</span>
+            <p><strong>Structure:</strong> Each business domain is split into an independent, loosely coupled service (<code>User Service</code>, <code>Cart Service</code>, <code>Payment Service</code>) with its own entry point and independent lifecycle (built, tested, deployed, and scaled separately).</p>
+            <div class="sub-box" style="margin: 1.25rem 0; border-left: 3px solid var(--accent);">
+              <div class="sub-box__tag">Key Architectural Pattern</div>
+              <div class="sub-box__title">Polyglot Persistence (Database per Service)</div>
+              <div class="sub-box__body">
+                Each microservice manages its own dedicated database tailored specifically to its data model.
+                <br><br>
+                • <strong>User Service:</strong> Relational database (e.g., <strong>PostgreSQL with Prisma ORM</strong>) for structured profile data and strict schema enforcement.<br>
+                • <strong>Cart Service:</strong> Fast NoSQL key-value/document store (e.g., <strong>Redis / MongoDB</strong>) for dynamic, ephemeral shopping cart items with high write speed.
               </div>
-              <div class="arch-diagram__body">
-                <div class="arch-comparison-grid">
-                  <!-- Monolith Topology -->
-                  <div class="arch-box">
-                    <div class="arch-box__title">
-                      <span>Monolithic Deployable Unit</span>
-                      <span class="badge">In-Memory IPC</span>
-                    </div>
-                    <div class="arch-sub-boxes">
-                      <div class="arch-unit">User Domain</div>
-                      <div class="arch-unit">Order Domain</div>
-                      <div class="arch-unit">Payment Domain</div>
-                      <div class="arch-unit">Inventory Domain</div>
-                    </div>
-                    <div class="arch-db">Shared Monolithic Database (ACID / Tight Coupling)</div>
-                  </div>
-
-                  <!-- Microservices Topology -->
-                  <div class="arch-box">
-                    <div class="arch-box__title">
-                      <span>Distributed Microservices</span>
-                      <span class="badge badge--success">gRPC / Kafka Event Mesh</span>
-                    </div>
-                    <div class="arch-sub-boxes">
-                      <div class="arch-unit" style="border-left: 2px solid var(--accent);">User Pod + DB</div>
-                      <div class="arch-unit" style="border-left: 2px solid var(--accent);">Order Pod + DB</div>
-                      <div class="arch-unit" style="border-left: 2px solid var(--accent);">Payment Pod + DB</div>
-                      <div class="arch-unit" style="border-left: 2px solid var(--accent);">Inventory Pod + DB</div>
-                    </div>
-                    <div class="arch-db">Autonomous Databases (Eventual Consistency / SAGA)</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `,
-          callouts: [
-            {
-              type: "junior",
-              title: "Junior Dev Intuition",
-              text: "A Monolith is like an all-in-one kitchen blender. It is fast, simple to clean, and perfect when starting. Microservices are a 10-person industrial commercial restaurant line. Much higher output, but demands rigorous tickets, communication standards, and coordination."
-            },
-            {
-              type: "warning",
-              title: "Anti-Pattern: Distributed Monolith",
-              text: "The worst possible outcome is a <em>Distributed Monolith</em>: splitting code into separate repositories while retaining a single shared database or tight synchronous HTTP coupling. You pay the full operational cost of distributed systems with none of the independent scaling benefits."
-            }
-          ]
-        },
-        {
-          heading: "2. Engineering Trade-off Matrix",
-          type: "comparison",
-          content: `
-            <div class="table-wrapper">
-              <table class="custom-table">
-                <thead>
-                  <tr>
-                    <th>Evaluation Criteria</th>
-                    <th>Monolithic Architecture</th>
-                    <th>Microservices Architecture</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Deployment Velocity (Day 1)</strong></td>
-                    <td>Extremely high. Single pipeline, zero network configuration.</td>
-                    <td>Low initially. High Kubernetes, CI/CD, and mesh overhead.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Scaling Granularity</strong></td>
-                    <td>Coarse-grained. Entire application must be replicated to scale one hot path.</td>
-                    <td>Fine-grained. Scale only the high-throughput Order Service during peak traffic.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Fault Isolation</strong></td>
-                    <td>Poor. An unhandled exception or leak in one module can crash the host process.</td>
-                    <td>High. Failure of Recommendation Service does not block payment checkout.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Data Consistency</strong></td>
-                    <td>Strong consistency. Native database transactions (<code>BEGIN ... COMMIT</code>).</td>
-                    <td>Eventual consistency. Requires SAGA orchestration, Outbox Pattern, and CDC.</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Inter-Process Latency</strong></td>
-                    <td>Nanoseconds (in-memory function calls).</td>
-                    <td>Milliseconds (TCP/TLS handshake, serialization, network hops).</td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
           `
         },
         {
-          heading: "3. Step-by-Step Migration: The Strangler Fig Pattern",
-          type: "procedure",
+          type: "solutions",
+          title: "How Microservices Solve Monolith Bottlenecks",
+          items: [
+            {
+              tag: "Solution 1",
+              title: "Fault Isolation",
+              desc: "If the Payment Service encounters an out-of-memory crash, the User and Cart services remain online without interruption. Users can still browse products and add items to their carts."
+            },
+            {
+              tag: "Solution 2",
+              title: "Independent Deployment",
+              desc: "The Payment team can deploy updates 10 times a day without waiting for or coordinating deployments with the Auth or Course teams."
+            },
+            {
+              tag: "Solution 3",
+              title: "Targeted Scaling",
+              desc: "High traffic spikes on payments during a flash sale only require spinning up more instances of the Payment Service on smaller, cost-effective instances."
+            }
+          ]
+        }
+      ]
+    },
+
+    /* ── TOPIC 3: ARCHITECTURAL MISCONCEPTIONS ── */
+    {
+      id: "topic-3-myths",
+      number: "03",
+      kicker: "Topic 03 / 06 · Reality Check",
+      title: "Common Architectural Misconceptions",
+      lead: "Separating production engineering reality from common interview myths.",
+      sections: [
+        {
+          type: "myths",
+          title: "Debunking Industry Myths",
+          items: [
+            {
+              myth: 'Myth 1: "A Monolith only runs on a single machine"',
+              fact: 'FALSE. While you cannot scale individual modules separately, you can horizontally scale the entire monolithic application across multiple application servers (App Server 1, App Server 2, App Server 3) behind a load balancer.'
+            },
+            {
+              myth: 'Myth 2: "Every Microservice must run on its own separate machine"',
+              fact: 'FALSE. At low or medium traffic, multiple microservices can comfortably run on a single host machine (listening on different ports like 4001, 4002, 4003) and only move to dedicated virtual machines or container pods when traffic demands it.'
+            }
+          ]
+        }
+      ]
+    },
+
+    /* ── TOPIC 4: STEP-BY-STEP MIGRATION ── */
+    {
+      id: "topic-4-migration",
+      number: "04",
+      kicker: "Topic 04 / 06 · Production Playbook",
+      title: "Step-by-Step Migration: Monolith to Microservices",
+      lead: "The practical roadmap to deconstruct a monolithic application without downtime or business disruption.",
+      sections: [
+        {
+          type: "rules",
+          title: "4 Core Migration Rules",
           content: `
-            <p><strong>The Core Directive:</strong> Avoid the <em>Big Bang Rewrite</em>. Freezing product roadmaps to rewrite complex legacy software from scratch carries an extraordinarily high failure rate. Production systems require incremental, zero-downtime decomposition.</p>
-            <p>The <strong>Strangler Fig Pattern</strong> (Martin Fowler) incrementally intercepts incoming traffic at an edge proxy, routing specific URL prefixes to freshly carved microservices while forwarding remaining traffic to the legacy host until the host is safely deprecated.</p>
-          `,
+            <div class="sub-box-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">Rule 01</div>
+                <div class="sub-box__title">Never Migrate in a Single Day</div>
+                <div class="sub-box__body">Avoid Big Bang rewrites. High-scale production systems are migrated incrementally module-by-module.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Rule 02</div>
+                <div class="sub-box__title">Migrate Module by Module</div>
+                <div class="sub-box__body">Carve out one isolated domain at a time, verify stability, and then move to the next.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Rule 03</div>
+                <div class="sub-box__title">Code Migration vs Module Migration</div>
+                <div class="sub-box__body">Moving code and database configuration to a new repository is only Code Migration. It is not migrated until 100% of live traffic routes to it.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Rule 04</div>
+                <div class="sub-box__title">Never Decommission Prematurely</div>
+                <div class="sub-box__body">Never delete or decommission the monolith code until 100% of production traffic has been handled stably by the new microservice for an observation period.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          type: "workflow",
+          title: "The 6-Step Migration Workflow",
           steps: [
             {
-              step: "1",
-              title: "1. Position an Edge Ingress Proxy (API Gateway)",
-              desc: "Deploy a high-performance reverse proxy (NGINX, Envoy, Kong) in front of the existing Monolith. 100% of traffic routes through the proxy, which transparently forwards all requests to the legacy monolith. No business logic is touched."
+              num: "1",
+              title: "Understand the Monolith",
+              desc: "Map out all existing domain modules (Auth, Search, Cart, Payment, Order) and document their foreign-key and code dependencies."
             },
             {
-              step: "2",
-              title: "2. Isolate a Clean Bounded Context",
-              desc: "Select a self-contained domain with minimal foreign key entanglements (e.g. Notification Service or User Profile). Avoid beginning with the core financial ledger or order state machine."
+              num: "2",
+              title: "Identify High-Impact Areas",
+              desc: "Prioritize modules experiencing the heaviest load, highest cloud bills, or most frequent production crashes (e.g., Payment)."
             },
             {
-              step: "3",
-              title: "3. Implement the Autonomous Service & Isolated Database",
-              desc: "Build the service independently with its own persistence layer. Do not allow direct SQL connections from the new service into the legacy monolith database."
+              num: "3",
+              title: "Build API Contracts & Setup Communication",
+              desc: "Define strict interfaces for service communication: Synchronous (REST APIs, gRPC) or Asynchronous (Event brokers like Apache Kafka or RabbitMQ)."
             },
             {
-              step: "4",
-              title: "4. Synchronize Data via Change Data Capture (CDC)",
-              desc: "Deploy tools such as <strong>Debezium + Apache Kafka</strong> to tail the Monolith database transaction log (WAL). Stream mutations to the new service database in real time. Backfill historical records and run automated parity assertions."
+              num: "4",
+              title: "Migrate Module by Module",
+              desc: "Extract code into a dedicated repository, configure its dedicated database, containerize with Docker, and establish independent CI/CD pipelines."
             },
             {
-              step: "5",
-              title: "5. Canary Traffic Cutover at the Ingress Layer",
-              desc: "Configure the API Gateway route: shift 5% of traffic for the endpoint (e.g. <code>/api/v1/notifications</code>) to the new microservice. Monitor p99 latency and error budgets before ramping to 25% ➔ 50% ➔ 100%."
+              num: "5",
+              title: "Monitoring & Observability",
+              desc: "Deploy the service and continuously monitor health metrics, error rates, CPU/RAM utilization, and p99 latency under real traffic."
             },
             {
-              step: "6",
-              title: "6. Deprecate Legacy Monolith Code",
-              desc: "Once the new service handles 100% of production traffic stably, remove the legacy module from the monolith repository and archive redundant tables. Repeat for subsequent domains."
+              num: "6",
+              title: "Scaling & Optimization",
+              desc: "Horizontally scale instances or vertically allocate compute resources based strictly on specific service demands."
             }
           ]
         }
       ]
     },
 
+    /* ── TOPIC 5: MIGRATION DESIGN PATTERNS ── */
     {
-      id: "topic-3-api-gateway-load-balancing",
-      badge: "Chapter 03",
-      title: "Edge Routing, Load Balancing & Global Traffic Management",
-      lead: "Deconstructing multi-region high-scale architectures: Client Ingress ➔ Anycast DNS ➔ Edge API Gateway ➔ Internal Load Balancing ➔ Microservice Pods.",
+      id: "topic-5-patterns",
+      number: "05",
+      kicker: "Topic 05 / 06 · Distributed Systems Patterns",
+      title: "Migration Design Patterns: Traffic, Transactions & Consistency",
+      lead: "Proven engineering patterns that guarantee data consistency and zero downtime during architecture transitions.",
       sections: [
         {
-          heading: "1. Load Balancing Mechanics: Layer 4 vs Layer 7",
-          type: "text",
-          content: `
-            <p>A <strong>Load Balancer</strong> distributes network or application traffic across a pool of healthy backend instances to maximize throughput, minimize response latency, and prevent resource exhaustion.</p>
+          type: "patterns",
+          title: "The 4 Essential Migration Patterns",
+          items: [
+            {
+              tag: "Traffic Routing",
+              title: "1. Canary Deployment (Gradual Traffic Rollout)",
+              desc: "Instead of sending 100% of traffic to the newly deployed microservice immediately, route a tiny subset of real users first: <code>0.1% ➔ 1% ➔ 5% ➔ 10% ➔ 50% ➔ 100%</code> as stability, error budgets, and latency metrics are confirmed."
+            },
+            {
+              tag: "Traffic Splitting & Rollback",
+              title: "2. Strangler Fig Pattern (Traffic Controller & Instant Rollback)",
+              desc: "Uses an intermediary controller/proxy in front of the system to split incoming API requests (e.g., 90% to legacy Monolith, 10% to new Microservice). If the microservice encounters errors, the controller immediately dials traffic back to 0% and routes 100% back to the monolith for an instant, zero-downtime rollback."
+            },
+            {
+              tag: "Distributed Transactions",
+              title: "3. SAGA Design Pattern (Multi-Database Rollbacks)",
+              desc: "Solves multi-service transaction rollbacks. When a transaction spans <code>User DB ➔ Order DB ➔ Payment DB</code> and fails at Payment, standard single-DB ACID rollbacks cannot work across separate databases. SAGA orchestrates <strong>compensating transactions</strong> that run in reverse to safely undo changes in the Order and User services."
+            },
+            {
+              tag: "Data Consistency",
+              title: "4. Transactional Outbox Pattern (Asynchronous Database Sync)",
+              desc: "Keeps the Monolith DB's payment table and the new Microservice DB in sync during partial traffic migration. When a write hits the Monolith Payment Table, it simultaneously writes an event to an <strong>Outbox Table</strong> within the same atomic database transaction. An asynchronous CDC process reads the Outbox table and pushes events to <strong>Apache Kafka</strong>, updating the Payment Microservice DB."
+            }
+          ]
+        }
+      ]
+    },
 
-            <div class="arch-diagram">
-              <div class="arch-diagram__header">
-                <span>Figure 3.1 — OSI Model Layer Separation</span>
-                <span>L4 vs L7 Routing</span>
-              </div>
-              <div class="arch-diagram__body">
-                <div class="arch-comparison-grid">
-                  <div class="arch-box">
-                    <div class="arch-box__title">
-                      <span>Layer 4 (Transport: TCP / UDP)</span>
-                      <span class="badge">Ultra-High Throughput</span>
-                    </div>
-                    <ul style="font-size: 0.85rem; color: var(--text-secondary); margin-left: 1.25rem; line-height: 1.7;">
-                      <li>Routes based on IP Address & Port (e.g. <code>10.0.0.1:443</code>).</li>
-                      <li>No TLS decryption; passes raw packet streams transparently.</li>
-                      <li>Millions of packets/sec with sub-millisecond CPU overhead.</li>
-                      <li>Examples: AWS Network Load Balancer (NLB), HAProxy (TCP mode).</li>
-                    </ul>
-                  </div>
-
-                  <div class="arch-box">
-                    <div class="arch-box__title">
-                      <span>Layer 7 (Application: HTTP / HTTPS)</span>
-                      <span class="badge badge--success">Content-Aware Routing</span>
-                    </div>
-                    <ul style="font-size: 0.85rem; color: var(--text-secondary); margin-left: 1.25rem; line-height: 1.7;">
-                      <li>Inspects HTTP headers, cookies, URL paths, and query parameters.</li>
-                      <li>Terminates TLS/SSL certificates at the perimeter.</li>
-                      <li>Enables path routing: <code>/order/*</code> ➔ Order Cluster, <code>/user/*</code> ➔ User Cluster.</li>
-                      <li>Examples: AWS Application Load Balancer (ALB), NGINX, Envoy.</li>
-                    </ul>
-                  </div>
+    /* ── TOPIC 6: API GATEWAY VS LOAD BALANCER ── */
+    {
+      id: "topic-6-gateway-lb",
+      number: "06",
+      kicker: "Topic 06 / 06 · Global Traffic Management",
+      title: "API Gateway vs Load Balancer & Global Infrastructure",
+      lead: "Understanding single entry points, instance balancing, Regions, Availability Zones, and the complete high-scale request lifecycle.",
+      sections: [
+        {
+          type: "golden-rule",
+          title: "The Golden Rule: Gateway vs Load Balancer",
+          rule: `
+            <div class="golden-rule-card">
+              <div class="golden-rule-title">⭐ The Golden Rule</div>
+              <div class="golden-rule-comparison">
+                <div class="rule-col">
+                  <div class="rule-col__name">API Gateway</div>
+                  <div class="rule-col__rule">Determines <em>WHICH microservice</em> the user wants to talk to.<br><span style="font-size:0.85rem; font-weight:400; color:var(--text-secondary);">(Service-level routing based on URL path like /api/v1/order)</span></div>
+                </div>
+                <div class="rule-col">
+                  <div class="rule-col__name">Load Balancer</div>
+                  <div class="rule-col__rule">Determines <em>WHICH instance</em> of that microservice should handle the request.<br><span style="font-size:0.85rem; font-weight:400; color:var(--text-secondary);">(Instance-level distribution across Order-1, Order-2, Order-3)</span></div>
                 </div>
               </div>
             </div>
           `
         },
         {
-          heading: "2. The Role of the Edge API Gateway",
-          type: "text",
-          content: `
-            <p>An <strong>API Gateway</strong> serves as the single public entry gate for all client devices (Web, Mobile iOS/Android, Public Developer APIs) into the private microservice network.</p>
-            <p>Direct client-to-microservice communication is avoided in production because mobile networks suffer high latency when initiating dozens of separate TLS handshakes, internal microservice addresses should never be exposed to the public internet, and clients must not break when internal microservice topologies evolve.</p>
-          `,
-          callouts: [
+          type: "gateway-features",
+          title: "3 Key Features of an API Gateway",
+          items: [
             {
-              type: "senior",
-              title: "The 6 Core Responsibilities of an API Gateway",
-              text: `
-                1. <strong>Authentication & Edge Authorization:</strong> Validates JWT signatures and OAuth2 tokens at the perimeter, injecting verified user headers (e.g. <code>X-User-Id</code>) for downstream services.<br>
-                2. <strong>TLS/SSL Termination:</strong> Cryptographic decryption occurs at the edge; internal traffic within the private VPC communicates over high-speed HTTP/2 or gRPC.<br>
-                3. <strong>Rate Limiting & DDoS Mitigation:</strong> Enforces Token Bucket and Leaky Bucket quotas backed by distributed Redis clusters.<br>
-                4. <strong>Request Routing & Path Rewriting:</strong> Routes requests dynamically based on URI prefixes (<code>/api/v1/order</code>).<br>
-                5. <strong>Backend for Frontend (BFF) Aggregation:</strong> Fetches responses from multiple internal services in parallel and merges them into a single response payload tailored for mobile clients.<br>
-                6. <strong>Distributed Tracing Injection:</strong> Attaches standardized Correlation IDs (e.g. <code>X-Request-Id</code>) to trace request lifecycles across distributed nodes.
-              `
+              tag: "Feature 01",
+              title: "API Composition (Payload Aggregation)",
+              desc: "Tailors response payloads by device type. On a desktop 'My Orders' page, the gateway invokes Product, Invoice, and Ratings services. On mobile devices with limited bandwidth, it only calls Product and Invoice services, returning a compact JSON response (can also be paired with GraphQL)."
+            },
+            {
+              tag: "Feature 02",
+              title: "Centralized Authentication & Authorization (OAuth 2.0)",
+              desc: "Instead of duplicating JWT and session validation inside every microservice, the client obtains an Access Token from an Auth Server and sends it to the API Gateway. The Gateway verifies the token with the Auth Server once before routing authenticated requests to downstream services."
+            },
+            {
+              tag: "Feature 03",
+              title: "Service Discovery Integration (e.g., Netflix Eureka)",
+              desc: "Microservices scale dynamically across different host machines, IP addresses, and ports. Instances register their active IP/port with a Service Discovery registry (Eureka). The API Gateway queries Service Discovery in real time to locate target services."
             }
           ]
         },
         {
-          heading: "3. Architectural Comparison: API Gateway vs Load Balancer",
-          type: "comparison",
+          type: "infra-structure",
+          title: "Global Infrastructure: Regions vs Availability Zones (AZs)",
           content: `
-            <div class="table-wrapper">
-              <table class="custom-table">
-                <thead>
-                  <tr>
-                    <th>Capability</th>
-                    <th>Load Balancer (e.g. AWS ALB, NGINX)</th>
-                    <th>API Gateway (e.g. Kong, Envoy, Apigee)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Primary Function</strong></td>
-                    <td>Traffic distribution & server fleet health monitoring</td>
-                    <td>Perimeter security, authentication, request routing & transformation</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Protocol Awareness</strong></td>
-                    <td>L4 (TCP/UDP) or L7 (HTTP/HTTPS)</td>
-                    <td>Strictly L7 (Deep application payload awareness)</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Authentication</strong></td>
-                    <td>Basic / Passthrough</td>
-                    <td>Rich: JWT validation, OAuth2 token inspection, HMAC signatures</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Rate Limiting</strong></td>
-                    <td>IP-level connection limits</td>
-                    <td>Fine-grained: Per-user, per-API-key, per-tenant Token Bucket</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Payload Mutation</strong></td>
-                    <td>None (Transparent streaming)</td>
-                    <td>Yes: Header injection, JSON aggregation, protocol translation (REST ➔ gRPC)</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Production Topology</strong></td>
-                    <td colspan="2"><strong>Complementary Collaboration:</strong> High-throughput L4/L7 Load Balancers sit in front to scale the API Gateway cluster itself, while internal load balancers distribute traffic among microservice pod replicas behind the gateway.</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">Geographic Level</div>
+                <div class="sub-box__title">Region</div>
+                <div class="sub-box__body">
+                  A broad geographic territory (e.g., <strong>US-Massachusetts</strong> or <strong>US-California</strong>). Regions are isolated from each other to prevent shared global outages.
+                </div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Data Center Level</div>
+                <div class="sub-box__title">Availability Zone (AZ)</div>
+                <div class="sub-box__body">
+                  Isolated data centers located in distinct cities within a single Region.<br>
+                  • <em>Massachusetts:</em> Boston (AZ1) & Cambridge (AZ2)<br>
+                  • <em>California:</em> Los Angeles (AZ1) & San Francisco (AZ2)
+                </div>
+              </div>
+            </div>
+            <div class="sub-box" style="margin-top: 1rem; border-left: 3px solid var(--success);">
+              <div class="sub-box__tag">High Availability Failover Architecture</div>
+              <div class="sub-box__body">
+                If AZ1 (Los Angeles) experiences an outage, traffic immediately fails over to AZ2 (San Francisco). If the entire California region suffers an infrastructure partition, global DNS immediately switches traffic to another Region (Massachusetts).
+              </div>
             </div>
           `
         },
         {
-          heading: "4. Global Traffic Routing: Handling Millions of Requests",
-          type: "walkthrough",
+          type: "interview-qa",
+          title: "Top Architecture Interview Questions & End-to-End Flow",
           content: `
-            <p>At multi-million request scale, no single data center or gateway instance can handle global ingress. Distributed systems deploy <strong>Global Anycast DNS</strong> combined with <strong>Regional Ingress Zones</strong>:</p>
-
-            <div class="arch-diagram">
-              <div class="arch-diagram__header">
-                <span>Figure 3.2 — Multi-Region Global Ingress Architecture</span>
-                <span>Active-Active Multi-Zone Deployment</span>
-              </div>
-              <div class="arch-diagram__body">
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                  <div class="arch-box" style="text-align: center; border-left: 3px solid var(--accent);">
-                    <div class="arch-box__title" style="justify-content: center;">Client Ingress (Mobile / Web Clients)</div>
-                    <div style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary);">Request: https://api.myApp.com/api/v1/order</div>
-                  </div>
-
-                  <div style="text-align: center; font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent);">⬇ DNS Query: api.myApp.com</div>
-
-                  <div class="arch-box" style="border-left: 3px solid #0284c7;">
-                    <div class="arch-box__title">
-                      <span>Anycast DNS Load Balancer (AWS Route 53 / Azure Traffic Manager)</span>
-                      <span class="badge">Latency & Geo-Routing</span>
-                    </div>
-                    <div style="font-size: 0.82rem; color: var(--text-secondary);">Inspects client resolver IP; routes client to lowest-latency healthy regional edge.</div>
-                  </div>
-
-                  <div class="arch-comparison-grid" style="margin-top: 0.5rem;">
-                    <!-- Region 1 -->
-                    <div class="arch-box">
-                      <div class="arch-box__title">
-                        <span>Region 1: US-West (San Francisco / AZ-2)</span>
-                        <span class="badge badge--success">18.10.5.22</span>
-                      </div>
-                      <div class="arch-unit">Edge API Gateway A (SSL, JWT, Rate Limiting)</div>
-                      <div class="arch-unit">Internal L7 Load Balancer + Eureka Discovery</div>
-                      <div class="arch-sub-boxes">
-                        <div class="arch-unit">Order Service Pods (3x)</div>
-                        <div class="arch-unit">User Service Pods (2x)</div>
-                      </div>
-                    </div>
-
-                    <!-- Region 2 -->
-                    <div class="arch-box">
-                      <div class="arch-box__title">
-                        <span>Region 2: US-East (Boston / AZ-1)</span>
-                        <span class="badge badge--success">35.90.45.88</span>
-                      </div>
-                      <div class="arch-unit">Edge API Gateway B (SSL, JWT, Rate Limiting)</div>
-                      <div class="arch-unit">Internal L7 Load Balancer + Eureka Discovery</div>
-                      <div class="arch-sub-boxes">
-                        <div class="arch-unit">Order Service Pods (3x)</div>
-                        <div class="arch-unit">User Service Pods (2x)</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div class="myth-card">
+              <div class="myth-text" style="color:var(--accent);">Q1: Which comes first in a real-world system — API Gateway or Load Balancer?</div>
+              <div class="fact-text">
+                <strong>Answer:</strong> Both exist at different architectural layers. The <strong>DNS Load Balancer</strong> comes first globally, followed by the <strong>Regional API Gateway</strong>, followed by an <strong>Internal/AZ Load Balancer</strong> inside the data center.
               </div>
             </div>
 
-            <p><strong>The End-to-End Request Lifecycle:</strong></p>
-            <ol style="margin-left: 1.5rem; line-height: 1.9; color: var(--text-secondary);">
-              <li><strong>Client Dispatch:</strong> A client device in California issues <code>GET https://api.myApp.com/api/v1/order</code>.</li>
-              <li><strong>DNS Resolution:</strong> AWS Route 53 performs <em>Geo-Proximity / Latency Routing</em>, resolving the domain to <strong>Region 1 API Gateway (18.10.5.22)</strong>.</li>
-              <li><strong>Edge Perimeter Inspection:</strong> The API Gateway terminates TLS 1.3, authenticates the client's JWT signature, and checks the client's Redis Token Bucket allocation.</li>
-              <li><strong>Dynamic Service Discovery:</strong> Because containerized Kubernetes pods scale elastically with ephemeral IP addresses, the gateway queries the Service Registry (Netflix Eureka / Consul) for healthy instance addresses of <code>Order Service</code>.</li>
-              <li><strong>Internal Load Balancing:</strong> Traffic is passed to the internal Layer 7 Load Balancer, which distributes requests across healthy replicas using Weighted Round Robin.</li>
-              <li><strong>Automated Regional Failover:</strong> If the San Francisco data center experiences an outage, Route 53 health probes fail within seconds, automatically shifting 100% of global DNS answers to the healthy Boston region (35.90.45.88).</li>
-            </ol>
+            <div class="myth-card">
+              <div class="myth-text" style="color:var(--accent);">Q2: If API Gateway is a "Single Entry Point", how does it handle millions of requests without crashing?</div>
+              <div class="fact-text">
+                <strong>Answer:</strong> It is a <em>logical single entry point per region</em>, not a single physical server globally. Traffic is distributed geographically across multiple regional API Gateways using DNS Load Balancing (Route 53 / Azure Traffic Manager).
+              </div>
+            </div>
+
+            <h4 style="font-family: var(--font-display); font-size: 1.2rem; margin: 1.75rem 0 0.85rem; color: var(--text-primary);">
+              Complete 4-Step End-to-End Request Lifecycle:
+            </h4>
+            <div class="workflow-stack">
+              <div class="workflow-step">
+                <div class="step-circle">1</div>
+                <div>
+                  <div class="workflow-step__title">Client Action</div>
+                  <div class="workflow-step__desc">The user clicks "Place Order" on their phone, triggering <code>POST /api/v1/order</code>.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">2</div>
+                <div>
+                  <div class="workflow-step__title">DNS Load Balancer (Region Selection)</div>
+                  <div class="workflow-step__desc">The client browser queries DNS. The DNS Load Balancer evaluates geographic proximity and returns the public IP address of the closest Regional API Gateway (API Gateway A in California), minimizing latency.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">3</div>
+                <div>
+                  <div class="workflow-step__title">API Gateway + Service Discovery (AZ Selection)</div>
+                  <div class="workflow-step__desc">The HTTP request arrives at API Gateway A. The Gateway inspects the path, identifies that it needs the Order Service, and queries Service Discovery (Eureka) for the healthiest Availability Zone (AZ1 - Los Angeles) and the IP address of the internal Load Balancer inside that AZ.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">4</div>
+                <div>
+                  <div class="workflow-step__title">Internal Load Balancer (Instance Selection)</div>
+                  <div class="workflow-step__desc">The API Gateway forwards the request to the AZ1 Load Balancer, which evaluates active connections across Order-1, Order-2, and Order-3 instances and routes the request to the healthiest available pod.</div>
+                </div>
+              </div>
+            </div>
           `
         }
       ]
-    }
-  ],
-
-  interviewFaq: [
-    {
-      q: "Q1: Can an API Gateway completely replace a Load Balancer?",
-      a: "No. API Gateways perform heavy Layer 7 application logic (JWT decoding, rate limit evaluations, payload transformations). In high-scale systems, high-speed L4 Load Balancers (like AWS NLB) sit in front of the API Gateways to scale the gateway fleet itself, while internal load balancers sit behind the gateway to balance traffic among microservice instances."
-    },
-    {
-      q: "Q2: What is the primary failure mode of a Microservices migration?",
-      a: "The 'Big Bang Rewrite'—attempting to freeze feature delivery and rebuild everything from scratch. It almost universally misses deadlines due to shifting business requirements. The standard industry solution is the Strangler Fig Pattern: incrementally carving out small bounded contexts behind an API Gateway."
-    },
-    {
-      q: "Q3: How does DNS Load Balancing differ from Hardware/L7 Load Balancing?",
-      a: "DNS Load Balancing operates during the client's DNS resolution phase before any TCP handshake begins, routing users globally to the closest regional data center (e.g. US-West vs EU-Central). Hardware and L7 Load Balancers operate inside the data center, distributing active HTTP/TCP sessions across server instances."
-    },
-    {
-      q: "Q4: How do you guarantee data consistency during Strangler Fig migration?",
-      a: "By using Change Data Capture (CDC via Debezium + Kafka) or Dual-Writing. The legacy monolith continues writing to its database while an asynchronous pipeline streams changes to the microservice's database. Once data parity validation passes, the gateway cuts over traffic."
     }
   ]
 };

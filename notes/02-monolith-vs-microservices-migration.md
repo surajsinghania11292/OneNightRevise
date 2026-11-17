@@ -1,103 +1,77 @@
-# Topic 02: Monolithic vs Microservices & The Strangler Fig Migration Pattern
-
-> **Lecture Context:** When Monoliths win, why they fail at scale, and the production-tested step-by-step procedure to migrate to Microservices with zero downtime.
+# Monolith to Microservices: Architecture, Misconceptions & Migration Patterns
 
 ---
 
 ## 1. Monolithic Architecture
 
-A **Monolith** is an application where all business logic (Auth, Users, Orders, Payments, Inventory, Notifications) is built into a single codebase, compiled into a single deployable artifact (e.g., a `.jar`, `.war`, or Node.js process), and shares a single central database.
+### Structure
+All application modules (`Auth`, `Course`, `Cart`, `Payment`, `Order`) reside in a single codebase with a single entry point (e.g., a single main server file like `server.js` or `main()`) and typically share a single database containing all tables.
 
-### The Real Advantages of Monoliths (Why Start Here?):
-1. **Blazing Development Speed:** Single repository, simple local dev environment (`npm start` or `./gradlew bootRun`), no network overhead.
-2. **ACID Transactions:** Cross-table updates are trivial within one database (`BEGIN TRANSACTION; ... COMMIT;`).
-3. **Zero Network Latency Between Modules:** Function calls occur in-memory within CPU nanoseconds.
-4. **Simple Deployment:** Deploying 1 container/server is straightforward.
+### Lifecycle
+Tightly coupled — all modules must be built, tested, run, and deployed together in one package.
 
-### Where Monoliths Break Down (The Pain Points):
-- **Blast Radius:** A memory leak or uncaught exception in the PDF generation module can crash the entire payment and checkout service.
-- **Scaling Inefficiency:** If only the Video Transcoding module requires heavy GPU/RAM, you are forced to clone the entire monolithic application across 50 expensive high-spec servers.
-- **Team Bottlenecks:** 60+ engineers pushing to one repository creates merge conflicts, long CI/CD test queues, and deployment fear ("Nobody deploy on Friday!").
+### 3 Major Bottlenecks:
+1. **Single Point of Failure (SPOF):** An unhandled bug or memory leak in one module (e.g., Payment crashing under 1M users) brings down the entire server process, simultaneously breaking Auth, Cart, and Orders.
+2. **Deployment Bottleneck:** Adding a minor feature (e.g., credit card support in Payment) requires rebuilding, retesting, and redeploying the entire application.
+3. **Inefficient Scaling:** You cannot scale a high-traffic module (e.g., Payment receiving 20M requests) independently; you must duplicate the entire monolith on bigger, expensive machines, wasting resources and increasing cloud costs.
 
 ---
 
 ## 2. Microservices Architecture
 
-A **Microservices Architecture** divides an application into a collection of small, autonomous, loosely-coupled services organized around specific business capabilities (e.g., Order Service, User Service, Payment Service).
+### Structure
+Each business domain is split into an independent, loosely coupled service (`User Service`, `Cart Service`, `Payment Service`) with its own entry point and independent lifecycle (built, tested, deployed, and scaled separately).
 
-### Core Characteristics:
-- **Database per Service:** Each microservice manages its own private database schema. No external service is allowed to query another service's database directly.
-- **Independent Deployability:** The Order Service team can deploy 10 times a day without coordinating with the Payment Service team.
-- **Polyglot Stacks:** Python for AI/ML services, Go for high-throughput streaming, Node.js for rapid I/O APIs.
+### Polyglot Persistence (Database per Service)
+Each microservice manages its own dedicated database tailored to its data model:
+- **User Service:** Relational database (e.g., **PostgreSQL with Prisma ORM**) for structured user records and strict schemas.
+- **Cart Service:** Fast NoSQL key-value/document store (e.g., **Redis / MongoDB**) for dynamic, ephemeral shopping cart items.
 
-### The Hidden Costs of Microservices:
-- **Distributed Data Consistency:** No cross-service SQL `JOIN`s. Must use eventual consistency, SAGA patterns, and event brokers (Kafka/RabbitMQ).
-- **Network Overhead:** Every inter-service hop adds latency and introduces partial network failure risks.
-- **Operational Complexity:** Demands container orchestration (Kubernetes), distributed tracing (OpenTelemetry/Jaeger), service mesh, and centralized logging.
-
----
-
-## 3. How to Migrate from Monolith to Microservices (The Strangler Fig Pattern)
-
-> **⚠️ The Golden Rule:** NEVER do a "Big Bang Rewrite"!  
-> Freezing feature development for a year to rewrite everything from scratch almost always ends in disaster. Business requirements change, and the legacy monolith keeps accumulating fixes.
-
-### The Strangler Fig Origin Analogy
-In tropical rainforests, the strangler fig vine takes root high in the canopy of a host tree. It sends roots downward to the soil, gradually wraps around the host's trunk, and absorbs nutrients. Over decades, the host tree dies and rots away, leaving an independent, hollow fig tree standing in its place.
+### How Microservices Solve Monolith Issues:
+- **Fault Isolation:** If the Payment Service crashes, User and Cart services stay online.
+- **Independent Deployment:** Changes to Payment only require redeploying the Payment Service.
+- **Targeted Scaling:** High traffic on payments only requires spinning up more instances of the Payment Service on smaller, cost-effective machines.
 
 ---
 
-### Step-by-Step Migration Procedure
+## 3. Common Architectural Misconceptions
 
-```
-[ Clients: Mobile / Web ]
-           │
-           ▼
-┌─────────────────────────────────┐
-│   API Gateway / Reverse Proxy   │ (Stage 1: Placed in front)
-└─────────────────────────────────┘
-     │ (80% legacy)         │ (20% new route: /api/v1/order)
-     ▼                      ▼
-┌──────────────┐     ┌─────────────────────┐
-│ Old Monolith │     │ Order Microservice  │ (Stage 2: Extracted)
-│ (Shrinking)  │     │ + Dedicated DB      │
-└──────────────┘     └─────────────────────┘
-```
+- **Myth 1: "A Monolith only runs on a single machine"**  
+  ➔ **FALSE.** While you cannot scale individual modules separately, you can horizontally scale the entire monolith across multiple application servers (`App Server 1`, `App Server 2`, `App Server 3`) behind a load balancer.
 
-#### Step 1: Place an Interceptor Proxy (API Gateway) in Front
-- Deploy a reverse proxy (e.g., NGINX, Envoy, Kong, Cloudflare) in front of the existing Monolith.
-- Initially, configure the proxy to forward **100% of all traffic** directly to the Monolith.
-- *Result:* Zero risk, zero business logic changed, but you now control the ingress path.
-
-#### Step 2: Identify a Bounded Context (The First Candidate)
-- Select a small, low-risk domain with few cross-table dependencies.
-- *Good candidates:* Notification Service (emails/SMS), User Profile, Image Resizer.
-- *Avoid on Day 1:* Core ledger, checkout engine, or order state machine.
-
-#### Step 3: Build the New Service with Its Own Database
-- Build the microservice independently.
-- Strictly adhere to the **Database per Service** principle.
-
-#### Step 4: Data Migration & Synchronization
-- How to sync data without stopping production traffic?
-  - **Change Data Capture (CDC):** Attach Debezium to the Monolith database write-ahead log (WAL) and publish change events to Kafka.
-  - A consumer reads Kafka events and populates the new microservice's database.
-  - Run a backfill script for historical data and run reconciliation queries until data reaches 100% parity.
-
-#### Step 5: Canary Cutover at the API Gateway
-- Change the routing rule on the API Gateway:
-  - Route `5%` of requests for `/api/v1/notifications` to the new microservice; `95%` remains on the Monolith.
-  - Monitor error rates, p99 latency, and server telemetry.
-  - Gradually ramp traffic: `5%` ➔ `25%` ➔ `50%` ➔ `100%`.
-
-#### Step 6: Deprecate Legacy Monolith Code & Repeat
-- Once 100% of traffic is successfully handled by the new service, delete the legacy code module from the monolith repository and drop obsolete DB columns.
-- Move to the next bounded context (e.g. Orders, Payments, Inventory).
-- Eventually, the monolith is completely replaced or reduced to a manageable legacy core.
+- **Myth 2: "Every Microservice must run on its own separate machine"**  
+  ➔ **FALSE.** At low traffic, multiple microservices can run on a single host machine (listening on different ports like `4001`, `4002`) and only move to dedicated virtual machines when scaling demands it.
 
 ---
 
-## 4. Supporting Design Patterns
+## 4. Step-by-Step Migration: Monolith to Microservices
 
-1. **Branch by Abstraction:** In the monolith code, create an interface/abstraction layer around the module you intend to extract. Initially, call the in-memory class. Later, swap the implementation to make an HTTP/gRPC remote call to the new service.
-2. **Transactional Outbox Pattern:** Guarantees that database updates and outgoing Kafka event publications occur atomically without distributed 2-phase commits.
+### Core Migration Rules:
+1. Never migrate the entire system in a single day or a single go (avoid Big Bang rewrites).
+2. Migrate module-by-module.
+3. Distinguish between **Code Migration** (moving logic and DB config to a new repo) and **Module Migration** (routing 100% of live production traffic).
+4. Never decommission the monolith module until 100% of production traffic is stably handled by the new microservice.
+
+### 6-Step Migration Workflow:
+1. **Understand the Monolith:** Map out all existing domain modules (Auth, Search, Cart, Payment, Order) and their dependencies.
+2. **Identify High-Impact Areas:** Prioritize modules experiencing heavy load or frequent crashes (e.g., Payment).
+3. **Build API Contracts & Setup Communication:** Define how services talk — Synchronous (REST APIs, gRPC) or Asynchronous (Message queues like Apache Kafka or RabbitMQ).
+4. **Migrate Module by Module:** Extract code into a dedicated service repo, configure its dedicated database, and containerize with Docker.
+5. **Monitoring & Observability:** Deploy the service and monitor health metrics, error rates, and p99 latency under load.
+6. **Scaling & Optimization:** Horizontally scale instances or vertically allocate CPU/RAM based on specific service demands.
+
+---
+
+## 5. Migration Design Patterns (Traffic, Transactions & Consistency)
+
+### 1. Canary Deployment (Gradual Traffic Rollout)
+Instead of sending 100% of traffic to the newly deployed microservice immediately, route a tiny subset of users first (`0.1%` ➔ `1%` ➔ `5%` ➔ `10%` ➔ `50%` ➔ `100%`) as stability is verified.
+
+### 2. Strangler Fig Pattern (Traffic Routing & Rollback)
+Uses an intermediary controller/proxy in front of the system to split incoming API requests (e.g., 90% routed to the legacy Monolith, 10% to the new Microservice). If the microservice fails, the controller immediately dials traffic back to 0% and routes 100% back to the monolith for an instant rollback.
+
+### 3. SAGA Design Pattern (Distributed Transactions)
+Solves multi-service transaction rollbacks. When a transaction spans `User DB ➔ Order DB ➔ Payment DB` and fails at Payment, standard single-DB rollback cannot work across separate databases; SAGA orchestrates **compensating transactions** to revert changes in Order and User services.
+
+### 4. Transactional Outbox Pattern (Data Consistency)
+Keeps the Monolith DB's payment table and the new Microservice DB in sync during partial traffic migration. When a write hits the Monolith Payment Table, it simultaneously writes an entry to an **Outbox Table** in the same DB transaction, which pushes an event to **Apache Kafka**, asynchronously updating the Payment Microservice DB.

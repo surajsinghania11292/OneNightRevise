@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OneNightRevise — System Architecture & Engineering Reference</title>
+  <title>OneNightRevise — System Design Master Study Notes</title>
 
   <!-- ── EARLY THEME INITIALIZER (Prevents flash of wrong theme) ── -->
   <script>
@@ -17,11 +17,11 @@
     })();
   </script>
 
-  <!-- ── TYPOGRAPHY ── -->
+  <!-- ── GOOGLE FONTS (SauceLabs Editorial Serif & Clean Modern Body) ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@400;500;600&display=swap">
 
   <!-- ── STYLESHEETS ── -->
   <link rel="stylesheet" href="css/variables.css">
@@ -31,145 +31,87 @@
 </head>
 
 <body>
-  <!-- ── TOP READING PROGRESS BAR ── -->
+  <!-- ── READING PROGRESS BAR ── -->
   <div id="progress-bar"></div>
 
-  <!-- ── HEADER / NAVIGATION ── -->
+  <!-- ── FLOATING PILL NAVBAR (NON-STICKY, SCROLLS WITH PAGE) ── -->
   <header id="main-nav">
-    <div class="nav-container">
-      <div class="nav-left">
-        <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Toggle Outline Sidebar" title="Toggle Outline Sidebar (Shortcut: [ )">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="9" y1="3" x2="9" y2="21"></line>
-          </svg>
-          <span>Hide Sidebar</span>
-        </button>
+    <div class="nav-capsule">
+      <a href="#" class="nav-brand">
+        <div class="brand-icon">SD</div>
+        <span class="brand-title">OneNightRevise</span>
+      </a>
 
-        <a href="#" class="nav-brand">
-          <div class="brand-mark">SD</div>
-          <span class="brand-title">OneNightRevise</span>
-          <span class="brand-badge">ARCHITECTURE</span>
-        </a>
-      </div>
+      <ul class="nav-links">
+        <li><a href="#topic-1-monolith" class="nav-link">Monolith</a></li>
+        <li><a href="#topic-2-microservices" class="nav-link">Microservices</a></li>
+        <li><a href="#topic-3-myths" class="nav-link">Myths</a></li>
+        <li><a href="#topic-4-migration" class="nav-link">Migration</a></li>
+        <li><a href="#topic-5-patterns" class="nav-link">Patterns</a></li>
+        <li><a href="#topic-6-gateway-lb" class="nav-link">Gateway vs LB</a></li>
+      </ul>
 
       <div class="nav-actions">
-        <div class="nav-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input type="text" id="quick-search" placeholder="Search architecture topics..." aria-label="Search">
-        </div>
-
         <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
           <span class="theme-icon">☀</span>
-          <span>Theme</span>
+          <span>Light Mode</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- ── MARQUEE TICKER ── -->
-  <div class="marquee-strip">
-    <div class="marquee-content">
-      <div class="marquee-item">⚡ <span class="highlight">Global Ingress:</span> Anycast DNS · AWS Route 53 & Azure Traffic Manager</div>
-      <div class="marquee-item">🛡️ <span class="highlight">API Gateway:</span> TLS 1.3 Termination · JWT Verification · Token Bucket Throttling</div>
-      <div class="marquee-item">🌿 <span class="highlight">Decomposition:</span> Strangler Fig Pattern · Zero-Downtime Migration</div>
-      <div class="marquee-item">⚖️ <span class="highlight">Traffic Distribution:</span> Layer 4 TCP vs Layer 7 Application Routing</div>
-      <div class="marquee-item">📍 <span class="highlight">Service Discovery:</span> Dynamic Pod Registry (Netflix Eureka / Consul)</div>
-      <div class="marquee-item">⚡ <span class="highlight">Global Ingress:</span> Anycast DNS · AWS Route 53 & Azure Traffic Manager</div>
-      <div class="marquee-item">🛡️ <span class="highlight">API Gateway:</span> TLS 1.3 Termination · JWT Verification · Token Bucket Throttling</div>
-      <div class="marquee-item">🌿 <span class="highlight">Decomposition:</span> Strangler Fig Pattern · Zero-Downtime Migration</div>
-    </div>
-  </div>
+  <!-- ── MAIN READING CANVAS (CENTERED, GENEROUS SPACING) ── -->
+  <main class="reading-canvas">
+    <!-- HERO HEADER (SAUCELABS STYLE) -->
+    <section class="hero-banner">
+      <div class="hero-kicker">DISTRIBUTED SYSTEMS REVISION REFERENCE</div>
+      <h1 class="hero-headline">Master System Design from Monoliths to Multi-Region Scale.</h1>
+      <p class="hero-subtext">
+        A distraction-free, focused study guide designed to master architecture trade-offs, decomposition patterns, and global edge routing.
+      </p>
 
-  <!-- ── MAIN APP SHELL ── -->
-  <div class="app-shell">
-    <!-- ── LEFT STICKY SIDEBAR (COLLAPSIBLE) ── -->
-    <aside class="sidebar">
-      <div class="sidebar-card">
-        <div class="sidebar-heading">
-          <span>Table of Contents</span>
-          <span class="badge badge--success">3 CHAPTERS</span>
+      <div class="hero-pills-row">
+        <a href="#topic-1-monolith" class="pill-btn-primary">Start Revision ➔</a>
+        <a href="#interactive-simulator" class="pill-btn-secondary">⚡ Open Interactive Lab</a>
+      </div>
+    </section>
+
+    <!-- QUICK TOPIC JUMP CAPSULE BAR -->
+    <nav class="quick-jump-bar" id="quick-jump-mount" aria-label="Topic navigation"></nav>
+
+    <!-- ── THE 6 CORE TOPIC CARDS (ROUNDED, GENEROUS PADDING) ── -->
+    <div id="topics-mount" style="display: flex; flex-direction: column; gap: 3rem;"></div>
+
+    <!-- ── INTERACTIVE ARCHITECTURE LAB ── -->
+    <section class="topic-card" id="interactive-simulator" style="border-color: var(--accent);">
+      <div class="topic-header-bar">
+        <div class="topic-kicker">
+          <span class="pulse-dot"></span>
+          <span>Interactive Architecture Lab</span>
         </div>
-        <ul class="toc-list" id="toc-list">
-          <!-- Dynamically populated by app.js -->
-        </ul>
+        <span class="topic-progress-badge">HANDS-ON SIMULATION</span>
       </div>
 
-      <div class="sidebar-card">
-        <div class="sidebar-heading">
-          <span>Architecture Track</span>
-        </div>
-        <div class="sidebar-stats">
-          <div class="stat-row">
-            <span>Modules</span>
-            <span class="stat-badge">Chapters 01–03</span>
-          </div>
-          <div class="stat-row">
-            <span>Core Pillars</span>
-            <span class="stat-badge">Scalability & Uptime</span>
-          </div>
-          <div class="stat-row">
-            <span>Design Patterns</span>
-            <span class="stat-badge">Strangler Fig & BFF</span>
-          </div>
-          <div class="stat-row">
-            <span>Interactive Labs</span>
-            <span class="stat-badge">2 Simulators Active</span>
-          </div>
-        </div>
+      <div>
+        <h2 class="topic-title">Live Architecture Simulators</h2>
+        <p class="topic-subtitle">
+          Test and observe real-world request journeys across Anycast DNS, edge API gateways, and regional availability zones.
+        </p>
       </div>
-    </aside>
 
-    <!-- ── RIGHT CONTENT CANVAS ── -->
-    <main class="main-content">
-      <!-- HERO BANNER -->
-      <section style="margin-bottom: 1.5rem;">
-        <div class="section-eyebrow">Distributed Systems Architecture Reference</div>
-        <h1 class="section-title">System Design: Core Foundations to Multi-Region Scale</h1>
-        <p class="section-lead">
-          An in-depth engineering reference pairing theoretical foundations, failure modes, and code implementations with interactive architectural simulators and zero-downtime migration patterns.
-        </p>
-      </section>
+      <!-- Simulator 1: High Scale Request Flow -->
+      <div id="request-sim-mount"></div>
 
-      <!-- DYNAMIC NOTES CONTENT (Chapters 1, 2, 3) -->
-      <div id="content-mount"></div>
+      <!-- Simulator 2: Canary & Strangler Stepper -->
+      <div id="strangler-sim-mount"></div>
+    </section>
 
-      <!-- ── INTERACTIVE ARCHITECTURE SIMULATORS ── -->
-      <section class="note-section" id="interactive-visualizers">
-        <div class="section-eyebrow">Interactive Systems Lab</div>
-        <h2 class="section-title">Live Architecture Simulators</h2>
-        <p class="section-lead">
-          Directly observe and test distributed system flows. Trace request packets from client ingress through Anycast DNS, edge API gateways, and internal load balancers into microservice clusters.
-        </p>
-
-        <!-- Visualizer 1: Request Flow Simulation -->
-        <div id="request-sim-mount"></div>
-
-        <!-- Visualizer 2: Strangler Fig Pattern Stepper -->
-        <div id="strangler-sim-mount"></div>
-      </section>
-
-      <!-- ── INTERVIEW ARCHITECT QUESTIONS ── -->
-      <section class="note-section" id="interview-qa">
-        <div class="section-eyebrow">Technical Evaluation</div>
-        <h2 class="section-title">Senior System Architecture Q&A</h2>
-        <p class="section-lead">
-          Rigorous answers to critical architecture questions covering decomposition trade-offs, consistency guarantees, and edge routing.
-        </p>
-
-        <div id="faq-mount"></div>
-      </section>
-
-      <!-- ── FOOTER ── -->
-      <footer style="margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; color: var(--text-muted); font-size: 0.8rem; font-family: var(--font-mono);">
-        <div>OneNightRevise · Distributed Systems Architecture Engineering Reference</div>
-        <div>Continuous Deployment via Vercel</div>
-      </footer>
-    </main>
-  </div>
+    <!-- ── CLEAN FOOTER ── -->
+    <footer style="text-align: center; padding: 2rem 0; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.88rem;">
+      <p><strong>OneNightRevise</strong> · Comprehensive System Architecture Study Notes</p>
+      <p style="font-size: 0.78rem; font-family: var(--font-mono); margin-top: 0.5rem;">Continuous Deployment via Vercel · Designed for Focused Revision</p>
+    </footer>
+  </main>
 
   <!-- ── SCRIPTS (Strict Load Order) ── -->
   <script src="js/data.js"></script>

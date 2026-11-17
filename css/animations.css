@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
-   ANIMATIONS.CSS — Motion, glowing packet flow, and telemetry pings
+   ANIMATIONS.CSS — Purposeful Network Packet Motion & Node Pings
+   (No moving marquee ticker)
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── STATUS PING DOT ──────────────────────────────────────────── */
@@ -27,15 +28,15 @@
   100% { transform: scale(2.2); opacity: 0; }
 }
 
-/* ── NETWORK PACKET FLOW SIMULATION ───────────────────────────── */
+/* ── NETWORK PACKET MOTION (INTERACTIVE SIMULATOR) ────────────── */
 .network-packet {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: #FFFFFF;
   border: 2px solid var(--accent);
-  box-shadow: 0 0 12px 3px var(--accent);
+  box-shadow: 0 0 14px 4px var(--accent);
   z-index: 30;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -47,74 +48,14 @@
   opacity: 1;
 }
 
-/* Node highlight when packet hits */
+/* Node pulse when packet hits */
 .sim-node {
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
   position: relative;
 }
 
 .sim-node.hit {
   border-color: var(--accent) !important;
-  box-shadow: 0 0 0 2px var(--accent), 0 4px 16px var(--accent-light) !important;
+  box-shadow: 0 0 0 2px var(--accent), 0 6px 20px var(--accent-light) !important;
   transform: translateY(-2px);
-}
-
-/* ── SVG CONNECTION LINES ─────────────────────────────────────── */
-.flow-line {
-  stroke: var(--border-strong);
-  stroke-width: 2;
-  stroke-dasharray: 5 5;
-  fill: none;
-  transition: stroke 0.3s ease;
-}
-
-.flow-line.active {
-  stroke: var(--accent);
-  stroke-width: 2;
-  animation: dash-flow 0.8s linear infinite;
-}
-
-@keyframes dash-flow {
-  from { stroke-dashoffset: 20; }
-  to   { stroke-dashoffset: 0; }
-}
-
-/* ── MARQUEE TICKER ───────────────────────────────────────────── */
-.marquee-strip {
-  overflow: hidden;
-  white-space: nowrap;
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
-  padding: 0.45rem 0;
-}
-
-.marquee-content {
-  display: inline-flex;
-  animation: marquee-roll 30s linear infinite;
-}
-
-.marquee-content:hover {
-  animation-play-state: paused;
-}
-
-@keyframes marquee-roll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.marquee-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0 1.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.marquee-item span.highlight {
-  color: var(--accent);
-  font-weight: 600;
 }

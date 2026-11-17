@@ -6,13 +6,14 @@
 const SYSTEM_DESIGN_NOTES = {
   meta: {
     title: "OneNightRevise — System Design Revision Notes",
-    totalTopics: 15
+    totalTopics: 18
   },
 
   navGroups: [
     { label: "01–06 Monolith & Microservices", targetId: "topic-1-monolith" },
     { label: "07–11 API Gateway & Regions", targetId: "topic-7-api-gateway" },
-    { label: "12–15 Load Balancing & Algorithms", targetId: "topic-12-load-balancing" }
+    { label: "12–15 Load Balancing", targetId: "topic-12-load-balancing" },
+    { label: "16–18 Proxies & VPN", targetId: "topic-16-forward-proxy" }
   ],
 
   topics: [
@@ -2119,6 +2120,464 @@ const SYSTEM_DESIGN_NOTES = {
                   <text x="782" y="160" text-anchor="middle" class="svg-mono-md">Score = 4</text>
 
                   <text x="644" y="218" text-anchor="middle" class="svg-mono-xs">Tie-Breaker: Equal scores fall back to Round Robin</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 16: WHAT IS A PROXY SERVER (FORWARD PROXY)?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-16-forward-proxy",
+      number: "16",
+      shortLabel: "Forward Proxy",
+      title: "What is a Proxy Server (Forward Proxy)?",
+      summary: "Child–Parents–Chocolate Shop analogy, how a Forward Proxy sits between Client and Internet to mask IPs, plus its 5 major advantages (Anonymity, Corporate Site Filtering, Request Grouping, Restricted Content, Caching).",
+      subtopicLabels: ["16.1 Child & Parents Analogy", "16.2 Technical Request Flow", "16.3 5 Major Advantages"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "16.1",
+          title: "Real-World Analogy (Child, Parents & Chocolate Shop)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>Imagine a <strong>5–6-year-old child</strong> wants to eat a chocolate.</li>
+              <li>The child does not go directly to the shop. Instead, the child tells their <strong>Parents</strong>: <em>"I want to eat chocolate."</em></li>
+              <li>The <strong>Parents</strong> go to the <strong>Shopkeeper</strong>, buy the chocolate, come back, and hand it to the child.</li>
+              <li><strong>Key Takeaway:</strong> The Parents hid the child from the outer world (the Shopkeeper). The Shopkeeper has no idea who the chocolate is actually for — they only see the Parents. Thus, the Parents maintained <strong>anonymity</strong> for the child.</li>
+            </ul>
+          `
+        },
+        {
+          num: "16.2",
+          title: "How Forward Proxy Works Technically",
+          content: `
+            <p>Mapping the analogy to a real network:</p>
+            <div class="sub-card-grid-3" style="margin: 0.85rem 0 1.25rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Child</div>
+                <div class="sub-box__title">Client</div>
+                <div class="sub-box__body">Has its own private Client IP Address.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Parents</div>
+                <div class="sub-box__title">Forward Proxy Server</div>
+                <div class="sub-box__body">Has its own Proxy IP Address exposed outward.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Shop / Shopkeeper</div>
+                <div class="sub-box__title">Target Server</div>
+                <div class="sub-box__body">External server sitting across the Internet.</div>
+              </div>
+            </div>
+
+            <p><strong>Step-by-Step Request Flow:</strong></p>
+            <ol class="notes-ordered-list" style="margin-top: 0.65rem;">
+              <li><strong>Position:</strong> A Forward Proxy always sits <strong>between the Client and the Internet</strong> (<code>Client → Proxy Server → Internet → Target Server</code>).</li>
+              <li><strong>Client Request:</strong> Suppose the Client wants to access <code>google.com</code> or <code>facebook.com</code>. The request goes first to the <strong>Proxy Server</strong>.</li>
+              <li><strong>IP Masking:</strong> When the Proxy Server routes the request to the Internet and Target Server, it <strong>hides the Client's actual IP address</strong> and sends <strong>its own Proxy IP address</strong> instead.</li>
+              <li><strong>Server Response:</strong> The Target Server thinks the request came from the Proxy Server's IP (it never knows the actual origin/client). It fulfills the request and sends the response back to the <strong>Proxy Server</strong>, which then forwards the data to the <strong>Client</strong>.</li>
+              <li><strong>Security Benefit:</strong> Because the Target Server does not know the actual Client's IP address, <strong>no external server can communicate directly with the Client</strong>, keeping the local client network completely hidden.</li>
+            </ol>
+          `
+        },
+        {
+          num: "16.3",
+          title: "The 5 Major Advantages of a Forward Proxy",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">Advantage 01</div>
+                <div class="sub-box__title">IP Anonymity (Hiding the Client)</div>
+                <div class="sub-box__body">Masks the Client's real IP address and exposes only the Proxy Server's IP to the outer network/Internet, keeping the client completely anonymous.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Advantage 02 · Corporate Network (XYZ Company)</div>
+                <div class="sub-box__title">Access Control &amp; Site Filtering</div>
+                <div class="sub-box__body">
+                  Employees (<code>C1</code>, <code>C2</code>, <code>C3</code>, <code>C4</code>) cannot access the Internet directly; every request passes through the <strong>Company Proxy Server</strong>.<br><br>
+                  • <strong>Scenario A (Blocked):</strong> <code>C3</code> requests <code>ChatGPT</code> → Proxy checks rules, cancels request, returns: <em>"This site is restricted / not allowed."</em><br>
+                  • <strong>Scenario B (Allowed):</strong> <code>C2</code> requests <code>google.com</code> → Proxy verifies rule, masks <code>C2</code>'s IP with Proxy IP, fetches &amp; returns response.
+                </div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Advantage 03</div>
+                <div class="sub-box__title">Request Grouping (Clubbing Identical Requests)</div>
+                <div class="sub-box__body">Suppose 4 clients (<code>C1</code>, <code>C2</code>, <code>C3</code>, <code>C4</code>) request <code>google.com</code> simultaneously. Instead of 4 separate requests across the Internet, the Proxy <strong>groups/clubs all 4 into 1 single request</strong>, fetches the response once, and distributes it back to all 4 clients.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Advantage 04</div>
+                <div class="sub-box__title">Accessing Restricted Content</div>
+                <div class="sub-box__body">On a personal laptop, configuring a Proxy Server can also help bypass regional or network restrictions to access restricted content.</div>
+              </div>
+              <div class="sub-box" style="grid-column: 1 / -1;">
+                <div class="sub-box__tag">Advantage 05 · Lower Latency</div>
+                <div class="sub-box__title">Caching</div>
+                <div class="sub-box__body">When a client requests <code>google.com</code> for the first time, the Proxy fetches the response from Google's server, delivers it to the client, and <strong>caches (stores) the data locally</strong>. Next time a client makes the exact same request, the Proxy immediately returns the cached response directly without going back across the Internet.</div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 16.1 · Forward Proxy (Client Anonymity, Site Filtering, Grouping &amp; Caching)</span>
+                <span class="diagram-frame-tag">CLIENT → FORWARD PROXY → INTERNET → TARGET SERVER</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="Forward Proxy diagram showing corporate clients C1 through C4 passing through Company Forward Proxy which blocks ChatGPT for C3, masks IP and groups requests for C2 to google.com across the Internet">
+                  <defs>
+                    <marker id="arrow-16" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Private Client Network -->
+                  <rect x="16" y="20" width="184" height="224" rx="16" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.4" stroke-dasharray="5 3"/>
+                  <text x="108" y="44" text-anchor="middle" class="svg-kicker">PRIVATE CLIENTS</text>
+
+                  <rect x="34" y="60" width="148" height="44" rx="9" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="108" y="80" text-anchor="middle" class="svg-node">C1, C2 (Allowed)</text>
+                  <text x="108" y="96" text-anchor="middle" class="svg-mono-xs">google.com</text>
+
+                  <rect x="34" y="116" width="148" height="44" rx="9" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="108" y="136" text-anchor="middle" class="svg-node">C3 (Blocked ✕)</text>
+                  <text x="108" y="152" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">ChatGPT</text>
+
+                  <rect x="34" y="172" width="148" height="44" rx="9" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="108" y="192" text-anchor="middle" class="svg-node">C4 (Grouped)</text>
+                  <text x="108" y="208" text-anchor="middle" class="svg-mono-xs">google.com</text>
+
+                  <!-- Arrows to Proxy -->
+                  <line x1="200" y1="90" x2="256" y2="112" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-16)"/>
+                  <line x1="200" y1="138" x2="256" y2="138" stroke="var(--danger)" stroke-width="1.6" stroke-dasharray="4 3"/>
+                  <line x1="200" y1="194" x2="256" y2="164" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-16)"/>
+
+                  <!-- Forward Proxy -->
+                  <rect x="264" y="34" width="234" height="196" rx="16" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="381" y="62" text-anchor="middle" class="svg-kicker">WORKS FOR CLIENTS</text>
+                  <text x="381" y="88" text-anchor="middle" class="svg-title">Forward Proxy</text>
+                  <text x="381" y="114" text-anchor="middle" class="svg-mono-xs">• Masks Client IP → Proxy IP</text>
+                  <text x="381" y="136" text-anchor="middle" class="svg-mono-xs">• Blocks restricted sites</text>
+                  <text x="381" y="158" text-anchor="middle" class="svg-mono-xs">• Clubs identical requests</text>
+                  <text x="381" y="180" text-anchor="middle" class="svg-mono-xs">• Local Cache (fast hit)</text>
+                  <text x="381" y="210" text-anchor="middle" class="svg-sub">Hides local network from outer world</text>
+
+                  <!-- Internet Hop -->
+                  <line x1="498" y1="132" x2="562" y2="132" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-16)"/>
+                  <text x="530" y="120" text-anchor="middle" class="svg-mono-xs">Proxy IP</text>
+
+                  <rect x="570" y="92" width="104" height="80" rx="40" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="622" y="136" text-anchor="middle" class="svg-node">Internet</text>
+
+                  <line x1="674" y1="132" x2="716" y2="132" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-16)"/>
+
+                  <!-- Target Server -->
+                  <rect x="724" y="72" width="140" height="120" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="794" y="106" text-anchor="middle" class="svg-title">Target Server</text>
+                  <text x="794" y="130" text-anchor="middle" class="svg-mono-xs">google.com</text>
+                  <text x="794" y="156" text-anchor="middle" class="svg-sub">Sees Proxy IP</text>
+                  <text x="794" y="174" text-anchor="middle" class="svg-sub">only (not C1–C4)</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 17: WHAT IS A REVERSE PROXY?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-17-reverse-proxy",
+      number: "17",
+      shortLabel: "Reverse Proxy",
+      title: "What is a Reverse Proxy?",
+      summary: "Sitting in front of Backend Servers (S1, S2, S3) for Facebook-scale systems, direction of communication vs Forward Proxy, and 4 major advantages (Server Anonymity, Load Balancing, Caching, DDoS Protection).",
+      subtopicLabels: ["17.1 Core Concept & Direction", "17.2 Facebook Example", "17.3 4 Major Advantages"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "17.1",
+          title: "Core Concept & Position",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>While a Forward Proxy sits in front of Clients, a <strong>Reverse Proxy sits in front of Backend Servers</strong> (<code>Client → Internet → Reverse Proxy → Backend Servers S1, S2, S3</code>).</li>
+              <li><strong>Direction of Communication:</strong> The only fundamental difference between a Forward Proxy and a Reverse Proxy is the <strong>direction of communication</strong>:
+                <ul class="notes-sub-list">
+                  <li><strong>Forward Proxy</strong> works on behalf of the <strong>Client</strong> (hides the client network from the Internet).</li>
+                  <li><strong>Reverse Proxy</strong> works on behalf of the <strong>Server</strong> (hides the backend server network from the Internet).</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "17.2",
+          title: "How Reverse Proxy Works (Facebook Example)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>Suppose <code>facebook.com</code> has 3 backend servers (<code>Server 1</code>, <code>Server 2</code>, <code>Server 3</code>) with a <strong>Reverse Proxy</strong> sitting in front of them.</li>
+              <li>When a user on the Internet requests <code>facebook.com</code>, the request <strong>never hits <code>Server 1</code>, <code>Server 2</code>, or <code>Server 3</code> directly</strong>.</li>
+              <li>It first hits the <strong>Reverse Proxy</strong>, and the Reverse Proxy forwards the request to one of the backend servers.</li>
+            </ul>
+          `
+        },
+        {
+          num: "17.3",
+          title: "The 4 Major Advantages of a Reverse Proxy",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">Advantage 01</div>
+                <div class="sub-box__title">IP Anonymity for Servers</div>
+                <div class="sub-box__body">The actual IP addresses of <code>Server 1</code>, <code>Server 2</code>, and <code>Server 3</code> are <strong>never exposed to the public Internet</strong>. Only the Reverse Proxy's IP address is exposed.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Advantage 02</div>
+                <div class="sub-box__title">Load Balancing</div>
+                <div class="sub-box__body">When traffic arrives from the Internet, the Reverse Proxy performs <strong>health checks and availability checks</strong> on <code>Server 1</code>, <code>Server 2</code>, and <code>Server 3</code> (checking which server is active and not down) and distributes/routes the request to an available server.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Advantage 03</div>
+                <div class="sub-box__title">Caching</div>
+                <div class="sub-box__body">Just like a Forward Proxy, a Reverse Proxy can cache frequently requested responses so backend servers don't have to reprocess identical requests repeatedly.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Advantage 04</div>
+                <div class="sub-box__title">Protection Against Attacks (e.g., DDoS Attacks)</div>
+                <div class="sub-box__body">Because the real IP addresses of the backend servers (<code>S1</code>, <code>S2</code>, <code>S3</code>) are completely hidden and only the Reverse Proxy's IP is exposed to the Internet, any external attack (like a <strong>DDoS attack</strong>) hits the <strong>Reverse Proxy</strong> first, keeping the core backend servers safe.</div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 17.1 · Reverse Proxy Protecting Backend Servers (Facebook Example)</span>
+                <span class="diagram-frame-tag">CLIENT → INTERNET → REVERSE PROXY → HIDDEN S1, S2, S3</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="Reverse Proxy diagram showing public Internet traffic and DDoS attacks hitting Reverse Proxy first while hiding the real IPs of Server 1, Server 2, and Server 3 behind it">
+                  <defs>
+                    <marker id="arrow-17" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Public Client -->
+                  <rect x="16" y="42" width="142" height="72" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="87" y="72" text-anchor="middle" class="svg-title">Client</text>
+                  <text x="87" y="94" text-anchor="middle" class="svg-mono-xs">facebook.com</text>
+
+                  <!-- External DDoS Attacker -->
+                  <rect x="16" y="142" width="142" height="72" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.4"/>
+                  <text x="87" y="172" text-anchor="middle" class="svg-node" style="fill: var(--danger);">DDoS Attack</text>
+                  <text x="87" y="192" text-anchor="middle" class="svg-sub">Blocked at Edge</text>
+
+                  <line x1="158" y1="78" x2="212" y2="112" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-17)"/>
+                  <line x1="158" y1="178" x2="212" y2="146" stroke="var(--danger)" stroke-width="1.6" stroke-dasharray="4 3"/>
+
+                  <!-- Internet -->
+                  <rect x="220" y="88" width="102" height="80" rx="40" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="271" y="132" text-anchor="middle" class="svg-node">Internet</text>
+
+                  <line x1="322" y1="128" x2="366" y2="128" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-17)"/>
+
+                  <!-- Reverse Proxy -->
+                  <rect x="374" y="30" width="222" height="198" rx="16" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="485" y="58" text-anchor="middle" class="svg-kicker">WORKS FOR SERVERS</text>
+                  <text x="485" y="84" text-anchor="middle" class="svg-title">Reverse Proxy</text>
+                  <text x="485" y="108" text-anchor="middle" class="svg-mono-xs">Only Public Exposed IP</text>
+                  <text x="485" y="134" text-anchor="middle" class="svg-sub">• Hides S1, S2, S3 IPs</text>
+                  <text x="485" y="154" text-anchor="middle" class="svg-sub">• Health &amp; Load Balancing</text>
+                  <text x="485" y="174" text-anchor="middle" class="svg-sub">• Response Caching</text>
+                  <text x="485" y="194" text-anchor="middle" class="svg-sub">• Absorbs DDoS Attacks</text>
+
+                  <!-- Routing to Backend Servers -->
+                  <path d="M 596 98 L 656 62" fill="none" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-17)"/>
+                  <line x1="596" y1="128" x2="656" y2="128" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-17)"/>
+                  <path d="M 596 158 L 656 196" fill="none" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-17)"/>
+
+                  <!-- Private Server Network -->
+                  <rect x="664" y="18" width="200" height="224" rx="16" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5" stroke-dasharray="5 3"/>
+                  <text x="764" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">HIDDEN BACKEND</text>
+
+                  <rect x="682" y="54" width="164" height="46" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="764" y="75" text-anchor="middle" class="svg-node">Server 1 (S1) ✓</text>
+                  <text x="764" y="92" text-anchor="middle" class="svg-mono-xs">Private IP Hidden</text>
+
+                  <rect x="682" y="110" width="164" height="46" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="764" y="131" text-anchor="middle" class="svg-node">Server 2 (S2)</text>
+                  <text x="764" y="148" text-anchor="middle" class="svg-mono-xs">Private IP Hidden</text>
+
+                  <rect x="682" y="166" width="164" height="46" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="764" y="187" text-anchor="middle" class="svg-node">Server 3 (S3)</text>
+                  <text x="764" y="204" text-anchor="middle" class="svg-mono-xs">Private IP Hidden</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 18: IMPORTANT SYSTEM DESIGN INTERVIEW QUESTIONS (PROXY, VPN & LB)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-18-proxy-vpn-lb-qa",
+      number: "18",
+      shortLabel: "Proxy vs VPN vs LB",
+      title: "Important System Design Interview Questions (Proxy, VPN & Load Balancer)",
+      summary: "4 high-frequency interview questions: Proxy vs VPN (IP Masking vs Encrypted VPN Tunnel), Reverse Proxy vs Load Balancer (single server S1), when proxies aren't needed, and using BOTH at global scale.",
+      subtopicLabels: ["18.1 Proxy vs VPN", "18.2 Reverse Proxy vs LB", "18.3 Do We Need Proxies Everywhere?", "18.4 Using Both Together"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "18.1",
+          title: "Question 1: How is a Proxy Server different from a VPN?",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">IP Masking Only</div>
+                <div class="sub-box__title">Proxy Server</div>
+                <div class="sub-box__body">
+                  Provides IP anonymity, access control, request grouping, and caching, <strong>but it only performs IP Masking</strong>.<br><br>
+                  It hides the client's IP address from the server <strong>without encrypting the data payload</strong>.
+                </div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Encrypted Tunnel + IP Masking</div>
+                <div class="sub-box__title">VPN (Virtual Private Network)</div>
+                <div class="sub-box__body">
+                  When a Client connects to a VPN (<code>VPN Client → VPN Server</code>), it establishes a dedicated <strong>VPN Tunnel</strong> over the Internet.<br><br>
+                  Every request travels through this <strong>VPN Tunnel as Encrypted Data</strong>, and the target server uses a decryption mechanism to decrypt the request.
+                </div>
+              </div>
+            </div>
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">CORE DIFFERENCE</div>
+              <p style="margin-top: 0.45rem; color: var(--text-primary);">
+                A Proxy Server only masks the IP address (data is <strong>not encrypted</strong>), whereas a VPN creates a secure <strong>VPN Tunnel</strong> and transfers all traffic as <strong>encrypted data</strong>.
+              </p>
+            </div>
+          `
+        },
+        {
+          num: "18.2",
+          title: "Question 2: How is a Reverse Proxy different from a Load Balancer?",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Overlap:</strong> A Load Balancer distributes traffic across multiple server instances (<code>S1</code>, <code>S2</code>, <code>S3</code>) based on health checks and availability — and a Reverse Proxy sitting in front of servers can <em>also</em> do load balancing. So how do they differ?</li>
+              <li><strong>The Single-Server Scenario:</strong> Suppose you have a small application with low traffic running on <strong>only 1 single server (<code>S1</code>)</strong>:
+                <ul class="notes-sub-list">
+                  <li><strong>Do you need a Load Balancer?</strong> <strong>NO</strong>, because a Load Balancer is only needed when you have <em>multiple</em> servers to distribute traffic across.</li>
+                  <li><strong>Do you still need a Reverse Proxy?</strong> <strong>YES</strong>, it still makes complete sense to use a Reverse Proxy even with a single server because a Reverse Proxy provides critical features <strong>beyond load balancing</strong>:
+                    <br>• <strong>IP Anonymity / IP Masking</strong> for <code>S1</code>
+                    <br>• <strong>Request Logging</strong>
+                    <br>• <strong>Caching</strong>
+                    <br>• <strong>SSL Termination</strong>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "18.3",
+          title: "Question 3: Do we need a Proxy Server everywhere in every application?",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">Small Applications</div>
+                <div class="sub-box__title">Simple To-Do List App → NO</div>
+                <div class="sub-box__body">Where user traffic is low and security is not a major concern, a proxy server is unnecessary overhead.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--accent);">
+                <div class="sub-box__tag">Large-Scale / Global Applications</div>
+                <div class="sub-box__title">High-Traffic Platforms → YES</div>
+                <div class="sub-box__body">For global platforms with high traffic and strict security requirements, proxy servers are essential.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "18.4",
+          title: "Question 4: If a Reverse Proxy can do Load Balancing, why do we still need a dedicated Load Balancer? Should we use both?",
+          content: `
+            <p><strong>Answer: YES.</strong> In a <strong>large-scale global application</strong> receiving massive traffic across multiple Regions and Availability Zones, <strong>we use BOTH a dedicated Load Balancer AND a Reverse Proxy together</strong> (Separation of Concerns):</p>
+            <div class="sub-card-grid-2" style="margin-top: 0.85rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Separation of Concerns · Layer 1</div>
+                <div class="sub-box__title">Dedicated Load Balancer</div>
+                <div class="sub-box__body">Handles the heavy lifting of distributing massive global traffic across servers.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Separation of Concerns · Layer 2</div>
+                <div class="sub-box__title">Reverse Proxy</div>
+                <div class="sub-box__body">Handles all the other critical edge responsibilities — <strong>IP Anonymity, IP Masking, Logging, Caching, and SSL Termination</strong>.</div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 18.1 · Proxy vs. VPN Tunnel &amp; Single-Server vs. Global Scale Architecture</span>
+                <span class="diagram-frame-tag">INTERVIEW SUMMARY BLUEPRINT</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="Comparison diagram showing Proxy IP masking without encryption versus VPN encrypted tunnel, and Single Server S1 with Reverse Proxy only versus Global Scale using Dedicated Load Balancer and Reverse Proxy together">
+                  <defs>
+                    <marker id="arrow-18" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- LEFT PANEL: PROXY VS VPN -->
+                  <rect x="16" y="16" width="414" height="232" rx="16" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="223" y="42" text-anchor="middle" class="svg-kicker">Q1 · PROXY SERVER VS. VPN</text>
+
+                  <!-- Proxy row -->
+                  <rect x="34" y="60" width="94" height="58" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="81" y="94" text-anchor="middle" class="svg-node">Client</text>
+
+                  <line x1="128" y1="89" x2="162" y2="89" stroke="var(--warning)" stroke-width="1.8" marker-end="url(#arrow-18)"/>
+                  <rect x="170" y="60" width="118" height="58" rx="10" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="229" y="84" text-anchor="middle" class="svg-node">Proxy</text>
+                  <text x="229" y="104" text-anchor="middle" class="svg-mono-xs">IP Masked Only</text>
+
+                  <line x1="288" y1="89" x2="322" y2="89" stroke="var(--warning)" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arrow-18)"/>
+                  <rect x="330" y="60" width="82" height="58" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="371" y="84" text-anchor="middle" class="svg-sub">Plain</text>
+                  <text x="371" y="102" text-anchor="middle" class="svg-sub">Data</text>
+
+                  <!-- VPN row -->
+                  <rect x="34" y="142" width="94" height="64" rx="10" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="81" y="170" text-anchor="middle" class="svg-node">VPN</text>
+                  <text x="81" y="190" text-anchor="middle" class="svg-sub">Client</text>
+
+                  <rect x="142" y="152" width="174" height="44" rx="22" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="229" y="179" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Encrypted VPN Tunnel</text>
+
+                  <rect x="330" y="142" width="82" height="64" rx="10" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="371" y="170" text-anchor="middle" class="svg-node">VPN</text>
+                  <text x="371" y="190" text-anchor="middle" class="svg-sub">Server</text>
+
+                  <!-- RIGHT PANEL: SINGLE SERVER VS GLOBAL SCALE -->
+                  <rect x="450" y="16" width="414" height="232" rx="16" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="657" y="42" text-anchor="middle" class="svg-kicker">Q2 &amp; Q4 · REVERSE PROXY + LOAD BALANCER</text>
+
+                  <!-- Single Server S1 -->
+                  <rect x="470" y="60" width="374" height="72" rx="12" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="657" y="82" text-anchor="middle" class="svg-mono-xs">Single Server (S1) → No LB needed, Reverse Proxy YES</text>
+                  <text x="657" y="104" text-anchor="middle" class="svg-sub">Reverse Proxy handles: IP Masking · Logging · Caching · SSL Termination</text>
+
+                  <!-- Global Scale Both -->
+                  <rect x="470" y="148" width="374" height="82" rx="12" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="657" y="172" text-anchor="middle" class="svg-mono-xs">Global Scale → Use BOTH (Separation of Concerns)</text>
+                  <text x="657" y="196" text-anchor="middle" class="svg-node">Dedicated Load Balancer  +  Reverse Proxy</text>
+                  <text x="657" y="216" text-anchor="middle" class="svg-sub">Massive Traffic Routing &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; SSL, Caching, Logging, Anonymity</text>
                 </svg>
               </div>
             </figure>

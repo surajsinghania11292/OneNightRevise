@@ -32,10 +32,34 @@ const StudyApp = (() => {
     } catch (e) { }
   }
 
-  /* ── 1. RENDER NAVBAR LINKS DYNAMICALLY ─────────────────────── */
+  /* ── 1. RENDER NAVBAR LINKS DYNAMICALLY (CLEAN CHAPTER JUMPS) ── */
   function renderNavbarLinks() {
     const navMount = document.getElementById('nav-links-mount');
     if (!navMount) return;
+
+    const groups = SYSTEM_DESIGN_NOTES.navGroups || [];
+    if (groups.length > 0) {
+      navMount.innerHTML = groups.map(g => `
+        <li>
+          <a href="#${g.targetId}" class="nav-link" data-nav-scroll="${g.targetId}">
+            ${g.label}
+          </a>
+        </li>
+      `).join('');
+
+      navMount.querySelectorAll('[data-nav-scroll]').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const targetId = link.getAttribute('data-nav-scroll');
+          const el = document.getElementById(targetId);
+          if (el) {
+            const y = el.getBoundingClientRect().top + window.scrollY - 32;
+            window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+          }
+        });
+      });
+      return;
+    }
 
     navMount.innerHTML = SYSTEM_DESIGN_NOTES.topics.map(t => `
       <li>

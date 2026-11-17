@@ -724,6 +724,50 @@
   line-height: 1.75;
 }
 
+/* ── FORMULA & EQUATION BOX ───────────────────────────────────── */
+.formula-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  padding: 1rem 1.5rem;
+  margin: 0.75rem 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+/* ── OSI LAYER PILLS ──────────────────────────────────────────── */
+.osi-layers-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+}
+
+.osi-layer-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 0.65rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.osi-layer-item--highlight {
+  background: var(--accent-light);
+  border-color: var(--accent);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
 /* ── RESPONSIVE ADJUSTMENTS ────────────────────────────────────── */
 @media (max-width: 768px) {
   .topic-card-summary {

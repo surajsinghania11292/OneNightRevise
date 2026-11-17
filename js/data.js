@@ -6,8 +6,14 @@
 const SYSTEM_DESIGN_NOTES = {
   meta: {
     title: "OneNightRevise — System Design Revision Notes",
-    totalTopics: 6
+    totalTopics: 15
   },
+
+  navGroups: [
+    { label: "01–06 Monolith & Microservices", targetId: "topic-1-monolith" },
+    { label: "07–11 API Gateway & Regions", targetId: "topic-7-api-gateway" },
+    { label: "12–15 Load Balancing & Algorithms", targetId: "topic-12-load-balancing" }
+  ],
 
   topics: [
     /* ═══════════════════════════════════════════════════════════════
@@ -887,6 +893,1232 @@ const SYSTEM_DESIGN_NOTES = {
                   <text x="781" y="134" text-anchor="middle" class="svg-title">Payment DB</text>
                   <text x="781" y="160" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Updated: x = 5 ✓</text>
                   <text x="781" y="186" text-anchor="middle" class="svg-sub">100% Consistent</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 7: WHAT IS AN API GATEWAY?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-7-api-gateway",
+      number: "07",
+      shortLabel: "API Gateway",
+      title: "What is an API Gateway?",
+      summary: "Amazon profile update example (/api/v1/update-profile), why clients shouldn't know internal microservice locations, and how the API Gateway acts as a single smart entry point.",
+      subtopicLabels: ["7.1 Amazon Profile Update", "7.2 Core Role of API Gateway"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "7.1",
+          title: "Real-World Example (Amazon Profile Update)",
+          content: `
+            <p>Imagine an Amazon-like application built with microservices (<code>User Service</code>, <code>Payment Service</code>, <code>Order Service</code>):</p>
+            <ul class="notes-bullet-list" style="margin-top: 0.75rem;">
+              <li>A user on a mobile or laptop device (the <strong>Client</strong>) wants to update their phone number or email address.</li>
+              <li>On the UI, the user simply clicks the <strong>"Update Profile"</strong> button, edits their details, and clicks <strong>"Save"</strong>.</li>
+              <li>Behind the scenes, clicking "Save" triggers an API endpoint like <code>/api/v1/update-profile</code>.</li>
+              <li><strong>The Problem:</strong> The client/user has zero knowledge of your backend architecture, which internal microservice handles profile updates, or where that microservice is hosted. Furthermore, exposing internal microservice details directly to the client is bad practice.</li>
+            </ul>
+          `
+        },
+        {
+          num: "7.2",
+          title: "Core Role of an API Gateway",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Acts as an Interface:</strong> The API Gateway sits between the <strong>Client</strong> and the <strong>Backend Microservices</strong>.</li>
+              <li><strong>Single Entry Point:</strong> It serves as the single entry point for all incoming client API requests (whether related to users, payments, or orders).</li>
+              <li><strong>Smart Request Routing:</strong> When the client hits <code>/api/v1/update-profile</code>, the API Gateway accepts the request, reads the endpoint, understands that profile information belongs to the <strong>User Microservice</strong>, and automatically routes/forwards the request to the <code>User Service</code>.</li>
+            </ul>
+
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">IN SIMPLE WORDS</div>
+              <p style="margin-top: 0.45rem; color: var(--text-primary); font-size: 1.05rem;">
+                <strong>An API Gateway tells us WHICH microservice the user wants to talk to.</strong>
+              </p>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 7.1 · API Gateway Routing (/api/v1/update-profile)</span>
+                <span class="diagram-frame-tag">SINGLE ENTRY POINT · HIDES BACKEND TOPOLOGY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 260" class="arch-svg" role="img" aria-label="API Gateway diagram routing /api/v1/update-profile from Client to User Service while hiding Payment and Order microservices">
+                  <defs>
+                    <marker id="arrow-7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Client -->
+                  <rect x="20" y="84" width="166" height="92" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="103" y="114" text-anchor="middle" class="svg-title">Client</text>
+                  <text x="103" y="136" text-anchor="middle" class="svg-sub">Mobile / Laptop</text>
+                  <text x="103" y="158" text-anchor="middle" class="svg-mono-xs">Clicks "Save"</text>
+
+                  <!-- Arrow Client -> Gateway -->
+                  <line x1="186" y1="130" x2="292" y2="130" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-7)"/>
+                  <text x="239" y="118" text-anchor="middle" class="svg-mono-xs">/api/v1/</text>
+                  <text x="239" y="148" text-anchor="middle" class="svg-mono-xs">update-profile</text>
+
+                  <!-- API Gateway -->
+                  <rect x="300" y="64" width="210" height="132" rx="16" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="405" y="96" text-anchor="middle" class="svg-kicker">SINGLE ENTRY POINT</text>
+                  <text x="405" y="124" text-anchor="middle" class="svg-title">API Gateway</text>
+                  <text x="405" y="150" text-anchor="middle" class="svg-sub">Reads endpoint &amp; decides</text>
+                  <text x="405" y="170" text-anchor="middle" class="svg-mono-xs">WHICH service to call</text>
+
+                  <!-- Active Route -> User Service -->
+                  <path d="M 510 106 C 560 106, 578 54, 628 54" fill="none" stroke="var(--success)" stroke-width="2.4" marker-end="url(#arrow-7)"/>
+                  <text x="568" y="64" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Routed ✓</text>
+
+                  <rect x="636" y="20" width="220" height="66" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="746" y="48" text-anchor="middle" class="svg-title">User Service</text>
+                  <text x="746" y="68" text-anchor="middle" class="svg-sub">Updates Phone / Email ✓</text>
+
+                  <!-- Inactive Routes -->
+                  <line x1="510" y1="130" x2="628" y2="130" stroke="var(--border)" stroke-width="1.4" stroke-dasharray="4 4"/>
+                  <rect x="636" y="98" width="220" height="62" rx="12" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.4"/>
+                  <text x="746" y="125" text-anchor="middle" class="svg-node">Payment Service</text>
+                  <text x="746" y="144" text-anchor="middle" class="svg-sub">Internal · Hidden from Client</text>
+
+                  <path d="M 510 156 C 560 156, 578 206, 628 206" fill="none" stroke="var(--border)" stroke-width="1.4" stroke-dasharray="4 4"/>
+                  <rect x="636" y="174" width="220" height="62" rx="12" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.4"/>
+                  <text x="746" y="201" text-anchor="middle" class="svg-node">Order Service</text>
+                  <text x="746" y="220" text-anchor="middle" class="svg-sub">Internal · Hidden from Client</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 8: KEY ADVANTAGES & FACILITIES PROVIDED BY AN API GATEWAY
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-8-gateway-features",
+      number: "08",
+      shortLabel: "Gateway Features",
+      title: "Key Advantages & Facilities Provided by an API Gateway",
+      summary: "API Composition for Mobile vs Desktop (Amazon My Orders), Centralized OAuth 2.0 Authentication with Auth Server, and Dynamic Service Discovery via Eureka Server.",
+      subtopicLabels: ["8.1 API Composition", "8.2 Centralized OAuth 2.0", "8.3 Service Discovery (Eureka)"],
+      diagramCount: 3,
+      sections: [
+        {
+          num: "8.1",
+          title: "API Composition",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>What it means:</strong> Calling multiple backend microservices and combining their responses based on the client's device type.</li>
+              <li><strong>Example ("My Orders" Page on Amazon):</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>On a Mobile Device:</strong> Because screen space is limited, the "My Orders" page only shows <strong>2 sections</strong>: <em>Product Details</em> and <em>Invoice Details</em>. The API Gateway only calls those 2 services.</li>
+                  <li><strong>On a Laptop/Desktop Device:</strong> The exact same "My Orders" page shows <strong>3+ sections</strong>:
+                    <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                      <li><em>Product Details</em> → Fetched from <strong>Product Service</strong></li>
+                      <li><em>Invoice Details</em> → Fetched from <strong>Invoice Service</strong></li>
+                      <li><em>Ratings &amp; Reviews</em> → Fetched from <strong>Rating &amp; Review Service</strong></li>
+                    </ol>
+                  </li>
+                </ul>
+              </li>
+              <li>Depending on the device, the API Gateway dynamically invokes the required microservices and provides the appropriate set of APIs (this composition can also be managed using <strong>GraphQL</strong>).</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 8.1 · Device-Aware API Composition ("My Orders" Page)</span>
+                <span class="diagram-frame-tag">MOBILE (2 CALLS) VS DESKTOP (3 CALLS)</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 260" class="arch-svg" role="img" aria-label="API Composition diagram showing Mobile fetching Product and Invoice services while Desktop fetches Product, Invoice, and Rating and Review services via API Gateway">
+                  <defs>
+                    <marker id="arrow-8a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Mobile Client -->
+                  <rect x="20" y="34" width="166" height="78" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="103" y="64" text-anchor="middle" class="svg-title">Mobile Client</text>
+                  <text x="103" y="86" text-anchor="middle" class="svg-sub">Small screen · 2 Sections</text>
+
+                  <!-- Laptop Client -->
+                  <rect x="20" y="148" width="166" height="78" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="103" y="178" text-anchor="middle" class="svg-title">Laptop / Desktop</text>
+                  <text x="103" y="200" text-anchor="middle" class="svg-sub">Wide screen · 3+ Sections</text>
+
+                  <line x1="186" y1="73" x2="294" y2="110" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-8a)"/>
+                  <line x1="186" y1="187" x2="294" y2="150" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-8a)"/>
+
+                  <!-- API Gateway -->
+                  <rect x="302" y="68" width="204" height="124" rx="16" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="404" y="100" text-anchor="middle" class="svg-kicker">API COMPOSITION</text>
+                  <text x="404" y="128" text-anchor="middle" class="svg-title">API Gateway</text>
+                  <text x="404" y="152" text-anchor="middle" class="svg-sub">Aggregates responses</text>
+                  <text x="404" y="172" text-anchor="middle" class="svg-mono-xs">(or GraphQL Layer)</text>
+
+                  <!-- Calls to Services -->
+                  <path d="M 506 102 L 628 54" fill="none" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-8a)"/>
+                  <line x1="506" y1="130" x2="628" y2="130" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-8a)"/>
+                  <path d="M 506 158 L 628 206" fill="none" stroke="var(--warning)" stroke-width="1.8" stroke-dasharray="5 3" marker-end="url(#arrow-8a)"/>
+
+                  <!-- Services -->
+                  <rect x="636" y="22" width="222" height="60" rx="12" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="747" y="48" text-anchor="middle" class="svg-node">1. Product Service</text>
+                  <text x="747" y="67" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Mobile + Desktop</text>
+
+                  <rect x="636" y="100" width="222" height="60" rx="12" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="747" y="126" text-anchor="middle" class="svg-node">2. Invoice Service</text>
+                  <text x="747" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Mobile + Desktop</text>
+
+                  <rect x="636" y="178" width="222" height="60" rx="12" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="747" y="204" text-anchor="middle" class="svg-node">3. Rating &amp; Review Service</text>
+                  <text x="747" y="223" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">Desktop Only</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "8.2",
+          title: "Centralized Authentication & Authorization (OAuth 2.0 Flow)",
+          content: `
+            <p><strong>What it means:</strong> Instead of writing duplicate authentication logic inside every single microservice (<code>User</code>, <code>Payment</code>, <code>Order</code>), authentication is centralized using an <strong>Auth Server</strong> and the <strong>API Gateway</strong>.</p>
+            <ol class="notes-ordered-list" style="margin-top: 0.75rem;">
+              <li>The <strong>Client</strong> requests an <strong>Access Token</strong> from the <strong>Auth Server</strong>.</li>
+              <li>The <strong>Auth Server</strong> provides the <strong>Access Token</strong> back to the Client.</li>
+              <li>The <strong>Client</strong> sends the API request <em>along with the Access Token</em> to the <strong>API Gateway</strong>.</li>
+              <li>The <strong>API Gateway</strong> validates the Access Token with the <strong>Auth Server</strong>.</li>
+              <li><strong>If Valid:</strong> The API Gateway routes the request to the appropriate backend microservice.</li>
+              <li><strong>If Invalid:</strong> The API Gateway immediately rejects the request at the edge.</li>
+            </ol>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 8.2 · Centralized OAuth 2.0 Edge Authentication Flow</span>
+                <span class="diagram-frame-tag">ZERO DUPLICATE AUTH IN MICROSERVICES</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="Six-step OAuth 2.0 centralized authentication flow between Client, Auth Server, API Gateway, and Backend Microservices">
+                  <defs>
+                    <marker id="arrow-8b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Auth Server (Top Center) -->
+                  <rect x="292" y="18" width="230" height="66" rx="14" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.6"/>
+                  <text x="407" y="46" text-anchor="middle" class="svg-title">Auth Server (OAuth 2.0)</text>
+                  <text x="407" y="68" text-anchor="middle" class="svg-sub">Issues &amp; Validates Access Tokens</text>
+
+                  <!-- Client (Bottom Left) -->
+                  <rect x="24" y="142" width="164" height="84" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="106" y="176" text-anchor="middle" class="svg-title">Client</text>
+                  <text x="106" y="198" text-anchor="middle" class="svg-sub">Holds Access Token</text>
+
+                  <!-- Steps 1 & 2: Client <-> Auth Server -->
+                  <path d="M 106 142 L 106 46 L 284 46" fill="none" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-8b)"/>
+                  <text x="192" y="36" text-anchor="middle" class="svg-mono-xs">1. Request Token</text>
+                  <path d="M 292 66 L 136 66 L 136 134" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#arrow-8b)"/>
+                  <text x="218" y="84" text-anchor="middle" class="svg-mono-xs">2. Return Token</text>
+
+                  <!-- Step 3: Client -> API Gateway -->
+                  <line x1="188" y1="184" x2="310" y2="184" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-8b)"/>
+                  <text x="249" y="172" text-anchor="middle" class="svg-mono-xs">3. Request + Token</text>
+
+                  <!-- API Gateway (Bottom Center) -->
+                  <rect x="318" y="138" width="196" height="92" rx="14" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="416" y="172" text-anchor="middle" class="svg-title">API Gateway</text>
+                  <text x="416" y="194" text-anchor="middle" class="svg-sub">Validates token at edge</text>
+                  <text x="416" y="214" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">6. Invalid → Reject ✕</text>
+
+                  <!-- Step 4: Gateway <-> Auth Server -->
+                  <line x1="416" y1="138" x2="416" y2="92" stroke="var(--warning)" stroke-width="1.8" marker-end="url(#arrow-8b)"/>
+                  <text x="490" y="118" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">4. Validate Token</text>
+
+                  <!-- Step 5: Valid -> Backend -->
+                  <line x1="514" y1="184" x2="626" y2="184" stroke="var(--success)" stroke-width="2.2" marker-end="url(#arrow-8b)"/>
+                  <text x="570" y="172" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">5. Valid ✓</text>
+
+                  <!-- Backend Services -->
+                  <rect x="634" y="138" width="222" height="92" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="745" y="172" text-anchor="middle" class="svg-title">Backend Services</text>
+                  <text x="745" y="196" text-anchor="middle" class="svg-sub">User · Payment · Order</text>
+                  <text x="745" y="216" text-anchor="middle" class="svg-mono-xs">Pure business logic</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "8.3",
+          title: "Service Discovery Integration",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Problem:</strong> When we horizontally scale a microservice (e.g., spinning up multiple instances of <code>User Service</code> like <code>User-1</code> and <code>User-2</code> on separate machines), each machine has a <strong>different IP address</strong> (e.g., <code>x.y.z</code> vs. <code>a.b.c</code>) and runs on a <strong>different port</strong> (e.g., <code>Port 4000</code> vs. <code>Port 4001</code>). Additionally, some instances (<code>Order-2</code>, <code>Order-3</code>) might go down or become inactive while only <code>Order-1</code> is active. How does the API Gateway know which IP and port to call?</li>
+              <li><strong>The Solution (Service Discovery — e.g., Eureka Server):</strong>
+                <ul class="notes-sub-list">
+                  <li>Whenever a new microservice instance (<code>User-3</code>, <code>Order-1</code>) is created, it <strong>registers itself</strong> with <strong>Service Discovery</strong>.</li>
+                  <li>When a client triggers <code>/api/v1/order</code>, the API Gateway asks <strong>Service Discovery</strong>: <em>"Which instance of the Order Service is currently active and free?"</em></li>
+                  <li><strong>Service Discovery</strong> replies with the active instance's exact network location (e.g., <code>Order-1</code> is available at IP <code>x.y.z</code> on <code>Port 4002</code>).</li>
+                  <li>The API Gateway then routes the request to that exact backend microservice.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 8.3 · Dynamic Service Discovery (Eureka Server Lookup)</span>
+                <span class="diagram-frame-tag">DYNAMIC IPS &amp; PORTS · AUTO-REGISTRATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="Service Discovery diagram showing API Gateway querying Eureka Server for /api/v1/order and routing to active Order-1 at x.y.z port 4002 while Order-2 and Order-3 are down">
+                  <defs>
+                    <marker id="arrow-8c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- API Gateway -->
+                  <rect x="24" y="136" width="194" height="94" rx="14" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="121" y="168" text-anchor="middle" class="svg-title">API Gateway</text>
+                  <text x="121" y="190" text-anchor="middle" class="svg-mono-xs">/api/v1/order</text>
+                  <text x="121" y="212" text-anchor="middle" class="svg-sub">Needs live IP &amp; Port</text>
+
+                  <!-- Service Discovery (Eureka) -->
+                  <rect x="282" y="20" width="268" height="84" rx="14" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.6"/>
+                  <text x="416" y="48" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">SERVICE REGISTRY</text>
+                  <text x="416" y="72" text-anchor="middle" class="svg-title">Service Discovery (Eureka)</text>
+                  <text x="416" y="92" text-anchor="middle" class="svg-mono-xs">Order-1 → x.y.z : 4002 (Active)</text>
+
+                  <!-- Query & Reply Arrows -->
+                  <path d="M 121 136 L 121 54 L 274 54" fill="none" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-8c)"/>
+                  <text x="195" y="44" text-anchor="middle" class="svg-mono-xs">1. Query active Order?</text>
+
+                  <path d="M 282 78 L 154 78 L 154 128" fill="none" stroke="var(--warning)" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#arrow-8c)"/>
+                  <text x="220" y="96" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">2. x.y.z:4002</text>
+
+                  <!-- Route to Order-1 -->
+                  <line x1="218" y1="182" x2="612" y2="182" stroke="var(--success)" stroke-width="2.2" marker-end="url(#arrow-8c)"/>
+                  <text x="416" y="172" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">3. Routes directly to Order-1 (x.y.z : Port 4002)</text>
+
+                  <!-- Registration arrow from instances -->
+                  <path d="M 740 132 L 740 62 L 558 62" fill="none" stroke="var(--border-strong)" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#arrow-8c)"/>
+                  <text x="652" y="52" text-anchor="middle" class="svg-mono-xs">Instances Auto-Register</text>
+
+                  <!-- Order Instances -->
+                  <rect x="620" y="138" width="236" height="50" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="738" y="160" text-anchor="middle" class="svg-node">Order-1 ✓ Active</text>
+                  <text x="738" y="178" text-anchor="middle" class="svg-mono-xs">IP: x.y.z · Port 4002</text>
+
+                  <rect x="620" y="198" width="112" height="44" rx="10" fill="var(--bg-surface)" stroke="var(--border)" stroke-dasharray="4 3" opacity="0.65"/>
+                  <text x="676" y="224" text-anchor="middle" class="svg-sub">Order-2 ✕ Down</text>
+
+                  <rect x="744" y="198" width="112" height="44" rx="10" fill="var(--bg-surface)" stroke="var(--border)" stroke-dasharray="4 3" opacity="0.65"/>
+                  <text x="800" y="224" text-anchor="middle" class="svg-sub">Order-3 ✕ Down</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 9: WHAT IS A LOAD BALANCER & HOW DOES IT DIFFER FROM AN API GATEWAY?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-9-lb-vs-gateway",
+      number: "09",
+      shortLabel: "LB vs Gateway",
+      title: "What is a Load Balancer & How Does It Differ from an API Gateway?",
+      summary: "Distributing traffic across healthy Payment instances (Payment-1 vs busy Payment-3 & down Payment-2), and the golden difference between Service routing and Instance routing.",
+      subtopicLabels: ["9.1 Core Role of Load Balancer", "9.2 API Gateway vs Load Balancer"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "9.1",
+          title: "Core Role of a Load Balancer",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>Suppose a user wants to make a payment. The API Gateway reads <code>/api/v1/payment</code> and knows the request must go to the <strong>Payment Microservice</strong>.</li>
+              <li>However, due to high traffic, the Payment Microservice is scaled across 3 instances: <code>Payment-1</code>, <code>Payment-2</code>, and <code>Payment-3</code>:
+                <ul class="notes-sub-list">
+                  <li><code>Payment-3</code> is currently <strong>busy</strong> handling heavy traffic.</li>
+                  <li><code>Payment-2</code> is currently <strong>inactive/down</strong>.</li>
+                  <li><code>Payment-1</code> is <strong>active and available</strong> to take traffic.</li>
+                </ul>
+              </li>
+              <li>The <strong>Load Balancer</strong> checks the traffic load and health status of all instances and routes the user's request specifically to <code>Payment-1</code>.</li>
+            </ul>
+          `
+        },
+        {
+          num: "9.2",
+          title: "API Gateway vs. Load Balancer (The Core Difference)",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box" style="border-left: 3.5px solid var(--accent);">
+                <div class="sub-box__tag">Service-Level Routing</div>
+                <div class="sub-box__title">API Gateway</div>
+                <div class="sub-box__body">Determines <strong>WHICH microservice</strong> the user wants to talk to (e.g., <code>User Service</code> vs. <code>Payment Service</code> vs. <code>Order Service</code>).</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Instance-Level Distribution</div>
+                <div class="sub-box__title">Load Balancer</div>
+                <div class="sub-box__body">Determines <strong>WHICH instance of that microservice</strong> the user should talk to (e.g., Instance <code>P1</code> vs. <code>P2</code> vs. <code>P3</code> of the Payment Service) by distributing traffic across healthy instances.</div>
+              </div>
+            </div>
+
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">NOTE ON AWS LOAD BALANCERS</div>
+              <p style="margin-top: 0.45rem; color: var(--text-secondary);">
+                Some cloud load balancers (like <strong>AWS Application Load Balancers</strong>) have the capability to route requests to different microservices, but they are very expensive, so dedicated <strong>API Gateways</strong> are widely used alongside Load Balancers.
+              </p>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 9.1 · API Gateway (Which Service?) → Load Balancer (Which Instance?)</span>
+                <span class="diagram-frame-tag">TWO-STAGE ROUTING</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Diagram comparing API Gateway choosing Payment Service and Load Balancer choosing healthy Payment-1 over down Payment-2 and busy Payment-3">
+                  <defs>
+                    <marker id="arrow-9" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Client Request -->
+                  <rect x="16" y="88" width="136" height="74" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="84" y="118" text-anchor="middle" class="svg-node">Client</text>
+                  <text x="84" y="140" text-anchor="middle" class="svg-mono-xs">/api/v1/payment</text>
+
+                  <line x1="152" y1="125" x2="196" y2="125" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-9)"/>
+
+                  <!-- API Gateway -->
+                  <rect x="204" y="68" width="176" height="114" rx="14" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.6"/>
+                  <text x="292" y="96" text-anchor="middle" class="svg-kicker">WHICH SERVICE?</text>
+                  <text x="292" y="122" text-anchor="middle" class="svg-title">API Gateway</text>
+                  <text x="292" y="146" text-anchor="middle" class="svg-sub">Picks Payment</text>
+                  <text x="292" y="164" text-anchor="middle" class="svg-sub">Microservice</text>
+
+                  <line x1="380" y1="125" x2="424" y2="125" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-9)"/>
+
+                  <!-- Load Balancer -->
+                  <rect x="432" y="68" width="184" height="114" rx="14" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="524" y="96" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">WHICH INSTANCE?</text>
+                  <text x="524" y="122" text-anchor="middle" class="svg-title">Load Balancer</text>
+                  <text x="524" y="146" text-anchor="middle" class="svg-sub">Health + Traffic</text>
+                  <text x="524" y="164" text-anchor="middle" class="svg-sub">Check across P1–P3</text>
+
+                  <!-- Routing to Payment-1 -->
+                  <path d="M 616 104 L 672 52" fill="none" stroke="var(--success)" stroke-width="2.2" marker-end="url(#arrow-9)"/>
+                  <line x1="616" y1="125" x2="672" y2="125" stroke="var(--border)" stroke-width="1.4" stroke-dasharray="4 4"/>
+                  <path d="M 616 146 L 672 198" fill="none" stroke="var(--border)" stroke-width="1.4" stroke-dasharray="4 4"/>
+
+                  <!-- Instances -->
+                  <rect x="680" y="20" width="182" height="60" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="771" y="46" text-anchor="middle" class="svg-node">Payment-1 ✓</text>
+                  <text x="771" y="65" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Active &amp; Selected</text>
+
+                  <rect x="680" y="95" width="182" height="60" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.3" opacity="0.75"/>
+                  <text x="771" y="121" text-anchor="middle" class="svg-node">Payment-2 ✕</text>
+                  <text x="771" y="140" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Inactive / Down</text>
+
+                  <rect x="680" y="170" width="182" height="60" rx="12" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.3" opacity="0.85"/>
+                  <text x="771" y="196" text-anchor="middle" class="svg-node">Payment-3 ⚠</text>
+                  <text x="771" y="215" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">Busy / Heavy Load</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 10: REGIONS & AVAILABILITY ZONES
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-10-regions-azs",
+      number: "10",
+      shortLabel: "Regions & AZs",
+      title: "Regions & Availability Zones (High-Scale Infrastructure Basics)",
+      summary: "Geographic Regions (Massachusetts, California), isolated city-level Availability Zones (Boston/Cambridge, LA/SF), and automatic AZ-level & Region-level failover.",
+      subtopicLabels: ["10.1 Regions vs Availability Zones", "10.2 Failover & High Availability"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "10.1",
+          title: "Regions vs. Availability Zones (AZs)",
+          content: `
+            <p>To understand how API Gateways and Load Balancers work together at massive scale, we must understand <strong>Regions</strong> and <strong>Availability Zones (AZs)</strong>:</p>
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Geographic Level</div>
+                <div class="sub-box__title">Region</div>
+                <div class="sub-box__body">A broad geographic area, such as a US State (e.g., <strong>Massachusetts</strong> or <strong>California</strong>).</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Data Center Level</div>
+                <div class="sub-box__title">Availability Zone (AZ)</div>
+                <div class="sub-box__body">
+                  Isolated locations/cities within a Region that house dedicated data centers for the application:<br><br>
+                  • Inside the <strong>Massachusetts Region</strong>: <strong>Boston (<code>AZ1</code>)</strong> and <strong>Cambridge (<code>AZ2</code>)</strong>.<br>
+                  • Inside the <strong>California Region</strong>: <strong>Los Angeles (<code>AZ1</code>)</strong> and <strong>San Francisco (<code>AZ2</code>)</strong>.
+                </div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "10.2",
+          title: "Why Do We Need Regions & AZs? (Failover & High Availability)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>AZ-Level Failover:</strong> If the <strong>Boston (<code>AZ1</code>)</strong> data center goes down, all traffic is automatically routed to <strong>Cambridge (<code>AZ2</code>)</strong> within the same region.</li>
+              <li><strong>Region-Level Failover:</strong> If <strong>both</strong> Boston (<code>AZ1</code>) and Cambridge (<code>AZ2</code>) go down, the system switches the entire Region (e.g., routing traffic from <strong>Massachusetts</strong> to <strong>New York</strong> or <strong>California</strong>).</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 10.1 · Multi-Region &amp; Multi-AZ Failover Architecture</span>
+                <span class="diagram-frame-tag">AZ FAILOVER + REGION FAILOVER</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Regions and Availability Zones diagram showing Massachusetts with Boston AZ1 and Cambridge AZ2, California with Los Angeles AZ1 and San Francisco AZ2, and failover paths">
+                  <defs>
+                    <marker id="arrow-10" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--warning)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Region 1: Massachusetts -->
+                  <rect x="20" y="24" width="386" height="174" rx="16" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                  <text x="213" y="52" text-anchor="middle" class="svg-kicker">REGION 1 · MASSACHUSETTS</text>
+
+                  <rect x="42" y="72" width="154" height="96" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.4" stroke-dasharray="4 3"/>
+                  <text x="119" y="102" text-anchor="middle" class="svg-node">Boston (AZ1)</text>
+                  <text x="119" y="124" text-anchor="middle" class="svg-sub">Data Center 1</text>
+                  <text x="119" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">If Down ✕</text>
+
+                  <line x1="196" y1="120" x2="224" y2="120" stroke="var(--warning)" stroke-width="2" marker-end="url(#arrow-10)"/>
+
+                  <rect x="232" y="72" width="154" height="96" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="309" y="102" text-anchor="middle" class="svg-node">Cambridge (AZ2)</text>
+                  <text x="309" y="124" text-anchor="middle" class="svg-sub">Data Center 2</text>
+                  <text x="309" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">AZ Failover ✓</text>
+
+                  <!-- Region-Level Failover Arrow -->
+                  <path d="M 406 112 L 466 112" fill="none" stroke="var(--warning)" stroke-width="2.2" stroke-dasharray="5 3" marker-end="url(#arrow-10)"/>
+                  <text x="440" y="96" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">If Both</text>
+                  <text x="440" y="132" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">Down</text>
+
+                  <!-- Region 2: California -->
+                  <rect x="474" y="24" width="386" height="174" rx="16" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="667" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">REGION 2 · CALIFORNIA (OR NEW YORK)</text>
+
+                  <rect x="496" y="72" width="158" height="96" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="575" y="102" text-anchor="middle" class="svg-node">Los Angeles (AZ1)</text>
+                  <text x="575" y="124" text-anchor="middle" class="svg-sub">Data Center 1</text>
+                  <text x="575" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Healthy ✓</text>
+
+                  <rect x="680" y="72" width="158" height="96" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="759" y="102" text-anchor="middle" class="svg-node">San Francisco (AZ2)</text>
+                  <text x="759" y="124" text-anchor="middle" class="svg-sub">Data Center 2</text>
+                  <text x="759" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Healthy ✓</text>
+
+                  <text x="440" y="228" text-anchor="middle" class="svg-sub">AZ-Level Failover protects against a single city data center outage · Region-Level Failover protects against state-wide outages</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 11: REAL-WORLD INTERVIEW QUESTIONS & END-TO-END REQUEST FLOW
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-11-e2e-flow",
+      number: "11",
+      shortLabel: "E2E Global Flow",
+      title: "Real-World Interview Questions & End-to-End Request Flow",
+      summary: "Which comes first (DNS LB → Regional API Gateway → AZ LB), scaling a logical Single Entry Point to millions of requests, and the full 5-step User 5 request journey + failover scenarios.",
+      subtopicLabels: ["11.1 Gateway vs LB Order", "11.2 Handling Millions of Requests", "11.3 Complete 5-Step Flow"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "11.1",
+          title: "Interview Question 1: Which comes first in a real-world system — API Gateway or Load Balancer?",
+          content: `
+            <p><strong>Short Answer:</strong> A <strong>DNS-based Load Balancer</strong> comes first, followed by a <strong>Regional API Gateway</strong>, followed by an <strong>Availability Zone (Internal) Load Balancer</strong>.</p>
+            <div class="sub-card-grid-3" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Tier 1 · Global / Multi-Region</div>
+                <div class="sub-box__title">DNS Load Balancer</div>
+                <div class="sub-box__body">Operates at the <strong>Global / Multi-Region level</strong> (picks the closest Region).</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Tier 2 · Region Level</div>
+                <div class="sub-box__title">Regional API Gateway</div>
+                <div class="sub-box__body">Operates at the <strong>Region level</strong> (routes traffic to the closest healthy Availability Zone).</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Tier 3 · Availability Zone</div>
+                <div class="sub-box__title">Internal Load Balancer</div>
+                <div class="sub-box__body">Operates at the <strong>Availability Zone level</strong> (routes traffic to the specific healthy microservice instance).</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "11.2",
+          title: 'Interview Question 2: If the API Gateway is a "Single Entry Point", how does it handle millions of requests without crashing?',
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Answer:</strong> It is a single entry point <strong>logically</strong> (hiding thousands of microservices behind one interface), <strong>NOT a single physical machine globally</strong>.</li>
+              <li>We deploy <strong>separate API Gateways per Region</strong> (e.g., <code>API Gateway A</code> in California, <code>API Gateway B</code> in Massachusetts, plus gateways near India/Asia).</li>
+              <li>A <strong>DNS Load Balancer</strong> distributes global user traffic to the API Gateway in the Region closest to the user, allowing the architecture to effortlessly handle millions of concurrent requests while reducing network latency.</li>
+            </ul>
+          `
+        },
+        {
+          num: "11.3",
+          title: "Complete End-to-End Request Flow (Step-by-Step)",
+          content: `
+            <p>Suppose <strong><code>User 5</code></strong> (located near California) clicks the <strong>"Place Order"</strong> button on an e-commerce website, triggering <code>/api/v1/order</code>:</p>
+
+            <div class="workflow-stack" style="margin-top: 1rem;">
+              <div class="workflow-step">
+                <div class="step-circle">1</div>
+                <div>
+                  <div class="workflow-step__title">Browser &amp; DNS Resolution (DNS Load Balancer)</div>
+                  <div class="workflow-step__desc">The browser only understands IP addresses, not English domain names, so it queries <strong>DNS</strong>. The application is hosted in two Regions: <strong>California (<code>API Gateway A</code>)</strong> and <strong>Massachusetts (<code>API Gateway B</code>)</strong>. The <strong>DNS Load Balancer</strong> checks the public IP addresses of all regional API Gateways, sees that <code>User 5</code> is geographically closest to <strong>California</strong>, and returns the <strong>Public IP address of <code>API Gateway A</code></strong>.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">2</div>
+                <div>
+                  <div class="workflow-step__title">HTTP Request to Regional API Gateway</div>
+                  <div class="workflow-step__desc">The browser initiates an HTTP request to <code>API Gateway A</code> (California). <code>API Gateway A</code> reads <code>/api/v1/order</code> and knows it needs to invoke the <strong>Order Microservice</strong>.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">3</div>
+                <div>
+                  <div class="workflow-step__title">API Gateway Queries Service Discovery (Selecting the AZ)</div>
+                  <div class="workflow-step__desc">Inside California, there are two Availability Zones: <strong>Los Angeles (<code>AZ1</code>)</strong> and <strong>San Francisco (<code>AZ2</code>)</strong>. <code>API Gateway A</code> asks <strong>Service Discovery</strong> for two things: (1) Which Availability Zone is closest to the user and currently healthy? (Returns <code>AZ1 - Los Angeles</code>), and (2) What is the address of the <strong>Load Balancer</strong> inside <code>AZ1</code>? <code>API Gateway A</code> then forwards the traffic to the <strong><code>AZ1</code> Load Balancer</strong>.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">4</div>
+                <div>
+                  <div class="workflow-step__title">AZ Load Balancer Routes to Microservice Instance</div>
+                  <div class="workflow-step__desc">Inside <code>AZ1</code>, the Order Microservice has 3 instances: <code>O1</code>, <code>O2</code>, and <code>O3</code>. The <strong><code>AZ1</code> Load Balancer</strong> performs <strong>Health Checks</strong> and <strong>Traffic Checks</strong> across <code>O1</code>, <code>O2</code>, and <code>O3</code>, and routes the request to the best available instance.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">5</div>
+                <div>
+                  <div class="workflow-step__title">What Happens During Failures? (Failover Scenarios)</div>
+                  <div class="workflow-step__desc">
+                    <strong>Scenario A (<code>AZ1</code> Goes Down):</strong> If Los Angeles (<code>AZ1</code>) is completely down, <strong>Service Discovery</strong> tells <code>API Gateway A</code> to use the second-closest healthy zone — <strong>San Francisco (<code>AZ2</code>)</strong> — and provides the <code>AZ2</code> Load Balancer's address.<br>
+                    <strong>Scenario B (Entire California Region Goes Down):</strong> If both Los Angeles (<code>AZ1</code>) and San Francisco (<code>AZ2</code>) go down, the <strong>DNS Load Balancer</strong> switches regions and returns the IP address of <strong><code>API Gateway B</code> (Massachusetts)</strong>, routing the new HTTP request there.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 11.1 · Complete Global End-to-End Request Flow (User 5 → Order Pod)</span>
+                <span class="diagram-frame-tag">DNS LB → REGIONAL GATEWAY → AZ LB → INSTANCES</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 300" class="arch-svg" role="img" aria-label="End-to-end global flow from User 5 in California to DNS Load Balancer, API Gateway A with Service Discovery, AZ1 Los Angeles Load Balancer, and Order instances O1 O2 O3 with failover paths to AZ2 and Massachusetts">
+                  <defs>
+                    <marker id="arrow-11" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- User 5 -->
+                  <rect x="14" y="88" width="114" height="78" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="71" y="116" text-anchor="middle" class="svg-node">User 5</text>
+                  <text x="71" y="135" text-anchor="middle" class="svg-sub">Near California</text>
+                  <text x="71" y="153" text-anchor="middle" class="svg-mono-xs">/api/v1/order</text>
+
+                  <line x1="128" y1="127" x2="158" y2="127" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-11)"/>
+
+                  <!-- DNS LB -->
+                  <rect x="166" y="76" width="136" height="102" rx="12" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.6"/>
+                  <text x="234" y="102" text-anchor="middle" class="svg-kicker">1. GLOBAL TIER</text>
+                  <text x="234" y="126" text-anchor="middle" class="svg-node">DNS Load Balancer</text>
+                  <text x="234" y="148" text-anchor="middle" class="svg-sub">Returns nearest</text>
+                  <text x="234" y="164" text-anchor="middle" class="svg-mono-xs">Gateway A IP</text>
+
+                  <!-- Primary Path -> CA Region -->
+                  <line x1="302" y1="112" x2="346" y2="112" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-11)"/>
+
+                  <!-- Region 1: California Box -->
+                  <rect x="354" y="16" width="510" height="196" rx="16" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="609" y="38" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">REGION 1 · CALIFORNIA (PRIMARY)</text>
+
+                  <!-- API Gateway A -->
+                  <rect x="372" y="54" width="144" height="82" rx="12" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="444" y="80" text-anchor="middle" class="svg-kicker">2. REGION TIER</text>
+                  <text x="444" y="102" text-anchor="middle" class="svg-node">API Gateway A</text>
+                  <text x="444" y="122" text-anchor="middle" class="svg-sub">California IP</text>
+
+                  <!-- Service Discovery -->
+                  <rect x="372" y="152" width="144" height="46" rx="10" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.3"/>
+                  <text x="444" y="173" text-anchor="middle" class="svg-mono-xs">3. Service Discovery</text>
+                  <text x="444" y="189" text-anchor="middle" class="svg-sub">Finds healthy AZ</text>
+                  <line x1="444" y1="136" x2="444" y2="148" stroke="var(--warning)" stroke-width="1.5"/>
+
+                  <!-- Arrow GW -> AZ1 LB -->
+                  <line x1="516" y1="90" x2="554" y2="90" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-11)"/>
+
+                  <!-- AZ1 Los Angeles -->
+                  <rect x="562" y="50" width="286" height="86" rx="12" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="705" y="70" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">4. AZ1 (Los Angeles) · Internal LB</text>
+                  <rect x="580" y="82" width="74" height="40" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.3"/>
+                  <text x="617" y="106" text-anchor="middle" class="svg-mono-xs">O1 ✓</text>
+                  <rect x="668" y="82" width="74" height="40" rx="8" fill="var(--accent-light)" stroke="var(--border)"/>
+                  <text x="705" y="106" text-anchor="middle" class="svg-mono-xs">O2</text>
+                  <rect x="756" y="82" width="74" height="40" rx="8" fill="var(--accent-light)" stroke="var(--border)"/>
+                  <text x="793" y="106" text-anchor="middle" class="svg-mono-xs">O3</text>
+
+                  <!-- AZ2 Failover -->
+                  <path d="M 516 116 L 554 166" fill="none" stroke="var(--warning)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow-11)"/>
+                  <rect x="562" y="148" width="286" height="50" rx="10" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.2" stroke-dasharray="4 3"/>
+                  <text x="705" y="170" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">Scenario A Failover → AZ2 (San Francisco LB)</text>
+                  <text x="705" y="187" text-anchor="middle" class="svg-sub">Used automatically if Los Angeles (AZ1) goes down</text>
+
+                  <!-- Region 2 Failover -->
+                  <path d="M 234 178 L 234 256 L 346 256" fill="none" stroke="var(--warning)" stroke-width="1.6" stroke-dasharray="5 3" marker-end="url(#arrow-11)"/>
+                  <rect x="354" y="228" width="510" height="56" rx="12" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.3" stroke-dasharray="5 3"/>
+                  <text x="609" y="252" text-anchor="middle" class="svg-mono-md" style="fill: var(--warning);">Scenario B Failover → Region 2: API Gateway B (Massachusetts)</text>
+                  <text x="609" y="272" text-anchor="middle" class="svg-sub">DNS Load Balancer switches regions if both AZ1 &amp; AZ2 in California go down</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 12: WHAT IS LOAD BALANCING? (CHAT APPLICATION EXAMPLE)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-12-load-balancing",
+      number: "12",
+      shortLabel: "Load Balancing",
+      title: "What is Load Balancing? (Chat Application Example)",
+      summary: "Horizontally scaling a Chat Service across multiple servers (Chat-1, Chat-2), WebSocket message delivery (User A → M1 → User B), and Health & Traffic checks.",
+      subtopicLabels: ["12.1 Why Load Balancing", "12.2 Chat App WebSocket Flow"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "12.1",
+          title: "Why We Need Load Balancing",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>Suppose we have a <strong>Chatting Application</strong> with a dedicated <strong>Chat Service</strong>.</li>
+              <li>As user traffic grows rapidly, running the Chat Service on a single server will slow down or crash the system.</li>
+              <li>To handle the load, we <strong>horizontally scale</strong> the Chat Service by adding more servers/instances (<code>Chat Service Instance 1</code> on Server 1, <code>Chat Service Instance 2</code> on Server 2).</li>
+            </ul>
+          `
+        },
+        {
+          num: "12.2",
+          title: "How User Communication & Load Balancing Work",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>Suppose <strong>User A</strong> wants to send message <code>M1</code> to <strong>User B</strong>.</li>
+              <li>User A cannot send the message directly to User B; the communication must go <strong>via a Server (Chat Service)</strong> using <strong>WebSocket communication</strong>:
+                <ul class="notes-sub-list">
+                  <li><strong>Flow:</strong> <code>User A</code> → sends <code>M1</code> to <code>Chat Server</code> → forwards <code>M1</code> to <code>User B</code>.</li>
+                </ul>
+              </li>
+              <li>Because we have multiple instances (<code>Chat-1</code> and <code>Chat-2</code>), how do we decide which server should receive User A's <code>POST</code> request?</li>
+              <li><strong>Role of the Load Balancer:</strong>
+                <ul class="notes-sub-list">
+                  <li>Sits in front of the multiple microservice instances (<code>Chat-1</code>, <code>Chat-2</code>).</li>
+                  <li>Distributes incoming traffic across multiple microservice instances.</li>
+                  <li>Continuously performs <strong>Health Checks</strong> (checking which instance is active vs. down) and <strong>Traffic Checks</strong> (checking which instance is overloaded vs. ready to take traffic).</li>
+                  <li>If <code>Chat-2</code> is down or not ready, the Load Balancer routes User A's request to <code>Chat-1</code>, which then delivers <code>M1</code> to User B.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 12.1 · Chat Application Load Balancing via WebSockets</span>
+                <span class="diagram-frame-tag">HEALTH CHECKS &amp; TRAFFIC DISTRIBUTION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 235" class="arch-svg" role="img" aria-label="Chat application load balancing diagram showing User A sending M1 through Load Balancer to healthy Chat-1 while skipping down Chat-2 and delivering to User B">
+                  <defs>
+                    <marker id="arrow-12" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- User A -->
+                  <rect x="20" y="76" width="128" height="82" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="84" y="110" text-anchor="middle" class="svg-title">User A</text>
+                  <text x="84" y="134" text-anchor="middle" class="svg-mono-xs">Sends Msg M1</text>
+
+                  <line x1="148" y1="117" x2="218" y2="117" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-12)"/>
+                  <text x="183" y="106" text-anchor="middle" class="svg-mono-xs">WebSocket</text>
+
+                  <!-- Load Balancer -->
+                  <rect x="226" y="56" width="194" height="122" rx="16" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="323" y="88" text-anchor="middle" class="svg-kicker">TRAFFIC DISTRIBUTOR</text>
+                  <text x="323" y="114" text-anchor="middle" class="svg-title">Load Balancer</text>
+                  <text x="323" y="140" text-anchor="middle" class="svg-sub">✓ Health Checks</text>
+                  <text x="323" y="160" text-anchor="middle" class="svg-sub">✓ Traffic Checks</text>
+
+                  <!-- Active Route -> Chat-1 -->
+                  <path d="M 420 96 L 492 64" fill="none" stroke="var(--success)" stroke-width="2.2" marker-end="url(#arrow-12)"/>
+
+                  <!-- Chat-1 -->
+                  <rect x="500" y="24" width="174" height="78" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="587" y="54" text-anchor="middle" class="svg-node">Server 1 · Chat-1 ✓</text>
+                  <text x="587" y="76" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Active &amp; Ready</text>
+
+                  <!-- Inactive Route -> Chat-2 -->
+                  <path d="M 420 138 L 492 170" fill="none" stroke="var(--border)" stroke-width="1.4" stroke-dasharray="4 4"/>
+                  <rect x="500" y="132" width="174" height="78" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.3" opacity="0.72"/>
+                  <text x="587" y="162" text-anchor="middle" class="svg-node">Server 2 · Chat-2 ✕</text>
+                  <text x="587" y="184" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Down / Not Ready</text>
+
+                  <!-- Deliver to User B -->
+                  <path d="M 674 64 L 728 110" fill="none" stroke="var(--success)" stroke-width="2.2" marker-end="url(#arrow-12)"/>
+                  <text x="702" y="76" text-anchor="middle" class="svg-mono-xs">M1</text>
+
+                  <!-- User B -->
+                  <rect x="736" y="76" width="124" height="82" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="798" y="110" text-anchor="middle" class="svg-title">User B</text>
+                  <text x="798" y="134" text-anchor="middle" class="svg-mono-xs">Receives M1 ✓</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 13: TYPES OF LOAD BALANCERS — L4 VS. L7 LOAD BALANCER
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-13-l4-vs-l7",
+      number: "13",
+      shortLabel: "L4 vs L7 LB",
+      title: "Types of Load Balancers — L4 vs. L7 Load Balancer",
+      summary: "OSI 7-Layer background, L4 Transport Layer (TCP/UDP, 4 IP/Port params, sticky TCP connection, Post Office Clerk analogy) vs. L7 Application Layer (inspects HTTP paths, body, cookies).",
+      subtopicLabels: ["13.1 OSI Model", "13.2 L4 Load Balancer", "13.3 L7 Load Balancer"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "13.1",
+          title: "OSI Model Background",
+          content: `
+            <p>In Computer Networks, the <strong>OSI Model</strong> has 7 layers. Load balancers primarily operate at <strong>Layer 4</strong> and <strong>Layer 7</strong>:</p>
+            <div class="osi-layers-list">
+              <div class="osi-layer-item"><span>Layer 1</span><span>Physical</span></div>
+              <div class="osi-layer-item"><span>Layer 2</span><span>Data Link</span></div>
+              <div class="osi-layer-item"><span>Layer 3</span><span>Network</span></div>
+              <div class="osi-layer-item osi-layer-item--highlight"><span>Layer 4 ★</span><span>Transport (L4 LB)</span></div>
+              <div class="osi-layer-item"><span>Layer 5</span><span>Session</span></div>
+              <div class="osi-layer-item"><span>Layer 6</span><span>Presentation</span></div>
+              <div class="osi-layer-item osi-layer-item--highlight"><span>Layer 7 ★</span><span>Application (L7 LB)</span></div>
+            </div>
+          `
+        },
+        {
+          num: "13.2",
+          title: "L4 Load Balancer (Transport Layer Load Balancer)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Operating Layer &amp; Protocols:</strong> Operates at <strong>Layer 4 (Transport Layer)</strong>, working directly at the <strong>TCP and UDP protocol level</strong>.</li>
+              <li><strong>What L4 CANNOT Understand:</strong> Because it operates at the TCP/UDP level, it <strong>cannot read or understand</strong> <code>HTTP Requests</code>, <code>HTTP Headers</code>, <code>Cookies</code>, <code>Request Body</code>, or <code>HTTP URL Paths</code> (like <code>/api/v1/order</code>, <code>/api/v1/create-room</code>, or <code>/api/v1/send-message</code>).</li>
+              <li><strong>What L4 Uses to Route Traffic (4 Parameters):</strong>
+                <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                  <li><strong>Source (Client) IP Address &amp; Port</strong></li>
+                  <li><strong>Destination (Server) IP Address &amp; Port</strong></li>
+                  <li><strong>Protocol Type</strong> (whether it is TCP or UDP)</li>
+                  <li><strong>Server Health / Availability</strong></li>
+                </ol>
+              </li>
+              <li><strong>How L4 Works (Chat App Example):</strong>
+                <ul class="notes-sub-list">
+                  <li>Suppose we have 3 servers running Chat Service instances (<code>Chat-1</code>, <code>Chat-2</code>, <code>Chat-3</code>), each with its own IP address and running on <code>Port 5000</code>.</li>
+                  <li>A <strong>Client (User A)</strong> with its own IP address and OS-assigned default port opens the chat app.</li>
+                  <li>The <strong>L4 Load Balancer</strong> looks only at the Client's IP/Port, checks which server is healthy (e.g., selects <code>Server 2 / Chat-2</code>), and <strong>establishes a direct TCP connection</strong> between <code>User A</code> and <code>Server 2</code>.</li>
+                  <li><strong>Sticky TCP Connection Behavior:</strong> Once the TCP connection between <code>User A</code> and <code>Server 2</code> is established, <strong>every subsequent message</strong> sent by <code>User A</code> (like <em>"Hi"</em>, creating a room, or joining a room) goes directly to <code>Server 2</code> until that connection is destroyed.</li>
+                  <li>The L4 Load Balancer only sees raw, unreadable data packets flowing back and forth; the actual business logic (creating a room vs. sending a message) is handled inside the <code>Chat Service</code> code.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">REAL-WORLD ANALOGY · POST OFFICE CLERK</div>
+              <p style="margin-top: 0.45rem; color: var(--text-secondary);">
+                An L4 Load Balancer is like a <strong>post office clerk who only looks at the envelope's "From Address" and "To Address"</strong> without ever opening the envelope to read the letter inside.
+              </p>
+            </div>
+          `
+        },
+        {
+          num: "13.3",
+          title: "L7 Load Balancer (Application Layer Load Balancer)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Operating Layer &amp; Protocols:</strong> Operates at <strong>Layer 7 (Application Layer)</strong>, where protocols like <strong>HTTP, HTTPS, and WebSockets</strong> exist.</li>
+              <li><strong>What L7 CAN Understand:</strong> Unlike L4, the L7 Load Balancer is <strong>smart enough to inspect and understand</strong> <code>HTTP/HTTPS Requests</code>, <code>WebSocket connections</code>, <code>HTTP URL Paths</code> (e.g., <code>/api/v1/update-profile</code>), <code>Request Body</code> (e.g., JSON data to join a room), <code>Headers</code>, and <code>Cookies</code>.</li>
+              <li><strong>How L7 Works (Multi-Service Routing Example):</strong>
+                <ul class="notes-sub-list">
+                  <li>Suppose our backend has two different services with multiple instances: <strong>Chat Service</strong> (<code>Chat-1</code>, <code>Chat-2</code>) and <strong>User Service</strong> (<code>User-1</code>, <code>User-2</code>).</li>
+                  <li>A user triggers the endpoint <code>/api/v1/update-profile</code>.</li>
+                  <li>The <strong>L7 Load Balancer</strong> reads the HTTP path <code>/api/v1/update-profile</code> and understands that this request belongs to the <strong>User Service</strong> (not the Chat Service).</li>
+                  <li>It checks <strong>Service Discovery</strong> to see which User Service instance is healthy and available (e.g., <code>User-1</code> is down/busy, <code>User-2</code> is available) and routes the request specifically to <code>User-2</code>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 13.1 · L4 (Transport Layer) vs. L7 (Application Layer) Load Balancer</span>
+                <span class="diagram-frame-tag">ENVELOPE ONLY (L4) VS CONTENT-AWARE ROUTING (L7)</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 285" class="arch-svg" role="img" aria-label="Side-by-side comparison of L4 Load Balancer reading IP and Port to establish sticky TCP connection to Chat-2 port 5000 versus L7 Load Balancer inspecting /api/v1/update-profile and routing via Service Discovery to User-2">
+                  <defs>
+                    <marker id="arrow-13" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- LEFT: L4 -->
+                  <rect x="16" y="16" width="412" height="252" rx="16" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="222" y="44" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">L4 · TRANSPORT LAYER (TCP / UDP)</text>
+
+                  <rect x="34" y="64" width="166" height="96" rx="12" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.4"/>
+                  <text x="117" y="92" text-anchor="middle" class="svg-node">L4 Load Balancer</text>
+                  <text x="117" y="114" text-anchor="middle" class="svg-mono-xs">Reads IP + Port only</text>
+                  <text x="117" y="134" text-anchor="middle" class="svg-sub">No URL/Header access</text>
+
+                  <line x1="200" y1="112" x2="246" y2="112" stroke="var(--warning)" stroke-width="2.2" marker-end="url(#arrow-13)"/>
+                  <text x="223" y="100" text-anchor="middle" class="svg-mono-xs">TCP</text>
+
+                  <rect x="254" y="64" width="156" height="96" rx="12" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="332" y="92" text-anchor="middle" class="svg-node">Server 2 (Chat-2)</text>
+                  <text x="332" y="114" text-anchor="middle" class="svg-mono-xs">Port 5000</text>
+                  <text x="332" y="136" text-anchor="middle" class="svg-sub">Sticky TCP Tunnel</text>
+
+                  <rect x="34" y="182" width="376" height="66" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="222" y="208" text-anchor="middle" class="svg-mono-xs">All subsequent messages ("Hi", Join Room) stay on Server 2</text>
+                  <text x="222" y="230" text-anchor="middle" class="svg-sub">Post Office Clerk Analogy: Reads From/To address, never opens letter</text>
+
+                  <!-- RIGHT: L7 -->
+                  <rect x="452" y="16" width="412" height="252" rx="16" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="658" y="44" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">L7 · APPLICATION LAYER (HTTP / WS)</text>
+
+                  <rect x="470" y="64" width="174" height="106" rx="12" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="557" y="90" text-anchor="middle" class="svg-node">L7 Load Balancer</text>
+                  <text x="557" y="112" text-anchor="middle" class="svg-mono-xs">Reads /api/v1/</text>
+                  <text x="557" y="128" text-anchor="middle" class="svg-mono-xs">update-profile</text>
+                  <text x="557" y="150" text-anchor="middle" class="svg-sub">+ Checks Discovery</text>
+
+                  <path d="M 644 106 L 690 82" fill="none" stroke="var(--border)" stroke-width="1.4" stroke-dasharray="4 3"/>
+                  <rect x="698" y="56" width="148" height="48" rx="10" fill="var(--bg-surface)" stroke="var(--border)" opacity="0.65"/>
+                  <text x="772" y="84" text-anchor="middle" class="svg-sub">Chat-1 / Chat-2</text>
+
+                  <path d="M 644 128 L 690 156" fill="none" stroke="var(--success)" stroke-width="2.2" marker-end="url(#arrow-13)"/>
+                  <rect x="698" y="124" width="148" height="62" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="772" y="150" text-anchor="middle" class="svg-node">User-2 ✓</text>
+                  <text x="772" y="170" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">User-1 busy/down</text>
+
+                  <rect x="470" y="202" width="376" height="46" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="658" y="230" text-anchor="middle" class="svg-mono-xs">Inspects URL Paths, Headers, Cookies &amp; JSON Body</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 14: STATIC LOAD BALANCING ALGORITHMS
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-14-static-algos",
+      number: "14",
+      shortLabel: "Static Algos",
+      title: "Static Load Balancing Algorithms",
+      summary: "Round Robin (equal loop & hardware waste), Weighted Round Robin (Weight 3 vs 1 & 10ms vs 10s execution time drawback), and IP Hash (client IP hashing & Proxy Server bottleneck).",
+      subtopicLabels: ["14.1 Round Robin", "14.2 Weighted Round Robin", "14.3 IP Hash"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "14.1",
+          title: "Round Robin Algorithm",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How it Works:</strong> Distributes incoming requests <strong>sequentially and equally</strong> across all available server instances in a loop.</li>
+              <li><strong>Example:</strong> Suppose 4 users (<code>U1</code>, <code>U2</code>, <code>U3</code>, <code>U4</code>) send requests <code>Req 1</code> to <code>Req 4</code> to two instances (<code>Chat-1</code> and <code>Chat-2</code>):
+                <ul class="notes-sub-list">
+                  <li><code>Req 1</code> → goes to <code>Chat-1</code> &nbsp;|&nbsp; <code>Req 2</code> → goes to <code>Chat-2</code></li>
+                  <li><code>Req 3</code> → goes to <code>Chat-1</code> &nbsp;|&nbsp; <code>Req 4</code> → goes to <code>Chat-2</code></li>
+                  <li>If <code>Req 5</code> and <code>Req 6</code> arrive → <code>Req 5</code> goes to <code>Chat-1</code>, <code>Req 6</code> goes to <code>Chat-2</code>.</li>
+                </ul>
+              </li>
+              <li><strong>Major Drawback (Server Capacity Waste):</strong> Suppose <code>Chat-1</code> runs on a <strong>powerful server</strong> (multiple CPUs, high RAM, capable of handling 100 requests) while <code>Chat-2</code> runs on a <strong>weak server</strong> (low CPU/RAM). Because Round Robin distributes traffic 50-50 (e.g., 5 requests to <code>Chat-1</code> and 5 requests to <code>Chat-2</code>), the powerful server's extra capacity goes wasted while the weak server gets stressed.</li>
+            </ul>
+          `
+        },
+        {
+          num: "14.2",
+          title: "Weighted Round Robin Algorithm",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Why it is Used:</strong> Solves the server capacity problem of standard Round Robin.</li>
+              <li><strong>How it Works:</strong> We assign a numerical <strong>Weight</strong> to each server based on its hardware capacity (CPU/RAM).</li>
+              <li><strong>Example:</strong>
+                <ul class="notes-sub-list">
+                  <li><code>Chat-1</code> (Strong Server) is assigned <strong>Weight = 3</strong>.</li>
+                  <li><code>Chat-2</code> (Weak Server) is assigned <strong>Weight = 1</strong>.</li>
+                  <li>When requests <code>1, 2, 3, 4</code> arrive: the <strong>first 3 requests (<code>Req 1</code>, <code>Req 2</code>, <code>Req 3</code>)</strong> go to <code>Chat-1</code>, and the <strong>4th request (<code>Req 4</code>)</strong> goes to <code>Chat-2</code>.</li>
+                  <li>When requests <code>5, 6, 7, 8</code> arrive: <code>Req 5, 6, 7</code> go to <code>Chat-1</code>, and <code>Req 8</code> goes to <code>Chat-2</code>.</li>
+                </ul>
+              </li>
+              <li><strong>Major Drawback (Heavy Request Execution Time):</strong> It does not account for how long each individual request takes to execute. Suppose <code>Req 1, 2, 3</code> (sent to strong server <code>Chat-1</code>) are lightweight and finish in <strong>10ms each (30ms total)</strong>. Meanwhile, <code>Req 4</code> and <code>Req 8</code> (sent to weak server <code>Chat-2</code>) are heavy operations that take <strong>10 seconds each</strong>. Even with a lower weight, the weak server <code>Chat-2</code> gets overloaded with long-running requests.</li>
+            </ul>
+          `
+        },
+        {
+          num: "14.3",
+          title: "IP Hash Algorithm",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How it Works:</strong>
+                <ul class="notes-sub-list">
+                  <li>Every client device (mobile/laptop) of users <code>U1, U2, U3, U4</code> has its own <strong>Client IP Address</strong>.</li>
+                  <li>The Load Balancer passes the client's IP address into a <strong>Hash Function</strong>, which generates a <strong>Hash Value</strong> (e.g., <code>1</code>, <code>2</code>, etc.).</li>
+                  <li>Based on the generated hash value, requests are consistently routed to a specific instance (e.g., Hash Value <code>1</code> → <code>Chat-1</code>, Hash Value <code>2</code> → <code>Chat-2</code>).</li>
+                </ul>
+              </li>
+              <li><strong>Major Drawback (The Proxy Server Problem):</strong> Suppose a <strong>Proxy Server</strong> sits between the Clients (<code>U1, U2, U3, U4</code>) and the Load Balancer. The Proxy Server masks the individual client IPs with <strong>its own single Proxy IP Address</strong>. To the Load Balancer, all requests appear to come from <strong>one single source IP (the Proxy)</strong>. Passing the same IP into the Hash Function produces the <strong>exact same Hash Value every time</strong> (e.g., always <code>1</code>), causing the Load Balancer to dump <strong>100% of traffic onto a single server (<code>Chat-1</code>)</strong> while <code>Chat-2</code> sits idle.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 14.1 · Static Algorithms: Round Robin, Weighted RR &amp; IP Hash Proxy Pitfall</span>
+                <span class="diagram-frame-tag">FIXED RULES · NO REAL-TIME LOAD INSPECTION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="Three-panel diagram comparing Round Robin 50-50 split, Weighted Round Robin 3-to-1 split, and IP Hash proxy bottleneck dumping 100 percent of traffic onto Chat-1">
+                  <!-- Panel 1: Round Robin -->
+                  <rect x="14" y="16" width="272" height="232" rx="14" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="150" y="42" text-anchor="middle" class="svg-kicker">1. ROUND ROBIN</text>
+                  <rect x="34" y="60" width="232" height="54" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="150" y="83" text-anchor="middle" class="svg-node">Chat-1 (Strong)</text>
+                  <text x="150" y="102" text-anchor="middle" class="svg-mono-xs">Req 1, 3, 5 (50%)</text>
+
+                  <rect x="34" y="128" width="232" height="54" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="150" y="151" text-anchor="middle" class="svg-node">Chat-2 (Weak)</text>
+                  <text x="150" y="170" text-anchor="middle" class="svg-mono-xs">Req 2, 4, 6 (50%)</text>
+
+                  <text x="150" y="216" text-anchor="middle" class="svg-sub">Drawback: Wastes strong</text>
+                  <text x="150" y="234" text-anchor="middle" class="svg-sub">server capacity</text>
+
+                  <!-- Panel 2: Weighted RR -->
+                  <rect x="304" y="16" width="272" height="232" rx="14" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.4"/>
+                  <text x="440" y="42" text-anchor="middle" class="svg-kicker">2. WEIGHTED ROUND ROBIN</text>
+                  <rect x="324" y="60" width="232" height="54" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="440" y="83" text-anchor="middle" class="svg-node">Chat-1 · Weight = 3</text>
+                  <text x="440" y="102" text-anchor="middle" class="svg-mono-xs">Req 1,2,3 · 5,6,7 (10ms)</text>
+
+                  <rect x="324" y="128" width="232" height="54" rx="10" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="440" y="151" text-anchor="middle" class="svg-node">Chat-2 · Weight = 1</text>
+                  <text x="440" y="170" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">Req 4, 8 (10s heavy!)</text>
+
+                  <text x="440" y="216" text-anchor="middle" class="svg-sub">Drawback: Ignores request</text>
+                  <text x="440" y="234" text-anchor="middle" class="svg-sub">execution duration</text>
+
+                  <!-- Panel 3: IP Hash Proxy Pitfall -->
+                  <rect x="594" y="16" width="272" height="232" rx="14" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.4"/>
+                  <text x="730" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">3. IP HASH (PROXY PITFALL)</text>
+                  <rect x="614" y="56" width="232" height="36" rx="8" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="730" y="79" text-anchor="middle" class="svg-mono-xs">U1..U4 → Single Proxy IP</text>
+
+                  <rect x="614" y="104" width="232" height="44" rx="10" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="730" y="124" text-anchor="middle" class="svg-node">Chat-1 (Hash = 1)</text>
+                  <text x="730" y="140" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">100% Traffic Dumped!</text>
+
+                  <rect x="614" y="158" width="232" height="36" rx="10" fill="var(--bg-surface)" stroke="var(--border)" stroke-dasharray="4 3" opacity="0.65"/>
+                  <text x="730" y="181" text-anchor="middle" class="svg-sub">Chat-2 (0% · Completely Idle)</text>
+
+                  <text x="730" y="216" text-anchor="middle" class="svg-sub">Same Proxy IP always hashes</text>
+                  <text x="730" y="234" text-anchor="middle" class="svg-sub">to the exact same server</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 15: DYNAMIC LOAD BALANCING ALGORITHMS
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-15-dynamic-algos",
+      number: "15",
+      shortLabel: "Dynamic Algos",
+      title: "Dynamic Load Balancing Algorithms",
+      summary: "Real-time load-aware routing: Least Connection, Weighted Least Connection (Ratio = Active Connections / Weight), and Least Response Time (Score = Active Connections × TTFB + Round Robin tie-breaker).",
+      subtopicLabels: ["15.1 Least Connection", "15.2 Weighted Least Connection", "15.3 Least Response Time (TTFB)"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "15.1",
+          title: "Least Connection Algorithm",
+          content: `
+            <p>Unlike static algorithms, dynamic algorithms inspect the <strong>real-time state and active load</strong> of the servers before routing traffic.</p>
+            <ul class="notes-bullet-list" style="margin-top: 0.75rem;">
+              <li><strong>How it Works:</strong> Routes each new incoming request to the server instance that currently has the <strong>fewest active TCP connections</strong>.</li>
+              <li><strong>Example:</strong>
+                <ul class="notes-sub-list">
+                  <li><code>Chat-1</code> currently has <strong>2 active connections</strong> (<code>U1</code> and <code>U2</code> are connected).</li>
+                  <li><code>Chat-2</code> currently has <strong>1 active connection</strong> (<code>U3</code> is connected).</li>
+                  <li>When a new user <strong><code>U4</code> (<code>Req 4</code>)</strong> arrives, the Load Balancer compares active connections (<code>2 vs. 1</code>) and routes <code>U4</code> to <strong><code>Chat-2</code></strong> (bringing <code>Chat-2</code>'s active connections to <code>2</code>).</li>
+                </ul>
+              </li>
+              <li><strong>Major Drawback (Idle Connections vs. Active Traffic + Hardware Mismatch):</strong> Having an established TCP connection does <strong>not</strong> mean a user is actively sending requests. Suppose <code>U1</code> and <code>U2</code> (connected to <code>Chat-1</code>, a <strong>weak server</strong>) continuously spam requests (<code>Req 1, 2, 3, 4</code>), while <code>U3</code> and <code>U4</code> (connected to <code>Chat-2</code>, a <strong>powerful server</strong>) sit completely idle sending zero messages. Both servers show "2 active connections", so the weak server gets hammered with traffic while the powerful server processes zero requests.</li>
+            </ul>
+          `
+        },
+        {
+          num: "15.2",
+          title: "Weighted Least Connection Algorithm",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Why it is Used:</strong> Solves the hardware capacity mismatch in the Least Connection algorithm by combining <strong>active connections</strong> with <strong>server capacity weights</strong>.</li>
+              <li><strong>How it Works (2-Step Formula):</strong>
+                <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                  <li>Calculate the <strong>Ratio of Active Connections to Weight</strong> for every server:</li>
+                </ol>
+              </li>
+            </ul>
+
+            <div class="formula-box">Ratio = Active Connections / Weight</div>
+
+            <ul class="notes-bullet-list">
+              <li>Route the new request to the server with the <strong>lowest ratio</strong>.</li>
+              <li><strong>Step-by-Step Numerical Example:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Server 1 (<code>Chat-1</code> — Powerful Server):</strong> Active Connections = <code>2</code> (<code>U1</code>, <code>U2</code>), Assigned Weight = <code>10</code> → <strong>Ratio = <code>2 / 10 = 0.2</code></strong></li>
+                  <li><strong>Server 2 (<code>Chat-2</code> — Weak Server):</strong> Active Connections = <code>1</code> (<code>U3</code>), Assigned Weight = <code>1</code> → <strong>Ratio = <code>1 / 1 = 1.0</code></strong></li>
+                  <li><strong>Routing Decision for <code>U4</code> (<code>Req 4</code>):</strong> Since <code>0.2</code> is less than <code>1.0</code>, the Load Balancer routes <code>U4</code> to <strong>Server 1 (<code>Chat-1</code>)</strong>, properly utilizing the powerful server's capacity.</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "15.3",
+          title: "Least Response Time Algorithm",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How it Works:</strong> Routes traffic based on both <strong>Active Connections</strong> and how fast each server responds, measured using <strong>TTFB (Time to First Byte)</strong>.</li>
+              <li><strong>What is TTFB (Time to First Byte)?</strong> The total time interval between a client <strong>sending a request</strong> and <strong>receiving the first response/acknowledgment</strong> back from the server.</li>
+              <li><strong>Selection Formula (Lowest score wins):</strong></li>
+            </ul>
+
+            <div class="formula-box">Score = Active Connections × TTFB</div>
+
+            <ul class="notes-bullet-list">
+              <li><strong>Step-by-Step Numerical Example</strong> (3 servers: <code>Server 1</code>, <code>Server 2</code>, <code>Server 3</code>):
+                <ul class="notes-sub-list">
+                  <li><strong>Initial State:</strong>
+                    <br>• <strong>Server 1:</strong> Active Connections = <code>2</code>, TTFB = <code>3 ms</code> → <code>Score = 2 × 3 = 6</code>
+                    <br>• <strong>Server 2:</strong> Active Connections = <code>0</code>, TTFB = <code>2 ms</code> → <code>Score = 0 × 2 = 0</code>
+                    <br>• <strong>Server 3:</strong> Active Connections = <code>4</code>, TTFB = <code>1 ms</code> → <code>Score = 4 × 1 = 4</code>
+                  </li>
+                  <li><strong>First New Request (<code>U4</code> arrives):</strong> Comparing scores (<code>6</code>, <code>0</code>, <code>4</code>), <strong>Server 2</strong> has the lowest score (<code>0</code>), so <code>U4</code> is routed to <strong>Server 2</strong>.</li>
+                  <li><strong>Updated State (When the Next Request arrives):</strong> Server 2 now has <code>1</code> active connection, so its new score becomes: <code>1 × 2 ms = 2</code>. Comparing the updated scores (<code>6</code>, <code>2</code>, <code>4</code>), <strong>Server 2</strong> (<code>2</code>) is <em>still</em> the lowest, so the next incoming request is also routed to <strong>Server 2</strong>.</li>
+                </ul>
+              </li>
+              <li><strong>Tie-Breaker Rule (Clash Handling):</strong> If two servers end up with the <strong>exact same score</strong> (e.g., both have a score of <code>4</code>), the Load Balancer falls back to <strong>Round Robin</strong> to break the tie.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 15.1 · Dynamic Algorithm Math: Weighted Least Conn &amp; Least Response Time</span>
+                <span class="diagram-frame-tag">LOWEST RATIO / LOWEST SCORE WINS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="Dynamic load balancing calculation diagram showing Weighted Least Connection ratios 0.2 versus 1.0 and Least Response Time scores 6, 0 updated to 2 winner, and 4">
+                  <!-- LEFT: Weighted Least Connection -->
+                  <rect x="16" y="16" width="388" height="232" rx="16" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="210" y="44" text-anchor="middle" class="svg-kicker">WEIGHTED LEAST CONNECTION</text>
+                  <text x="210" y="64" text-anchor="middle" class="svg-mono-xs">Ratio = Active Connections / Weight</text>
+
+                  <rect x="34" y="80" width="352" height="62" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="52" y="105" class="svg-node">Chat-1 (Powerful · W=10)</text>
+                  <text x="52" y="126" class="svg-mono-xs">2 / 10 = 0.2</text>
+                  <text x="368" y="116" text-anchor="end" class="svg-mono-xs" style="fill: var(--success);">Lowest → Picks U4 ✓</text>
+
+                  <rect x="34" y="156" width="352" height="62" rx="12" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="52" y="181" class="svg-node">Chat-2 (Weak · W=1)</text>
+                  <text x="52" y="202" class="svg-mono-xs">1 / 1 = 1.0</text>
+                  <text x="368" y="192" text-anchor="end" class="svg-sub">Higher Ratio</text>
+
+                  <!-- RIGHT: Least Response Time -->
+                  <rect x="424" y="16" width="440" height="232" rx="16" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="644" y="44" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">LEAST RESPONSE TIME (SCORE = CONN × TTFB)</text>
+
+                  <!-- Server 1 -->
+                  <rect x="442" y="62" width="128" height="122" rx="12" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="506" y="88" text-anchor="middle" class="svg-node">Server 1</text>
+                  <text x="506" y="110" text-anchor="middle" class="svg-sub">Conn: 2</text>
+                  <text x="506" y="128" text-anchor="middle" class="svg-sub">TTFB: 3ms</text>
+                  <text x="506" y="160" text-anchor="middle" class="svg-mono-md">Score = 6</text>
+
+                  <!-- Server 2 (Winner) -->
+                  <rect x="580" y="62" width="128" height="122" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                  <text x="644" y="88" text-anchor="middle" class="svg-node">Server 2 ★</text>
+                  <text x="644" y="110" text-anchor="middle" class="svg-sub">Conn: 0 → 1</text>
+                  <text x="644" y="128" text-anchor="middle" class="svg-sub">TTFB: 2ms</text>
+                  <text x="644" y="160" text-anchor="middle" class="svg-mono-md" style="fill: var(--success);">0 → 2 (Wins)</text>
+
+                  <!-- Server 3 -->
+                  <rect x="718" y="62" width="128" height="122" rx="12" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="782" y="88" text-anchor="middle" class="svg-node">Server 3</text>
+                  <text x="782" y="110" text-anchor="middle" class="svg-sub">Conn: 4</text>
+                  <text x="782" y="128" text-anchor="middle" class="svg-sub">TTFB: 1ms</text>
+                  <text x="782" y="160" text-anchor="middle" class="svg-mono-md">Score = 4</text>
+
+                  <text x="644" y="218" text-anchor="middle" class="svg-mono-xs">Tie-Breaker: Equal scores fall back to Round Robin</text>
                 </svg>
               </div>
             </figure>

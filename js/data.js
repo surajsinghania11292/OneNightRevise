@@ -6,14 +6,15 @@
 const SYSTEM_DESIGN_NOTES = {
   meta: {
     title: "OneNightRevise — System Design Revision Notes",
-    totalTopics: 18
+    totalTopics: 21
   },
 
   navGroups: [
-    { label: "01–06 Monolith & Microservices", targetId: "topic-1-monolith" },
-    { label: "07–11 API Gateway & Regions", targetId: "topic-7-api-gateway" },
+    { label: "01–06 Monolith", targetId: "topic-1-monolith" },
+    { label: "07–11 API Gateway", targetId: "topic-7-api-gateway" },
     { label: "12–15 Load Balancing", targetId: "topic-12-load-balancing" },
-    { label: "16–18 Proxies & VPN", targetId: "topic-16-forward-proxy" }
+    { label: "16–18 Proxies & VPN", targetId: "topic-16-forward-proxy" },
+    { label: "19–21 Protocols", targetId: "topic-19-networking-protocols" }
   ],
 
   topics: [
@@ -2578,6 +2579,478 @@ const SYSTEM_DESIGN_NOTES = {
                   <text x="657" y="172" text-anchor="middle" class="svg-mono-xs">Global Scale → Use BOTH (Separation of Concerns)</text>
                   <text x="657" y="196" text-anchor="middle" class="svg-node">Dedicated Load Balancer  +  Reverse Proxy</text>
                   <text x="657" y="216" text-anchor="middle" class="svg-sub">Massive Traffic Routing &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; SSL, Caching, Logging, Anonymity</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 19: WHAT ARE NETWORKING PROTOCOLS & HOW LAYERS WORK TOGETHER?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-19-networking-protocols",
+      number: "19",
+      shortLabel: "Protocols",
+      title: "What are Networking Protocols & How Different Layers Work Together?",
+      summary: "Definition of networking protocols, the 3 core OSI layers (Network IPv4/IPv6, Transport TCP/UDP, Application HTTP/HTTPS/WebSockets/WebRTC), and a WhatsApp end-to-end message walkthrough.",
+      subtopicLabels: ["19.1 Definition", "19.2 3 Core OSI Layers", "19.3 WhatsApp Message Flow"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "19.1",
+          title: "Definition of Networking Protocols",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Definition:</strong> Networking protocols are the set of rules and conventions that govern how data is transmitted and received across a network.</li>
+              <li><strong>In Simple Words:</strong> They define how two devices communicate, transfer data, and receive data with each other over the internet/network.</li>
+            </ul>
+          `
+        },
+        {
+          num: "19.2",
+          title: "The 3 Core OSI Layers & Their Protocols",
+          content: `
+            <p>Out of the 7 layers in the OSI Model, three main layers and their protocols are used here:</p>
+            <div class="sub-card-grid-3" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Layer 3 · Finds the Device</div>
+                <div class="sub-box__title">1. Network Layer</div>
+                <div class="sub-box__body">
+                  <strong>Protocols:</strong> <code>IPv4</code>, <code>IPv6</code><br><br>
+                  <strong>Role:</strong> Helps in <strong>IP Addressing and Routing</strong> (finding a device's IP address across the network).
+                </div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Layer 4 · Creates a Path</div>
+                <div class="sub-box__title">2. Transport Layer</div>
+                <div class="sub-box__body">
+                  <strong>Protocols:</strong> <code>TCP</code>, <code>UDP</code><br><br>
+                  <strong>Role:</strong> Establishes a reliable/secured path and defines how data packets travel between Client and Server.
+                </div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Layer 7 · Delivers Message</div>
+                <div class="sub-box__title">3. Application Layer</div>
+                <div class="sub-box__body">
+                  <strong>Client-Server:</strong> <code>HTTP</code>, <code>HTTPS</code>, <code>FTP</code>, <code>SMTP</code>, <code>WebSockets</code><br>
+                  <strong>Peer-to-Peer (P2P):</strong> <code>WebRTC</code><br><br>
+                  <em>Note: A common misconception is that WebSocket is a Peer-to-Peer protocol — it is <strong>NOT</strong>; WebSocket is a <strong>Client-Server protocol</strong>.</em>
+                </div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "19.3",
+          title: "Real-World Example: How All 3 Layers Work Together (WhatsApp Message Flow)",
+          content: `
+            <p>Suppose you are on <strong>Device A</strong> and want to send a WhatsApp message (<em>"Hi, how are you?"</em>) to your friend on <strong>Device B</strong>:</p>
+
+            <div class="workflow-stack" style="margin-top: 1rem;">
+              <div class="workflow-step">
+                <div class="step-circle">1</div>
+                <div>
+                  <div class="workflow-step__title">Step 1: Network Layer (<code>IPv4</code> / <code>IPv6</code>) → "Finds the Device"</div>
+                  <div class="workflow-step__desc">Millions of devices exist on the internet, each with its own IP address. Before sending a message, the first task is to locate your friend's device (<strong>Device B</strong>) and the <strong>WhatsApp Server</strong> on the network. Network Layer protocols (<code>IPv4</code> and <code>IPv6</code>) handle IP addressing and routing to find the exact IP address of the required device/server.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">2</div>
+                <div>
+                  <div class="workflow-step__title">Step 2: Transport Layer (<code>TCP</code> / <code>UDP</code>) → "Creates a Path"</div>
+                  <div class="workflow-step__desc">Device A cannot send a WhatsApp message directly to Device B; it must go <strong>via the WhatsApp Server</strong> (<code>Device A</code> sends encrypted message → <code>WhatsApp Server</code> → forwards encrypted message to <code>Device B</code>, which decrypts and reads it). Just knowing the IP address is not enough — we need a <strong>reliable path and a secured connection</strong> between Device A and the WhatsApp Server so data can travel between them. Transport Layer protocols (<code>TCP</code> / <code>UDP</code>) establish this connection and govern how data travels between the client and the server.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">3</div>
+                <div>
+                  <div class="workflow-step__title">Step 3: Application Layer (<code>HTTP</code> / <code>HTTPS</code> / <code>WebSockets</code>) → "Delivers the Actual Message"</div>
+                  <div class="workflow-step__desc">Once we have the IP address and an established connection/path, how is the actual text <em>"Hi, how are you?"</em> formatted and delivered so both apps understand it? Application Layer protocols define the rules of conversation and format between applications (WhatsApp uses the <strong>WebSocket protocol</strong> to deliver the actual message).</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">SUMMARY OF THE 3 LAYERS</div>
+              <ul class="notes-bullet-list" style="margin-top: 0.5rem;">
+                <li><strong>Network Layer:</strong> <em>Finds the device</em> (IP Addressing &amp; Routing).</li>
+                <li><strong>Transport Layer:</strong> <em>Creates a path</em> (Connection &amp; Data Transport).</li>
+                <li><strong>Application Layer:</strong> <em>Delivers the actual message</em> (Message Formatting &amp; Delivery).</li>
+              </ul>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 19.1 · How Network, Transport &amp; Application Layers Work Together (WhatsApp)</span>
+                <span class="diagram-frame-tag">FIND DEVICE → CREATE PATH → DELIVER MESSAGE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="Three-layer WhatsApp message flow showing Device A sending encrypted Hi how are you via WhatsApp Server to Device B using Network IPv4/IPv6, Transport TCP/UDP, and Application WebSockets">
+                  <defs>
+                    <marker id="arrow-19" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Top Message Flow Row -->
+                  <rect x="24" y="20" width="194" height="78" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="121" y="50" text-anchor="middle" class="svg-title">Device A (You)</text>
+                  <text x="121" y="72" text-anchor="middle" class="svg-mono-xs">"Hi, how are you?"</text>
+
+                  <line x1="218" y1="59" x2="328" y2="59" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-19)"/>
+                  <text x="273" y="48" text-anchor="middle" class="svg-mono-xs">Encrypted</text>
+
+                  <rect x="336" y="20" width="208" height="78" rx="14" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="440" y="50" text-anchor="middle" class="svg-title">WhatsApp Server</text>
+                  <text x="440" y="72" text-anchor="middle" class="svg-sub">Relays Encrypted Message</text>
+
+                  <line x1="544" y1="59" x2="654" y2="59" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-19)"/>
+                  <text x="599" y="48" text-anchor="middle" class="svg-mono-xs">Encrypted</text>
+
+                  <rect x="662" y="20" width="194" height="78" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="759" y="50" text-anchor="middle" class="svg-title">Device B (Friend)</text>
+                  <text x="759" y="72" text-anchor="middle" class="svg-mono-xs">Decrypts &amp; Reads ✓</text>
+
+                  <!-- 3 Layer Cards Beneath -->
+                  <rect x="24" y="130" width="262" height="114" rx="14" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="155" y="156" text-anchor="middle" class="svg-kicker">1. NETWORK LAYER</text>
+                  <text x="155" y="182" text-anchor="middle" class="svg-title">Finds the Device</text>
+                  <text x="155" y="204" text-anchor="middle" class="svg-mono-xs">IPv4 / IPv6</text>
+                  <text x="155" y="226" text-anchor="middle" class="svg-sub">IP Addressing &amp; Routing</text>
+
+                  <line x1="286" y1="187" x2="303" y2="187" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-19)"/>
+
+                  <rect x="309" y="130" width="262" height="114" rx="14" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.4"/>
+                  <text x="440" y="156" text-anchor="middle" class="svg-kicker">2. TRANSPORT LAYER</text>
+                  <text x="440" y="182" text-anchor="middle" class="svg-title">Creates a Path</text>
+                  <text x="440" y="204" text-anchor="middle" class="svg-mono-xs">TCP / UDP</text>
+                  <text x="440" y="226" text-anchor="middle" class="svg-sub">Reliable Connection &amp; Transport</text>
+
+                  <line x1="571" y1="187" x2="588" y2="187" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-19)"/>
+
+                  <rect x="594" y="130" width="262" height="114" rx="14" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.4"/>
+                  <text x="725" y="156" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">3. APPLICATION LAYER</text>
+                  <text x="725" y="182" text-anchor="middle" class="svg-title">Delivers the Message</text>
+                  <text x="725" y="204" text-anchor="middle" class="svg-mono-xs">WebSockets / HTTP / HTTPS</text>
+                  <text x="725" y="226" text-anchor="middle" class="svg-sub">Message Formatting &amp; Delivery</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 20: TRANSPORT LAYER PROTOCOLS — TCP VS. UDP
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-20-tcp-vs-udp",
+      number: "20",
+      shortLabel: "TCP vs UDP",
+      title: "Transport Layer Protocols — TCP vs. UDP",
+      summary: "TCP (Connection-oriented, ACK & retransmission, sequence numbers, 3-Way Handshake SYN/SYN-ACK/ACK) vs. UDP (Connectionless, fire-and-forget ultra-fast speed for video calls & online gaming).",
+      subtopicLabels: ["20.1 TCP & 3-Way Handshake", "20.2 UDP & Real-Time Use Cases"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "20.1",
+          title: "TCP (Transmission Control Protocol) & The 3-Way Handshake",
+          content: `
+            <p><strong>Core Characteristics of TCP:</strong></p>
+            <ol class="notes-ordered-list" style="margin-top: 0.65rem;">
+              <li><strong>Connection-Oriented &amp; Reliable:</strong> Establishes a verified connection before sending data.</li>
+              <li><strong>Guaranteed Delivery:</strong> Data is sent in the form of <strong>packets</strong>, and the server sends an <strong>acknowledgment (ACK)</strong> for every packet received. If any data packet is lost or fails to deliver due to a network issue, the client <strong>resends/retransmits</strong> that packet until it is delivered.</li>
+              <li><strong>Maintains Order / Sequence:</strong> Every data packet is assigned a <strong>Sequence Number</strong> (<code>Packet 1</code>, <code>Packet 2</code>, <code>Packet 3</code>), ensuring packets are delivered and reassembled in the exact order they were sent.</li>
+              <li><strong>Slower Speed:</strong> Because TCP sets up a connection, checks every packet's delivery, resends lost packets, and maintains strict sequence order, it is <strong>slower than UDP</strong>.</li>
+            </ol>
+
+            <p style="margin-top: 1.25rem;"><strong>How TCP Establishes a Reliable Connection — The 3-Way Handshake:</strong></p>
+            <p style="margin-top: 0.35rem;">Before sending actual data, the Client (You) and Server (Your Friend) perform a <strong>3-step process</strong>:</p>
+            <div class="workflow-stack" style="margin-top: 0.75rem;">
+              <div class="workflow-step">
+                <div class="step-circle">1</div>
+                <div>
+                  <div class="workflow-step__title">Step 1 — Introduction (<code>SYN</code> / Connection Request)</div>
+                  <div class="workflow-step__desc">The Client introduces itself to the Server (<em>"Hey, how are you?"</em>) and shares a random <strong>Sequence Number</strong> and port.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">2</div>
+                <div>
+                  <div class="workflow-step__title">Step 2 — Agreement &amp; Acknowledgment (<code>SYN-ACK</code>)</div>
+                  <div class="workflow-step__desc">The Server replies (<em>"Yes, I am here, are you ready?"</em>), sends an <strong>Acknowledgment</strong> for the Client's request, and shares its own <strong>Sequence Number</strong>.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">3</div>
+                <div>
+                  <div class="workflow-step__title">Step 3 — Final Confirmation (<code>ACK</code>)</div>
+                  <div class="workflow-step__desc">The Client sends one final <strong>Acknowledgment</strong> back to the Server confirming that both sides are ready for communication, and the <strong>TCP connection is officially opened</strong>.</div>
+                </div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "20.2",
+          title: "UDP (User Datagram Protocol)",
+          content: `
+            <p><strong>Core Characteristics (Exact Opposite of TCP):</strong></p>
+            <ol class="notes-ordered-list" style="margin-top: 0.65rem;">
+              <li><strong>Connectionless:</strong> There is <strong>no 3-Way Handshake</strong>. It immediately starts firing data packets to the receiver without establishing a prior connection.</li>
+              <li><strong>Unreliable (No Retransmission):</strong> If a data packet is lost on the network, UDP <strong>does not care</strong> and <strong>never resends</strong> the lost packet — it simply continues sending the next packets.</li>
+              <li><strong>No Order Maintained:</strong> Packets are not kept in strict sequence; <code>Packet 2</code> might arrive before <code>Packet 1</code>.</li>
+              <li><strong>Very Fast Speed:</strong> Because there is no handshake overhead, no acknowledgment waiting, no packet retransmission, and no ordering, <strong>UDP is extremely fast</strong>.</li>
+            </ol>
+
+            <div class="callout-highlight-box" style="margin-top: 1.1rem;">
+              <div class="callout-highlight-tag">REAL-WORLD USE CASES OF UDP</div>
+              <ul class="notes-bullet-list" style="margin-top: 0.5rem;">
+                <li>Used in <strong>Video Calls, Live Video Streaming, and Online Video Games</strong>.</li>
+                <li><strong>Example (Video Call with a Friend):</strong> If a brief network glitch causes a few video frames (data packets) to drop during a live video call, you do <strong>not</strong> want the video call to pause and replay old frames from 5 seconds ago — you want the live call to keep moving in real time. Similarly, if <code>Frame 2</code> arrives slightly before <code>Frame 1</code> due to a minor glitch, it doesn't matter — speed and real-time continuity matter more than recovering lost frames.</li>
+              </ul>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 20.1 · TCP 3-Way Handshake &amp; Guaranteed Order vs. UDP Fast Streaming</span>
+                <span class="diagram-frame-tag">RELIABILITY &amp; ORDER (TCP) VS SPEED &amp; REAL-TIME (UDP)</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 285" class="arch-svg" role="img" aria-label="Comparison diagram showing TCP 3-Way Handshake SYN, SYN-ACK, ACK with ordered packet delivery and retransmission versus UDP fire-and-forget live video frames with no handshake">
+                  <defs>
+                    <marker id="arrow-20" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                    <marker id="arrow-20w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--warning)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- LEFT: TCP 3-Way Handshake -->
+                  <rect x="16" y="16" width="424" height="252" rx="16" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="228" y="42" text-anchor="middle" class="svg-kicker">TCP · 3-WAY HANDSHAKE &amp; RELIABLE DELIVERY</text>
+
+                  <!-- Client & Server Lifelines -->
+                  <rect x="44" y="58" width="94" height="34" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="91" y="80" text-anchor="middle" class="svg-node">Client</text>
+                  <line x1="91" y1="92" x2="91" y2="212" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+                  <rect x="318" y="58" width="94" height="34" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="365" y="80" text-anchor="middle" class="svg-node">Server</text>
+                  <line x1="365" y1="92" x2="365" y2="212" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+                  <!-- 1. SYN -->
+                  <line x1="96" y1="112" x2="356" y2="128" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-20)"/>
+                  <text x="228" y="112" text-anchor="middle" class="svg-mono-xs">1. SYN (Seq # + Port)</text>
+
+                  <!-- 2. SYN-ACK -->
+                  <line x1="360" y1="146" x2="100" y2="162" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-20)"/>
+                  <text x="228" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">2. SYN-ACK (Agree + Server Seq #)</text>
+
+                  <!-- 3. ACK -->
+                  <line x1="96" y1="180" x2="356" y2="196" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-20)"/>
+                  <text x="228" y="182" text-anchor="middle" class="svg-mono-xs">3. ACK (Connection Opened ✓)</text>
+
+                  <!-- Footer Summary -->
+                  <rect x="36" y="218" width="384" height="36" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="228" y="241" text-anchor="middle" class="svg-mono-xs">Ordered: P1 → P2 → P3 · Resends lost packets · Slower</text>
+
+                  <!-- RIGHT: UDP -->
+                  <rect x="456" y="16" width="408" height="252" rx="16" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="660" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">UDP · CONNECTIONLESS &amp; ULTRA-FAST</text>
+
+                  <rect x="476" y="72" width="90" height="106" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="521" y="118" text-anchor="middle" class="svg-node">Sender</text>
+                  <text x="521" y="138" text-anchor="middle" class="svg-sub">No Handshake</text>
+
+                  <rect x="754" y="72" width="90" height="106" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="799" y="118" text-anchor="middle" class="svg-node">Receiver</text>
+                  <text x="799" y="138" text-anchor="middle" class="svg-sub">Live Stream</text>
+
+                  <!-- Frame 1 Delivered -->
+                  <line x1="566" y1="90" x2="746" y2="90" stroke="var(--warning)" stroke-width="2" marker-end="url(#arrow-20w)"/>
+                  <text x="656" y="82" text-anchor="middle" class="svg-mono-xs">Frame 1 → Delivered</text>
+
+                  <!-- Frame 2 Dropped -->
+                  <line x1="566" y1="126" x2="668" y2="126" stroke="var(--danger)" stroke-width="1.8" stroke-dasharray="4 3"/>
+                  <text x="656" y="118" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Frame 2 ✕ Lost (Not Resent)</text>
+
+                  <!-- Frame 3 Delivered -->
+                  <line x1="566" y1="162" x2="746" y2="162" stroke="var(--warning)" stroke-width="2" marker-end="url(#arrow-20w)"/>
+                  <text x="656" y="154" text-anchor="middle" class="svg-mono-xs">Frame 3 → Keeps Moving!</text>
+
+                  <rect x="476" y="198" width="368" height="56" rx="8" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="660" y="220" text-anchor="middle" class="svg-mono-xs">Video Calls · Live Streaming · Online Gaming</text>
+                  <text x="660" y="240" text-anchor="middle" class="svg-sub">Real-time speed matters more than replaying old dropped frames</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 21: APPLICATION LAYER PROTOCOLS — CLIENT-SERVER VS. P2P
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-21-application-protocols",
+      number: "21",
+      shortLabel: "HTTP / WS / P2P",
+      title: "Application Layer Protocols — Client-Server vs. Peer-to-Peer (P2P)",
+      summary: "Unidirectional Client-Server (HTTP, HTTPS with SSL/TLS, FTP, SMTP + why HTTP/HTTPS are TCP-based), Bidirectional WebSockets (WhatsApp/Telegram), and Direct Peer-to-Peer WebRTC.",
+      subtopicLabels: ["21.1 Unidirectional (HTTP/HTTPS)", "21.2 Bidirectional (WebSocket)", "21.3 Peer-to-Peer (WebRTC)"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "21.1",
+          title: "Client-Server — Unidirectional Protocols (HTTP, HTTPS, FTP, SMTP)",
+          content: `
+            <p>Client-Server protocols define how a <strong>Client</strong> and a <strong>Server</strong> exchange data. Two clients (<code>Client A</code> and <code>Client B</code>) cannot talk directly to each other; they must communicate through a central <strong>Server</strong>.</p>
+
+            <ul class="notes-bullet-list" style="margin-top: 0.75rem;">
+              <li><strong>How Unidirectional (One-Way) Protocols Work:</strong> The <strong>Client ALWAYS initiates the request/connection</strong>, and the <strong>Server sends back a response</strong>, after which the request-response cycle closes. The Server can <strong>never</strong> initiate a message to the Client on its own — even if the Server has new information for the Client, it must wait until the Client makes a request.</li>
+            </ul>
+
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Unencrypted (Plain Text)</div>
+                <div class="sub-box__title">HTTP (HyperText Transfer Protocol)</div>
+                <div class="sub-box__body">Used for standard web requests (fetching web pages, submitting login credentials like email/password on Amazon). However, HTTP sends data in <strong>unencrypted (plain text) form</strong>, making it vulnerable to attacks.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Encrypted via SSL / TLS</div>
+                <div class="sub-box__title">HTTPS (HyperText Transfer Protocol Secure)</div>
+                <div class="sub-box__body">Secures HTTP by adding an <strong>encryption layer using SSL / TLS (Transport Layer Security)</strong>. All web requests and responses travel as <strong>encrypted data</strong>, which is why all large-scale production applications use HTTPS.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">File Transfer</div>
+                <div class="sub-box__title">FTP (File Transfer Protocol)</div>
+                <div class="sub-box__body">Used for transferring files between client and server.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Email Delivery</div>
+                <div class="sub-box__title">SMTP (Simple Mail Transfer Protocol)</div>
+                <div class="sub-box__body">Used for sending emails.</div>
+              </div>
+            </div>
+
+            <div class="callout-highlight-box" style="margin-top: 1.1rem;">
+              <div class="callout-highlight-tag">WHY DO WE SAY "HTTP AND HTTPS ARE TCP-BASED PROTOCOLS"?</div>
+              <ul class="notes-bullet-list" style="margin-top: 0.5rem;">
+                <li>HTTP and HTTPS are <strong>Application Layer</strong> protocols responsible for <em>delivering the actual content</em>, while TCP is a <strong>Transport Layer</strong> protocol responsible for <em>establishing a reliable connection</em>.</li>
+                <li>Saying <em>"HTTP/HTTPS is TCP-based"</em> means that <strong>before</strong> HTTP/HTTPS can send any web request, the Client and Server first perform a <strong>TCP 3-Way Handshake</strong> to establish a reliable connection, and then HTTP/HTTPS sends the request over that TCP connection.</li>
+              </ul>
+            </div>
+          `
+        },
+        {
+          num: "21.2",
+          title: "Client-Server — Bidirectional Protocol (WebSocket)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How It Differs from HTTP:</strong> While still a <strong>Client-Server protocol</strong>, <strong>WebSocket is Bidirectional (Two-Way)</strong>.</li>
+              <li>Once a WebSocket connection is established between a Client and a Server, <strong>both the Client and the Server can independently send messages to each other at any time</strong>.</li>
+              <li>If the Server has a new message for <code>Client A</code>, the Server does <strong>not</strong> need to wait for <code>Client A</code> to send a request — the Server can push the message directly from its side.</li>
+              <li><strong>Real-World Use Case:</strong> Used to build real-time chat applications like <strong>WhatsApp</strong> and <strong>Telegram</strong>, where <code>User A</code> and <code>User B</code> maintain open WebSocket connections with the WhatsApp Server so messages can be pushed instantly in both directions.</li>
+            </ul>
+          `
+        },
+        {
+          num: "21.3",
+          title: "Peer-to-Peer (P2P) Protocols (WebRTC)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How It Works:</strong> In a Peer-to-Peer protocol (like <strong>WebRTC</strong>), there is <strong>no discrimination between Client and Server</strong> — no central server is needed in the middle to relay the data.</li>
+              <li>Two clients (<code>Client A</code> and <code>Client B</code>) connect directly to each other and <strong>can independently send messages/streams directly to one another</strong> (<code>Client A &lt;───&gt; Client B</code>).</li>
+            </ul>
+
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Core Difference · Client-Server</div>
+                <div class="sub-box__title">Intermediate Server Required</div>
+                <div class="sub-box__body"><code>Client A</code> and <code>Client B</code> <strong>cannot</strong> communicate directly; they require an intermediate <strong>Server</strong> (<code>Client A → Server → Client B</code>).</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Core Difference · Peer-to-Peer (P2P)</div>
+                <div class="sub-box__title">Direct Client-to-Client Connection</div>
+                <div class="sub-box__body"><code>Client A</code> and <code>Client B</code> communicate <strong>directly with each other</strong> without going through an intermediate server (<code>Client A &lt;───&gt; Client B</code>).</div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 21.1 · HTTP/HTTPS (1-Way) vs. WebSocket (2-Way) vs. WebRTC (Direct P2P)</span>
+                <span class="diagram-frame-tag">APPLICATION LAYER COMMUNICATION MODELS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Three-column comparison of Unidirectional HTTP/HTTPS, Bidirectional WebSocket via Server, and Direct Peer-to-Peer WebRTC">
+                  <defs>
+                    <marker id="arrow-21" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Column 1: HTTP/HTTPS -->
+                  <rect x="14" y="16" width="272" height="218" rx="14" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="150" y="42" text-anchor="middle" class="svg-kicker">1. UNIDIRECTIONAL (HTTP / HTTPS)</text>
+
+                  <rect x="34" y="64" width="84" height="58" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="76" y="97" text-anchor="middle" class="svg-node">Client</text>
+
+                  <rect x="182" y="64" width="84" height="58" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="224" y="97" text-anchor="middle" class="svg-node">Server</text>
+
+                  <line x1="118" y1="82" x2="174" y2="82" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-21)"/>
+                  <text x="150" y="74" text-anchor="middle" class="svg-mono-xs">Req</text>
+                  <line x1="182" y1="106" x2="126" y2="106" stroke="var(--border-strong)" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#arrow-21)"/>
+                  <text x="150" y="122" text-anchor="middle" class="svg-mono-xs">Res</text>
+
+                  <text x="150" y="164" text-anchor="middle" class="svg-sub">Client ALWAYS initiates first</text>
+                  <text x="150" y="186" text-anchor="middle" class="svg-mono-xs">HTTPS = SSL/TLS Encrypted</text>
+                  <text x="150" y="208" text-anchor="middle" class="svg-sub">Runs on TCP 3-Way Handshake</text>
+
+                  <!-- Column 2: WebSocket -->
+                  <rect x="304" y="16" width="272" height="218" rx="14" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="440" y="42" text-anchor="middle" class="svg-kicker">2. BIDIRECTIONAL (WEBSOCKET)</text>
+
+                  <rect x="318" y="68" width="64" height="52" rx="9" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="350" y="98" text-anchor="middle" class="svg-mono-xs">User A</text>
+
+                  <rect x="404" y="64" width="72" height="60" rx="10" fill="var(--accent-light)" stroke="var(--accent)"/>
+                  <text x="440" y="90" text-anchor="middle" class="svg-mono-xs">Central</text>
+                  <text x="440" y="106" text-anchor="middle" class="svg-mono-xs">Server</text>
+
+                  <rect x="498" y="68" width="64" height="52" rx="9" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="530" y="98" text-anchor="middle" class="svg-mono-xs">User B</text>
+
+                  <line x1="382" y1="94" x2="404" y2="94" stroke="var(--accent)" stroke-width="2.2"/>
+                  <line x1="476" y1="94" x2="498" y2="94" stroke="var(--accent)" stroke-width="2.2"/>
+
+                  <text x="440" y="156" text-anchor="middle" class="svg-mono-xs">2-Way Persistent Pipe</text>
+                  <text x="440" y="180" text-anchor="middle" class="svg-sub">Server pushes anytime</text>
+                  <text x="440" y="202" text-anchor="middle" class="svg-sub">Still Client-Server (WhatsApp)</text>
+
+                  <!-- Column 3: Peer-to-Peer WebRTC -->
+                  <rect x="594" y="16" width="272" height="218" rx="14" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="730" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">3. PEER-TO-PEER (WEBRTC)</text>
+
+                  <rect x="614" y="64" width="84" height="58" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="656" y="97" text-anchor="middle" class="svg-node">Client A</text>
+
+                  <rect x="762" y="64" width="84" height="58" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="804" y="97" text-anchor="middle" class="svg-node">Client B</text>
+
+                  <line x1="704" y1="93" x2="756" y2="93" stroke="var(--success)" stroke-width="2.4" marker-start="url(#arrow-21)" marker-end="url(#arrow-21)"/>
+
+                  <text x="730" y="156" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Direct Client A ⇄ Client B</text>
+                  <text x="730" y="180" text-anchor="middle" class="svg-sub">No intermediate Server needed</text>
+                  <text x="730" y="202" text-anchor="middle" class="svg-sub">Both act as equal peers</text>
                 </svg>
               </div>
             </figure>

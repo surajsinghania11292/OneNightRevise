@@ -2,22 +2,22 @@
 node_modules/
 .pnpm-store/
 
-# Next.js
-frontend/.next/
-frontend/out/
-
-# Environment variables
+# Local Environment & Editor
 .env
 .env.local
-.env.*.local
-backend/.env
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# System Files
+# OS files
 .DS_Store
 Thumbs.db
+
+# Vercel & Build outputs
+.vercel
+dist/
+build/
+
+# Local Agent caches (optional)
+.agents/

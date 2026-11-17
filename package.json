@@ -1,13 +1,21 @@
 {
-  "name": "onenightrevise",
+  "name": "onenightrevise-system-design",
   "version": "1.0.0",
-  "private": true,
+  "description": "System Design Master Notes & Interactive Architecture Simulators",
+  "main": "index.html",
   "scripts": {
-    "dev": "pnpm --parallel run dev",
-    "dev:frontend": "pnpm --filter frontend dev",
-    "dev:backend": "pnpm --filter backend dev",
-    "build": "pnpm --filter frontend build",
-    "start:frontend": "pnpm --filter frontend start",
-    "start:backend": "pnpm --filter backend start"
-  }
+    "build": "echo 'Static site ready for deployment'",
+    "start": "npx serve . -l 3000",
+    "dev": "npx serve . -l 3000"
+  },
+  "keywords": [
+    "system-design",
+    "architecture",
+    "microservices",
+    "api-gateway",
+    "load-balancer",
+    "strangler-fig"
+  ],
+  "author": "Suraj Kumar",
+  "license": "MIT"
 }

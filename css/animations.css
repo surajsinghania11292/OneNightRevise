@@ -1,0 +1,180 @@
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS.CSS — Motion, radar scan, glowing packet flow,
+                    pulses, and micro-interactions
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── SCANLINE RADAR EFFECT (Adapted from Portfolio's Project Hero) ── */
+.radar-scan-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.radar-scan-panel::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  box-shadow: 0 0 14px 2px var(--accent);
+  opacity: 0.6;
+  pointer-events: none;
+  animation: radar-sweep 4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  z-index: 5;
+}
+
+@keyframes radar-sweep {
+  0%   { transform: translateY(0); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.7; }
+  100% { transform: translateY(420px); opacity: 0; }
+}
+
+/* ── STATUS PING DOT ──────────────────────────────────────────── */
+.pulse-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  position: relative;
+}
+
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid var(--success);
+  animation: ping-wave 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes ping-wave {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  70% { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+/* ── GLOWING PACKET TRAVEL (Interactive Architecture Visualizer) ── */
+.network-packet {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 16px 4px var(--accent), 0 0 4px #FFFFFF;
+  z-index: 20;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: all 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+}
+
+.network-packet.active {
+  opacity: 1;
+}
+
+/* Node highlight when packet hits */
+.sim-node {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.sim-node.hit {
+  transform: scale(1.06);
+  border-color: var(--accent) !important;
+  box-shadow: var(--shadow-glow), 0 0 24px -2px var(--accent) !important;
+}
+
+.sim-node.hit::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  border: 2px solid var(--accent);
+  animation: node-flash 0.6s ease-out forwards;
+}
+
+@keyframes node-flash {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
+
+/* ── SVG CONNECTION LINES ─────────────────────────────────────── */
+.flow-line {
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+  fill: none;
+  transition: stroke 0.3s ease;
+}
+
+.flow-line.active {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  animation: dash-flow 1s linear infinite;
+}
+
+@keyframes dash-flow {
+  from { stroke-dashoffset: 24; }
+  to   { stroke-dashoffset: 0; }
+}
+
+/* ── KEYFRAME FADE IN & UP ────────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+/* ── MARQUEE TICKER ───────────────────────────────────────────── */
+.marquee-strip {
+  overflow: hidden;
+  white-space: nowrap;
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0.65rem 0;
+}
+
+.marquee-content {
+  display: inline-flex;
+  animation: marquee-roll 25s linear infinite;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-roll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.marquee-item span.highlight {
+  color: var(--accent);
+  font-weight: 600;
+}

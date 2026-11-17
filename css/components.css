@@ -768,6 +768,45 @@
   font-weight: 500;
 }
 
+/* ── COMPARISON SPEC TABLES ───────────────────────────────────── */
+.comparison-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  margin: 0.75rem 0;
+  background: var(--bg-surface);
+}
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  text-align: left;
+}
+
+.spec-table th {
+  background: var(--bg-subsection);
+  padding: 0.95rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+  border-bottom: 1.5px solid var(--border);
+}
+
+.spec-table td {
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border-faint);
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.spec-table tr:last-child td {
+  border-bottom: none;
+}
+
 /* ── RESPONSIVE ADJUSTMENTS ────────────────────────────────────── */
 @media (max-width: 768px) {
   .topic-card-summary {

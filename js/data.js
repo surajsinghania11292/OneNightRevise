@@ -6,15 +6,16 @@
 const SYSTEM_DESIGN_NOTES = {
   meta: {
     title: "OneNightRevise — System Design Revision Notes",
-    totalTopics: 21
+    totalTopics: 32
   },
 
   navGroups: [
     { label: "01–06 Monolith", targetId: "topic-1-monolith" },
-    { label: "07–11 API Gateway", targetId: "topic-7-api-gateway" },
+    { label: "07–11 Gateway", targetId: "topic-7-api-gateway" },
     { label: "12–15 Load Balancing", targetId: "topic-12-load-balancing" },
-    { label: "16–18 Proxies & VPN", targetId: "topic-16-forward-proxy" },
-    { label: "19–21 Protocols", targetId: "topic-19-networking-protocols" }
+    { label: "16–18 Proxies", targetId: "topic-16-forward-proxy" },
+    { label: "19–21 Protocols", targetId: "topic-19-networking-protocols" },
+    { label: "22–32 Scaling (0→1M)", targetId: "topic-22-what-is-scaling" }
   ],
 
   topics: [
@@ -3051,6 +3052,1127 @@ const SYSTEM_DESIGN_NOTES = {
                   <text x="730" y="156" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Direct Client A ⇄ Client B</text>
                   <text x="730" y="180" text-anchor="middle" class="svg-sub">No intermediate Server needed</text>
                   <text x="730" y="202" text-anchor="middle" class="svg-sub">Both act as equal peers</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 22: WHAT IS SCALING & WHY DO WE NEED IT?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-22-what-is-scaling",
+      number: "22",
+      shortLabel: "What is Scaling",
+      title: "What is Scaling & Why Do We Need It?",
+      summary: "Pizza Parlor & Chef analogy (1 slow chef vs weekend 10-order spike -> 1 super chef vs 3–4 chefs) and why a single server crashes as users grow from 100 to 1 Million.",
+      subtopicLabels: ["22.1 Pizza Parlor Analogy", "22.2 Technical Need for Scaling"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "22.1",
+          title: "Real-World Analogy (The Pizza Parlor & Chef)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>Imagine you own a <strong>Pizza Parlor / Pizza Shop</strong> with only <strong>1 Single Chef</strong>.</li>
+              <li><strong>Chef's Limitations:</strong>
+                <ol class="notes-ordered-list" style="margin-top: 0.4rem;">
+                  <li>The chef is very slow.</li>
+                  <li>The chef's maximum capacity is <strong>2 pizza orders per hour</strong>.</li>
+                </ol>
+              </li>
+              <li><strong>The Weekend Traffic Spike:</strong> On weekends, your pizza shop suddenly starts receiving <strong>10 pizza orders per hour</strong>. Because the single slow chef can only prepare 2 pizzas per hour, they cannot handle 10 orders. You cannot ask hungry customers to wait for hours, so you need a solution to deliver pizzas on time.</li>
+            </ul>
+
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Solution 1 · Scale Up</div>
+                <div class="sub-box__title">Vertical Scaling (1 Fast Chef)</div>
+                <div class="sub-box__body">Replace the slow chef by hiring a single super-fast, skilled chef who has the capability to prepare <strong>10 pizza orders per hour</strong> all by themselves.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Solution 2 · Scale Out</div>
+                <div class="sub-box__title">Horizontal Scaling (Multiple Chefs)</div>
+                <div class="sub-box__body">Instead of relying on just 1 chef, hire <strong>3 to 4 chefs</strong> in the kitchen. Now, even if 15 orders arrive, orders get distributed among Chef 1, Chef 2, Chef 3, and Chef 4, and everyone gets their pizza on time.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "22.2",
+          title: "Technical Need for Scaling (Client-Server Architecture)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>When you build an application, you host it on a <strong>Server (Computer)</strong> that has a specific hardware capacity (a certain amount of <strong>RAM</strong> and <strong>CPUs</strong>).</li>
+              <li><strong>Low Traffic (5, 10, or 100 Users):</strong> When clients send requests, the single server easily processes them and returns responses without any issue.</li>
+              <li><strong>High Traffic (10,000 to 1 Million Users):</strong> As the number of users grows, the number of incoming requests skyrockets. A single server cannot handle that massive load and will crash — becoming a <strong>Single Point of Failure (SPOF)</strong>.</li>
+              <li><strong>The 2 Options to Handle the Load:</strong>
+                <ol class="notes-ordered-list" style="margin-top: 0.4rem;">
+                  <li><strong>Increase the capacity of the existing server</strong> (Vertical Scaling).</li>
+                  <li><strong>Increase the total number of servers</strong> and host the application across all of them (Horizontal Scaling).</li>
+                </ol>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 22.1 · Overcoming Single-Server Overload (Scale Up vs. Scale Out)</span>
+                <span class="diagram-frame-tag">100 USERS OK → 1M USERS CRASHES SINGLE SERVER</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Diagram showing single server crashing at 1 million users and solving via Vertical Scaling or Horizontal Scaling">
+                  <defs>
+                    <marker id="arrow-22" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Overloaded Server -->
+                  <rect x="20" y="64" width="220" height="114" rx="14" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.6"/>
+                  <text x="130" y="92" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">10K → 1M USERS SPIKE</text>
+                  <text x="130" y="118" text-anchor="middle" class="svg-title">1 Small Server</text>
+                  <text x="130" y="142" text-anchor="middle" class="svg-sub">Maxed RAM &amp; CPU</text>
+                  <text x="130" y="162" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Crashes (SPOF ✕)</text>
+
+                  <!-- Two Solution Branches -->
+                  <path d="M 240 100 L 342 66" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-22)"/>
+                  <path d="M 240 140 L 342 174" fill="none" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-22)"/>
+
+                  <!-- Option 1: Vertical -->
+                  <rect x="350" y="20" width="510" height="90" rx="14" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="605" y="46" text-anchor="middle" class="svg-kicker">OPTION 1 · VERTICAL SCALING (SCALE UP)</text>
+                  <text x="605" y="72" text-anchor="middle" class="svg-title">1 Super-Powerful Server (Like 1 Fast Chef → 10 Pizzas/hr)</text>
+                  <text x="605" y="94" text-anchor="middle" class="svg-sub">Upgrade existing server RAM &amp; CPU capacity</text>
+
+                  <!-- Option 2: Horizontal -->
+                  <rect x="350" y="130" width="510" height="90" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="605" y="156" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">OPTION 2 · HORIZONTAL SCALING (SCALE OUT)</text>
+                  <text x="605" y="182" text-anchor="middle" class="svg-title">Multiple Servers (Like 3–4 Chefs Distributing Orders)</text>
+                  <text x="605" y="204" text-anchor="middle" class="svg-sub">Add Server 1, Server 2, Server 3 behind a Load Balancer</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 23: VERTICAL SCALING VS. HORIZONTAL SCALING
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-23-vertical-vs-horizontal",
+      number: "23",
+      shortLabel: "Vertical vs Horizontal",
+      title: "Vertical Scaling vs. Horizontal Scaling",
+      summary: "Scale Up (upgrading or replacing a 16GB machine with a 32GB+ powerhouse) vs. Scale Out (hosting across Server 1, Server 2, Server 3 behind a Load Balancer).",
+      subtopicLabels: ["23.1 Vertical Scaling (Scale Up)", "23.2 Horizontal Scaling (Scale Out)"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "23.1",
+          title: "Vertical Scaling (Scale Up)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Core Concept:</strong> Increasing the hardware capacity/power of your <strong>single server</strong> rather than adding new servers.</li>
+              <li><strong>2 Ways to Vertically Scale:</strong>
+                <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                  <li><strong>Buy &amp; Replace with a Bigger Machine:</strong> Replace your current server (e.g., <code>16GB RAM</code> + standard CPUs) with a much larger, more powerful server (e.g., <code>32GB RAM</code> + powerful CPUs).</li>
+                  <li><strong>Upgrade the Existing Server:</strong> Enhance the existing server directly by adding more RAM (<code>16GB → 32GB</code>) and upgrading to more powerful CPUs.</li>
+                </ol>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "23.2",
+          title: "Horizontal Scaling (Scale Out)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Core Concept:</strong> Instead of increasing a single server's hardware capacity, you <strong>increase the number of servers/machines</strong> (e.g., going from <code>1 Server</code> to <code>3 Servers</code>: <code>Server 1</code>, <code>Server 2</code>, <code>Server 3</code>) and host your application across all of them.</li>
+              <li><strong>How it Handles Load:</strong> When thousands of users send requests, the load no longer falls on a single server — requests are distributed across multiple server instances using a <strong>Load Balancer</strong>.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 23.1 · Vertical Scaling (Scale Up) vs. Horizontal Scaling (Scale Out)</span>
+                <span class="diagram-frame-tag">BIGGER SINGLE MACHINE VS MORE MACHINES</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 245" class="arch-svg" role="img" aria-label="Side-by-side diagram comparing Vertical Scaling upgrading 16GB RAM to 32GB RAM on one server versus Horizontal Scaling using a Load Balancer across Server 1, Server 2, and Server 3">
+                  <defs>
+                    <marker id="arrow-23" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- LEFT: Vertical Scaling -->
+                  <rect x="16" y="16" width="412" height="212" rx="16" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="222" y="44" text-anchor="middle" class="svg-kicker">VERTICAL SCALING (SCALE UP)</text>
+
+                  <rect x="44" y="88" width="116" height="90" rx="12" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="102" y="122" text-anchor="middle" class="svg-node">Server</text>
+                  <text x="102" y="144" text-anchor="middle" class="svg-mono-xs">16GB RAM</text>
+                  <text x="102" y="162" text-anchor="middle" class="svg-sub">Standard CPU</text>
+
+                  <line x1="160" y1="133" x2="218" y2="133" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-23)"/>
+                  <text x="189" y="122" text-anchor="middle" class="svg-mono-xs">Upgrade</text>
+
+                  <rect x="226" y="64" width="174" height="138" rx="14" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="313" y="104" text-anchor="middle" class="svg-title">1 Big Server</text>
+                  <text x="313" y="132" text-anchor="middle" class="svg-mono-md">32GB+ RAM</text>
+                  <text x="313" y="156" text-anchor="middle" class="svg-sub">Powerful CPUs</text>
+                  <text x="313" y="182" text-anchor="middle" class="svg-mono-xs">No Load Balancer</text>
+
+                  <!-- RIGHT: Horizontal Scaling -->
+                  <rect x="452" y="16" width="412" height="212" rx="16" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="658" y="44" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">HORIZONTAL SCALING (SCALE OUT)</text>
+
+                  <rect x="572" y="58" width="172" height="40" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="658" y="83" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Load Balancer</text>
+
+                  <line x1="618" y1="98" x2="532" y2="132" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-23)"/>
+                  <line x1="658" y1="98" x2="658" y2="132" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-23)"/>
+                  <line x1="698" y1="98" x2="784" y2="132" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-23)"/>
+
+                  <rect x="476" y="140" width="112" height="68" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="532" y="170" text-anchor="middle" class="svg-node">Server 1</text>
+                  <text x="532" y="190" text-anchor="middle" class="svg-sub">Instance A</text>
+
+                  <rect x="602" y="140" width="112" height="68" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="658" y="170" text-anchor="middle" class="svg-node">Server 2</text>
+                  <text x="658" y="190" text-anchor="middle" class="svg-sub">Instance B</text>
+
+                  <rect x="728" y="140" width="112" height="68" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="784" y="170" text-anchor="middle" class="svg-node">Server 3</text>
+                  <text x="784" y="190" text-anchor="middle" class="svg-sub">Instance C</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 24: DETAILED COMPARISON — HORIZONTAL VS. VERTICAL SCALING
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-24-scaling-comparison",
+      number: "24",
+      shortLabel: "Comparison Table",
+      title: "Detailed Comparison — Horizontal Scaling vs. Vertical Scaling",
+      summary: "Comparing both scaling approaches across 6 core engineering dimensions: Machines, Load Balancer, Fault Tolerance (SPOF), Data Consistency, Scaling Limits, and RPC vs. IPC speed.",
+      subtopicLabels: ["24.1 6 Key Dimensions", "24.2 Comparison Table"],
+      diagramCount: 0,
+      sections: [
+        {
+          num: "24.1",
+          title: "6 Core Engineering Dimensions",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">1. Number of Machines</div>
+                <div class="sub-box__title">Multiple Servers vs. 1 Big Server</div>
+                <div class="sub-box__body"><strong>Horizontal:</strong> Uses multiple machines/servers (3, 4, or more).<br><strong>Vertical:</strong> Uses only 1 single large machine/server.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">2. Need for a Load Balancer</div>
+                <div class="sub-box__title">Required vs. Not Required</div>
+                <div class="sub-box__body"><strong>Horizontal:</strong> Requires a Load Balancer to decide which server (<code>Server 1</code>, <code>2</code>, or <code>3</code>) handles each request.<br><strong>Vertical:</strong> Does NOT require a Load Balancer (only 1 server).</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">3. Fault Tolerance &amp; SPOF</div>
+                <div class="sub-box__title">Resilient vs. Single Point of Failure</div>
+                <div class="sub-box__body"><strong>Horizontal:</strong> Highly resilient — if 1 or 2 servers crash, remaining active servers serve traffic seamlessly (No SPOF).<br><strong>Vertical:</strong> If that 1 single server crashes, the entire application goes down (SPOF).</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">4. Data Consistency</div>
+                <div class="sub-box__title">Challenging vs. Naturally Consistent</div>
+                <div class="sub-box__body"><strong>Horizontal:</strong> Maintaining data consistency can become a bottleneck because state is spread across multiple servers.<br><strong>Vertical:</strong> Strong data consistency automatically on one server.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">5. Scaling Limits</div>
+                <div class="sub-box__title">Easy Scale vs. Hardware Ceiling</div>
+                <div class="sub-box__body"><strong>Horizontal:</strong> Practically limitless — simply add more machines (<code>Server 4</code>, <code>Server 5</code>, etc.).<br><strong>Vertical:</strong> Restricted by strict physical hardware limits on RAM/CPU upgrades.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">6. Internal Communication &amp; Speed</div>
+                <div class="sub-box__title">RPC (Network) vs. IPC (In-Machine)</div>
+                <div class="sub-box__body"><strong>Horizontal:</strong> Separate servers talk over the network via <strong>RPC (Remote Procedure Calls)</strong> → slower.<br><strong>Vertical:</strong> Modules on one machine talk via <strong>IPC (Inter-Process Communication)</strong> → very fast.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "24.2",
+          title: "Side-by-Side Comparison Matrix",
+          content: `
+            <div class="comparison-table-wrapper">
+              <table class="spec-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Horizontal Scaling (Scale Out)</th>
+                    <th>Vertical Scaling (Scale Up)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Servers Used</strong></td>
+                    <td>Multiple machines/servers</td>
+                    <td>1 single big server</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Load Balancer</strong></td>
+                    <td>Required</td>
+                    <td>Not required</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Failure Risk</strong></td>
+                    <td><strong>Resilient</strong> (No SPOF)</td>
+                    <td><strong>Single Point of Failure (SPOF)</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Data Consistency</strong></td>
+                    <td>Challenging (Can become a bottleneck)</td>
+                    <td>Easy &amp; naturally consistent</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Scaling Ceiling</strong></td>
+                    <td>Easy to scale (Add more machines)</td>
+                    <td>Restricted by <strong>Hardware Limits</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Communication</strong></td>
+                    <td><strong>Network Calls (RPC)</strong> → Slower</td>
+                    <td><strong>Inter-Process Communication (IPC)</strong> → Faster</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 25: WHICH SCALING SHOULD WE USE? (THE HYBRID APPROACH)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-25-hybrid-scaling",
+      number: "25",
+      shortLabel: "Hybrid Approach",
+      title: "Which Scaling Should We Use in the Real World? (The Hybrid Approach)",
+      summary: "Why real-world production systems combine Horizontal Scaling (Resilience & infinite growth) with Vertical Scaling (powerful RAM/CPU per instance & fast IPC).",
+      subtopicLabels: ["25.1 The Hybrid Approach"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "25.1",
+          title: "Combining Horizontal & Vertical Scaling in Production",
+          content: `
+            <p><strong>Question:</strong> In a real-world production system, should we use Horizontal Scaling or Vertical Scaling?</p>
+            <p style="margin-top: 0.5rem;"><strong>Answer:</strong> Real-world systems use a <strong>Hybrid Approach</strong> that combines the best features of <strong>both</strong> Horizontal and Vertical Scaling:</p>
+
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">From Horizontal Scaling, We Take</div>
+                <div class="sub-box__title">Resilience &amp; Ease of Scaling</div>
+                <div class="sub-box__body">
+                  1. <strong>Resilience:</strong> Multiple servers behind a Load Balancer so there is no Single Point of Failure.<br><br>
+                  2. <strong>Ease of Scaling:</strong> Ability to add more server instances as traffic grows to thousands/millions of users.
+                </div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--accent);">
+                <div class="sub-box__tag">From Vertical Scaling, We Take</div>
+                <div class="sub-box__title">Data Consistency &amp; Fast Speed</div>
+                <div class="sub-box__body">
+                  Making each individual server instance reasonably powerful with strong RAM/CPU so it benefits from fast internal processing and IPC.
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 25.1 · Real-World Hybrid Scaling Architecture</span>
+                <span class="diagram-frame-tag">MULTIPLE VERTICALLY POWERFUL SERVERS BEHIND A LOAD BALANCER</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Hybrid Scaling architecture combining Load Balancer and multiple powerful vertically scaled server nodes">
+                  <defs>
+                    <marker id="arrow-25" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <rect x="330" y="18" width="220" height="48" rx="12" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.6"/>
+                  <text x="440" y="47" text-anchor="middle" class="svg-title">Load Balancer (Horizontal)</text>
+
+                  <line x1="380" y1="66" x2="180" y2="108" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-25)"/>
+                  <line x1="440" y1="66" x2="440" y2="108" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-25)"/>
+                  <line x1="500" y1="66" x2="700" y2="108" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-25)"/>
+
+                  <rect x="64" y="114" width="232" height="84" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="180" y="144" text-anchor="middle" class="svg-node">Strong Server 1</text>
+                  <text x="180" y="166" text-anchor="middle" class="svg-mono-xs">32GB RAM · High CPU</text>
+                  <text x="180" y="186" text-anchor="middle" class="svg-sub">Fast IPC + Resilient Pool</text>
+
+                  <rect x="324" y="114" width="232" height="84" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="440" y="144" text-anchor="middle" class="svg-node">Strong Server 2</text>
+                  <text x="440" y="166" text-anchor="middle" class="svg-mono-xs">32GB RAM · High CPU</text>
+                  <text x="440" y="186" text-anchor="middle" class="svg-sub">Fast IPC + Resilient Pool</text>
+
+                  <rect x="584" y="114" width="232" height="84" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="700" y="144" text-anchor="middle" class="svg-node">Strong Server 3</text>
+                  <text x="700" y="166" text-anchor="middle" class="svg-mono-xs">32GB RAM · High CPU</text>
+                  <text x="700" y="186" text-anchor="middle" class="svg-sub">Add Server 4, 5 as needed</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 26: WHY DO WE NEED TO SCALE? (MOVIE TICKET COUNTER EXAMPLE)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-26-ticket-counter",
+      number: "26",
+      shortLabel: "Ticket Counter",
+      title: "Why Do We Need to Scale? (Movie Ticket Counter Example)",
+      summary: "Single vs. Multiple Movie Ticket Counters splitting 1,000 people into 500 + 500, and why systems scale step-by-step from 0 to 1 Million+ users.",
+      subtopicLabels: ["26.1 Ticket Counter Analogy", "26.2 Software System Impact"],
+      diagramCount: 0,
+      sections: [
+        {
+          num: "26.1",
+          title: "Real-World Analogy (Single vs. Multiple Ticket Counters)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>Imagine standing at a <strong>Movie Ticket Counter</strong> where only <strong>1 single person</strong> is issuing tickets.</li>
+              <li>Suddenly, <strong>1,000 users</strong> show up at once to buy movie tickets.</li>
+              <li><strong>2 Major Problems Occur:</strong>
+                <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                  <li><strong>Massive Load on the Single Person:</strong> The single operator gets completely overwhelmed.</li>
+                  <li><strong>System Slows Down:</strong> Because 1,000 people are processed one by one, anyone standing after the 500th spot has to wait a very long time to get their ticket.</li>
+                </ol>
+              </li>
+              <li><strong>The Solution:</strong> Open a <strong>2nd Ticket Counter</strong> with another operator. Now the 1,000 people split into <strong>500 + 500</strong>, reducing the load per operator and serving everyone after the 500th spot twice as fast.</li>
+            </ul>
+          `
+        },
+        {
+          num: "26.2",
+          title: "What Happens in a Software System",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>When <code>1,000</code>, <code>5,000</code>, or <code>10,000</code> concurrent requests suddenly hit a single server:
+                <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                  <li>The server slows down and <strong>system performance degrades</strong>.</li>
+                  <li>The server can get overwhelmed and <strong>crash the entire system</strong>.</li>
+                </ol>
+              </li>
+              <li>To prevent slowdowns and crashes as user traffic grows, we scale our system step-by-step from <strong>0 to 1 Million+ users</strong> (covered across Stages 1 to 9 in the following topics).</li>
+            </ul>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 27: STAGE 1 TO STAGE 3 — SCALING THE APPLICATION TIER
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-27-stages-1-to-3",
+      number: "27",
+      shortLabel: "Stages 1–3",
+      title: "Stage 1 to Stage 3 — Scaling the Application Tier",
+      summary: "Evolution from Stage 1 (Single College-Level Server with App + DB) → Stage 2 (Separate App & DB Servers) → Stage 3 (Multiple App Servers 1, 2, 3 behind a Load Balancer).",
+      subtopicLabels: ["27.1 Stage 1: Single Server", "27.2 Stage 2: Split App & DB", "27.3 Stage 3: Multiple App Servers + LB"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "27.1",
+          title: "Stage 1: Single Server Setup (College-Level Project Architecture)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How it Works:</strong> Both the <strong>Application (Business Logic — e.g., Node.js or Spring Boot)</strong> and the <strong>Database (e.g., MongoDB or SQL)</strong> run inside the <strong>exact same single server</strong>.</li>
+              <li>The Client communicates directly with this single server.</li>
+              <li><strong>Problem:</strong> Works fine for a college project or a handful of users, but both application logic and database queries compete for the same server's CPU and RAM.</li>
+            </ul>
+          `
+        },
+        {
+          num: "27.2",
+          title: "Stage 2: Separating Application Server & Database Server",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How it Works:</strong> As initial users start growing, we decouple the application and database onto <strong>two separate servers</strong>:
+                <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                  <li><strong>Dedicated Application Server:</strong> Runs only the business logic.</li>
+                  <li><strong>Dedicated Database Server:</strong> Handles only database queries and storage.</li>
+                </ol>
+              </li>
+              <li><strong>Request Flow:</strong> <code>Client</code> → sends request to <code>Application Server</code> → queries <code>Database Server</code> (if DB operation is needed).</li>
+              <li><strong>Benefit:</strong> Distributes the load — the App Server only handles business logic load, and the DB Server only handles database load.</li>
+            </ul>
+          `
+        },
+        {
+          num: "27.3",
+          title: "Stage 3: Multiple Application Servers + Load Balancer",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Problem with a Single App Server:</strong> As users grow further, a single Application Server's CPU and memory get maxed out, slowing down performance and creating a <strong>Single Point of Failure (SPOF)</strong>.</li>
+              <li><strong>The Solution:</strong>
+                <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                  <li>Spin up <strong>Multiple Application Servers</strong> (<code>App Server 1</code>, <code>App Server 2</code>, <code>App Server 3</code>).</li>
+                  <li>Place a <strong>Load Balancer</strong> in front of them because the Client does not know which App Server to call.</li>
+                </ol>
+              </li>
+              <li><strong>How it Works:</strong> The <strong>Load Balancer</strong> inspects active traffic and server health (which server is active vs. inactive) and routes the client's request to the best available Application Server.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 27.1 · Application Tier Evolution (Stage 1 → Stage 2 → Stage 3)</span>
+                <span class="diagram-frame-tag">0 TO THOUSANDS OF USERS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Three-stage scaling evolution from Stage 1 Single Server to Stage 2 Separate App and DB to Stage 3 Load Balancer with App Server 1, 2, and 3">
+                  <defs>
+                    <marker id="arrow-27" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- STAGE 1 -->
+                  <rect x="14" y="18" width="224" height="214" rx="14" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="126" y="44" text-anchor="middle" class="svg-kicker">STAGE 1 · SINGLE SERVER</text>
+                  <rect x="44" y="64" width="164" height="128" rx="12" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.4"/>
+                  <text x="126" y="92" text-anchor="middle" class="svg-node">1 Shared Server</text>
+                  <rect x="64" y="106" width="124" height="30" rx="6" fill="var(--accent-light)"/>
+                  <text x="126" y="126" text-anchor="middle" class="svg-mono-xs">App (Node/Spring)</text>
+                  <rect x="64" y="144" width="124" height="30" rx="6" fill="var(--warning-bg)"/>
+                  <text x="126" y="164" text-anchor="middle" class="svg-mono-xs">DB (SQL/Mongo)</text>
+                  <text x="126" y="216" text-anchor="middle" class="svg-sub">Competes for CPU/RAM</text>
+
+                  <!-- STAGE 2 -->
+                  <rect x="256" y="18" width="240" height="214" rx="14" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.4"/>
+                  <text x="376" y="44" text-anchor="middle" class="svg-kicker">STAGE 2 · SPLIT APP &amp; DB</text>
+                  <rect x="288" y="64" width="176" height="48" rx="10" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                  <text x="376" y="93" text-anchor="middle" class="svg-node">Dedicated App Server</text>
+                  <line x1="376" y1="112" x2="376" y2="142" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-27)"/>
+                  <rect x="288" y="148" width="176" height="48" rx="10" fill="var(--accent-light)" stroke="var(--border-strong)"/>
+                  <text x="376" y="177" text-anchor="middle" class="svg-node">Dedicated DB Server</text>
+                  <text x="376" y="218" text-anchor="middle" class="svg-sub">App Server still 1 SPOF</text>
+
+                  <!-- STAGE 3 -->
+                  <rect x="514" y="18" width="352" height="214" rx="14" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="690" y="44" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">STAGE 3 · MULTI-APP + LOAD BALANCER</text>
+                  <rect x="614" y="56" width="152" height="32" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="690" y="77" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Load Balancer</text>
+
+                  <rect x="534" y="106" width="96" height="42" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="582" y="132" text-anchor="middle" class="svg-mono-xs">App 1</text>
+
+                  <rect x="642" y="106" width="96" height="42" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="690" y="132" text-anchor="middle" class="svg-mono-xs">App 2</text>
+
+                  <rect x="750" y="106" width="96" height="42" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="798" y="132" text-anchor="middle" class="svg-mono-xs">App 3</text>
+
+                  <rect x="598" y="168" width="184" height="42" rx="10" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="690" y="194" text-anchor="middle" class="svg-mono-xs">Single DB (Next SPOF!)</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 28: STAGE 4 — DATABASE REPLICATION (MASTER-SLAVE)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-28-stage-4-replication",
+      number: "28",
+      shortLabel: "Stage 4: Replication",
+      title: "Stage 4 — Database Replication (Master-Slave Architecture)",
+      summary: "Eliminating the Single Database SPOF: Write operations (POST/PUT/DELETE) go to Master, Master replicates to Slave 1/2/3, Read operations (GET) hit Slaves, and Slave promotes on Master crash.",
+      subtopicLabels: ["28.1 Single DB SPOF", "28.2 Master-Slave Replication", "28.3 Fault Tolerance & Failover"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "28.1",
+          title: "The Problem with a Single Database Server",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>Even though we scaled the Application Tier to 3 servers in Stage 3, all 3 App Servers still talk to <strong>only 1 single Database Server</strong>.</li>
+              <li>If that single Database crashes or goes down, <strong>zero user requests can be fulfilled</strong> — making the single Database a <strong>Single Point of Failure (SPOF)</strong>.</li>
+            </ul>
+          `
+        },
+        {
+          num: "28.2",
+          title: "The Solution: Master-Slave Database Replication",
+          content: `
+            <p>We split the database tier into <strong>1 Master Node</strong> and <strong>Multiple Slave Nodes (<code>Slave 1</code>, <code>Slave 2</code>, <code>Slave 3</code>)</strong>:</p>
+            <div class="sub-card-grid-3" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Writes Only</div>
+                <div class="sub-box__title">POST / PUT / DELETE → Master</div>
+                <div class="sub-box__body">Whenever a user updates their email address or modifies data (a <strong>Write Request</strong>), the App Server sends the write operation strictly to the <strong>Master Node</strong>.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Auto-Sync</div>
+                <div class="sub-box__title">Data Replication (Master → Slaves)</div>
+                <div class="sub-box__body">Whenever any write happens on the <strong>Master Node</strong>, the Master immediately <strong>replicates (copies)</strong> that change to all <strong>Slave Nodes</strong>. Thus, Slave Nodes are exact read copies of the Master Node.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Reads Only</div>
+                <div class="sub-box__title">GET → Slave Nodes</div>
+                <div class="sub-box__body">Whenever a user wants to fetch/view their personal details (a <strong>Read Request</strong>), the App Server queries one of the <strong>Slave Nodes</strong> (<code>Slave 1</code>, <code>Slave 2</code>, or <code>Slave 3</code>), keeping heavy read traffic off the Master.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "28.3",
+          title: "How Master-Slave Handles Failures (Fault Tolerance)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>What if <code>Slave 1</code> goes down?</strong> No problem — <code>Slave 2</code>, <code>Slave 3</code>, or <code>Slave 4</code> immediately serve the user's read requests.</li>
+              <li><strong>What if the <code>Master Node</code> itself crashes?</strong> One of the existing <strong>Slave Nodes is promoted to become the new Master Node</strong> and starts accepting Write operations, completely eliminating the Database Single Point of Failure.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 28.1 · Stage 4: Master-Slave Database Replication</span>
+                <span class="diagram-frame-tag">WRITES TO MASTER · READS TO SLAVES · AUTO-PROMOTION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="Master-Slave Database Replication diagram showing App Servers sending Writes to Master DB, Master replicating to Slave 1, 2, and 3, and App Servers reading GET requests from Slaves">
+                  <defs>
+                    <marker id="arrow-28" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- App Tier -->
+                  <rect x="20" y="76" width="184" height="114" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="112" y="108" text-anchor="middle" class="svg-title">App Servers</text>
+                  <text x="112" y="132" text-anchor="middle" class="svg-mono-xs">App 1 · App 2 · App 3</text>
+                  <text x="112" y="160" text-anchor="middle" class="svg-sub">Separates Write vs Read</text>
+
+                  <!-- Write Arrow -> Master -->
+                  <path d="M 204 106 L 332 64" fill="none" stroke="var(--warning)" stroke-width="2.2" marker-end="url(#arrow-28)"/>
+                  <text x="266" y="72" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">Writes (POST/PUT)</text>
+
+                  <!-- Master Node -->
+                  <rect x="340" y="24" width="214" height="86" rx="14" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.8"/>
+                  <text x="447" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">MASTER DB NODE</text>
+                  <text x="447" y="78" text-anchor="middle" class="svg-title">Primary Write DB</text>
+                  <text x="447" y="98" text-anchor="middle" class="svg-sub">Replicates every write</text>
+
+                  <!-- Read Arrow -> Slaves -->
+                  <path d="M 204 162 L 332 184" fill="none" stroke="var(--success)" stroke-width="2.2" marker-end="url(#arrow-28)"/>
+                  <text x="266" y="192" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Reads (GET)</text>
+
+                  <!-- Replication Arrows Master -> Slaves -->
+                  <path d="M 554 67 L 640 67 L 640 130" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="5 3" marker-end="url(#arrow-28)"/>
+                  <text x="698" y="64" text-anchor="middle" class="svg-mono-xs">Data Replication</text>
+                  <text x="698" y="82" text-anchor="middle" class="svg-sub">(Master → Slaves)</text>
+
+                  <!-- Slave Nodes Box -->
+                  <rect x="340" y="138" width="516" height="106" rx="16" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="598" y="162" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">READ REPLICA SLAVE NODES (PROMOTED IF MASTER CRASHES)</text>
+
+                  <rect x="362" y="176" width="146" height="50" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="435" y="206" text-anchor="middle" class="svg-node">Slave 1 (Read ✓)</text>
+
+                  <rect x="525" y="176" width="146" height="50" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="598" y="206" text-anchor="middle" class="svg-node">Slave 2 (Read ✓)</text>
+
+                  <rect x="688" y="176" width="146" height="50" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="761" y="206" text-anchor="middle" class="svg-node">Slave 3 (Read ✓)</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 29: STAGE 5 — ADDING CACHE MEMORY FOR BETTER PERFORMANCE
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-29-stage-5-caching",
+      number: "29",
+      shortLabel: "Stage 5: Cache",
+      title: "Stage 5 — Adding Cache Memory for Better Performance",
+      summary: "Why database disk queries take 12 ms (2+4+4+2), how in-memory Distributed Cache cuts latency by 50% to 6 ms (2+1+1+2), and step-by-step Cache Hit vs. Cache Miss flows.",
+      subtopicLabels: ["29.1 Latency Without Cache (12ms)", "29.2 Cache Hit (6ms) & Cache Miss"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "29.1",
+          title: "Why Database Queries Are Slow (Latency Breakdown WITHOUT Cache)",
+          content: `
+            <p>Database disk operations are inherently expensive and slow, especially under high user load. Suppose a client requests their personal profile details without a cache:</p>
+            <ul class="notes-bullet-list" style="margin-top: 0.75rem;">
+              <li><code>Client</code> → <code>App Server 1</code>: <strong>2 ms</strong></li>
+              <li><code>App Server 1</code> → queries <code>Slave DB 1</code>: <strong>4 ms</strong></li>
+              <li><code>Slave DB 1</code> → returns data to <code>App Server 1</code>: <strong>4 ms</strong></li>
+              <li><code>App Server 1</code> → returns response to <code>Client</code>: <strong>2 ms</strong></li>
+            </ul>
+            <div class="formula-box">Total Response Time (Without Cache) = 2 + 4 + 4 + 2 = 12 ms</div>
+          `
+        },
+        {
+          num: "29.2",
+          title: "How Distributed Cache Cuts Latency in Half (Cache Hit vs. Cache Miss)",
+          content: `
+            <p>We introduce an in-memory <strong>Distributed Cache</strong> between the Application Tier (<code>App Servers</code>) and the Data Tier (<code>Master/Slave DBs</code>). Because Cache is an <strong>in-memory solution</strong>, reading from it is ultra-fast (<strong>1 ms</strong> instead of <strong>4 ms</strong>).</p>
+
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Cache Hit · 50% Faster</div>
+                <div class="sub-box__title">When User Data IS in Cache (6 ms)</div>
+                <div class="sub-box__body">
+                  • <code>Client</code> → <code>App Server 3</code>: <strong>2 ms</strong><br>
+                  • <code>App Server 3</code> → checks <code>Cache Memory</code>: <strong>1 ms</strong><br>
+                  • <code>Cache Memory</code> → returns data: <strong>1 ms</strong><br>
+                  • <code>App Server 3</code> → returns to <code>Client</code>: <strong>2 ms</strong><br><br>
+                  <strong>Total = <code>2 + 1 + 1 + 2 = 6 ms</code></strong> (50% faster than 12 ms!)
+                </div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--warning);">
+                <div class="sub-box__tag">Cache Miss · Backfill Flow</div>
+                <div class="sub-box__title">When User Data is NOT in Cache</div>
+                <div class="sub-box__body">
+                  1. <code>App Server</code> checks <code>Cache</code> and doesn't find the data.<br>
+                  2. <code>App Server</code> queries a <strong>Slave DB Node</strong> and fetches user details.<br>
+                  3. <code>App Server</code> <strong>stores/writes that data into Cache Memory</strong> for future requests.<br>
+                  4. <code>App Server</code> returns response to <code>Client</code>.
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 29.1 · Latency Comparison: Without Cache (12 ms) vs. With Cache (6 ms)</span>
+                <span class="diagram-frame-tag">IN-MEMORY 1ms READS VS 4ms DISK READS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Latency comparison showing 12ms round trip without cache versus 6ms round trip with distributed cache hit and cache miss backfill flow">
+                  <defs>
+                    <marker id="arrow-29" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Row 1: Without Cache (12ms) -->
+                  <rect x="16" y="18" width="848" height="92" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.4"/>
+                  <text x="36" y="42" class="svg-kicker" style="fill: var(--warning);">WITHOUT CACHE (TOTAL = 12 MS)</text>
+
+                  <rect x="36" y="54" width="124" height="42" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="98" y="80" text-anchor="middle" class="svg-node">Client</text>
+
+                  <line x1="160" y1="75" x2="254" y2="75" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-29)"/>
+                  <text x="207" y="67" text-anchor="middle" class="svg-mono-xs">2ms + 2ms</text>
+
+                  <rect x="262" y="54" width="150" height="42" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="337" y="80" text-anchor="middle" class="svg-node">App Server 1</text>
+
+                  <line x1="412" y1="75" x2="520" y2="75" stroke="var(--warning)" stroke-width="2" marker-end="url(#arrow-29)"/>
+                  <text x="466" y="67" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">4ms + 4ms (Slow)</text>
+
+                  <rect x="528" y="54" width="164" height="42" rx="8" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="610" y="80" text-anchor="middle" class="svg-node">Slave DB 1 (Disk)</text>
+
+                  <rect x="714" y="54" width="132" height="42" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="780" y="80" text-anchor="middle" class="svg-mono-md" style="fill: var(--danger);">12 ms Total</text>
+
+                  <!-- Row 2: With Cache (6ms) -->
+                  <rect x="16" y="128" width="848" height="94" rx="14" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="36" y="152" class="svg-kicker" style="fill: var(--success);">WITH DISTRIBUTED CACHE HIT (TOTAL = 6 MS · 50% FASTER)</text>
+
+                  <rect x="36" y="164" width="124" height="42" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="98" y="190" text-anchor="middle" class="svg-node">Client</text>
+
+                  <line x1="160" y1="185" x2="254" y2="185" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-29)"/>
+                  <text x="207" y="177" text-anchor="middle" class="svg-mono-xs">2ms + 2ms</text>
+
+                  <rect x="262" y="164" width="150" height="42" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="337" y="190" text-anchor="middle" class="svg-node">App Server 3</text>
+
+                  <line x1="412" y1="185" x2="520" y2="185" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-29)"/>
+                  <text x="466" y="177" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">1ms + 1ms (Fast)</text>
+
+                  <rect x="528" y="164" width="164" height="42" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="610" y="190" text-anchor="middle" class="svg-node">In-Memory Cache</text>
+
+                  <rect x="714" y="164" width="132" height="42" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="780" y="190" text-anchor="middle" class="svg-mono-md" style="fill: var(--success);">6 ms (2× Fast)</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 30: STAGE 6 & STAGE 7 — CDN & MULTIPLE DATA CENTERS
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-30-stages-6-7-cdn-multidc",
+      number: "30",
+      shortLabel: "Stages 6–7: CDN",
+      title: "Stage 6 & Stage 7 — CDN (Content Delivery Network) & Multiple Data Centers",
+      summary: "Serving static content (HTML, Videos, Images, Audio) via Local UK CDN with 3-step fallback hierarchy, plus Multi-DC India/USA Intra-Region and Cross-Region failover.",
+      subtopicLabels: ["30.1 Stage 6: Global CDN", "30.2 Stage 7: Multiple Data Centers"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "30.1",
+          title: "Stage 6: Content Delivery Network (CDN) for Global Static Content",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>What is a CDN?</strong> A geographically distributed network of servers that <strong>caches and serves Static Data</strong> such as <strong>HTML pages, Videos, Images, and Audio files</strong>.</li>
+              <li><strong>The Problem (Cross-Continent Latency):</strong> Suppose you build a global platform like <strong>Netflix</strong> or <strong>Swiggy</strong>. Your main <strong>Data Centers</strong> (App Servers + Master/Slave Databases) are hosted in <strong>India</strong> and <strong>USA</strong>. Suddenly, massive user traffic starts coming from the <strong>UK Region</strong>. Without a CDN, every UK user's request must travel all the way to the India or USA Data Center, causing <strong>high network latency</strong> and a poor user experience.</li>
+              <li><strong>The Solution (Hosting a Local CDN):</strong> We deploy a <strong>local CDN in the UK</strong>. Now, UK users fetch static content (videos, images, HTML) directly from the <strong>UK CDN</strong> without hitting the India or USA Data Centers.</li>
+              <li><strong>CDN Fallback Hierarchy (If Data is Missing in the Local CDN):</strong>
+                <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                  <li><strong>Step 1:</strong> Request checks the <strong>Local UK CDN</strong>.</li>
+                  <li><strong>Step 2:</strong> If the data is not cached in the UK CDN, the request goes to the <strong>Next Nearest CDN</strong>.</li>
+                  <li><strong>Step 3:</strong> If the data is not in the nearest CDN either, the request finally goes to one of the origin <strong>Data Centers (India or USA)</strong>, fetches the data, caches it in the CDN, and serves the user.</li>
+                </ol>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "30.2",
+          title: "Stage 7: Multiple Data Centers (Multi-DC & Multi-Region High Availability)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Architecture Setup:</strong> Inside a single Region (e.g., <strong>India Region</strong>), we can deploy <strong>Multiple Data Centers</strong> (<code>Data Center 1</code>, <code>Data Center 2</code>, <code>Data Center 3</code>), and we also maintain other Regions (e.g., <strong>USA Region</strong> with <code>DC 1</code>, <code>DC 2</code>).</li>
+              <li><strong>2 Levels of Failover:</strong>
+                <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                  <li><strong>Intra-Region Data Center Failover:</strong> Inside the India Region, if <code>Data Center 1</code> crashes, <code>Data Center 2</code> serves Indian users. If <code>Data Center 2</code> also crashes, <code>Data Center 3</code> takes over.</li>
+                  <li><strong>Cross-Region Failover:</strong> If all 3 Data Centers in the <strong>India Region</strong> fail (or if the entire <strong>USA Region Data Center</strong> goes down), user traffic from the failed region is automatically routed to the healthy <strong>USA / India Region Data Center</strong>, ensuring 100% high availability.</li>
+                </ol>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 30.1 · Global CDN Fallback Hierarchy &amp; Multi-DC Regional Failover</span>
+                <span class="diagram-frame-tag">STATIC EDGE CACHING + 2-LEVEL DC FAILOVER</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Global CDN and Multi-DC diagram showing UK User hitting Local UK CDN, fallback to Nearest CDN, and origin India Region DC1 DC2 DC3 and USA Region DC1 DC2">
+                  <defs>
+                    <marker id="arrow-30" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- UK User -> UK CDN -> Nearest CDN -->
+                  <rect x="16" y="24" width="128" height="82" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="80" y="56" text-anchor="middle" class="svg-node">UK Users</text>
+                  <text x="80" y="78" text-anchor="middle" class="svg-sub">Videos / HTML</text>
+
+                  <line x1="144" y1="65" x2="180" y2="65" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-30)"/>
+
+                  <rect x="188" y="24" width="150" height="82" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="263" y="50" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">STEP 1 · HIT</text>
+                  <text x="263" y="74" text-anchor="middle" class="svg-node">Local UK CDN</text>
+                  <text x="263" y="94" text-anchor="middle" class="svg-sub">Low Latency Edge</text>
+
+                  <line x1="338" y1="65" x2="378" y2="65" stroke="var(--warning)" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arrow-30)"/>
+                  <text x="358" y="54" text-anchor="middle" class="svg-mono-xs">Miss</text>
+
+                  <rect x="386" y="24" width="158" height="82" rx="12" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="465" y="50" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">STEP 2 · FALLBACK</text>
+                  <text x="465" y="74" text-anchor="middle" class="svg-node">Nearest CDN</text>
+                  <text x="465" y="94" text-anchor="middle" class="svg-sub">Secondary Cache</text>
+
+                  <line x1="544" y1="65" x2="584" y2="65" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arrow-30)"/>
+                  <text x="564" y="54" text-anchor="middle" class="svg-mono-xs">Origin</text>
+
+                  <!-- Origin Multi-DC Regions -->
+                  <rect x="592" y="16" width="272" height="100" rx="14" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="728" y="38" text-anchor="middle" class="svg-kicker">STEP 3 · INDIA REGION (MULTI-DC)</text>
+                  <rect x="608" y="50" width="74" height="48" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="645" y="79" text-anchor="middle" class="svg-mono-xs">DC 1</text>
+                  <rect x="691" y="50" width="74" height="48" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="728" y="79" text-anchor="middle" class="svg-mono-xs">DC 2</text>
+                  <rect x="774" y="50" width="74" height="48" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="811" y="79" text-anchor="middle" class="svg-mono-xs">DC 3</text>
+
+                  <!-- USA Region -->
+                  <rect x="592" y="136" width="272" height="94" rx="14" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="728" y="158" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">USA REGION (CROSS-REGION FAILOVER)</text>
+                  <rect x="626" y="170" width="92" height="44" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="672" y="197" text-anchor="middle" class="svg-mono-xs">USA DC 1</text>
+                  <rect x="738" y="170" width="92" height="44" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="784" y="197" text-anchor="middle" class="svg-mono-xs">USA DC 2</text>
+
+                  <!-- Summary Note Bottom Left -->
+                  <rect x="16" y="136" width="528" height="94" rx="14" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="36" y="164" class="svg-kicker">MULTI-DC FAILOVER GUARANTEES</text>
+                  <text x="36" y="188" class="svg-sub">1. Intra-Region: DC 1 crashes → DC 2 takes over → DC 3 takes over</text>
+                  <text x="36" y="210" class="svg-sub">2. Cross-Region: Entire India Region down → Traffic seamlessly routes to USA Region</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 31: STAGE 8 — DATABASE SHARDING
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-31-stage-8-sharding",
+      number: "31",
+      shortLabel: "Stage 8: Sharding",
+      title: "Stage 8 — Database Sharding (Horizontal Database Scaling)",
+      summary: "Splitting a slow 1 Million-row Users Table into independent horizontal Shards (Shard 1: 1–1,000, Shard 2: 1,001–2,000) routed via Shard Keys (Name, Age, Geo, Gender).",
+      subtopicLabels: ["31.1 Massive Table Problem", "31.2 How Sharding Works", "31.3 Sharding Strategies"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "31.1",
+          title: "The Problem with a Massive Table (1 Million+ Rows)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>Suppose your <code>Users Table</code> grows to <strong>1 Million rows</strong>.</li>
+              <li>Database queries are already expensive, and running a search operation across all 1 Million entries becomes very slow (while <strong>Database Indexing</strong> helps, indexing alone has its own drawbacks and storage overhead at massive scale).</li>
+            </ul>
+          `
+        },
+        {
+          num: "31.2",
+          title: "What is Database Sharding?",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Core Concept:</strong> Splitting a huge dataset (e.g., 1 Million rows) into smaller, manageable horizontal pieces called <strong>Shards</strong> (<code>Shard 1</code>, <code>Shard 2</code>, <code>Shard 3</code>, <code>Shard 4</code>, <code>Shard 5</code>).</li>
+              <li><strong>How Shards Work:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Each Shard is an independent Database</strong> hosted on its own separate server (Horizontal Scaling of the Database).</li>
+                  <li><strong>Example Row Distribution:</strong> <code>Shard 1 (S1)</code> manages rows <code>1 to 1,000</code>; <code>Shard 2 (S2)</code> manages rows <code>1,001 to 2,000</code>; and so on across the 1 Million rows.</li>
+                </ul>
+              </li>
+              <li><strong>Why Sharding Makes Queries Fast:</strong> Instead of iterating through all 1,000,000 rows to find a record, the system uses a <strong>Shard Key</strong> to identify the exact relevant shard and searches only within that small shard (e.g., searching 1,000 rows instead of 1,000,000 rows).</li>
+            </ul>
+          `
+        },
+        {
+          num: "31.3",
+          title: "Common Sharding Strategies (Parameters / Shard Keys)",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">Strategy 01</div>
+                <div class="sub-box__title">Name-Based Sharding</div>
+                <div class="sub-box__body">Users whose names start with <code>A</code> go to one shard; users whose names start with <code>S</code> go to another shard.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Strategy 02</div>
+                <div class="sub-box__title">Age-Based Sharding</div>
+                <div class="sub-box__body">Partitioning user records across database shards based on age ranges.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Strategy 03</div>
+                <div class="sub-box__title">Geo / Location-Based Sharding</div>
+                <div class="sub-box__body">Grouping users by geographic region or country on nearby database servers.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Strategy 04</div>
+                <div class="sub-box__title">Gender-Based Sharding</div>
+                <div class="sub-box__body">Splitting table partitions using gender attributes as the shard key.</div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 31.1 · Horizontal Database Sharding (1,000,000 Rows → Small Independent Shards)</span>
+                <span class="diagram-frame-tag">SEARCH 1,000 ROWS INSTEAD OF 1,000,000</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Database Sharding diagram splitting 1 million user rows through a Shard Key Router into independent Shard 1 rows 1 to 1000, Shard 2 rows 1001 to 2000, and Shard N">
+                  <defs>
+                    <marker id="arrow-31" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Giant Unsharded Table -->
+                  <rect x="20" y="54" width="188" height="122" rx="14" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="114" y="86" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">BEFORE SHARDING</text>
+                  <text x="114" y="112" text-anchor="middle" class="svg-title">Users Table</text>
+                  <text x="114" y="136" text-anchor="middle" class="svg-mono-xs">1,000,000 Rows</text>
+                  <text x="114" y="158" text-anchor="middle" class="svg-sub">Very Slow Search</text>
+
+                  <line x1="208" y1="115" x2="262" y2="115" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-31)"/>
+
+                  <!-- Shard Key Router -->
+                  <rect x="270" y="64" width="174" height="102" rx="14" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.7"/>
+                  <text x="357" y="94" text-anchor="middle" class="svg-kicker">SHARD KEY</text>
+                  <text x="357" y="120" text-anchor="middle" class="svg-title">Shard Router</text>
+                  <text x="357" y="144" text-anchor="middle" class="svg-sub">Name · Age · Geo · ID</text>
+
+                  <!-- Fan out to Shards -->
+                  <path d="M 444 92 L 522 50" fill="none" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-31)"/>
+                  <line x1="444" y1="115" x2="522" y2="115" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-31)"/>
+                  <path d="M 444 138 L 522 180" fill="none" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-31)"/>
+
+                  <!-- Independent Shards -->
+                  <rect x="530" y="20" width="330" height="54" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="695" y="44" text-anchor="middle" class="svg-node">Shard 1 (S1 · Independent DB Server)</text>
+                  <text x="695" y="62" text-anchor="middle" class="svg-mono-xs">Rows 1 – 1,000 (Fast Lookup ✓)</text>
+
+                  <rect x="530" y="88" width="330" height="54" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="695" y="112" text-anchor="middle" class="svg-node">Shard 2 (S2 · Independent DB Server)</text>
+                  <text x="695" y="130" text-anchor="middle" class="svg-mono-xs">Rows 1,001 – 2,000</text>
+
+                  <rect x="530" y="156" width="330" height="54" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="695" y="180" text-anchor="middle" class="svg-node">Shard 3 … Shard N (Separate Servers)</text>
+                  <text x="695" y="198" text-anchor="middle" class="svg-mono-xs">Up to 1,000,000+ Rows Horizontally Scaled</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 32: STAGE 9 — MESSAGING QUEUES (KAFKA, RABBITMQ, AWS SQS)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-32-stage-9-queues",
+      number: "32",
+      shortLabel: "Stage 9: Queues",
+      title: "Stage 9 — Messaging Queues (Kafka, RabbitMQ, AWS SQS)",
+      summary: "Why 10 Million festive-sale orders crash a synchronous Payment Service (100 req/s cap), and how Producer → Kafka Queue → Consumer rate-smoothing decouples downstream services.",
+      subtopicLabels: ["32.1 Synchronous Crash (10M Sale)", "32.2 Asynchronous Queue Buffering"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "32.1",
+          title: "The Problem WITHOUT Messaging Queues (Synchronous Cascading Crash)",
+          content: `
+            <p>Imagine an <strong>Amazon-like E-Commerce Application</strong> during a festive sale where a user clicks <strong>"Place Order"</strong> (ordering Peanut Butter):</p>
+            <ul class="notes-bullet-list" style="margin-top: 0.75rem;">
+              <li>Without a queue, the <code>Order Service</code> must synchronously call 4 downstream services one after another:
+                <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                  <li><strong>Inventory Service</strong> (to decrease peanut butter stock count)</li>
+                  <li><strong>Payment Service</strong> (to process the payment)</li>
+                  <li><strong>Shipment Service</strong> (to initiate product shipping)</li>
+                  <li><strong>Notification Service</strong> (to send order confirmation and live tracking updates)</li>
+                </ol>
+              </li>
+              <li><strong>What Happens When 10 Million Requests Hit During a Sale?</strong>
+                <ul class="notes-sub-list">
+                  <li>All <strong>10 Million requests</strong> simultaneously hit <code>Order Service → Inventory Service → Payment Service → Shipment Service → Notification Service</code>.</li>
+                  <li>Suppose the <strong>Payment Service</strong> only has a maximum capacity of <strong>1 Million requests at a time</strong> (or <code>100 requests/second</code>).</li>
+                  <li>Getting slammed with 10 Million requests at once completely <strong>overwhelms and crashes the Payment Service</strong>, causing the <strong>entire order flow to fail</strong>.</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "32.2",
+          title: "The Solution WITH Messaging Queues (Asynchronous Buffering & Decoupling)",
+          content: `
+            <p>We place a <strong>Messaging Queue</strong> (<strong>Apache Kafka</strong>, <strong>RabbitMQ</strong>, or <strong>AWS SQS</strong>) between the <code>Order Service</code> and the downstream services (<code>Inventory</code>, <code>Payment</code>, <code>Shipment</code>, <code>Notification</code>):</p>
+
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Step 1 · Producer</div>
+                <div class="sub-box__title">Order Service Publishes Events</div>
+                <div class="sub-box__body">When 1M or 10M order requests arrive, they do <strong>not</strong> hit downstream services directly. The <code>Order Service</code> acts as a <strong>Producer</strong>, pushes events (<code>Order Placed</code>, <code>Order Confirmed</code>, <code>Order Ready to Ship</code>) into the <strong>Kafka Messaging Queue</strong>, and immediately replies: <em>"Your order has been placed!"</em></div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Step 2 · Consumers (Rate Smoothing)</div>
+                <div class="sub-box__title">Downstream Services Pull at Own Pace</div>
+                <div class="sub-box__body">Each consumer (<code>Payment</code>, <code>Inventory</code>, <code>Shipment</code>, <code>Notification</code>) pulls messages strictly at its own capacity. If <code>Payment Service</code> handles <strong>100 requests/sec</strong>, it pulls only 100/sec safely without crashing — and can also scale horizontally if the backlog grows!</div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 32.1 · Asynchronous Decoupling via Messaging Queue (Kafka / RabbitMQ / SQS)</span>
+                <span class="diagram-frame-tag">10M SALE SPIKE BUFFERED · ZERO CRASHES</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="Messaging Queue architecture showing 10 Million orders hitting Order Service Producer, buffering inside Kafka RabbitMQ SQS Queue, and Consumers Inventory, Payment at 100 req/s, Shipment, and Notification pulling safely at their own pace">
+                  <defs>
+                    <marker id="arrow-32" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Producer: Order Service -->
+                  <rect x="20" y="64" width="194" height="132" rx="14" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="1.6"/>
+                  <text x="117" y="92" text-anchor="middle" class="svg-kicker">PRODUCER</text>
+                  <text x="117" y="118" text-anchor="middle" class="svg-title">Order Service</text>
+                  <text x="117" y="142" text-anchor="middle" class="svg-mono-xs">10M Sale Requests</text>
+                  <text x="117" y="166" text-anchor="middle" class="svg-sub">Instant "Order Placed!"</text>
+
+                  <!-- Push Arrow -> Queue -->
+                  <line x1="214" y1="130" x2="282" y2="130" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-32)"/>
+                  <text x="248" y="118" text-anchor="middle" class="svg-mono-xs">Push</text>
+
+                  <!-- Messaging Queue -->
+                  <rect x="290" y="42" width="234" height="176" rx="16" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="407" y="70" text-anchor="middle" class="svg-kicker">MESSAGING QUEUE</text>
+                  <text x="407" y="96" text-anchor="middle" class="svg-title">Kafka / RabbitMQ / SQS</text>
+
+                  <rect x="314" y="112" width="186" height="26" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="407" y="129" text-anchor="middle" class="svg-mono-xs">Event: Order Placed</text>
+
+                  <rect x="314" y="144" width="186" height="26" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="407" y="161" text-anchor="middle" class="svg-mono-xs">Event: Order Confirmed</text>
+
+                  <rect x="314" y="176" width="186" height="26" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="407" y="193" text-anchor="middle" class="svg-mono-xs">Event: Ready to Ship</text>
+
+                  <!-- Pull Arrows to 4 Consumers -->
+                  <path d="M 524 88 L 614 48" fill="none" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-32)"/>
+                  <path d="M 524 118 L 614 104" fill="none" stroke="var(--success)" stroke-width="2.2" marker-end="url(#arrow-32)"/>
+                  <path d="M 524 146 L 614 162" fill="none" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-32)"/>
+                  <path d="M 524 174 L 614 218" fill="none" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-32)"/>
+                  <text x="568" y="138" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Pull</text>
+
+                  <!-- 4 Consumers -->
+                  <rect x="622" y="22" width="238" height="46" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="741" y="50" text-anchor="middle" class="svg-node">1. Inventory Service</text>
+
+                  <rect x="622" y="80" width="238" height="48" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="741" y="102" text-anchor="middle" class="svg-node">2. Payment Service ✓</text>
+                  <text x="741" y="120" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Pulls safely at 100 req/sec</text>
+
+                  <rect x="622" y="140" width="238" height="46" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="741" y="168" text-anchor="middle" class="svg-node">3. Shipment Service</text>
+
+                  <rect x="622" y="198" width="238" height="46" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="741" y="226" text-anchor="middle" class="svg-node">4. Notification Service</text>
                 </svg>
               </div>
             </figure>

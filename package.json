@@ -4,7 +4,6 @@
   "description": "System Design Master Notes & Interactive Architecture Simulators",
   "main": "index.html",
   "scripts": {
-    "build": "echo 'Static site ready for deployment'",
     "start": "npx serve . -l 3000",
     "dev": "npx serve . -l 3000"
   },

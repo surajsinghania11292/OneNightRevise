@@ -36,7 +36,7 @@ const SYSTEM_DESIGN_NOTES = {
               <div class="arch-system-box arch-system-box--monolith">
                 <div class="arch-system-title-row">
                   <span class="arch-system-name">Monolith Server Process (Port 3000)</span>
-                  <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--danger); font-weight:700;">TIGHTLY COUPLED</span>
+                  <span style="font-family:var(--font-mono); font-size:0.75rem; color:#B45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:var(--r-pill); border:1px solid rgba(245,158,11,0.3); font-weight:700;">TIGHTLY COUPLED</span>
                 </div>
                 <div class="monolith-container">
                   <div class="monolith-container-label">Shared In-Memory Modules (Single Binary)</div>
@@ -53,7 +53,7 @@ const SYSTEM_DESIGN_NOTES = {
                   🗄️ Single Centralized Database (Users, Courses, Carts, Payments, Orders)
                 </div>
                 <div class="arch-alert-badge arch-alert-badge--danger">
-                  💥 <strong>SPOF Failure Mode:</strong> An unmanaged memory leak or unhandled exception in <code>Payment</code> brings down the entire server process, simultaneously knocking <code>Auth</code>, <code>Cart</code>, and <code>Orders</code> offline.
+                  ⚠️ <strong>SPOF Architectural Vulnerability:</strong> An unmanaged memory leak or unhandled exception in <code>Payment</code> brings down the entire server process, simultaneously knocking <code>Auth</code>, <code>Cart</code>, and <code>Orders</code> offline.
                 </div>
               </div>
             </div>

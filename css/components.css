@@ -6,6 +6,9 @@
 /* ── PRIMARY TOPIC CARD (FOCUS ON ONE THING AT ONCE) ──────────── */
 .topic-card {
   background: var(--bg-card);
+  background-image: linear-gradient(180deg, rgba(251, 243, 212, 0.4) 0%, rgba(255, 255, 255, 0) 180px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   padding: clamp(1.75rem, 4vw, 2.75rem);
@@ -15,6 +18,10 @@
   gap: 1.75rem;
   position: relative;
   transition: border-color var(--t-normal), box-shadow var(--t-normal);
+}
+
+[data-theme="dark"] .topic-card {
+  background-image: linear-gradient(180deg, rgba(52, 211, 153, 0.08) 0%, rgba(18, 45, 33, 0) 180px);
 }
 
 .topic-card:hover {
@@ -268,7 +275,8 @@
 
 /* ── ARCHITECTURAL SCHEMAS & VISUALIZATION DIAGRAMS ───────────── */
 .arch-schema-card {
-  background: var(--bg-surface);
+  background: rgba(255, 255, 255, 0.95);
+  background-image: linear-gradient(180deg, rgba(251, 243, 212, 0.45) 0%, rgba(255, 255, 255, 0.8) 100%);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
   padding: clamp(1.25rem, 3vw, 2rem);
@@ -276,7 +284,13 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 8px 24px rgba(180, 140, 40, 0.06);
+}
+
+[data-theme="dark"] .arch-schema-card {
+  background: rgba(18, 45, 33, 0.9);
+  background-image: linear-gradient(180deg, rgba(52, 211, 153, 0.08) 0%, rgba(18, 45, 33, 0.8) 100%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 .arch-schema-header {
@@ -338,16 +352,17 @@
   box-shadow: var(--shadow-sm);
 }
 
+/* Sophisticated Warm Amber for Monolith Architecture (NO harsh red) */
 .arch-system-box--monolith {
-  border-color: rgba(190, 18, 60, 0.3);
+  border-color: rgba(217, 119, 6, 0.35);
 }
 
 .arch-system-box--microservices {
-  border-color: rgba(15, 118, 110, 0.35);
+  border-color: rgba(13, 110, 84, 0.35);
 }
 
 [data-theme="dark"] .arch-system-box--monolith {
-  border-color: rgba(251, 113, 133, 0.35);
+  border-color: rgba(251, 191, 36, 0.35);
 }
 
 [data-theme="dark"] .arch-system-box--microservices {
@@ -370,13 +385,18 @@
 
 /* Monolith Internal Module Container */
 .monolith-container {
-  background: var(--bg-surface);
-  border: 1.5px dashed var(--border-strong);
+  background: rgba(255, 253, 247, 0.95);
+  border: 1.5px dashed rgba(217, 119, 6, 0.32);
   border-radius: var(--r-md);
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
+}
+
+[data-theme="dark"] .monolith-container {
+  background: rgba(18, 45, 33, 0.85);
+  border-color: rgba(251, 191, 36, 0.3);
 }
 
 .monolith-container-label {
@@ -407,10 +427,18 @@
   gap: 0.4rem;
 }
 
+/* Warm Amber SPOF Module (Soft, clear, NO harsh red) */
 .monolith-mod--crash {
-  background: var(--danger-bg);
-  border-color: var(--danger);
-  color: var(--danger);
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.45);
+  color: #B45309;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .monolith-mod--crash {
+  background: rgba(251, 191, 36, 0.16);
+  border-color: rgba(251, 191, 36, 0.5);
+  color: #FCD34D;
 }
 
 .monolith-db-arrow {
@@ -489,10 +517,17 @@
   line-height: 1.5;
 }
 
+/* Warm Amber SPOF Alert Badge (NO harsh red) */
 .arch-alert-badge--danger {
-  background: var(--danger-bg);
-  color: var(--danger);
-  border: 1px solid var(--danger);
+  background: rgba(245, 158, 11, 0.08);
+  color: #92400E;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+}
+
+[data-theme="dark"] .arch-alert-badge--danger {
+  background: rgba(251, 191, 36, 0.12);
+  color: #FCD34D;
+  border: 1px solid rgba(251, 191, 36, 0.3);
 }
 
 .arch-alert-badge--success {

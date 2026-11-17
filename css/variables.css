@@ -5,13 +5,14 @@
 
 :root {
   /* ── LIGHT MODE (SauceLabs Sunny Cream Glow & Deep Forest Pine) ── */
-  --bg-root:         #FAF7EE;                     /* Warm sunny ivory cream */
-  --bg-gradient:     linear-gradient(180deg, #FDFCF8 0%, #FBF3D4 50%, #F5E6AC 100%);
-  --bg-surface:      #F4EEDC;
-  --bg-card:         #FFFFFF;
+  --bg-root:         #FAF5E8;                     /* Warm sunny ivory cream */
+  --bg-gradient:     radial-gradient(ellipse at 50% 0%, #FFFDF8 0%, #FBF3D4 45%, #F6E6A6 85%, #F4E297 100%);
+  --bg-surface:      #FFFDF9;                     /* Clean, luminous ivory (no muddy/dark patches) */
+  --bg-surface-tint: rgba(251, 243, 212, 0.45);   /* Soft subtle warm sunny wash */
+  --bg-card:         rgba(255, 255, 255, 0.92);   /* Luminous, readable card */
   --bg-card-raised:  #FFFFFF;
   --bg-overlay:      rgba(15, 30, 22, 0.6);
-  --nav-bg:          rgba(255, 255, 255, 0.96);
+  --nav-bg:          rgba(255, 255, 255, 0.92);
 
   /* Primary Brand (SauceLabs Core Green & Dark Pill) */
   --accent:          #0D3526;                     /* Deep Forest Pine */
@@ -34,23 +35,23 @@
 
   /* Borders & Dividers */
   --border-faint:    rgba(13, 53, 38, 0.06);
-  --border:          rgba(13, 53, 38, 0.12);
+  --border:          rgba(201, 138, 44, 0.18);   /* Warm subtle amber border */
   --border-strong:   rgba(13, 53, 38, 0.26);
 
-  /* Semantic Alerts */
+  /* Semantic Alerts (Harmonious Warm Amber / Ochre instead of harsh red) */
   --success:         #0D6E54;
-  --success-bg:      rgba(13, 110, 84, 0.1);
-  --warning:         #B45309;
-  --warning-bg:      rgba(180, 83, 9, 0.1);
-  --danger:          #BE123C;
-  --danger-bg:       rgba(190, 18, 60, 0.1);
+  --success-bg:      rgba(13, 110, 84, 0.09);
+  --warning:         #B45309;                     /* Warm Amber Honey */
+  --warning-bg:      rgba(180, 83, 9, 0.09);
+  --danger:          #C2410C;                     /* Warm Terracotta Ochre (Soft & sophisticated, NO harsh red) */
+  --danger-bg:       rgba(194, 65, 12, 0.08);
   --info:            #0369A1;
-  --info-bg:         rgba(3, 105, 161, 0.1);
+  --info-bg:         rgba(3, 105, 161, 0.08);
 
   /* Shadows (SauceLabs Soft Depth) */
-  --shadow-sm:       0 2px 8px rgba(18, 29, 23, 0.04);
-  --shadow-md:       0 10px 30px rgba(18, 29, 23, 0.07);
-  --shadow-lg:       0 20px 50px rgba(18, 29, 23, 0.09);
+  --shadow-sm:       0 2px 8px rgba(180, 140, 40, 0.05);
+  --shadow-md:       0 12px 36px rgba(180, 140, 40, 0.08);
+  --shadow-lg:       0 22px 60px rgba(180, 140, 40, 0.11);
   --shadow-glow:     0 0 0 3px rgba(13, 53, 38, 0.15);
 
   /* Typography Scale */
@@ -70,15 +71,16 @@
   --t-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── SAUCELABS FOOTER DARK GREEN THEME (Requested: "the dark green at last end of website will be my dark mode colour") ── */
+/* ── SAUCELABS FOOTER DARK GREEN THEME (Deep Forest Pine Gradient) ── */
 [data-theme="dark"] {
-  --bg-root:         #0B1C14;                     /* Exact SauceLabs footer deep dark forest green */
-  --bg-gradient:     linear-gradient(180deg, #0F251B 0%, #0B1C14 50%, #07150F 100%);
-  --bg-surface:      #11291E;                     /* Slightly elevated forest surface */
-  --bg-card:         #153326;                     /* Clean, crisp elevated dark pine card */
-  --bg-card-raised:  #1A3E2E;                     /* Floating element surface */
-  --bg-overlay:      rgba(4, 12, 8, 0.85);
-  --nav-bg:          rgba(11, 28, 20, 0.95);
+  --bg-root:         #081710;                     /* Deepest clean forest green */
+  --bg-gradient:     radial-gradient(ellipse at 50% 0%, #153828 0%, #0C2217 50%, #06130D 100%);
+  --bg-surface:      #0E271C;                     /* Clean, non-muddy elevated surface */
+  --bg-surface-tint: rgba(52, 211, 153, 0.08);
+  --bg-card:         rgba(18, 45, 33, 0.9);       /* Refined elevated dark pine card */
+  --bg-card-raised:  #1A4431;                     /* Floating element surface */
+  --bg-overlay:      rgba(3, 10, 6, 0.88);
+  --nav-bg:          rgba(10, 26, 18, 0.94);
 
   /* Mint Emerald Accent */
   --accent:          #34D399;                     /* Radiant pass emerald green */
@@ -100,22 +102,22 @@
 
   /* Borders */
   --border-faint:    rgba(255, 255, 255, 0.07);
-  --border:          rgba(255, 255, 255, 0.12);
+  --border:          rgba(52, 211, 153, 0.18);
   --border-strong:   rgba(52, 211, 153, 0.35);
 
-  /* Semantic Alerts */
+  /* Semantic Alerts (Soft warm amber/coral in dark mode instead of pink/red) */
   --success:         #4ade80;
   --success-bg:      rgba(74, 222, 128, 0.15);
   --warning:         #fbbf24;
   --warning-bg:      rgba(251, 191, 36, 0.15);
-  --danger:          #fb7185;
-  --danger-bg:       rgba(251, 113, 133, 0.16);
+  --danger:          #fb923c;                     /* Warm Coral Amber in dark mode */
+  --danger-bg:       rgba(251, 146, 60, 0.15);
   --info:            #38bdf8;
   --info-bg:         rgba(56, 189, 248, 0.16);
 
   /* Shadows */
   --shadow-sm:       0 2px 8px rgba(0, 0, 0, 0.35);
-  --shadow-md:       0 10px 30px rgba(0, 0, 0, 0.45);
-  --shadow-lg:       0 20px 55px rgba(0, 0, 0, 0.6);
+  --shadow-md:       0 12px 36px rgba(0, 0, 0, 0.45);
+  --shadow-lg:       0 22px 60px rgba(0, 0, 0, 0.6);
   --shadow-glow:     0 0 0 3px rgba(52, 211, 153, 0.25);
 }

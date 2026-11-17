@@ -21,3 +21,6 @@ build/
 
 # Local Agent caches (optional)
 .agents/
+
+# Tool runtime artifacts
+.codex/

@@ -26,6 +26,37 @@ const SYSTEM_DESIGN_NOTES = {
           content: `
             <p><strong>Structure:</strong> All application modules (<code>Auth</code>, <code>Course</code>, <code>Cart</code>, <code>Payment</code>, <code>Order</code>) reside in a single codebase with a single entry point (e.g., a single <code>server.js</code> or <code>main()</code> entry) and typically share a single database containing all tables.</p>
             <p><strong>Lifecycle:</strong> Tightly coupled — all modules must be built, tested, run, and deployed together in one unified package.</p>
+            
+            <!-- Architecture Visual Schema -->
+            <div class="arch-schema-card">
+              <div class="arch-schema-header">
+                <span class="arch-schema-title">📐 Architecture Schema · Monolithic System Blueprint</span>
+                <span class="arch-schema-badge">SINGLE CODEBASE</span>
+              </div>
+              <div class="arch-system-box arch-system-box--monolith">
+                <div class="arch-system-title-row">
+                  <span class="arch-system-name">Monolith Server Process (Port 3000)</span>
+                  <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--danger); font-weight:700;">TIGHTLY COUPLED</span>
+                </div>
+                <div class="monolith-container">
+                  <div class="monolith-container-label">Shared In-Memory Modules (Single Binary)</div>
+                  <div class="monolith-modules-row">
+                    <div class="monolith-mod">Auth Module</div>
+                    <div class="monolith-mod">Course Module</div>
+                    <div class="monolith-mod">Cart Module</div>
+                    <div class="monolith-mod monolith-mod--crash">⚠️ Payment Module (SPOF)</div>
+                    <div class="monolith-mod">Order Module</div>
+                  </div>
+                </div>
+                <div class="monolith-db-arrow">▼ All 5 Modules Query Same Central DB Connection Pool ▼</div>
+                <div class="shared-db-box">
+                  🗄️ Single Centralized Database (Users, Courses, Carts, Payments, Orders)
+                </div>
+                <div class="arch-alert-badge arch-alert-badge--danger">
+                  💥 <strong>SPOF Failure Mode:</strong> An unmanaged memory leak or unhandled exception in <code>Payment</code> brings down the entire server process, simultaneously knocking <code>Auth</code>, <code>Cart</code>, and <code>Orders</code> offline.
+                </div>
+              </div>
+            </div>
           `
         },
         {
@@ -73,6 +104,46 @@ const SYSTEM_DESIGN_NOTES = {
                 <br><br>
                 • <strong>User Service:</strong> Relational database (e.g., <strong>PostgreSQL with Prisma ORM</strong>) for structured profile data and strict schema enforcement.<br>
                 • <strong>Cart Service:</strong> Fast NoSQL key-value/document store (e.g., <strong>Redis / MongoDB</strong>) for dynamic, ephemeral shopping cart items with high write speed.
+              </div>
+            </div>
+
+            <!-- Architecture Visual Schema -->
+            <div class="arch-schema-card">
+              <div class="arch-schema-header">
+                <span class="arch-schema-title">📐 Architecture Schema · Microservices & Polyglot Persistence Fleet</span>
+                <span class="arch-schema-badge" style="color:var(--success); border-color:var(--success);">FAULT ISOLATION</span>
+              </div>
+              <div class="arch-system-box arch-system-box--microservices">
+                <div class="arch-system-title-row">
+                  <span class="arch-system-name">Decoupled Microservice Fleet</span>
+                  <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--success); font-weight:700;">INDEPENDENT LIFECYCLES</span>
+                </div>
+                <div class="microservices-services-grid">
+                  <div class="micro-service-item">
+                    <div class="micro-service-info">
+                      <div class="micro-service-name">User Service</div>
+                      <div class="micro-service-port">Port 4001 · Relational Profile Domain</div>
+                    </div>
+                    <div class="micro-service-db">🗄️ PostgreSQL + Prisma ORM</div>
+                  </div>
+                  <div class="micro-service-item">
+                    <div class="micro-service-info">
+                      <div class="micro-service-name">Cart Service</div>
+                      <div class="micro-service-port">Port 4002 · High-Write Ephemeral State</div>
+                    </div>
+                    <div class="micro-service-db">⚡ Redis / MongoDB (Key-Value)</div>
+                  </div>
+                  <div class="micro-service-item" style="border-left: 3px solid var(--accent);">
+                    <div class="micro-service-info">
+                      <div class="micro-service-name">Payment Service</div>
+                      <div class="micro-service-port">Port 4003 · Scaled to 20M Peak Requests</div>
+                    </div>
+                    <div class="micro-service-db">🗄️ Dedicated Payment DB</div>
+                  </div>
+                </div>
+                <div class="arch-alert-badge arch-alert-badge--success">
+                  🛡️ <strong>Fault Isolation Guarantee:</strong> If <code>Payment Service</code> encounters a spike and crashes, <code>User Service</code> and <code>Cart Service</code> stay 100% online. Zero cross-service failure cascade!
+                </div>
               </div>
             </div>
           `
@@ -234,6 +305,51 @@ const SYSTEM_DESIGN_NOTES = {
               desc: "Keeps the Monolith DB's payment table and the new Microservice DB in sync during partial traffic migration. When a write hits the Monolith Payment Table, it simultaneously writes an event to an <strong>Outbox Table</strong> within the same atomic database transaction. An asynchronous CDC process reads the Outbox table and pushes events to <strong>Apache Kafka</strong>, updating the Payment Microservice DB."
             }
           ]
+        },
+        {
+          type: "schema",
+          title: "Architecture Blueprint · Traffic Splitting & Outbox CDC",
+          content: `
+            <div class="arch-schema-card">
+              <div class="arch-schema-header">
+                <span class="arch-schema-title">📐 Architecture Schema · Strangler Fig Proxy & Outbox Event CDC</span>
+                <span class="arch-schema-badge">RESILIENT MIGRATION</span>
+              </div>
+              <div class="sub-card-grid-2">
+                <div class="sub-box" style="border-left: 3px solid var(--accent);">
+                  <div class="sub-box__tag">Traffic Routing Blueprint</div>
+                  <div class="sub-box__title">Strangler Reverse Proxy & Canary Dial</div>
+                  <div class="sub-box__body">
+                    <div style="font-family:var(--font-mono); font-size:0.75rem; background:var(--bg-card); padding:0.85rem; border-radius:var(--r-sm); border:1px solid var(--border); margin:0.5rem 0; line-height:1.6;">
+                      Live User Traffic<br>
+                      &nbsp;&nbsp;▼<br>
+                      <strong>[ Reverse Proxy / API Controller ]</strong><br>
+                      &nbsp;&nbsp;├─ <strong>90% Route</strong> ➔ Legacy Monolith Server<br>
+                      &nbsp;&nbsp;└─ <strong>10% Route</strong> ➔ New Payment Microservice<br>
+                      &nbsp;&nbsp;⚡ <em>[Circuit Breaker: Instant 0% Rollback Dial]</em>
+                    </div>
+                    If error rates or p99 latency spikes on the microservice, proxy controller automatically dials traffic back to 0% with zero downtime.
+                  </div>
+                </div>
+
+                <div class="sub-box" style="border-left: 3px solid var(--success);">
+                  <div class="sub-box__tag">Data Consistency Blueprint</div>
+                  <div class="sub-box__title">Transactional Outbox + Kafka Stream</div>
+                  <div class="sub-box__body">
+                    <div style="font-family:var(--font-mono); font-size:0.75rem; background:var(--bg-card); padding:0.85rem; border-radius:var(--r-sm); border:1px solid var(--border); margin:0.5rem 0; line-height:1.6;">
+                      Write Operation (Atomic ACID Transaction):<br>
+                      <strong>[ Payment Table ]</strong> + <strong>[ Outbox Table ]</strong><br>
+                      &nbsp;&nbsp;▼ (Asynchronous Debezium / CDC Poller)<br>
+                      <strong>[ Apache Kafka Event Broker ]</strong><br>
+                      &nbsp;&nbsp;▼ (Async Event Consumer)<br>
+                      <strong>[ Payment Microservice Database ]</strong>
+                    </div>
+                    Ensures dual-write consistency without distributed two-phase commit (2PC) locks.
+                  </div>
+                </div>
+              </div>
+            </div>
+          `
         }
       ]
     },
@@ -331,6 +447,30 @@ const SYSTEM_DESIGN_NOTES = {
               <div class="myth-text" style="color:var(--accent);">Q2: If API Gateway is a "Single Entry Point", how does it handle millions of requests without crashing?</div>
               <div class="fact-text">
                 <strong>Answer:</strong> It is a <em>logical single entry point per region</em>, not a single physical server globally. Traffic is distributed geographically across multiple regional API Gateways using DNS Load Balancing (Route 53 / Azure Traffic Manager).
+              </div>
+            </div>
+
+            <div class="arch-schema-card" style="margin: 1.5rem 0;">
+              <div class="arch-schema-header">
+                <span class="arch-schema-title">📐 Architecture Schema · Multi-Region Global Request Blueprint</span>
+                <span class="arch-schema-badge">MILLIONS OF REQUESTS</span>
+              </div>
+              <div style="font-family:var(--font-mono); font-size:0.75rem; background:var(--bg-card); padding:1.25rem; border-radius:var(--r-md); border:1px solid var(--border); line-height:1.8;">
+                <strong>[ Client Device (Mobile/Laptop) ]</strong><br>
+                &nbsp;&nbsp;│&nbsp; (Initiates: <code>POST /api/v1/order</code>)<br>
+                &nbsp;&nbsp;▼<br>
+                <strong>[ DNS Anycast Load Balancer (AWS Route 53 / Azure Traffic Manager) ]</strong><br>
+                &nbsp;&nbsp;│&nbsp; (Proximity & Latency Routing: Resolves closest regional gateway IP)<br>
+                &nbsp;&nbsp;├─► <strong>[ API Gateway A (California - 18.10.5.22) ]</strong> ── queries ──► <strong>[ Netflix Eureka Registry ]</strong><br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ (Dynamic AZ Selection: Checks health of AZ-1 vs AZ-2)<br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>[ Internal Load Balancer (AZ-1: Los Angeles ALB) ]</strong><br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ (Instance Distribution: Least connections / Round Robin)<br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─► [ Order Pod 1 ]<br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─► [ Order Pod 2 ] (Chosen & Executed)<br>
+                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─► [ Order Pod 3 ]<br>
+                &nbsp;&nbsp;│<br>
+                &nbsp;&nbsp;└─► <strong>[ API Gateway B (Massachusetts - 35.90.45.88) ]</strong> (Active Secondary Region)
               </div>
             </div>
 

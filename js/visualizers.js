@@ -46,69 +46,63 @@ const Visualizers = (() => {
           <!-- Animated Packet Element -->
           <div id="sim-packet" class="network-packet"></div>
 
-          <!-- Architecture Grid -->
+          <!-- Architecture Pipeline (Full Width 4-Stage Grid) -->
           <div class="sim-grid">
-            <!-- 1. Client -->
+            <!-- Stage 1: Client Device -->
             <div class="sim-col">
               <div class="sim-box sim-node" id="node-client">
-                <div class="sim-box-tag">Step 1 · Client Action</div>
+                <div class="sim-box-tag">Stage 1 · Client Action</div>
                 <div class="sim-box-title">Client Device</div>
-                <div class="sim-box-desc" id="client-loc-text">Location: California</div>
+                <div class="sim-box-desc" id="client-loc-text">Location: California (US-West)</div>
                 <div class="sim-box-sub mono">POST /api/v1/order</div>
               </div>
             </div>
 
-            <!-- 2. DNS Load Balancer -->
+            <!-- Stage 2: DNS Anycast Load Balancer -->
             <div class="sim-col">
               <div class="sim-box sim-node" id="node-dns">
-                <div class="sim-box-tag">Step 2 · Region Selection</div>
-                <div class="sim-box-title">DNS Load Balancer</div>
-                <div class="sim-box-desc">Proximity & Geo-Routing</div>
-                <div class="sim-box-sub mono" id="dns-action">Returns closest Regional IP</div>
+                <div class="sim-box-tag">Stage 2 · Region Selection</div>
+                <div class="sim-box-title">DNS Anycast Balancer</div>
+                <div class="sim-box-desc">AWS Route 53 / Azure TM</div>
+                <div class="sim-box-sub mono" id="dns-action">Resolves nearest healthy Region IP</div>
               </div>
             </div>
 
-            <!-- 3. Regional API Gateway & Availability Zones -->
-            <div class="sim-col sim-col--regions">
-              <!-- Region 1: California -->
-              <div class="sim-region-card" id="region-ca">
-                <div class="sim-region-header">
-                  <span>Region: US-California</span>
-                  <span class="badge badge--success" id="badge-ca">PRIMARY REGION</span>
+            <!-- Stage 3: Regional API Gateway + Eureka -->
+            <div class="sim-col">
+              <div class="sim-box sim-node" id="node-gw-ca">
+                <div class="sim-box-tag">Stage 3 · Regional Ingress</div>
+                <div class="sim-box-title" id="gw-title">API Gateway A (California)</div>
+                <div class="sim-box-desc" id="gw-ip">IP: 18.10.5.22 · SSL & JWT Auth</div>
+                <div class="sim-box-sub mono" id="gw-eureka">
+                  Queries Eureka Service Discovery for healthy AZ
                 </div>
-                <div class="sim-region-inner">
-                  <!-- API Gateway A -->
-                  <div class="sim-box sim-node" id="node-gw-ca">
-                    <div class="sim-box-tag">Step 3 · Service Ingress</div>
-                    <div class="sim-box-title">API Gateway A</div>
-                    <div class="sim-box-sub mono">18.10.5.22</div>
-                    <div style="font-size:0.72rem; color:var(--text-muted); margin-top:4px;">
-                      Queries Service Discovery (Eureka) for healthy AZ
-                    </div>
+              </div>
+            </div>
+
+            <!-- Stage 4 & 5: Availability Zones & Internal Pods -->
+            <div class="sim-col">
+              <div class="sim-sub-cluster">
+                <!-- AZ 1: Primary Data Center -->
+                <div class="sim-box sim-node" id="node-az1">
+                  <div class="sim-box-tag">Stage 4 · Internal LB (Primary AZ)</div>
+                  <div class="sim-box-title" id="az1-title">AZ-1: Los Angeles ALB</div>
+                  <div class="sim-box-desc">Distributes to healthiest instance</div>
+                  <div class="sim-services-row" style="margin-top: 8px;">
+                    <div class="sim-service-pill sim-node" id="node-order-1">Order-1</div>
+                    <div class="sim-service-pill sim-node" id="node-order-2">Order-2</div>
+                    <div class="sim-service-pill sim-node" id="node-order-3">Order-3</div>
                   </div>
+                </div>
 
-                  <!-- AZ1 & AZ2 Clusters -->
-                  <div class="sim-sub-cluster">
-                    <!-- AZ 1: Los Angeles -->
-                    <div class="sim-box sim-node" id="node-az1">
-                      <div class="sim-box-tag">Step 4 · Instance Selection</div>
-                      <div class="sim-box-title">AZ1: Los Angeles (ALB)</div>
-                      <div class="sim-services-row" style="margin-top:6px;">
-                        <div class="sim-service-pill sim-node" id="node-order-1">Order-1</div>
-                        <div class="sim-service-pill sim-node" id="node-order-2">Order-2</div>
-                        <div class="sim-service-pill sim-node" id="node-order-3">Order-3</div>
-                      </div>
-                    </div>
-
-                    <!-- AZ 2: San Francisco (Backup AZ) -->
-                    <div class="sim-box sim-node" id="node-az2" style="opacity:0.85;">
-                      <div class="sim-box-tag">Failover AZ</div>
-                      <div class="sim-box-title">AZ2: San Francisco (ALB)</div>
-                      <div class="sim-services-row" style="margin-top:6px;">
-                        <div class="sim-service-pill sim-node" id="node-order-sf1">Order-SF1</div>
-                        <div class="sim-service-pill sim-node" id="node-order-sf2">Order-SF2</div>
-                      </div>
-                    </div>
+                <!-- AZ 2: Failover Data Center -->
+                <div class="sim-box sim-node" id="node-az2" style="opacity: 0.85;">
+                  <div class="sim-box-tag">Failover AZ · Internal LB</div>
+                  <div class="sim-box-title" id="az2-title">AZ-2: San Francisco ALB</div>
+                  <div class="sim-box-desc">Hot standby for zero-downtime failover</div>
+                  <div class="sim-services-row" style="margin-top: 8px;">
+                    <div class="sim-service-pill sim-node" id="node-order-sf1">Order-SF1</div>
+                    <div class="sim-service-pill sim-node" id="node-order-sf2">Order-SF2</div>
                   </div>
                 </div>
               </div>
@@ -136,12 +130,25 @@ const Visualizers = (() => {
     clientLocation = (clientLocation === 'california') ? 'massachusetts' : 'california';
     const locDisplay = document.getElementById('loc-display');
     const clientDesc = document.getElementById('client-loc-text');
+    const gwTitle = document.getElementById('gw-title');
+    const gwIp = document.getElementById('gw-ip');
+    const az1Title = document.getElementById('az1-title');
+    const az2Title = document.getElementById('az2-title');
+
     if (clientLocation === 'california') {
       locDisplay.textContent = 'California';
-      clientDesc.textContent = 'Location: California';
+      clientDesc.textContent = 'Location: California (US-West)';
+      if (gwTitle) gwTitle.textContent = 'API Gateway A (California)';
+      if (gwIp) gwIp.textContent = 'IP: 18.10.5.22 · SSL & JWT Auth';
+      if (az1Title) az1Title.textContent = 'AZ-1: Los Angeles ALB';
+      if (az2Title) az2Title.textContent = 'AZ-2: San Francisco ALB';
     } else {
       locDisplay.textContent = 'Massachusetts';
-      clientDesc.textContent = 'Location: Massachusetts';
+      clientDesc.textContent = 'Location: Massachusetts (US-East)';
+      if (gwTitle) gwTitle.textContent = 'API Gateway B (Massachusetts)';
+      if (gwIp) gwIp.textContent = 'IP: 35.90.45.88 · SSL & JWT Auth';
+      if (az1Title) az1Title.textContent = 'AZ-1: Boston ALB';
+      if (az2Title) az2Title.textContent = 'AZ-2: Cambridge ALB';
     }
   }
 
@@ -211,7 +218,8 @@ const Visualizers = (() => {
       nodeClient.classList.remove('hit');
       nodeDns.classList.add('hit');
       movePacket(nodeDns, () => {
-        logEl.innerHTML = `[2/4] <strong>DNS Load Balancer:</strong> Region selection! Resolved closest region <strong>California (18.10.5.22)</strong>.`;
+        const regName = (clientLocation === 'california') ? 'California (18.10.5.22)' : 'Massachusetts (35.90.45.88)';
+        logEl.innerHTML = `[2/4] <strong>DNS Load Balancer:</strong> Proximity routing evaluated! Resolved closest region <strong>${regName}</strong>.`;
         metricEl.innerHTML = `<span class="telemetry-tag">STEP 2:</span> REGION SELECTED | <span class="telemetry-tag">TIME:</span> 12ms`;
 
         // Step 3: API Gateway + Eureka (AZ Selection)
@@ -219,10 +227,13 @@ const Visualizers = (() => {
           nodeDns.classList.remove('hit');
           nodeGw.classList.add('hit');
           movePacket(nodeGw, () => {
+            const azPrimary = (clientLocation === 'california') ? 'AZ-1 (Los Angeles)' : 'AZ-1 (Boston)';
+            const azFailover = (clientLocation === 'california') ? 'AZ-2 (San Francisco)' : 'AZ-2 (Cambridge)';
+
             if (az1Down) {
-              logEl.innerHTML = `[3/4] <strong>API Gateway + Eureka:</strong> AZ1 is DOWN. Eureka resolves healthy failover <strong>AZ2 (San Francisco)</strong>.`;
+              logEl.innerHTML = `[3/4] <strong>API Gateway + Eureka:</strong> ${azPrimary} is DOWN. Eureka dynamically resolves healthy failover <strong>${azFailover}</strong>.`;
             } else {
-              logEl.innerHTML = `[3/4] <strong>API Gateway + Eureka:</strong> Identifies Order Service. Eureka resolves healthy <strong>AZ1 (Los Angeles)</strong> ALB IP.`;
+              logEl.innerHTML = `[3/4] <strong>API Gateway + Eureka:</strong> Verified OAuth 2.0 Token. Eureka resolves healthy <strong>${azPrimary}</strong> Internal ALB.`;
             }
             metricEl.innerHTML = `<span class="telemetry-tag">STEP 3:</span> AZ RESOLVED | <span class="telemetry-tag">TIME:</span> 22ms`;
 

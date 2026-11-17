@@ -43,20 +43,21 @@ body {
 #main-nav {
   position: relative;
   width: 100%;
-  padding: 1.75rem 1.25rem 0.5rem;
+  padding: 1.5rem 2rem 0.5rem;
 }
 
 .nav-capsule {
-  max-width: 960px;
+  max-width: 1560px;
+  width: 100%;
   margin: 0 auto;
   background: var(--nav-bg);
   border: 1px solid var(--border);
   border-radius: var(--r-pill);
-  padding: 0.55rem 1.4rem;
+  padding: 0.65rem 1.75rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.25rem;
+  gap: 1.5rem;
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -144,11 +145,12 @@ body {
   color: var(--accent);
 }
 
-/* ── FOCUSED READING CANVAS (MAXIMUM SPACE) ────────────────────── */
+/* ── FOCUSED READING CANVAS (MAXIMUM SCREEN UTILIZATION) ──────── */
 .reading-canvas {
-  max-width: 920px;
+  max-width: 1560px;
+  width: 100%;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 6rem;
+  padding: 2.5rem 2.25rem 6rem;
   display: flex;
   flex-direction: column;
   gap: 3.5rem;
@@ -157,10 +159,16 @@ body {
 /* ── SAUCELABS STYLE HERO BANNER ──────────────────────────────── */
 .hero-banner {
   text-align: center;
-  padding: 2rem 0 1rem;
+  padding: 3rem 1.5rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: var(--bg-gradient);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
 }
 
 .hero-kicker {

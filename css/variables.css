@@ -1,45 +1,45 @@
 /* ═══════════════════════════════════════════════════════════════
    VARIABLES.CSS — SauceLabs Inspired Design Tokens
-   Warm Ivory Luminous Light Mode & Refined Soft Slate Dark Mode
+   Warm Sunny Cream Light Mode & Deep Forest Green Footer Dark Mode
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ── LIGHT MODE (SauceLabs Warm Ivory & Forest Slate) ── */
-  --bg-root:         #FAF8F3;                     /* Warm ivory cream background */
-  --bg-gradient:     linear-gradient(180deg, #FDFBF7 0%, #FAF8F3 40%, #F5F1E8 100%);
-  --bg-surface:      #F3EFE6;
+  /* ── LIGHT MODE (SauceLabs Sunny Cream Glow & Deep Forest Pine) ── */
+  --bg-root:         #FAF7EE;                     /* Warm sunny ivory cream */
+  --bg-gradient:     linear-gradient(180deg, #FDFCF8 0%, #FBF3D4 50%, #F5E6AC 100%);
+  --bg-surface:      #F4EEDC;
   --bg-card:         #FFFFFF;
   --bg-card-raised:  #FFFFFF;
-  --bg-overlay:      rgba(26, 32, 28, 0.6);
-  --nav-bg:          rgba(255, 255, 255, 0.95);
+  --bg-overlay:      rgba(15, 30, 22, 0.6);
+  --nav-bg:          rgba(255, 255, 255, 0.96);
 
-  /* Primary Brand */
-  --accent:          #0F4C3A;                     /* Deep Forest Pine */
-  --accent-hover:    #16654F;
-  --accent-light:    rgba(15, 76, 58, 0.08);
-  --accent-medium:   rgba(15, 76, 58, 0.15);
-  --accent-strong:   rgba(15, 76, 58, 0.28);
+  /* Primary Brand (SauceLabs Core Green & Dark Pill) */
+  --accent:          #0D3526;                     /* Deep Forest Pine */
+  --accent-hover:    #154E38;
+  --accent-light:    rgba(13, 53, 38, 0.08);
+  --accent-medium:   rgba(13, 53, 38, 0.16);
+  --accent-strong:   rgba(13, 53, 38, 0.3);
 
   /* Secondary & Pill Buttons */
-  --btn-dark:        #1A221E;                     /* SauceLabs style dark pill */
-  --btn-dark-hover:  #2C3832;
-  --accent-gold:     #C99A45;
-  --accent-gold-bg:  rgba(201, 154, 69, 0.1);
+  --btn-dark:        #111A15;                     /* Deepest Black-Pine Pill */
+  --btn-dark-hover:  #202E26;
+  --accent-gold:     #C98A2C;
+  --accent-gold-bg:  rgba(201, 138, 44, 0.12);
 
   /* Text Hierarchy */
-  --text-primary:    #151C18;                     /* Deep rich dark */
-  --text-secondary:  #3D4A43;                     /* Readable body text */
-  --text-muted:      #6B7A72;
-  --text-faint:      #A3B0A8;
+  --text-primary:    #121D17;                     /* Deep readable text */
+  --text-secondary:  #37463D;                     /* High-contrast body copy */
+  --text-muted:      #66786D;
+  --text-faint:      #9CAE9F;
 
   /* Borders & Dividers */
-  --border-faint:    rgba(15, 76, 58, 0.06);
-  --border:          rgba(15, 76, 58, 0.12);
-  --border-strong:   rgba(15, 76, 58, 0.24);
+  --border-faint:    rgba(13, 53, 38, 0.06);
+  --border:          rgba(13, 53, 38, 0.12);
+  --border-strong:   rgba(13, 53, 38, 0.26);
 
   /* Semantic Alerts */
-  --success:         #0F766E;
-  --success-bg:      rgba(15, 118, 110, 0.1);
+  --success:         #0D6E54;
+  --success-bg:      rgba(13, 110, 84, 0.1);
   --warning:         #B45309;
   --warning-bg:      rgba(180, 83, 9, 0.1);
   --danger:          #BE123C;
@@ -48,10 +48,10 @@
   --info-bg:         rgba(3, 105, 161, 0.1);
 
   /* Shadows (SauceLabs Soft Depth) */
-  --shadow-sm:       0 2px 6px rgba(21, 28, 24, 0.04);
-  --shadow-md:       0 8px 24px rgba(21, 28, 24, 0.06);
-  --shadow-lg:       0 16px 48px rgba(21, 28, 24, 0.08);
-  --shadow-glow:     0 0 0 3px rgba(15, 76, 58, 0.15);
+  --shadow-sm:       0 2px 8px rgba(18, 29, 23, 0.04);
+  --shadow-md:       0 10px 30px rgba(18, 29, 23, 0.07);
+  --shadow-lg:       0 20px 50px rgba(18, 29, 23, 0.09);
+  --shadow-glow:     0 0 0 3px rgba(13, 53, 38, 0.15);
 
   /* Typography Scale */
   --font-display:    'Fraunces', Georgia, serif;
@@ -70,52 +70,52 @@
   --t-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── SOFT SLATE DARK MODE (Softer, Airy Charcoal with Mint Touch) ── */
+/* ── SAUCELABS FOOTER DARK GREEN THEME (Requested: "the dark green at last end of website will be my dark mode colour") ── */
 [data-theme="dark"] {
-  --bg-root:         #131916;                     /* Soft charcoal with warm undertone */
-  --bg-gradient:     linear-gradient(180deg, #18201D 0%, #131916 50%, #0F1412 100%);
-  --bg-surface:      #1B2320;
-  --bg-card:         #212B26;                     /* Elevated, readable card */
-  --bg-card-raised:  #293630;
-  --bg-overlay:      rgba(0, 0, 0, 0.75);
-  --nav-bg:          rgba(27, 35, 32, 0.95);
+  --bg-root:         #0B1C14;                     /* Exact SauceLabs footer deep dark forest green */
+  --bg-gradient:     linear-gradient(180deg, #0F251B 0%, #0B1C14 50%, #07150F 100%);
+  --bg-surface:      #11291E;                     /* Slightly elevated forest surface */
+  --bg-card:         #153326;                     /* Clean, crisp elevated dark pine card */
+  --bg-card-raised:  #1A3E2E;                     /* Floating element surface */
+  --bg-overlay:      rgba(4, 12, 8, 0.85);
+  --nav-bg:          rgba(11, 28, 20, 0.95);
 
   /* Mint Emerald Accent */
-  --accent:          #34D399;
+  --accent:          #34D399;                     /* Radiant pass emerald green */
   --accent-hover:    #6EE7B7;
   --accent-light:    rgba(52, 211, 153, 0.12);
-  --accent-medium:   rgba(52, 211, 153, 0.2);
-  --accent-strong:   rgba(52, 211, 153, 0.35);
+  --accent-medium:   rgba(52, 211, 153, 0.22);
+  --accent-strong:   rgba(52, 211, 153, 0.4);
 
-  --btn-dark:        #34D399;                     /* Pill buttons in dark mode */
+  --btn-dark:        #34D399;                     /* High-visibility pill button in dark mode */
   --btn-dark-hover:  #6EE7B7;
-  --accent-gold:     #F3C68F;
-  --accent-gold-bg:  rgba(243, 198, 143, 0.12);
+  --accent-gold:     #FCD34D;
+  --accent-gold-bg:  rgba(252, 211, 77, 0.14);
 
   /* Text Hierarchy */
-  --text-primary:    #F6F9F7;
-  --text-secondary:  #A7B8B0;
-  --text-muted:      #73857D;
-  --text-faint:      #4D5D56;
+  --text-primary:    #F3F9F6;                     /* Crisp off-white */
+  --text-secondary:  #B0C8BD;                     /* Clear readable pale sage */
+  --text-muted:      #789688;
+  --text-faint:      #4D6E60;
 
   /* Borders */
-  --border-faint:    rgba(255, 255, 255, 0.06);
+  --border-faint:    rgba(255, 255, 255, 0.07);
   --border:          rgba(255, 255, 255, 0.12);
   --border-strong:   rgba(52, 211, 153, 0.35);
 
-  /* Semantic */
+  /* Semantic Alerts */
   --success:         #4ade80;
-  --success-bg:      rgba(74, 222, 128, 0.14);
+  --success-bg:      rgba(74, 222, 128, 0.15);
   --warning:         #fbbf24;
-  --warning-bg:      rgba(251, 191, 36, 0.14);
+  --warning-bg:      rgba(251, 191, 36, 0.15);
   --danger:          #fb7185;
-  --danger-bg:       rgba(251, 113, 133, 0.15);
+  --danger-bg:       rgba(251, 113, 133, 0.16);
   --info:            #38bdf8;
-  --info-bg:         rgba(56, 189, 248, 0.15);
+  --info-bg:         rgba(56, 189, 248, 0.16);
 
   /* Shadows */
-  --shadow-sm:       0 2px 6px rgba(0, 0, 0, 0.25);
-  --shadow-md:       0 8px 24px rgba(0, 0, 0, 0.35);
-  --shadow-lg:       0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-sm:       0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-md:       0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-lg:       0 20px 55px rgba(0, 0, 0, 0.6);
   --shadow-glow:     0 0 0 3px rgba(52, 211, 153, 0.25);
 }

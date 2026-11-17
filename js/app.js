@@ -43,7 +43,15 @@ function renderTopics() {
 
   let html = '';
 
-  SYSTEM_DESIGN_NOTES.topics.forEach((topic) => {
+  SYSTEM_DESIGN_NOTES.topics.forEach((topic, idx) => {
+    if (idx > 0) {
+      html += `
+        <div class="topic-separator" aria-hidden="true">
+          <span>Topic ${topic.number}</span>
+        </div>
+      `;
+    }
+
     html += `
       <section class="topic-card" id="${topic.id}">
         <!-- Focus Header Bar -->
@@ -55,7 +63,7 @@ function renderTopics() {
           <span class="topic-progress-badge">TOPIC ${topic.number} OF 06</span>
         </div>
 
-        <div>
+        <div class="topic-intro-box">
           <h2 class="topic-title">${topic.number}. ${topic.title}</h2>
           <p class="topic-subtitle">${topic.lead}</p>
         </div>

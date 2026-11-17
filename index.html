@@ -6,6 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OneNightRevise — System Design Master Study Notes</title>
 
+  <!-- ── UNIQUE BRAND FAVICON (SHOWS IN CHROME TAB) ── -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="shortcut icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/favicon.svg">
+  <meta name="theme-color" content="#0A3424">
+
   <!-- ── EARLY THEME INITIALIZER (Prevents flash of wrong theme) ── -->
   <script>
     (function () {
@@ -38,7 +44,7 @@
   <header id="main-nav">
     <div class="nav-capsule">
       <a href="#" class="nav-brand">
-        <div class="brand-icon">SD</div>
+        <img src="assets/favicon.svg" alt="OneNightRevise Logo" class="brand-logo-img" width="34" height="34">
         <span class="brand-title">OneNightRevise</span>
       </a>
 
@@ -79,11 +85,11 @@
     <!-- QUICK TOPIC JUMP CAPSULE BAR -->
     <nav class="quick-jump-bar" id="quick-jump-mount" aria-label="Topic navigation"></nav>
 
-    <!-- ── THE 6 CORE TOPIC CARDS (ROUNDED, GENEROUS PADDING) ── -->
-    <div id="topics-mount" style="display: flex; flex-direction: column; gap: 3rem;"></div>
+    <!-- ── THE 6 CORE TOPIC CARDS (SUBTLE ROUNDED BOXES WITH CLEAR SEPARATION GAP) ── -->
+    <div id="topics-mount" class="topics-stack"></div>
 
     <!-- ── INTERACTIVE ARCHITECTURE LAB ── -->
-    <section class="topic-card" id="interactive-simulator" style="border-color: var(--accent);">
+    <section class="topic-card" id="interactive-simulator">
       <div class="topic-header-bar">
         <div class="topic-kicker">
           <span class="pulse-dot"></span>
@@ -92,7 +98,7 @@
         <span class="topic-progress-badge">HANDS-ON SIMULATION</span>
       </div>
 
-      <div>
+      <div class="topic-intro-box">
         <h2 class="topic-title">Live Architecture Simulators</h2>
         <p class="topic-subtitle">
           Test and observe real-world request journeys across Anycast DNS, edge API gateways, and regional availability zones.

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#134B35"/>
+      <stop offset="100%" stop-color="#09291C"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDF4C4"/>
+      <stop offset="100%" stop-color="#EAB308"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded Squircle Badge -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGrad)" stroke="#F6E49A" stroke-width="2" stroke-opacity="0.45"/>
+
+  <!-- Crescent Moon (OneNight) -->
+  <path d="M31.5 14C21.8 14 14 21.8 14 31.5C14 41.2 21.8 49 31.5 49C36.8 49 41.5 46.6 44.7 42.9C43.1 43.3 41.4 43.5 39.7 43.5C30.4 43.5 22.9 36 22.9 26.7C22.9 21.6 25.1 17.1 28.7 14.1C29.6 14 30.5 14 31.5 14Z" fill="url(#goldGrad)"/>
+
+  <!-- Distributed System Nodes + Connection Lines (System Design Revise) -->
+  <line x1="36" y1="24" x2="47" y2="19" stroke="#FDF4C4" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="36" y1="24" x2="48" y2="33" stroke="#FDF4C4" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="36" cy="24" r="3.6" fill="#5EEAD4"/>
+  <circle cx="47" cy="19" r="3.2" fill="#FDF4C4"/>
+  <circle cx="48" cy="33" r="3.2" fill="#F6E49A"/>
+</svg>

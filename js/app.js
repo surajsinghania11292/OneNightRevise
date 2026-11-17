@@ -1,275 +1,406 @@
 /* ═══════════════════════════════════════════════════════════════
-   APP.JS — Render Engine & Inline Interactive Architecture Simulators
-   Structured Numbered Sections (1.1, 1.2, 2.1, etc.) + Live Demos
+   APP.JS — Expandable Topic Study Engine
+   Features:
+   • Collapsed Rectangular Preview Cards (Click to Expand)
+   • Sticky Active-Topic Topbar with Live Per-Topic Scroll Progress
+   • One-Click Close Topic & Mark Complete (Persisted in localStorage)
+   • Overall Revision Progress Bar
    ═══════════════════════════════════════════════════════════════ */
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderQuickJumpBar();
-  renderTopics();
-  initInlineBlueprints();
+const StudyApp = (() => {
+  const STORAGE_KEY = 'onr-completed-topics';
+  let activeTopicId = null;
+  let completedTopics = new Set();
 
-  // Initialize UI & Global Simulators
-  UI.init();
-  Visualizers.init();
-});
-
-/* ── 1. RENDER QUICK JUMP CAPSULE BAR ─────────────────────────── */
-function renderQuickJumpBar() {
-  const jumpMount = document.getElementById('quick-jump-mount');
-  if (!jumpMount) return;
-
-  let html = ``;
-  SYSTEM_DESIGN_NOTES.topics.forEach((t, i) => {
-    html += `
-      <a href="#${t.id}" class="jump-pill ${i === 0 ? 'active' : ''}">
-        ${t.number}. ${t.title}
-      </a>
-    `;
-  });
-
-  html += `
-    <a href="#interactive-simulator" class="jump-pill" style="border:1px solid var(--border); font-weight:600;">
-      ⚡ Live Global Lab
-    </a>
-  `;
-
-  jumpMount.innerHTML = html;
-}
-
-/* ── 2. RENDER THE 6 TOPIC CARDS WITH NUMBERED STRUCTURE ──────── */
-function renderTopics() {
-  const mount = document.getElementById('topics-mount');
-  if (!mount) return;
-
-  let html = '';
-
-  SYSTEM_DESIGN_NOTES.topics.forEach((topic, idx) => {
-    if (idx > 0) {
-      html += `
-        <div class="topic-separator" aria-hidden="true">
-          <span>Topic ${topic.number}</span>
-        </div>
-      `;
+  function loadCompleted() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          completedTopics = new Set(parsed);
+        }
+      }
+    } catch (e) {
+      completedTopics = new Set();
     }
+  }
 
-    html += `
-      <section class="topic-card" id="${topic.id}">
-        <!-- Focus Header Bar -->
-        <div class="topic-header-bar">
-          <div class="topic-kicker">
-            <span class="pulse-dot"></span>
-            <span>${topic.kicker}</span>
-          </div>
-          <span class="topic-progress-badge">TOPIC ${topic.number} OF 06</span>
-        </div>
+  function saveCompleted() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...completedTopics]));
+    } catch (e) { }
+  }
 
-        <div class="topic-intro-box">
-          <h2 class="topic-title">${topic.number}. ${topic.title}</h2>
-          <p class="topic-subtitle">${topic.lead}</p>
-        </div>
-    `;
+  /* ── 1. RENDER NAVBAR LINKS DYNAMICALLY ─────────────────────── */
+  function renderNavbarLinks() {
+    const navMount = document.getElementById('nav-links-mount');
+    if (!navMount) return;
 
-    // Render Structured Numbered Subsections
-    topic.sections.forEach((sec) => {
-      html += `<div class="section-block">`;
+    navMount.innerHTML = SYSTEM_DESIGN_NOTES.topics.map(t => `
+      <li>
+        <a href="#${t.id}" class="nav-link" data-nav-topic="${t.id}">
+          ${t.number}. ${t.shortLabel}
+        </a>
+      </li>
+    `).join('');
 
-      if (sec.title) {
-        if (sec.num) {
-          html += `
+    navMount.querySelectorAll('[data-nav-topic]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = link.getAttribute('data-nav-topic');
+        openTopic(id, true);
+      });
+    });
+  }
+
+  /* ── 2. RENDER ALL EXPANDABLE RECTANGULAR TOPIC CARDS ───────── */
+  function renderTopics() {
+    const mount = document.getElementById('topics-mount');
+    if (!mount) return;
+
+    const total = SYSTEM_DESIGN_NOTES.topics.length;
+    let html = '';
+
+    SYSTEM_DESIGN_NOTES.topics.forEach((topic, idx) => {
+      const isDone = completedTopics.has(topic.id);
+      const nextTopic = SYSTEM_DESIGN_NOTES.topics[idx + 1] || null;
+      const subCount = topic.sections.length;
+      const diagText = topic.diagramCount === 1 ? '1 Diagram' : `${topic.diagramCount} Diagrams`;
+
+      const previewChips = (topic.subtopicLabels || []).map(lbl => `
+        <span class="preview-chip">${lbl}</span>
+      `).join('');
+
+      let sectionsHtml = '';
+      topic.sections.forEach((sec) => {
+        sectionsHtml += `<div class="section-block">`;
+
+        if (sec.title) {
+          sectionsHtml += `
             <div class="section-numbered-heading">
               <span class="section-index-badge">${sec.num}</span>
               <h3 class="section-title-text">${sec.title}</h3>
             </div>
           `;
-        } else {
-          html += `<h3 class="section-title-text">${sec.title}</h3>`;
         }
-      }
 
-      if (sec.content) {
-        html += `<div style="color:var(--text-secondary); line-height:1.8;">${sec.content}</div>`;
-      }
+        if (sec.content) {
+          sectionsHtml += `<div style="color:var(--text-secondary); line-height:1.8;">${sec.content}</div>`;
+        }
 
-      if (sec.rule) {
-        html += sec.rule;
-      }
+        if (sec.steps && sec.type === 'workflow') {
+          sectionsHtml += `<div class="workflow-stack">`;
+          sec.steps.forEach(st => {
+            sectionsHtml += `
+              <div class="workflow-step">
+                <div class="step-circle">${st.num}</div>
+                <div>
+                  <div class="workflow-step__title">${st.title}</div>
+                  <div class="workflow-step__desc">${st.desc}</div>
+                </div>
+              </div>
+            `;
+          });
+          sectionsHtml += `</div>`;
+        }
 
-      // Render 3 Bottlenecks or 3 Gateway Capabilities Grid
-      if (sec.items && (sec.type === 'bottlenecks' || sec.type === 'solutions' || sec.type === 'gateway-features')) {
-        html += `<div class="sub-card-grid-3">`;
-        sec.items.forEach(item => {
-          html += `
-            <div class="sub-box">
-              <div class="sub-box__tag">${item.tag}</div>
-              <div class="sub-box__title">${item.title}</div>
-              <div class="sub-box__body">${item.desc}</div>
-            </div>
-          `;
-        });
-        html += `</div>`;
-      }
+        sectionsHtml += `</div>`;
+      });
 
-      // Render 4 Migration Patterns Grid
-      if (sec.items && sec.type === 'patterns') {
-        html += `<div class="sub-card-grid-2">`;
-        sec.items.forEach(item => {
-          html += `
-            <div class="sub-box" style="border-left: 3px solid var(--accent);">
-              <div class="sub-box__tag">${item.tag}</div>
-              <div class="sub-box__title">${item.title}</div>
-              <div class="sub-box__body">${item.desc}</div>
-            </div>
-          `;
-        });
-        html += `</div>`;
-      }
+      html += `
+        <article class="topic-card ${isDone ? 'is-completed' : ''}" id="${topic.id}" data-topic-id="${topic.id}">
+          <!-- Clickable Rectangular Summary Header -->
+          <div class="topic-card-summary" role="button" tabindex="0" aria-expanded="false" data-toggle-topic="${topic.id}">
+            <div class="topic-summary-main">
+              <div class="topic-summary-top-row">
+                <span class="topic-num-pill">TOPIC ${topic.number} OF ${String(total).padStart(2, '0')}</span>
+                <span class="topic-done-badge">✓ Completed</span>
+                <span class="topic-meta-count">${subCount} Subtopics · ${diagText}</span>
+              </div>
 
-      // Render 6-Step Workflow Stack
-      if (sec.steps && sec.type === 'workflow') {
-        html += `<div class="workflow-stack">`;
-        sec.steps.forEach(st => {
-          html += `
-            <div class="workflow-step">
-              <div class="step-circle">${st.num}</div>
-              <div>
-                <div class="workflow-step__title">${st.title}</div>
-                <div class="workflow-step__desc">${st.desc}</div>
+              <h2 class="topic-title">${topic.number}. ${topic.title}</h2>
+              <p class="topic-subtitle">${topic.summary}</p>
+
+              <div class="topic-preview-pills">
+                ${previewChips}
               </div>
             </div>
-          `;
-        });
-        html += `</div>`;
-      }
 
-      html += `</div>`;
+            <div class="topic-summary-action">
+              <span class="topic-expand-btn" data-expand-label="${topic.id}">Read Topic ↓</span>
+            </div>
+          </div>
+
+          <!-- Expanded Full Content Body -->
+          <div class="topic-card-body">
+            ${sectionsHtml}
+
+            <!-- Bottom Completion & Close Footer -->
+            <div class="topic-footer-bar">
+              <div style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center;">
+                <button type="button" class="topbar-btn topbar-btn--complete ${isDone ? 'is-done' : ''}" data-footer-complete="${topic.id}">
+                  ${isDone ? '✓ Completed' : '✓ Mark Topic Complete'}
+                </button>
+                <button type="button" class="topbar-btn topbar-btn--close" data-footer-close="${topic.id}">
+                  ✕ Close Topic
+                </button>
+              </div>
+
+              ${nextTopic ? `
+                <button type="button" class="topbar-btn topbar-btn--complete" data-next-topic="${nextTopic.id}">
+                  Next: Topic ${nextTopic.number} →
+                </button>
+              ` : `
+                <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--text-muted);">
+                  End of current notes
+                </span>
+              `}
+            </div>
+          </div>
+        </article>
+      `;
     });
 
-    html += `</section>`;
-  });
-
-  mount.innerHTML = html;
-}
-
-/* ── 3. INTERACTIVE INLINE ARCHITECTURE BLUEPRINT CONTROLLERS ─── */
-function initInlineBlueprints() {
-  /* 3A. TOPIC 1: MONOLITH SPOF FAILURE CASCADE */
-  const btnCrashMono = document.getElementById('btn-crash-monolith');
-  const btnResetMono = document.getElementById('btn-reset-monolith');
-  const monoContainer = document.getElementById('mono-process-container');
-  const monoStatusPill = document.getElementById('mono-status-pill');
-  const modPayment = document.getElementById('mod-payment');
-  const collateralMods = ['mod-auth', 'mod-course', 'mod-cart', 'mod-order'];
-  const monoDbBox = document.getElementById('mono-db-box');
-  const monoDiag = document.getElementById('mono-diagnostic');
-
-  if (btnCrashMono && btnResetMono && monoContainer) {
-    btnCrashMono.addEventListener('click', () => {
-      monoContainer.classList.add('system-crashed');
-      monoStatusPill.textContent = '⚠️ STATUS: 503 CRASHED (OS PROCESS KILLED)';
-      monoStatusPill.style.color = '#B45309';
-      monoStatusPill.style.borderColor = '#B45309';
-
-      if (modPayment) modPayment.classList.add('crashed-mod');
-      collateralMods.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('collateral-crash');
-      });
-
-      if (monoDbBox) {
-        monoDbBox.innerHTML = '<span>⚠️ Connection Pool Dropped: 0 / 50 Active Connections</span>';
-        monoDbBox.style.borderColor = '#B45309';
-      }
-
-      if (monoDiag) monoDiag.style.display = 'flex';
-    });
-
-    btnResetMono.addEventListener('click', () => {
-      monoContainer.classList.remove('system-crashed');
-      monoStatusPill.textContent = '● STATUS: ONLINE (100% HEALTHY)';
-      monoStatusPill.style.color = 'var(--success)';
-      monoStatusPill.style.borderColor = 'var(--success)';
-
-      if (modPayment) modPayment.classList.remove('crashed-mod');
-      collateralMods.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.remove('collateral-crash');
-      });
-
-      if (monoDbBox) {
-        monoDbBox.innerHTML = '<span>🗄️ Single Central Database (Tables: users, courses, carts, payments, orders)</span>';
-        monoDbBox.style.borderColor = 'var(--border-strong)';
-      }
-
-      if (monoDiag) monoDiag.style.display = 'none';
-    });
+    mount.innerHTML = html;
+    bindCardEvents();
+    updateOverallProgress();
   }
 
-  /* 3B. TOPIC 2: MICROSERVICES FAULT ISOLATION */
-  const btnCrashMicro = document.getElementById('btn-crash-micro');
-  const btnResetMicro = document.getElementById('btn-reset-micro');
-  const podPayment = document.getElementById('pod-payment');
-  const statusPayment = document.getElementById('status-payment');
-  const microDiag = document.getElementById('micro-diagnostic');
+  /* ── 3. BIND CLICK & KEYBOARD EVENTS ────────────────────────── */
+  function bindCardEvents() {
+    // Expand / Collapse on rectangular card click
+    document.querySelectorAll('[data-toggle-topic]').forEach(header => {
+      const handleToggle = () => {
+        const id = header.getAttribute('data-toggle-topic');
+        if (activeTopicId === id) {
+          closeActiveTopic(false);
+        } else {
+          openTopic(id, true);
+        }
+      };
 
-  if (btnCrashMicro && btnResetMicro && podPayment) {
-    btnCrashMicro.addEventListener('click', () => {
-      podPayment.classList.remove('pod-healthy');
-      podPayment.classList.add('pod-crashed');
-      if (statusPayment) {
-        statusPayment.textContent = '⚠️ CIRCUIT BREAKER OPEN (DOWN)';
-        statusPayment.classList.remove('status-ok');
-        statusPayment.classList.add('status-down');
-      }
-      if (microDiag) microDiag.style.display = 'flex';
-    });
-
-    btnResetMicro.addEventListener('click', () => {
-      podPayment.classList.remove('pod-crashed');
-      podPayment.classList.add('pod-healthy');
-      if (statusPayment) {
-        statusPayment.textContent = '● ONLINE (HEALTHY)';
-        statusPayment.classList.remove('status-down');
-        statusPayment.classList.add('status-ok');
-      }
-      if (microDiag) microDiag.style.display = 'none';
-    });
-  }
-
-  /* 3C. TOPIC 5: STRANGLER FIG CANARY SLIDER & INSTANT ROLLBACK */
-  const canarySlider = document.getElementById('canary-slider');
-  const canaryLabel = document.getElementById('canary-pct-label');
-  const monoPct = document.getElementById('mono-pct-display');
-  const microPct = document.getElementById('micro-pct-display');
-  const btnRollback = document.getElementById('btn-instant-rollback');
-  const rollbackMsg = document.getElementById('rollback-msg');
-
-  if (canarySlider && canaryLabel && monoPct && microPct) {
-    const updateSplits = (val) => {
-      const mVal = parseInt(val, 10);
-      const legacyVal = 100 - mVal;
-      canaryLabel.textContent = `${mVal}%`;
-      microPct.textContent = `${mVal}%`;
-      monoPct.textContent = `${legacyVal}%`;
-    };
-
-    canarySlider.addEventListener('input', (e) => {
-      updateSplits(e.target.value);
-      if (rollbackMsg) {
-        rollbackMsg.textContent = `Routing ${e.target.value}% live traffic to Payment Microservice`;
-        rollbackMsg.style.color = 'var(--text-muted)';
-      }
-    });
-
-    if (btnRollback) {
-      btnRollback.addEventListener('click', () => {
-        canarySlider.value = 0;
-        updateSplits(0);
-        if (rollbackMsg) {
-          rollbackMsg.textContent = '⚡ INSTANT ROLLBACK COMPLETE: 100% traffic returned to Monolith in 8ms!';
-          rollbackMsg.style.color = '#B45309';
-          rollbackMsg.style.fontWeight = '700';
+      header.addEventListener('click', handleToggle);
+      header.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleToggle();
         }
       });
+    });
+
+    // Footer Mark Complete buttons
+    document.querySelectorAll('[data-footer-complete]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-footer-complete');
+        toggleComplete(id);
+      });
+    });
+
+    // Footer Close Topic buttons
+    document.querySelectorAll('[data-footer-close]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        closeActiveTopic(true);
+      });
+    });
+
+    // Footer Next Topic buttons
+    document.querySelectorAll('[data-next-topic]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const nextId = btn.getAttribute('data-next-topic');
+        if (activeTopicId && !completedTopics.has(activeTopicId)) {
+          toggleComplete(activeTopicId, true);
+        }
+        openTopic(nextId, true);
+      });
+    });
+
+    // Sticky Topbar buttons
+    const topbarClose = document.getElementById('btn-topbar-close');
+    if (topbarClose) {
+      topbarClose.addEventListener('click', () => closeActiveTopic(true));
+    }
+
+    const topbarComplete = document.getElementById('btn-topbar-complete');
+    if (topbarComplete) {
+      topbarComplete.addEventListener('click', () => {
+        if (activeTopicId) toggleComplete(activeTopicId);
+      });
+    }
+
+    // Close active topic on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && activeTopicId) {
+        closeActiveTopic(true);
+      }
+    });
+
+    // Live scroll progress tracking inside expanded topic
+    window.addEventListener('scroll', updateActiveTopicScrollProgress, { passive: true });
+    window.addEventListener('resize', updateActiveTopicScrollProgress, { passive: true });
+  }
+
+  /* ── 4. OPEN & CLOSE TOPIC LOGIC ────────────────────────────── */
+  function openTopic(topicId, shouldScroll) {
+    // Collapse any previously open topic
+    if (activeTopicId && activeTopicId !== topicId) {
+      collapseCardDOM(activeTopicId);
+    }
+
+    activeTopicId = topicId;
+    const card = document.getElementById(topicId);
+    const topic = SYSTEM_DESIGN_NOTES.topics.find(t => t.id === topicId);
+    if (!card || !topic) return;
+
+    card.classList.add('is-expanded');
+    const summary = card.querySelector('.topic-card-summary');
+    if (summary) summary.setAttribute('aria-expanded', 'true');
+
+    const label = card.querySelector(`[data-expand-label="${topicId}"]`);
+    if (label) label.textContent = 'Close Topic ↑';
+
+    // Show & populate Sticky Active-Topic Topbar
+    updateTopbarState(topic);
+    const topbar = document.getElementById('active-topic-topbar');
+    if (topbar) {
+      topbar.classList.add('is-visible');
+      topbar.setAttribute('aria-hidden', 'false');
+    }
+
+    if (shouldScroll) {
+      requestAnimationFrame(() => {
+        const y = card.getBoundingClientRect().top + window.scrollY - 82;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      });
+    }
+
+    updateActiveTopicScrollProgress();
+  }
+
+  function collapseCardDOM(topicId) {
+    const card = document.getElementById(topicId);
+    if (!card) return;
+    card.classList.remove('is-expanded');
+
+    const summary = card.querySelector('.topic-card-summary');
+    if (summary) summary.setAttribute('aria-expanded', 'false');
+
+    const label = card.querySelector(`[data-expand-label="${topicId}"]`);
+    if (label) label.textContent = 'Read Topic ↓';
+  }
+
+  function closeActiveTopic(scrollBackToCard) {
+    if (!activeTopicId) return;
+    const closingId = activeTopicId;
+    collapseCardDOM(closingId);
+    activeTopicId = null;
+
+    const topbar = document.getElementById('active-topic-topbar');
+    if (topbar) {
+      topbar.classList.remove('is-visible');
+      topbar.setAttribute('aria-hidden', 'true');
+    }
+
+    if (scrollBackToCard) {
+      const card = document.getElementById(closingId);
+      if (card) {
+        requestAnimationFrame(() => {
+          const y = card.getBoundingClientRect().top + window.scrollY - 28;
+          window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+        });
+      }
     }
   }
-}
+
+  /* ── 5. COMPLETION TRACKING & TOPBAR SYNC ───────────────────── */
+  function toggleComplete(topicId, forceComplete = false) {
+    if (forceComplete) {
+      completedTopics.add(topicId);
+    } else if (completedTopics.has(topicId)) {
+      completedTopics.delete(topicId);
+    } else {
+      completedTopics.add(topicId);
+    }
+
+    saveCompleted();
+    const isDone = completedTopics.has(topicId);
+
+    const card = document.getElementById(topicId);
+    if (card) {
+      card.classList.toggle('is-completed', isDone);
+      const footerBtn = card.querySelector(`[data-footer-complete="${topicId}"]`);
+      if (footerBtn) {
+        footerBtn.classList.toggle('is-done', isDone);
+        footerBtn.textContent = isDone ? '✓ Completed' : '✓ Mark Topic Complete';
+      }
+    }
+
+    if (activeTopicId === topicId) {
+      const topic = SYSTEM_DESIGN_NOTES.topics.find(t => t.id === topicId);
+      if (topic) updateTopbarState(topic);
+    }
+
+    updateOverallProgress();
+  }
+
+  function updateTopbarState(topic) {
+    const numEl = document.getElementById('active-topbar-num');
+    const titleEl = document.getElementById('active-topbar-title');
+    const completeBtn = document.getElementById('btn-topbar-complete');
+
+    if (numEl) numEl.textContent = `TOPIC ${topic.number}`;
+    if (titleEl) titleEl.textContent = topic.title;
+
+    if (completeBtn) {
+      const isDone = completedTopics.has(topic.id);
+      completeBtn.classList.toggle('is-done', isDone);
+      completeBtn.textContent = isDone ? '✓ Completed' : '✓ Mark Complete';
+    }
+  }
+
+  function updateOverallProgress() {
+    const total = SYSTEM_DESIGN_NOTES.topics.length;
+    const validCompleted = SYSTEM_DESIGN_NOTES.topics.filter(t => completedTopics.has(t.id)).length;
+    const pct = total > 0 ? Math.round((validCompleted / total) * 100) : 0;
+
+    const headingEl = document.getElementById('overall-progress-heading');
+    const pctEl = document.getElementById('overall-progress-pct');
+    const fillEl = document.getElementById('overall-progress-fill');
+
+    if (headingEl) headingEl.textContent = `${validCompleted} of ${total} Topics Completed`;
+    if (pctEl) pctEl.textContent = `${pct}%`;
+    if (fillEl) fillEl.style.width = `${pct}%`;
+  }
+
+  /* ── 6. LIVE PER-TOPIC SCROLL READING PROGRESS ──────────────── */
+  function updateActiveTopicScrollProgress() {
+    if (!activeTopicId) return;
+    const card = document.getElementById(activeTopicId);
+    if (!card) return;
+
+    const rect = card.getBoundingClientRect();
+    const viewH = window.innerHeight;
+    const scrollable = Math.max(1, rect.height - viewH + 140);
+    const scrolled = Math.max(0, 82 - rect.top);
+    const pct = Math.min(100, Math.max(0, Math.round((scrolled / scrollable) * 100)));
+
+    const pctEl = document.getElementById('active-topbar-pct');
+    const fillEl = document.getElementById('active-topbar-fill');
+
+    if (pctEl) pctEl.textContent = `${pct}% read`;
+    if (fillEl) fillEl.style.width = `${pct}%`;
+  }
+
+  function init() {
+    loadCompleted();
+    renderNavbarLinks();
+    renderTopics();
+  }
+
+  return { init, openTopic, closeActiveTopic };
+})();
+
+document.addEventListener('DOMContentLoaded', () => {
+  StudyApp.init();
+  UI.init();
+});

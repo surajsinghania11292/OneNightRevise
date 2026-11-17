@@ -1,430 +1,405 @@
 /* ═══════════════════════════════════════════════════════════════
-   DATA.JS — System Architecture Master Study Notes
-   Authored for focused, distraction-free study (SauceLabs-style clarity)
-   Strictly structured: Numbered Topics, Numbered Sections (1.1, 1.2, etc.)
+   DATA.JS — User-Authored System Design Revision Notes
+   Expandable Topic Cards + Structured Numbered Sections + SVG Diagrams
    ═══════════════════════════════════════════════════════════════ */
 
 const SYSTEM_DESIGN_NOTES = {
   meta: {
-    title: "System Architecture Master Notes",
-    course: "Distributed Systems & Architecture Reference",
-    totalTopics: 6,
-    readingTime: "18 mins"
+    title: "OneNightRevise — System Design Revision Notes",
+    totalTopics: 6
   },
 
   topics: [
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 01: MONOLITHIC ARCHITECTURE
+       TOPIC 1: WHAT IS MONOLITHIC ARCHITECTURE?
        ═══════════════════════════════════════════════════════════════ */
     {
       id: "topic-1-monolith",
       number: "01",
-      kicker: "Topic 01 / 06 · Architecture Fundamentals",
-      title: "Monolithic Architecture",
-      lead: "All application domains compile into a single codebase with a single entry point and share a centralized database connection pool.",
+      shortLabel: "Monolith",
+      title: "What is Monolithic Architecture?",
+      summary: "Real-world Udemy Clone breakdown, how a single codebase (index.js on Port 4000) and shared database look in actual code, and why the lifecycle is tightly coupled.",
+      subtopicLabels: ["1.1 Udemy Clone Example", "1.2 How it Looks in Code"],
+      diagramCount: 1,
       sections: [
         {
           num: "1.1",
-          title: "System Anatomy & Execution Flow",
+          title: "Real-World Example (Udemy Clone)",
           content: `
-            <p><strong>Codebase & Deployment Structure:</strong> In a monolithic architecture, all business modules (<code>Auth</code>, <code>Course</code>, <code>Cart</code>, <code>Payment</code>, <code>Order</code>) reside in a single repository, compile into one unified artifact (e.g., a single Node.js bundle, Java JAR, or Go binary), and execute through a single entry point (e.g., <code>server.js</code> or <code>main()</code>).</p>
-            <p style="margin-top: 0.65rem;"><strong>In-Memory Inter-Module Communication:</strong> Because all modules run inside the same operating system process, inter-module communication happens through direct in-memory function calls (e.g., <code>cartService.checkout()</code> calling <code>paymentService.charge()</code>). While this eliminates network latency, it tightly couples module lifecycles—they must be tested, built, and deployed as an indivisible unit.</p>
+            <p>Imagine building an EdTech platform like <strong>Udemy</strong>. The application has multiple functional modules:</p>
+            <div class="sub-card-grid-3" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Module 01</div>
+                <div class="sub-box__title">Course Module</div>
+                <div class="sub-box__body">Creating and managing different courses.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Module 02</div>
+                <div class="sub-box__title">Auth Module</div>
+                <div class="sub-box__body">Handling user login and signup flows.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Module 03</div>
+                <div class="sub-box__title">Cart Module</div>
+                <div class="sub-box__body">Managing courses added to the cart.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Module 04</div>
+                <div class="sub-box__title">Payment Module</div>
+                <div class="sub-box__body">Processing user payments.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Module 05</div>
+                <div class="sub-box__title">Order Module</div>
+                <div class="sub-box__body">Confirming course bookings.</div>
+              </div>
+            </div>
           `
         },
         {
           num: "1.2",
-          title: "The Three Critical Production Bottlenecks",
-          type: "bottlenecks",
-          items: [
-            {
-              tag: "Bottleneck 01",
-              title: "Single Point of Failure (SPOF)",
-              desc: "An unhandled runtime exception or memory leak in any single module (e.g., the Payment module running out of memory under 1M users) crashes the entire operating system process, instantly knocking Auth, Cart, and Orders completely offline."
-            },
-            {
-              tag: "Bottleneck 02",
-              title: "Deployment Gate Bottleneck",
-              desc: "Shipping a trivial 1-line CSS or text fix in the Course module requires recompiling the entire application, running the full test suite for all modules, and redeploying the entire server binary with associated rollback risks."
-            },
-            {
-              tag: "Bottleneck 03",
-              title: "Inefficient Horizontal Scaling",
-              desc: "You cannot scale a high-traffic module (e.g., Payment receiving 20M requests during a flash sale) independently. You are forced to duplicate the entire monolithic application onto larger, expensive machines, wasting RAM/CPU on idle modules."
-            }
-          ]
-        },
-        {
-          num: "1.3",
-          title: "Interactive System Blueprint: SPOF Failure Cascade Simulation",
-          type: "blueprint-monolith",
+          title: "How it Looks in Actual Code",
           content: `
-            <div class="blueprint-card">
-              <div class="blueprint-header">
-                <span class="blueprint-title">📐 Technical Architecture Blueprint · Monolith Execution Model</span>
-                <span class="blueprint-badge">SINGLE OS PROCESS (PORT 3000)</span>
-              </div>
+            <ul class="notes-bullet-list">
+              <li><strong>Single Codebase:</strong> All modules (controllers/handlers like <code>Auth Handler</code>, <code>Category Handler</code>, <code>Payment Handler</code>, <code>Profile Handler</code>, <code>Rating &amp; Review Handler</code>) live inside a <strong>single repository/folder structure</strong>.</li>
+              <li><strong>Single Entry Point:</strong> There is only <strong>one <code>index.js</code> file</strong> that starts the entire server (e.g., running on <code>Port 4000</code>) and establishes the database connection.</li>
+              <li><strong>Shared Database:</strong> A monolith typically uses a <strong>single shared database</strong> containing separate tables for each module (<code>Users table</code>, <code>Payments table</code>, <code>Orders table</code>, <code>Courses table</code>).</li>
+              <li><strong>Tightly Coupled Lifecycle:</strong> Because everything is connected to one <code>index.js</code>, all modules are <strong>built together, run together, tested together, and deployed together</strong>.</li>
+            </ul>
 
-              <!-- Monolith Server Container -->
-              <div class="blueprint-system-container" id="mono-process-container">
-                <div class="blueprint-container-meta">
-                  <span class="blueprint-container-name">
-                    <span>🖥️ Node.js / JVM Host Process</span>
-                    <span style="font-size:0.75rem; color:var(--text-muted);">(PID: 8042 · Single Memory Heap)</span>
-                  </span>
-                  <span class="blueprint-tag-pill" id="mono-status-pill" style="color:var(--success); border-color:var(--success);">
-                    ● STATUS: ONLINE (100% HEALTHY)
-                  </span>
-                </div>
-
-                <!-- 5 In-Memory Modules -->
-                <div class="blueprint-modules-grid">
-                  <div class="blueprint-module-node" id="mod-auth">
-                    <span>🔐 Auth Module</span>
-                    <span class="mod-sub">JWT & Session</span>
-                  </div>
-                  <div class="blueprint-module-node" id="mod-course">
-                    <span>📚 Course Module</span>
-                    <span class="mod-sub">Catalog & Lessons</span>
-                  </div>
-                  <div class="blueprint-module-node" id="mod-cart">
-                    <span>🛒 Cart Module</span>
-                    <span class="mod-sub">Shopping Items</span>
-                  </div>
-                  <div class="blueprint-module-node" id="mod-payment" style="border-color: #B45309; background: rgba(245, 158, 11, 0.08);">
-                    <span>💳 Payment (SPOF)</span>
-                    <span class="mod-sub" style="color: #B45309; font-weight:700;">Vulnerable Module</span>
-                  </div>
-                  <div class="blueprint-module-node" id="mod-order">
-                    <span>📦 Order Module</span>
-                    <span class="mod-sub">Fulfillment & Status</span>
-                  </div>
-                </div>
-
-                <!-- Shared DB Connection Arrow -->
-                <div class="blueprint-flow-arrow">
-                  <span>▼ All 5 Modules Query Same Central DB Pool (Max 50 Connections) ▼</span>
-                </div>
-
-                <!-- Centralized Database -->
-                <div class="blueprint-db-box" id="mono-db-box">
-                  <span>🗄️ Single Central Database (Tables: users, courses, carts, payments, orders)</span>
-                </div>
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 1.1 · Monolithic Architecture (Udemy Clone)</span>
+                <span class="diagram-frame-tag">SINGLE ENTRY POINT · PORT 4000</span>
               </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 350" class="arch-svg" role="img" aria-label="Monolithic Architecture Diagram showing single index.js entry point on port 4000, five modules inside one codebase, and one shared database">
+                  <defs>
+                    <marker id="arrow-1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
 
-              <!-- Interactive Controls & Diagnostics -->
-              <div class="blueprint-controls-row">
-                <div style="display:flex; gap:0.65rem; align-items:center;">
-                  <button id="btn-crash-monolith" class="blueprint-action-btn">
-                    ⚡ Simulate Memory Leak in Payment
-                  </button>
-                  <button id="btn-reset-monolith" class="blueprint-reset-btn">
-                    🔄 Reset Server
-                  </button>
-                </div>
-                <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">
-                  Interactive SPOF Demonstration
-                </span>
-              </div>
+                  <!-- Client Box -->
+                  <rect x="24" y="112" width="136" height="84" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="92" y="148" text-anchor="middle" class="svg-title">Client</text>
+                  <text x="92" y="168" text-anchor="middle" class="svg-sub">Web / Mobile App</text>
 
-              <div id="mono-diagnostic" class="blueprint-diagnostic-box" style="display:none;">
-                <span>⚠️</span>
-                <div>
-                  <strong>SPOF Catastrophic Cascade Triggered:</strong> A memory leak in the <code>Payment</code> module caused an Out-Of-Memory (OOM) panic in the shared heap. Because all modules reside in the single OS process (PID 8042), the operating system terminated the entire process. <code>Auth</code>, <code>Course</code>, <code>Cart</code>, and <code>Order</code> were immediately knocked offline despite having zero bugs in their own code!
-                </div>
+                  <!-- Arrow Client -> Monolith -->
+                  <line x1="160" y1="154" x2="218" y2="154" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-1)"/>
+                  <text x="189" y="144" text-anchor="middle" class="svg-mono-xs">HTTP</text>
+
+                  <!-- Single Codebase Outer Box -->
+                  <rect x="226" y="22" width="420" height="296" rx="18" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="6 4"/>
+                  <text x="436" y="48" text-anchor="middle" class="svg-kicker">SINGLE CODEBASE / REPOSITORY</text>
+
+                  <!-- Single Entry Point Banner -->
+                  <rect x="252" y="62" width="368" height="44" rx="10" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.4"/>
+                  <text x="436" y="89" text-anchor="middle" class="svg-mono-md">Single Entry Point: index.js (Port 4000)</text>
+
+                  <!-- 5 Module Boxes -->
+                  <rect x="252" y="124" width="114" height="58" rx="10" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.4"/>
+                  <text x="309" y="149" text-anchor="middle" class="svg-node">Course</text>
+                  <text x="309" y="167" text-anchor="middle" class="svg-sub">Category / Rating</text>
+
+                  <rect x="379" y="124" width="114" height="58" rx="10" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.4"/>
+                  <text x="436" y="149" text-anchor="middle" class="svg-node">Auth</text>
+                  <text x="436" y="167" text-anchor="middle" class="svg-sub">Login / Profile</text>
+
+                  <rect x="506" y="124" width="114" height="58" rx="10" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.4"/>
+                  <text x="563" y="149" text-anchor="middle" class="svg-node">Cart</text>
+                  <text x="563" y="167" text-anchor="middle" class="svg-sub">Added Courses</text>
+
+                  <rect x="308" y="198" width="122" height="58" rx="10" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.4"/>
+                  <text x="369" y="223" text-anchor="middle" class="svg-node">Payment</text>
+                  <text x="369" y="241" text-anchor="middle" class="svg-sub">Payment Handler</text>
+
+                  <rect x="444" y="198" width="122" height="58" rx="10" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.4"/>
+                  <text x="505" y="223" text-anchor="middle" class="svg-node">Order</text>
+                  <text x="505" y="241" text-anchor="middle" class="svg-sub">Course Bookings</text>
+
+                  <!-- Footer note inside Monolith -->
+                  <text x="436" y="294" text-anchor="middle" class="svg-sub">Tightly Coupled: Built, Run, Tested &amp; Deployed Together</text>
+
+                  <!-- Arrow Monolith -> Shared DB -->
+                  <line x1="646" y1="154" x2="698" y2="154" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-1)"/>
+
+                  <!-- Shared Database Cylinder / Box -->
+                  <rect x="706" y="66" width="150" height="202" rx="16" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.6"/>
+                  <text x="781" y="96" text-anchor="middle" class="svg-title">Shared DB</text>
+                  <text x="781" y="114" text-anchor="middle" class="svg-sub">Single Database</text>
+
+                  <rect x="724" y="128" width="114" height="26" rx="6" fill="var(--accent-light)"/>
+                  <text x="781" y="145" text-anchor="middle" class="svg-mono-xs">Users Table</text>
+
+                  <rect x="724" y="160" width="114" height="26" rx="6" fill="var(--accent-light)"/>
+                  <text x="781" y="177" text-anchor="middle" class="svg-mono-xs">Courses Table</text>
+
+                  <rect x="724" y="192" width="114" height="26" rx="6" fill="var(--accent-light)"/>
+                  <text x="781" y="209" text-anchor="middle" class="svg-mono-xs">Payments Table</text>
+
+                  <rect x="724" y="224" width="114" height="26" rx="6" fill="var(--accent-light)"/>
+                  <text x="781" y="241" text-anchor="middle" class="svg-mono-xs">Orders Table</text>
+                </svg>
               </div>
-            </div>
-          `
-        },
-        {
-          num: "1.4",
-          title: "Production Realities & Senior Engineer Trade-offs",
-          content: `
-            <div class="sub-card-grid-2">
-              <div class="sub-box">
-                <div class="sub-box__tag">When Monoliths Excel</div>
-                <div class="sub-box__title">Startups & Early Product Market Fit</div>
-                <div class="sub-box__body">
-                  When engineering teams are under 20 developers and business domains are actively shifting, a monolith is dramatically faster to develop. Zero RPC network serialization overhead, unified transactional rollbacks, and zero distributed tracing tax.
-                </div>
-              </div>
-              <div class="sub-box">
-                <div class="sub-box__tag">The Breaking Point</div>
-                <div class="sub-box__title">Team Scale & Traffic Imbalance</div>
-                <div class="sub-box__body">
-                  Decomposition becomes mandatory when 50+ engineers experience Git merge conflicts on release branches, or when one domain (e.g. Payment or Video Transcoding) requires 100x the compute of other modules.
-                </div>
-              </div>
-            </div>
+            </figure>
           `
         }
       ]
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 02: MICROSERVICES ARCHITECTURE
+       TOPIC 2: THE 3 MAJOR PROBLEMS WITH MONOLITH ARCHITECTURE
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "topic-2-microservices",
+      id: "topic-2-problems",
       number: "02",
-      kicker: "Topic 02 / 06 · Decoupled Domains",
-      title: "Microservices Architecture & Polyglot Persistence",
-      lead: "Decomposing business domains into autonomous, loosely coupled services with independent lifecycles and dedicated data stores.",
+      shortLabel: "3 Problems",
+      title: "The 3 Major Problems with Monolith Architecture",
+      summary: "Single Point of Failure (SPOF) at 1M users, Deployment Bottlenecks for small Credit Card updates, and expensive full-app scaling under 20M+ Payment traffic.",
+      subtopicLabels: ["2.1 Single Point of Failure", "2.2 Deployment Bottleneck", "2.3 Individual Scaling Impossible"],
+      diagramCount: 1,
       sections: [
         {
           num: "2.1",
-          title: "Domain Decomposition & Autonomous Lifecycles",
+          title: "Problem 1: Single Point of Failure (SPOF)",
           content: `
-            <p><strong>Domain-Driven Decomposition:</strong> Each business capability is extracted into an independent service (<code>User Service</code>, <code>Cart Service</code>, <code>Payment Service</code>) bounded by its domain context. Services communicate exclusively over network interfaces using lightweight protocols such as <strong>REST (JSON over HTTP)</strong>, <strong>gRPC (Protobuf over HTTP/2)</strong>, or asynchronous event brokers like <strong>Apache Kafka</strong>.</p>
-            <p style="margin-top:0.65rem;"><strong>Autonomous Lifecycles:</strong> Each service maintains its own dedicated Git repository, container definition (Dockerfile), CI/CD pipeline, and deployment schedule. The Payment team can deploy 15 times a day to production without coordinating with or waiting for the Cart or User teams.</p>
+            <ul class="notes-bullet-list">
+              <li><strong>What it means:</strong> Because all modules are tightly coupled in one codebase running under a single process (<code>index.js</code>), an unhandled bug or crash in <strong>any single module</strong> crashes the <strong>entire application</strong>.</li>
+              <li><strong>Example:</strong>
+                <ul class="notes-sub-list">
+                  <li>At <code>100 → 10,000 → 1,00,000</code> users, the system works fine.</li>
+                  <li>At <strong>1 Million users</strong>, the <strong>Payment Module crashes</strong>.</li>
+                  <li><strong>Impact:</strong> Even though the bug is only in Payment, users can no longer log in/sign up (<strong>Auth stops working</strong>), view their <strong>Cart</strong>, or check <strong>Orders</strong>. The entire app goes down.</li>
+                </ul>
+              </li>
+            </ul>
           `
         },
         {
           num: "2.2",
-          title: "Polyglot Persistence: Why Database-per-Service Matters",
+          title: "Problem 2: Deployment Bottleneck",
           content: `
-            <p>The cardinal architectural rule of microservices is: <strong>Services never share a common database.</strong> Direct cross-service database querying violates encapsulation and re-introduces tight coupling. Instead, each service adopts <em>Polyglot Persistence</em>—matching the exact database engine to its domain workload:</p>
-            <div class="sub-card-grid-3" style="margin-top: 1rem;">
-              <div class="sub-box">
-                <div class="sub-box__tag">Structured Profile Data</div>
-                <div class="sub-box__title">User Service: PostgreSQL</div>
-                <div class="sub-box__body">
-                  Relational SQL engine paired with <strong>Prisma ORM</strong>. Enforces relational schemas, ACID integrity, and strict constraints for authentication, passwords, and billing profiles.
-                </div>
-              </div>
-              <div class="sub-box">
-                <div class="sub-box__tag">High-Write Ephemeral State</div>
-                <div class="sub-box__title">Cart Service: Redis / MongoDB</div>
-                <div class="sub-box__body">
-                  In-Memory Key-Value store with sub-millisecond read/write latency and automatic TTL (Time-To-Live) expiration for abandoned shopping carts.
-                </div>
-              </div>
-              <div class="sub-box">
-                <div class="sub-box__tag">Financial Transactions</div>
-                <div class="sub-box__title">Payment Service: Dedicated Vault DB</div>
-                <div class="sub-box__body">
-                  Isolated ACID database with immutable audit ledgers and strict encryption, meeting PCI-DSS compliance boundaries without exposing audit trails to the Cart or Course teams.
-                </div>
-              </div>
-            </div>
+            <ul class="notes-bullet-list">
+              <li><strong>What it means:</strong> Even a tiny code change in one module forces you to rebuild and redeploy the <strong>entire application</strong>.</li>
+              <li><strong>Example:</strong>
+                <ul class="notes-sub-list">
+                  <li>The app is already live in production.</li>
+                  <li>You want to add a small <strong>Credit Card payment feature</strong> inside the Payment Module.</li>
+                  <li>Even though Auth, Cart, and Order modules weren't touched, you must redeploy the <strong>entire codebase</strong>.</li>
+                </ul>
+              </li>
+            </ul>
           `
         },
         {
           num: "2.3",
-          title: "Interactive System Blueprint: Fault Isolation in Action",
-          type: "blueprint-microservices",
+          title: "Problem 3: Individual Scaling is Impossible (High Cost)",
           content: `
-            <div class="blueprint-card">
-              <div class="blueprint-header">
-                <span class="blueprint-title">📐 Technical Architecture Blueprint · Microservices Fleet</span>
-                <span class="blueprint-badge" style="color:var(--success); border-color:var(--success);">ISOLATED BLAST RADIUS</span>
+            <ul class="notes-bullet-list">
+              <li><strong>What it means:</strong> You cannot scale a single high-traffic module independently; you are forced to scale the entire system.</li>
+              <li><strong>Example:</strong>
+                <ul class="notes-sub-list">
+                  <li>Suppose the <strong>Payment Module</strong> gets <strong>20 Million+ daily requests</strong>, while Auth, Cart, and Order combined get <strong>less than 2 Million requests</strong>.</li>
+                  <li>Only the Payment Module needs scaling so it doesn't crash.</li>
+                  <li>However, because modules are tightly coupled, you must duplicate the <strong>entire Monolith (including Auth, Cart, Order)</strong> onto a new big server/machine.</li>
+                  <li><strong>Result:</strong> Requires a much larger, expensive server instead of a small machine just for payments, <strong>drastically increasing infrastructure cost</strong>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 2.1 · SPOF Crash Cascade &amp; Costly Full-Monolith Scaling</span>
+                <span class="diagram-frame-tag">WHY MONOLITHS STRUGGLE AT SCALE</span>
               </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 310" class="arch-svg" role="img" aria-label="Diagram showing Single Point of Failure where Payment crash kills entire app, and costly scaling where 20M payment traffic forces duplicating the entire monolith">
+                  <!-- LEFT PANEL: SPOF -->
+                  <rect x="16" y="16" width="410" height="278" rx="16" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="221" y="44" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">PROBLEM 1 · SINGLE POINT OF FAILURE (1M USERS)</text>
 
-              <!-- Microservices Pods Grid -->
-              <div class="blueprint-pods-grid">
-                <!-- Pod 1: User Service -->
-                <div class="blueprint-pod-node pod-healthy" id="pod-user">
-                  <div class="pod-header">
-                    <span>👤 User Service</span>
-                    <span class="pod-port">Port 4001</span>
-                  </div>
-                  <div class="pod-db-badge">🗄️ PostgreSQL + Prisma</div>
-                  <div class="pod-status-badge status-ok" id="status-user">● ONLINE (HEALTHY)</div>
-                </div>
+                  <!-- Crashing Payment Box -->
+                  <rect x="128" y="62" width="186" height="52" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.6"/>
+                  <text x="221" y="85" text-anchor="middle" class="svg-node" style="fill: var(--danger);">Payment Module Crashes</text>
+                  <text x="221" y="103" text-anchor="middle" class="svg-sub">Unhandled bug at 1M users</text>
 
-                <!-- Pod 2: Cart Service -->
-                <div class="blueprint-pod-node pod-healthy" id="pod-cart">
-                  <div class="pod-header">
-                    <span>🛒 Cart Service</span>
-                    <span class="pod-port">Port 4002</span>
-                  </div>
-                  <div class="pod-db-badge">⚡ Redis Key-Value Store</div>
-                  <div class="pod-status-badge status-ok" id="status-cart">● ONLINE (HEALTHY)</div>
-                </div>
+                  <!-- Downward cascade lines -->
+                  <line x1="221" y1="114" x2="221" y2="146" stroke="var(--danger)" stroke-width="1.8" stroke-dasharray="4 3"/>
+                  <text x="221" y="162" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Single index.js Process Dies</text>
 
-                <!-- Pod 3: Payment Service -->
-                <div class="blueprint-pod-node pod-healthy" id="pod-payment">
-                  <div class="pod-header">
-                    <span>💳 Payment Service</span>
-                    <span class="pod-port">Port 4003</span>
-                  </div>
-                  <div class="pod-db-badge">🗄️ Dedicated Payment DB</div>
-                  <div class="pod-status-badge status-ok" id="status-payment">● ONLINE (HEALTHY)</div>
-                </div>
+                  <!-- Collateral Down Modules -->
+                  <rect x="38" y="180" width="112" height="54" rx="10" fill="var(--bg-surface)" stroke="var(--border)" stroke-dasharray="4 3" opacity="0.65"/>
+                  <text x="94" y="203" text-anchor="middle" class="svg-node">Auth ✕</text>
+                  <text x="94" y="221" text-anchor="middle" class="svg-sub">Offline</text>
+
+                  <rect x="165" y="180" width="112" height="54" rx="10" fill="var(--bg-surface)" stroke="var(--border)" stroke-dasharray="4 3" opacity="0.65"/>
+                  <text x="221" y="203" text-anchor="middle" class="svg-node">Cart ✕</text>
+                  <text x="221" y="221" text-anchor="middle" class="svg-sub">Offline</text>
+
+                  <rect x="292" y="180" width="112" height="54" rx="10" fill="var(--bg-surface)" stroke="var(--border)" stroke-dasharray="4 3" opacity="0.65"/>
+                  <text x="348" y="203" text-anchor="middle" class="svg-node">Orders ✕</text>
+                  <text x="348" y="221" text-anchor="middle" class="svg-sub">Offline</text>
+
+                  <text x="221" y="268" text-anchor="middle" class="svg-sub">1 Module Crash = 100% App Downtime</text>
+
+                  <!-- RIGHT PANEL: COSTLY SCALING -->
+                  <rect x="454" y="16" width="410" height="278" rx="16" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="659" y="44" text-anchor="middle" class="svg-kicker">PROBLEM 3 · IMPOSSIBLE INDIVIDUAL SCALING</text>
+
+                  <!-- Server 1 -->
+                  <rect x="478" y="64" width="166" height="164" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="561" y="86" text-anchor="middle" class="svg-mono-xs">Big Server 1</text>
+                  <rect x="494" y="96" width="134" height="36" rx="8" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.2"/>
+                  <text x="561" y="119" text-anchor="middle" class="svg-mono-xs">Payment (20M+ req)</text>
+                  <rect x="494" y="140" width="134" height="72" rx="8" fill="var(--accent-light)"/>
+                  <text x="561" y="164" text-anchor="middle" class="svg-sub">Auth · Cart · Order</text>
+                  <text x="561" y="184" text-anchor="middle" class="svg-mono-xs">(&lt; 2M req combined)</text>
+
+                  <!-- Clone Arrow -->
+                  <text x="659" y="142" text-anchor="middle" class="svg-title">+</text>
+
+                  <!-- Server 2 (Forced Full Duplicate) -->
+                  <rect x="674" y="64" width="166" height="164" rx="12" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.4" stroke-dasharray="5 3"/>
+                  <text x="757" y="86" text-anchor="middle" class="svg-mono-xs">Forced Big Server 2</text>
+                  <rect x="690" y="96" width="134" height="36" rx="8" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.2"/>
+                  <text x="757" y="119" text-anchor="middle" class="svg-mono-xs">Payment (Needed)</text>
+                  <rect x="690" y="140" width="134" height="72" rx="8" fill="var(--danger-bg)"/>
+                  <text x="757" y="164" text-anchor="middle" class="svg-sub">Auth · Cart · Order</text>
+                  <text x="757" y="184" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Wasted RAM &amp; Cost</text>
+
+                  <text x="659" y="264" text-anchor="middle" class="svg-sub">Must duplicate entire app onto huge expensive machines</text>
+                </svg>
               </div>
-
-              <!-- Interactive Controls & Diagnostics -->
-              <div class="blueprint-controls-row">
-                <div style="display:flex; gap:0.65rem; align-items:center;">
-                  <button id="btn-crash-micro" class="blueprint-action-btn">
-                    ⚡ Simulate Payment Service Crash
-                  </button>
-                  <button id="btn-reset-micro" class="blueprint-reset-btn">
-                    🔄 Recover Service
-                  </button>
-                </div>
-                <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">
-                  Fault Isolation Test
-                </span>
-              </div>
-
-              <div id="micro-diagnostic" class="blueprint-diagnostic-box diagnostic-success" style="display:none;">
-                <span>🛡️</span>
-                <div>
-                  <strong>Fault Isolation Verified:</strong> <code>Payment Service</code> crashed under high load, tripping its Circuit Breaker. However, because each microservice runs in an isolated container with its own database, <code>User Service</code> and <code>Cart Service</code> remain <strong>100% online</strong>! Users can still log in, browse courses, and add items to cart uninterrupted.
-                </div>
-              </div>
-            </div>
-          `
-        },
-        {
-          num: "2.4",
-          title: "Monolith vs Microservices: Engineering Comparison Matrix",
-          content: `
-            <div class="comparison-table-wrapper">
-              <table class="spec-table">
-                <thead>
-                  <tr>
-                    <th>Dimension</th>
-                    <th>Monolithic Architecture</th>
-                    <th>Microservices Architecture</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Codebase & Packaging</strong></td>
-                    <td>Single repo, single executable binary or container</td>
-                    <td>Multi-repo or monorepo with independent deployable artifacts</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Data Layer</strong></td>
-                    <td>Shared centralized database with shared foreign keys</td>
-                    <td>Database-per-service (Polyglot Persistence)</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Failure Boundary</strong></td>
-                    <td>Global (SPOF): 1 module crash kills the entire process</td>
-                    <td>Isolated: Blast radius confined to single service pod</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Deployment Cycle</strong></td>
-                    <td>Coupled: Full regression test and full redeployment</td>
-                    <td>Autonomous: Continuous independent delivery per team</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Resource Scaling</strong></td>
-                    <td>Coarse: Must scale all modules together on large VMs</td>
-                    <td>Targeted: Scale only high-traffic pods cost-efficiently</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Network Overhead</strong></td>
-                    <td>Sub-microsecond (Direct in-memory function calls)</td>
-                    <td>5–30ms network RPC latency + JSON/Protobuf serialization</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            </figure>
           `
         }
       ]
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 03: ARCHITECTURAL MISCONCEPTIONS
+       TOPIC 3: MICROSERVICES ARCHITECTURE & HOW IT SOLVES MONOLITH PROBLEMS
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "topic-3-myths",
+      id: "topic-3-microservices",
       number: "03",
-      kicker: "Topic 03 / 06 · Reality Check",
-      title: "Common Architectural Misconceptions",
-      lead: "Separating production engineering realities from pervasive interview misconceptions.",
+      shortLabel: "Microservices",
+      title: "Microservices Architecture & How It Solves Monolith Problems",
+      summary: "Loosely coupled services (S1 Auth, S2 Cart, S3 Order, S4 Payment), separate index.js entry points, dedicated databases (PostgreSQL + Prisma vs NoSQL), and solving all 3 bottlenecks.",
+      subtopicLabels: ["3.1 Core Concept", "3.2 Code & Dedicated DBs", "3.3 Solving 3 Problems"],
+      diagramCount: 1,
       sections: [
         {
           num: "3.1",
-          title: "Industry Reality vs Common Interview Myths",
+          title: "Core Concept",
           content: `
-            <p>Engineers often confuse the <em>logical separation of software code</em> with the <em>physical allocation of hardware infrastructure</em>. Let us examine the two most pervasive architecture misconceptions debunked by high-scale production systems.</p>
+            <ul class="notes-bullet-list">
+              <li>Instead of keeping modules inside one codebase, each functional module is split into an <strong>independent small service</strong> (<code>S1: Auth Service</code>, <code>S2: Cart Service</code>, <code>S3: Order Service</code>, <code>S4: Payment Service</code>).</li>
+              <li><strong>Loosely Coupled:</strong> Services have <strong>zero direct code dependency</strong> on each other.</li>
+              <li><strong>Independent Lifecycle:</strong> Each service is <strong>built individually, run individually, tested individually, and deployed individually</strong>.</li>
+            </ul>
           `
         },
         {
           num: "3.2",
-          title: "Myth 1 Debunked: \"A Monolith Only Runs on a Single Machine\"",
+          title: "How Microservices Look in Code & Database",
           content: `
-            <div class="myth-card">
-              <div class="myth-header">❌ INTERVIEW MYTH 01</div>
-              <div class="myth-text">"A Monolith is inherently restricted to running on one single physical machine."</div>
-              <div class="fact-text">
-                <strong>ENGINEERING REALITY: FALSE.</strong> While you cannot scale individual modules independently, you can easily scale the <strong>entire monolithic application horizontally</strong> across 2, 10, or 100 application servers behind a Load Balancer (AWS ALB, Nginx, HAProxy).
-              </div>
-            </div>
+            <ul class="notes-bullet-list">
+              <li><strong>Separate Code &amp; Entry Points:</strong> In an Amazon-like project structure, there are separate folders for <code>Inbound Service</code>, <code>Product Service</code>, and <code>User Service</code>. <strong>Every service has its own separate <code>index.js</code> file</strong> and runs on its own port (e.g., User Service running independently on <code>Port 4002</code>).</li>
+              <li><strong>Dedicated Database per Service:</strong> Unlike a monolith's shared DB, each microservice can have its <strong>own dedicated database</strong> chosen according to its specific data needs:
+                <ul class="notes-sub-list">
+                  <li><strong>User Service:</strong> Needs structured relational data → uses <strong>RDBMS (PostgreSQL with Prisma ORM)</strong>.</li>
+                  <li><strong>Cart Service (Udemy example):</strong> Courses in a cart have dynamic features/components → uses a <strong>NoSQL (Key-Value / Document) Database</strong>.</li>
+                </ul>
+              </li>
+            </ul>
 
-            <!-- Horizontal Monolith Scaling Blueprint -->
-            <div class="blueprint-card" style="margin-top: 1rem;">
-              <div class="blueprint-header">
-                <span class="blueprint-title">📐 Architecture Blueprint · Horizontal Monolith Scaling</span>
-                <span class="blueprint-badge">MULTI-INSTANCE POOL</span>
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 3.1 · Loosely Coupled Microservices &amp; Dedicated Databases</span>
+                <span class="diagram-frame-tag">INDEPENDENT LIFECYCLES · TARGETED SCALING</span>
               </div>
-              <div style="font-family:var(--font-mono); font-size:0.78rem; background:var(--bg-card); padding:1.25rem; border-radius:var(--r-sm); border:1px solid var(--border); line-height:1.8;">
-                Incoming Web/Mobile Traffic<br>
-                &nbsp;&nbsp;▼<br>
-                <strong>[ Load Balancer (AWS ALB / Nginx) ]</strong><br>
-                &nbsp;&nbsp;├─► <strong>App Server 1 (Host A):</strong> [ Auth | Course | Cart | Payment | Order ]<br>
-                &nbsp;&nbsp;├─► <strong>App Server 2 (Host B):</strong> [ Auth | Course | Cart | Payment | Order ]<br>
-                &nbsp;&nbsp;└─► <strong>App Server 3 (Host C):</strong> [ Auth | Course | Cart | Payment | Order ]<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼ (Connection Pool)<br>
-                <strong>[ Central Database Cluster (Primary Write DB + Read Replicas) ]</strong>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 320" class="arch-svg" role="img" aria-label="Microservices diagram showing 4 independent services S1 User/Auth on port 4002 with PostgreSQL, S2 Cart with NoSQL, S3 Order with Order DB, and S4 Payment scaled independently across multiple instances">
+                  <defs>
+                    <marker id="arrow-3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- S1: User/Auth Service -->
+                  <rect x="20" y="28" width="192" height="132" rx="14" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="116" y="54" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">S1 · INDEPENDENT</text>
+                  <text x="116" y="78" text-anchor="middle" class="svg-title">User / Auth Service</text>
+                  <text x="116" y="102" text-anchor="middle" class="svg-mono-xs">Own index.js · Port 4002</text>
+                  <text x="116" y="128" text-anchor="middle" class="svg-sub">Built &amp; deployed solo</text>
+
+                  <line x1="116" y1="160" x2="116" y2="206" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-3)"/>
+                  <rect x="28" y="214" width="176" height="72" rx="12" fill="var(--accent-light)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="116" y="244" text-anchor="middle" class="svg-node">PostgreSQL (RDBMS)</text>
+                  <text x="116" y="266" text-anchor="middle" class="svg-sub">Prisma ORM · Structured</text>
+
+                  <!-- S2: Cart Service -->
+                  <rect x="234" y="28" width="192" height="132" rx="14" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="330" y="54" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">S2 · INDEPENDENT</text>
+                  <text x="330" y="78" text-anchor="middle" class="svg-title">Cart Service</text>
+                  <text x="330" y="102" text-anchor="middle" class="svg-mono-xs">Own index.js · Port 4003</text>
+                  <text x="330" y="128" text-anchor="middle" class="svg-sub">Dynamic course items</text>
+
+                  <line x1="330" y1="160" x2="330" y2="206" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-3)"/>
+                  <rect x="242" y="214" width="176" height="72" rx="12" fill="var(--accent-light)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="330" y="244" text-anchor="middle" class="svg-node">NoSQL Database</text>
+                  <text x="330" y="266" text-anchor="middle" class="svg-sub">Key-Value / Document</text>
+
+                  <!-- S3: Order Service -->
+                  <rect x="448" y="28" width="184" height="132" rx="14" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="540" y="54" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">S3 · INDEPENDENT</text>
+                  <text x="540" y="78" text-anchor="middle" class="svg-title">Order Service</text>
+                  <text x="540" y="102" text-anchor="middle" class="svg-mono-xs">Own index.js · Port 4004</text>
+                  <text x="540" y="128" text-anchor="middle" class="svg-sub">Course bookings</text>
+
+                  <line x1="540" y1="160" x2="540" y2="206" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-3)"/>
+                  <rect x="456" y="214" width="168" height="72" rx="12" fill="var(--accent-light)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="540" y="244" text-anchor="middle" class="svg-node">Order DB</text>
+                  <text x="540" y="266" text-anchor="middle" class="svg-sub">Dedicated Store</text>
+
+                  <!-- S4: Payment Service (Scaled x3) -->
+                  <rect x="668" y="16" width="192" height="132" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.2" opacity="0.65"/>
+                  <rect x="660" y="22" width="192" height="132" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.3" opacity="0.85"/>
+                  <rect x="652" y="28" width="192" height="132" rx="14" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.6"/>
+                  <text x="748" y="54" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">S4 · SCALED SOLO (20M)</text>
+                  <text x="748" y="78" text-anchor="middle" class="svg-title">Payment Service</text>
+                  <text x="748" y="102" text-anchor="middle" class="svg-mono-xs">Credit Card / PayPal</text>
+                  <text x="748" y="128" text-anchor="middle" class="svg-sub">Multiple instances only here</text>
+
+                  <line x1="748" y1="160" x2="748" y2="206" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-3)"/>
+                  <rect x="660" y="214" width="176" height="72" rx="12" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.4"/>
+                  <text x="748" y="244" text-anchor="middle" class="svg-node">Payment DB</text>
+                  <text x="748" y="266" text-anchor="middle" class="svg-sub">Isolated Financial DB</text>
+                </svg>
               </div>
-            </div>
+            </figure>
           `
         },
         {
           num: "3.3",
-          title: "Myth 2 Debunked: \"Every Microservice Needs Its Own Separate Machine\"",
+          title: "How Microservices Solve the 3 Monolith Problems",
           content: `
-            <div class="myth-card">
-              <div class="myth-header">❌ INTERVIEW MYTH 02</div>
-              <div class="myth-text">"Every microservice must be deployed on its own dedicated physical or virtual server."</div>
-              <div class="fact-text">
-                <strong>ENGINEERING REALITY: FALSE.</strong> At early and medium scale, multiple independent microservices can comfortably run on a <strong>single host machine</strong> (e.g. an AWS EC2 instance) listening on distinct internal network ports (e.g., <code>:4001</code>, <code>:4002</code>, <code>:4003</code>) managed by Docker containers or systemd units.
-              </div>
-            </div>
-
-            <!-- Single Host Containerization Blueprint -->
-            <div class="blueprint-card" style="margin-top: 1rem;">
-              <div class="blueprint-header">
-                <span class="blueprint-title">📐 Architecture Blueprint · Multi-Port Single Host Containerization</span>
-                <span class="blueprint-badge">COST-EFFICIENT DOCKER FLEET</span>
-              </div>
-              <div style="font-family:var(--font-mono); font-size:0.78rem; background:var(--bg-card); padding:1.25rem; border-radius:var(--r-sm); border:1px solid var(--border); line-height:1.8;">
-                <strong>[ Single Physical / Cloud Host (e.g., AWS EC2 t3.large) ]</strong><br>
-                &nbsp;&nbsp;│<br>
-                &nbsp;&nbsp;├─► <strong>Docker Container 1:</strong> User Service ──── (Listening on <code>0.0.0.0:4001</code>)<br>
-                &nbsp;&nbsp;├─► <strong>Docker Container 2:</strong> Cart Service ──── (Listening on <code>0.0.0.0:4002</code>)<br>
-                &nbsp;&nbsp;└─► <strong>Docker Container 3:</strong> Payment Service ─ (Listening on <code>0.0.0.0:4003</code>)<br>
-                &nbsp;&nbsp;│<br>
-                Only migrate services to dedicated machines or Kubernetes nodes when specific CPU/RAM saturation demands it!
-              </div>
-            </div>
-          `
-        },
-        {
-          num: "3.4",
-          title: "The Distributed Systems Tax",
-          content: `
-            <p>Moving from a Monolith to Microservices does not eliminate complexity—it trades <em>code complexity</em> for <em>operational network complexity</em>. Senior engineers account for the <strong>Distributed Systems Tax</strong>:</p>
-            <div class="sub-card-grid-2" style="margin-top:0.85rem;">
+            <div class="sub-card-grid-3">
               <div class="sub-box">
-                <div class="sub-box__tag">Operational Cost</div>
-                <div class="sub-box__title">Observability & Distributed Tracing</div>
-                <div class="sub-box__body">
-                  A single user action may traverse 6 services. Pinpointing bugs requires OpenTelemetry tracing, Jaeger trace IDs, centralized logging (ELK/Datadog), and Prometheus health metrics.
-                </div>
+                <div class="sub-box__tag">Solution 01 · Fault Isolation</div>
+                <div class="sub-box__title">Solves Single Point of Failure</div>
+                <div class="sub-box__body">If the <strong>Payment Microservice</strong> (handling Credit Card, PayPal) crashes, the <strong>User Service</strong> and <strong>Cart Service</strong> remain 100% unaffected and keep running normally.</div>
               </div>
               <div class="sub-box">
-                <div class="sub-box__tag">Network Realities</div>
-                <div class="sub-box__title">Fallacies of Distributed Computing</div>
-                <div class="sub-box__body">
-                  Networks are not reliable, latency is not zero, and bandwidth is not infinite. Every cross-service network hop introduces socket timeouts, retry storms, and serialization cost.
-                </div>
+                <div class="sub-box__tag">Solution 02 · Fast Releases</div>
+                <div class="sub-box__title">Solves Deployment Bottleneck</div>
+                <div class="sub-box__body">To add a <strong>Credit Card feature</strong>, you only modify and redeploy the <strong>Payment Microservice</strong> without touching any other service.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Solution 03 · Cost Control</div>
+                <div class="sub-box__title">Solves Individual Scaling</div>
+                <div class="sub-box__body">If the <strong>Payment Microservice</strong> hits <strong>20 Million traffic</strong>, you only add more machines/instances for the <strong>Payment Service</strong> instead of scaling the entire system, saving massive hardware costs.</div>
               </div>
             </div>
           `
@@ -433,390 +408,488 @@ const SYSTEM_DESIGN_NOTES = {
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 04: STEP-BY-STEP MIGRATION
+       TOPIC 4: COMMON MISCONCEPTIONS (MONOLITH VS. MICROSERVICES)
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "topic-4-migration",
+      id: "topic-4-misconceptions",
       number: "04",
-      kicker: "Topic 04 / 06 · Production Playbook",
-      title: "Step-by-Step Migration: Monolith to Microservices",
-      lead: "The non-negotiable engineering roadmap to decompose a monolithic system with zero downtime and zero business disruption.",
+      shortLabel: "Myths",
+      title: "Common Misconceptions (Monolith vs. Microservices)",
+      summary: "Debunking the two biggest myths: Monoliths CAN run on multiple machines (App Server 1, 2), and Microservices CAN share one machine at low traffic.",
+      subtopicLabels: ["4.1 Monolith Single-Machine Myth", "4.2 Microservices Separate-Machine Myth"],
+      diagramCount: 1,
       sections: [
         {
           num: "4.1",
-          title: "The 4 Core Migration Rules (Golden Principles)",
+          title: 'Misconception 1: "In a Monolith, everything runs on only ONE single machine"',
           content: `
-            <div class="sub-card-grid-2">
-              <div class="sub-box" style="border-left: 3px solid var(--accent);">
-                <div class="sub-box__tag">Rule 01</div>
-                <div class="sub-box__title">Never Migrate in a Single Day (No Big Bangs)</div>
-                <div class="sub-box__body">Big Bang rewrites fail in 80% of enterprise projects. Real production migrations are executed incrementally, domain-by-domain, over months while the business continues operating.</div>
-              </div>
-              <div class="sub-box" style="border-left: 3px solid var(--accent);">
-                <div class="sub-box__tag">Rule 02</div>
-                <div class="sub-box__title">Migrate Module by Module</div>
-                <div class="sub-box__body">Carve out one isolated business module at a time. Validate its telemetry, latency, and database consistency under live traffic before touching the next module.</div>
-              </div>
-              <div class="sub-box" style="border-left: 3px solid var(--accent);">
-                <div class="sub-box__tag">Rule 03</div>
-                <div class="sub-box__title">Code Migration vs Module Migration</div>
-                <div class="sub-box__body">Copying code and setting up a new database is merely <em>Code Migration</em>. The module is not truly migrated until <strong>100% of live production traffic</strong> is stably handled by the new service.</div>
-              </div>
-              <div class="sub-box" style="border-left: 3px solid var(--accent);">
-                <div class="sub-box__tag">Rule 04</div>
-                <div class="sub-box__title">Never Decommission Prematurely</div>
-                <div class="sub-box__body">Retain the legacy monolith code and database tables as a warm fallback until the microservice has run stably at 100% traffic across multiple billing and reporting cycles.</div>
+            <div class="myth-card">
+              <div class="myth-header">MYTH 01 · DEBUNKED</div>
+              <div class="myth-text">"In a Monolith, everything runs on only ONE single machine."</div>
+              <div class="fact-text">
+                <strong>Reality: FALSE.</strong> If a monolith has 20–30 Million users, a single App Server cannot handle the load. You <strong>can</strong> scale a monolith across multiple machines (<code>App Server 1</code>, <code>App Server 2</code>) by cloning the entire app — you just can't scale <em>individual modules</em> separately.
               </div>
             </div>
           `
         },
         {
           num: "4.2",
-          title: "The 6-Step Migration Workflow Roadmap",
-          type: "workflow",
-          steps: [
-            {
-              num: "1",
-              title: "Understand the Monolith & Map Dependencies",
-              desc: "Audit the codebase to map all domain modules (Auth, Course, Cart, Payment, Order). Identify shared database tables, foreign keys, and in-memory function call dependencies."
-            },
-            {
-              num: "2",
-              title: "Identify High-Impact Candidate Modules",
-              desc: "Prioritize modules experiencing the heaviest transaction load, highest cloud resource contention, or most frequent crashes (e.g., Payment or Search)."
-            },
-            {
-              num: "3",
-              title: "Establish API Contracts & Communication Protocols",
-              desc: "Define strict synchronous interfaces (REST OpenAPI / gRPC Protobuf) for real-time requests and asynchronous event schemas (Apache Kafka / RabbitMQ) for event notifications."
-            },
-            {
-              num: "4",
-              title: "Extract Code, Containerize & Spin Up Dedicated DB",
-              desc: "Carve logic into a dedicated repository, configure a separate database (Polyglot Persistence), containerize with Docker, and build independent CI/CD deployment pipelines."
-            },
-            {
-              num: "5",
-              title: "Deploy Observability & Health Probes",
-              desc: "Deploy the microservice behind a reverse proxy. Establish distributed tracing (OpenTelemetry), CPU/RAM alerts, and p99 latency thresholds under shadow or canary traffic."
-            },
-            {
-              num: "6",
-              title: "Targeted Independent Auto-Scaling & Decommission",
-              desc: "Configure auto-scaling policies based strictly on service-specific metrics. Once 100% traffic has run cleanly for 30+ days, safely decommission the legacy monolith module."
-            }
-          ]
-        },
-        {
-          num: "4.3",
-          title: "Production Migration Execution Matrix & Gates",
+          title: 'Misconception 2: "In Microservices, every service MUST run on its own separate tiny machine"',
           content: `
-            <div class="comparison-table-wrapper">
-              <table class="spec-table">
-                <thead>
-                  <tr>
-                    <th>Migration Phase</th>
-                    <th>Target Module Action</th>
-                    <th>Traffic Distribution</th>
-                    <th>Safety / Rollback Mechanism</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Phase 1: Dual-Write & Shadow</strong></td>
-                    <td>Deploy service + replicate DB writes via Outbox CDC</td>
-                    <td>0% Read traffic (Shadow replay)</td>
-                    <td>Zero user impact; compare DB outputs</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Phase 2: Canary Rollout</strong></td>
-                    <td>Strangler Fig reverse proxy routes subset of users</td>
-                    <td>0.1% ➔ 1% ➔ 5% ➔ 10% ➔ 50%</td>
-                    <td>Proxy instant-dial back to 0% in &lt;10ms</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Phase 3: 100% Cutover</strong></td>
-                    <td>All live production traffic handled by Microservice</td>
-                    <td>100% Microservice</td>
-                    <td>Monolith DB kept in warm sync for 14 days</td>
-                  </tr>
-                  <tr>
-                    <td><strong>Phase 4: Cleanup & Retire</strong></td>
-                    <td>Delete deprecated monolith endpoints and DB tables</td>
-                    <td>100% Microservice (Autonomous)</td>
-                    <td>Final migration completion milestone</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="myth-card">
+              <div class="myth-header">MYTH 02 · DEBUNKED</div>
+              <div class="myth-text">"In Microservices, every service MUST run on its own separate tiny machine."</div>
+              <div class="fact-text">
+                <strong>Reality: FALSE.</strong> Separate machines (<code>M1</code> for User, <code>M2</code> for Cart) are only needed <strong>when traffic grows and scaling is required</strong>. When user traffic is low, <strong>all microservices (Cart, User, Payment) can easily run together on a single machine</strong> on different ports.
+              </div>
             </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 4.1 · Hardware Reality: Monolith vs. Microservices Deployment</span>
+                <span class="diagram-frame-tag">LOGICAL DESIGN ≠ PHYSICAL MACHINE COUNT</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 280" class="arch-svg" role="img" aria-label="Side-by-side diagram showing Monolith scaled horizontally across App Server 1 and App Server 2, and Microservices running together on a single machine at low traffic on different ports">
+                  <defs>
+                    <marker id="arrow-4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- LEFT: Monolith on Multiple Machines -->
+                  <rect x="16" y="16" width="410" height="248" rx="16" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="221" y="44" text-anchor="middle" class="svg-kicker">REALITY 1 · MONOLITH ON MULTIPLE SERVERS</text>
+
+                  <rect x="148" y="60" width="146" height="36" rx="8" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.3"/>
+                  <text x="221" y="83" text-anchor="middle" class="svg-mono-xs">20–30M Users Traffic</text>
+
+                  <line x1="184" y1="96" x2="122" y2="128" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrow-4)"/>
+                  <line x1="258" y1="96" x2="320" y2="128" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrow-4)"/>
+
+                  <rect x="42" y="136" width="160" height="94" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="122" y="162" text-anchor="middle" class="svg-node">App Server 1</text>
+                  <text x="122" y="186" text-anchor="middle" class="svg-sub">Full Cloned Monolith</text>
+                  <text x="122" y="208" text-anchor="middle" class="svg-mono-xs">Auth+Cart+Pay+Order</text>
+
+                  <rect x="240" y="136" width="160" height="94" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="320" y="162" text-anchor="middle" class="svg-node">App Server 2</text>
+                  <text x="320" y="186" text-anchor="middle" class="svg-sub">Full Cloned Monolith</text>
+                  <text x="320" y="208" text-anchor="middle" class="svg-mono-xs">Auth+Cart+Pay+Order</text>
+
+                  <!-- RIGHT: Microservices on Single Host at Low Traffic -->
+                  <rect x="454" y="16" width="410" height="248" rx="16" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="659" y="44" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">REALITY 2 · MICROSERVICES ON 1 MACHINE (LOW LOAD)</text>
+
+                  <rect x="484" y="64" width="350" height="148" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="5 3"/>
+                  <text x="659" y="88" text-anchor="middle" class="svg-mono-xs">Single Host Machine (Low Traffic Stage)</text>
+
+                  <rect x="502" y="106" width="96" height="78" rx="10" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                  <text x="550" y="138" text-anchor="middle" class="svg-node">User</text>
+                  <text x="550" y="160" text-anchor="middle" class="svg-mono-xs">:4001</text>
+
+                  <rect x="611" y="106" width="96" height="78" rx="10" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                  <text x="659" y="138" text-anchor="middle" class="svg-node">Cart</text>
+                  <text x="659" y="160" text-anchor="middle" class="svg-mono-xs">:4002</text>
+
+                  <rect x="720" y="106" width="96" height="78" rx="10" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                  <text x="768" y="138" text-anchor="middle" class="svg-node">Payment</text>
+                  <text x="768" y="160" text-anchor="middle" class="svg-mono-xs">:4003</text>
+
+                  <text x="659" y="242" text-anchor="middle" class="svg-sub">Split onto separate M1, M2 machines only when traffic grows</text>
+                </svg>
+              </div>
+            </figure>
           `
         }
       ]
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 05: MIGRATION DESIGN PATTERNS
+       TOPIC 5: HOW TO CONVERT A MONOLITH TO MICROSERVICES
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "topic-5-patterns",
+      id: "topic-5-migration",
       number: "05",
-      kicker: "Topic 05 / 06 · Distributed Systems Patterns",
-      title: "Migration Design Patterns: Traffic, Transactions & Consistency",
-      lead: "Proven architectural patterns that guarantee zero downtime, distributed transaction rollbacks, and data consistency during decomposition.",
+      shortLabel: "Migration",
+      title: "How to Convert a Monolith to Microservices",
+      summary: "3 Golden Precautions, the 6-Step Amazon Migration Process (REST/gRPC, Kafka/RabbitMQ, MySQL, Docker), and the critical difference between Code Migration and Module Migration.",
+      subtopicLabels: ["5.1 3 Golden Precautions", "5.2 6-Step Migration Process", "5.3 Code vs Module Migration"],
+      diagramCount: 1,
       sections: [
         {
           num: "5.1",
-          title: "Traffic Routing: Canary Rollouts & The Strangler Fig Pattern",
+          title: "3 Golden Precautions Before Migrating",
           content: `
-            <p><strong>The Strangler Fig Pattern:</strong> Inspired by the strangler fig tree that grows around an existing tree until it replaces it entirely, this pattern places an intermediary reverse proxy (e.g., Cloudflare, Envoy, or AWS ALB) in front of the legacy monolith. The proxy intercepts incoming API requests and intelligently splits traffic based on the route:</p>
-            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+            <div class="sub-card-grid-3">
               <div class="sub-box">
-                <div class="sub-box__tag">Traffic Control</div>
-                <div class="sub-box__title">Canary Deployments</div>
-                <div class="sub-box__body">
-                  Instead of sending 100% of traffic to a new service immediately, route a tiny slice first: <code>0.1% ➔ 1% ➔ 5% ➔ 10% ➔ 50% ➔ 100%</code>. Observe error budgets, database lock contention, and p99 latency at each increment.
-                </div>
+                <div class="sub-box__tag">Precaution 01</div>
+                <div class="sub-box__title">It is NOT a 1-Day Activity</div>
+                <div class="sub-box__body">Migration takes time and happens gradually.</div>
               </div>
               <div class="sub-box">
-                <div class="sub-box__tag">Fail-Safe Operation</div>
-                <div class="sub-box__title">Instant Rollback Without Redeploying</div>
-                <div class="sub-box__body">
-                  If the new microservice spikes 5xx errors or CPU throttles, the reverse proxy immediately dials the routing weight back to <strong>0%</strong>, sending 100% of traffic back to the legacy monolith in under 10 milliseconds without a new deployment.
-                </div>
+                <div class="sub-box__tag">Precaution 02</div>
+                <div class="sub-box__title">Never Migrate Everything at Once</div>
+                <div class="sub-box__body">Do not convert Auth, Payment, Cart, and Course all at once. Migrate <strong>module-by-module</strong> starting with a small or high-pain module.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Precaution 03</div>
+                <div class="sub-box__title">Never Route 100% Traffic Immediately</div>
+                <div class="sub-box__body">Even after the new Payment Microservice is built and ready, do not shift 100% of live user traffic to it at once.</div>
               </div>
             </div>
           `
         },
         {
           num: "5.2",
-          title: "Distributed Transactions: The SAGA Design Pattern",
-          content: `
-            <p><strong>The Problem with Distributed ACID:</strong> In a monolith, a transaction spans multiple tables within a single database, allowing a simple <code>BEGIN ... COMMIT / ROLLBACK</code>. In microservices, when a transaction spans <code>User DB ➔ Order DB ➔ Payment DB</code>, standard single-DB ACID rollbacks cannot work across separate physical databases.</p>
-            <div class="sub-box" style="margin-top: 1rem; border-left: 3px solid var(--accent);">
-              <div class="sub-box__tag">SAGA Distributed Transaction Pattern</div>
-              <div class="sub-box__title">Compensating Transactions (Undoing Forward Actions)</div>
-              <div class="sub-box__body">
-                A SAGA executes a sequence of local transactions. If any step fails (e.g. Payment is declined), the SAGA orchestrator invokes <strong>Compensating Transactions</strong> in reverse order:
-                <div style="font-family:var(--font-mono); font-size:0.78rem; background:var(--bg-card); padding:0.85rem; border-radius:var(--r-sm); border:1px solid var(--border); margin:0.75rem 0; line-height:1.7;">
-                  Step 1: User Service reserves balance ✅<br>
-                  Step 2: Order Service creates PENDING order ✅<br>
-                  Step 3: Payment Service declines card ❌ (FAILURE)<br>
-                  &nbsp;&nbsp;▼ (Trigger Compensating Actions in Reverse)<br>
-                  Compensating Step 2: Order Service cancels order status to VOID 🔄<br>
-                  Compensating Step 1: User Service un-reserves and restores balance 🔄
-                </div>
-              </div>
-            </div>
-          `
+          title: "The 6-Step Migration Process (Amazon Example)",
+          type: "workflow",
+          steps: [
+            {
+              num: "1",
+              title: "Step 1: Understand Your Monolith",
+              desc: "Identify all existing functional modules inside your monolith (<code>Auth</code>, <code>Search</code>, <code>Cart</code>, <code>Payment</code>, <code>Order</code>)."
+            },
+            {
+              num: "2",
+              title: "Step 2: Identify High-Impact Areas",
+              desc: "Find the module getting the heaviest traffic or at risk of crashing in the near future (e.g., <strong>Payment Module</strong>) and select it as the first candidate to extract into a microservice."
+            },
+            {
+              num: "3",
+              title: "Step 3: Build API Contracts & Setup Communication",
+              desc: "Define how services will communicate with each other: <strong>Synchronous Communication</strong> using <strong>REST APIs</strong> or <strong>gRPC</strong>, and <strong>Asynchronous Communication</strong> using <strong>Message Queues</strong> like <strong>Apache Kafka</strong> or <strong>RabbitMQ</strong>."
+            },
+            {
+              num: "4",
+              title: "Step 4: Take One Module & Work On It (Code Migration)",
+              desc: "Create a new microservice repository (e.g., <code>Payment Service</code>), move the payment logic from the monolith, select and configure its dedicated database (e.g., <code>MySQL</code>), set up <code>Docker</code>, and create its own <code>index.js</code> entry point."
+            },
+            {
+              num: "5",
+              title: "Step 5: Monitoring & Observability",
+              desc: "Test, deploy, and actively monitor the new service to observe whether it handles live traffic properly without crashing."
+            },
+            {
+              num: "6",
+              title: "Step 6: Scaling & Optimization",
+              desc: "Horizontally scale the microservice by increasing the number of machines or vertically optimize it by assigning higher CPU/server resources as needed."
+            }
+          ]
         },
         {
           num: "5.3",
-          title: "Data Consistency: The Transactional Outbox Pattern + Apache Kafka",
+          title: "Important Distinction — Code Migration vs. Module Migration",
           content: `
-            <p><strong>The Dual-Write Problem:</strong> During migration, writing to the Monolith DB and simultaneously publishing an event to Kafka can fail (e.g., DB commits, but the network drops before Kafka receives the event). This creates corrupt, desynchronized databases.</p>
-            <div class="sub-box" style="margin-top: 1rem; border-left: 3px solid var(--success);">
-              <div class="sub-box__tag">Guaranteed Zero-Data-Loss Consistency</div>
-              <div class="sub-box__title">Transactional Outbox Pattern + CDC (Change Data Capture)</div>
-              <div class="sub-box__body">
-                Instead of making two separate network writes, the application writes the business record AND an event entry into an <strong>Outbox Table</strong> inside the <em>same local ACID transaction</em>:
-                <div style="font-family:var(--font-mono); font-size:0.78rem; background:var(--bg-card); padding:0.85rem; border-radius:var(--r-sm); border:1px solid var(--border); margin:0.75rem 0; line-height:1.7;">
-                  <strong>1. Local ACID Transaction:</strong><br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;<code>INSERT INTO payment_records (...)</code><br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;<code>INSERT INTO outbox_events (event_id, payload, status='PENDING')</code><br>
-                  <strong>2. Asynchronous CDC Poller (Debezium):</strong><br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;Reads the database WAL (Write-Ahead Log) and publishes events to <strong>Apache Kafka</strong>.<br>
-                  <strong>3. Microservice Consumer:</strong><br>
-                  &nbsp;&nbsp;&nbsp;&nbsp;Reads from Kafka topic and updates the dedicated Payment Service DB with at-least-once delivery!
-                </div>
-              </div>
+            <div class="callout-highlight-box">
+              <div class="callout-highlight-tag">CRITICAL MIGRATION RULE</div>
+              <ul class="notes-bullet-list" style="margin-top: 0.6rem;">
+                <li><strong>Code Migration:</strong> Moving the code to the new microservice repo and setting up its DB/Docker.</li>
+                <li><strong>Module/Service Migration:</strong> Only complete when <strong>100% of live traffic</strong> is successfully routed to the new microservice.</li>
+                <li><strong>Decommissioning Rule:</strong> <strong>NEVER remove/decommission the Payment Module code from the Monolith</strong> until 100% of traffic is stably running on the new Payment Microservice.</li>
+              </ul>
             </div>
-          `
-        },
-        {
-          num: "5.4",
-          title: "Interactive Traffic Splitting & Instant Rollback Simulator",
-          type: "blueprint-strangler",
-          content: `
-            <div class="blueprint-card">
-              <div class="blueprint-header">
-                <span class="blueprint-title">📐 Technical Architecture Blueprint · Strangler Fig Proxy</span>
-                <span class="blueprint-badge">DYNAMIC TRAFFIC DIAL</span>
-              </div>
 
-              <div class="canary-slider-wrap">
-                <div class="canary-slider-header">
-                  <span>CANARY TRAFFIC DIAL: <strong id="canary-pct-label" style="color:var(--accent);">10%</strong></span>
-                  <span style="font-size:0.75rem; color:var(--text-muted);">Adjust traffic between Monolith & Microservice</span>
-                </div>
-                <input type="range" min="0" max="100" step="5" value="10" id="canary-slider" class="canary-range-input">
-                
-                <div class="canary-flow-splits">
-                  <div class="canary-split-col">
-                    <span class="canary-split-name">Legacy Monolith Server</span>
-                    <span class="canary-split-pct" id="mono-pct-display">90%</span>
-                    <span style="font-size:0.75rem; color:var(--text-muted);">Handles majority of legacy traffic</span>
-                  </div>
-                  <div class="canary-split-col" style="border-color:var(--accent);">
-                    <span class="canary-split-name">New Payment Microservice</span>
-                    <span class="canary-split-pct" id="micro-pct-display">10%</span>
-                    <span style="font-size:0.75rem; color:var(--accent);">Targeted canary observation pool</span>
-                  </div>
-                </div>
-
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.5rem; flex-wrap:wrap; gap:0.5rem;">
-                  <button id="btn-instant-rollback" class="blueprint-action-btn" style="background:#B45309; border-color:#B45309;">
-                    🚨 Trigger Instant Rollback to 0%
-                  </button>
-                  <span id="rollback-msg" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">
-                    Simulate instant rollback if 5xx error threshold breached
-                  </span>
-                </div>
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 5.1 · 6-Step Zero-Downtime Migration Pipeline</span>
+                <span class="diagram-frame-tag">CODE MIGRATION → LIVE TRAFFIC CUTOVER</span>
               </div>
-            </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 245" class="arch-svg" role="img" aria-label="Six-step migration pipeline from Understanding Monolith to High-Impact selection, API Contracts, Code Migration, Monitoring, and Scaling, highlighting the decommissioning gate">
+                  <defs>
+                    <marker id="arrow-5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Step 1 -->
+                  <rect x="18" y="34" width="124" height="96" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="80" y="58" text-anchor="middle" class="svg-kicker">STEP 1</text>
+                  <text x="80" y="80" text-anchor="middle" class="svg-node">Understand</text>
+                  <text x="80" y="98" text-anchor="middle" class="svg-sub">Map Auth, Cart,</text>
+                  <text x="80" y="114" text-anchor="middle" class="svg-sub">Payment, Order</text>
+                  <line x1="142" y1="82" x2="158" y2="82" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrow-5)"/>
+
+                  <!-- Step 2 -->
+                  <rect x="164" y="34" width="124" height="96" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="226" y="58" text-anchor="middle" class="svg-kicker">STEP 2</text>
+                  <text x="226" y="80" text-anchor="middle" class="svg-node">High-Impact</text>
+                  <text x="226" y="98" text-anchor="middle" class="svg-sub">Pick Payment</text>
+                  <text x="226" y="114" text-anchor="middle" class="svg-sub">Module first</text>
+                  <line x1="288" y1="82" x2="304" y2="82" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrow-5)"/>
+
+                  <!-- Step 3 -->
+                  <rect x="310" y="34" width="124" height="96" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="372" y="58" text-anchor="middle" class="svg-kicker">STEP 3</text>
+                  <text x="372" y="80" text-anchor="middle" class="svg-node">Contracts</text>
+                  <text x="372" y="98" text-anchor="middle" class="svg-sub">REST / gRPC</text>
+                  <text x="372" y="114" text-anchor="middle" class="svg-sub">Kafka / RabbitMQ</text>
+                  <line x1="434" y1="82" x2="450" y2="82" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrow-5)"/>
+
+                  <!-- Step 4 -->
+                  <rect x="456" y="34" width="124" height="96" rx="12" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="518" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">STEP 4</text>
+                  <text x="518" y="80" text-anchor="middle" class="svg-node">Code Migrate</text>
+                  <text x="518" y="98" text-anchor="middle" class="svg-sub">Repo + MySQL</text>
+                  <text x="518" y="114" text-anchor="middle" class="svg-sub">Docker + index.js</text>
+                  <line x1="580" y1="82" x2="596" y2="82" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrow-5)"/>
+
+                  <!-- Step 5 -->
+                  <rect x="602" y="34" width="124" height="96" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="664" y="58" text-anchor="middle" class="svg-kicker">STEP 5</text>
+                  <text x="664" y="80" text-anchor="middle" class="svg-node">Monitor</text>
+                  <text x="664" y="98" text-anchor="middle" class="svg-sub">Observe live</text>
+                  <text x="664" y="114" text-anchor="middle" class="svg-sub">traffic stability</text>
+                  <line x1="726" y1="82" x2="742" y2="82" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#arrow-5)"/>
+
+                  <!-- Step 6 -->
+                  <rect x="748" y="34" width="114" height="96" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="805" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">STEP 6</text>
+                  <text x="805" y="80" text-anchor="middle" class="svg-node">Scale</text>
+                  <text x="805" y="98" text-anchor="middle" class="svg-sub">Horizontal /</text>
+                  <text x="805" y="114" text-anchor="middle" class="svg-sub">Vertical CPU</text>
+
+                  <!-- Bottom Distinction Banner -->
+                  <rect x="18" y="158" width="844" height="62" rx="12" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.3"/>
+                  <text x="440" y="184" text-anchor="middle" class="svg-mono-md">Step 4 = Code Migration Only  |  100% Stable Live Traffic = True Module Migration</text>
+                  <text x="440" y="206" text-anchor="middle" class="svg-sub">Decommissioning Rule: Never delete Payment code from Monolith until 100% live traffic runs stably on the Microservice</text>
+                </svg>
+              </div>
+            </figure>
           `
         }
       ]
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 06: API GATEWAY VS LOAD BALANCER
+       TOPIC 6: 3 CRUCIAL MIGRATION CHALLENGES & DESIGN PATTERNS
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "topic-6-gateway-lb",
+      id: "topic-6-patterns",
       number: "06",
-      kicker: "Topic 06 / 06 · Global Traffic Management",
-      title: "API Gateway vs Load Balancer & Global Infrastructure",
-      lead: "Understanding single entry points, instance balancing, Regions, Availability Zones, and the complete high-scale request lifecycle.",
+      shortLabel: "Patterns",
+      title: "3 Crucial Migration Challenges & Design Patterns",
+      summary: "Managing live traffic via Canary & Strangler Fig (90%/10% + instant rollback), Distributed Transactions with SAGA (6, 5, 8 tables), and Data Consistency via Outbox + Apache Kafka.",
+      subtopicLabels: ["6.1 Canary & Strangler Pattern", "6.2 SAGA Pattern", "6.3 Outbox Pattern + Kafka"],
+      diagramCount: 3,
       sections: [
         {
           num: "6.1",
-          title: "The Golden Rule: Gateway vs Load Balancer",
+          title: "Challenge 1: How to Manage Traffic? → Canary Deployment & Strangler Pattern",
           content: `
-            <div class="golden-rule-card">
-              <div class="golden-rule-title">⭐ THE ARCHITECTURAL GOLDEN RULE</div>
-              <div class="golden-rule-comparison">
-                <div class="rule-col">
-                  <div class="rule-col__name">API Gateway</div>
-                  <div class="rule-col__rule">
-                    Determines <em>WHICH microservice</em> the user wants to talk to.<br>
-                    <span style="font-size:0.85rem; font-weight:400; color:var(--text-secondary);">(Layer 7 Service-level routing based on URL path like /api/v1/order vs /api/v1/payment)</span>
-                  </div>
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">A. Gradual Percentage Rollout</div>
+                <div class="sub-box__title">Canary Deployment</div>
+                <div class="sub-box__body">
+                  Instead of sending all users to the new software version (Payment Microservice), route a <strong>small subset of users</strong> first and increase gradually if no crashes occur:<br><br>
+                  <strong>Rollout Progression:</strong> <code>0.1% users → 1% users → 5% users → 10% users → 50% users → 100% users</code>
                 </div>
-                <div class="rule-col">
-                  <div class="rule-col__name">Load Balancer</div>
-                  <div class="rule-col__rule">
-                    Determines <em>WHICH instance</em> of that microservice should handle the request.<br>
-                    <span style="font-size:0.85rem; font-weight:400; color:var(--text-secondary);">(Layer 4/7 Instance-level distribution across Order-1, Order-2, Order-3)</span>
-                  </div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">B. Routing &amp; Instant Rollback</div>
+                <div class="sub-box__title">Strangler Design Pattern</div>
+                <div class="sub-box__body">
+                  Places a <strong>Controller</strong> in front of both the legacy Monolith and the new Payment Microservice to split incoming API requests.<br><br>
+                  <strong>Example:</strong> Out of <strong>100 API requests</strong>, the Controller routes <strong>90% (90 requests) to the Monolith</strong> and <strong>10% (10 requests) to the new Microservice</strong>.<br><br>
+                  <strong>Fault Rollback:</strong> If the Payment Microservice fails to process those 10 requests properly, the Controller immediately drops microservice traffic from <strong>10% → 0%</strong>, routes <strong>100% back to the Monolith</strong>, and rolls back.
                 </div>
               </div>
             </div>
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 6.1 · Canary Rollout &amp; Strangler Fig Controller</span>
+                <span class="diagram-frame-tag">90% MONOLITH · 10% MICROSERVICE · INSTANT 0% ROLLBACK</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 285" class="arch-svg" role="img" aria-label="Strangler Fig Controller routing 90 percent of 100 requests to Monolith and 10 percent to New Payment Microservice with instant rollback back to 0 percent">
+                  <defs>
+                    <marker id="arrow-6a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                    <marker id="arrow-6warn" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--warning)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Incoming Requests -->
+                  <rect x="20" y="76" width="150" height="74" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="95" y="108" text-anchor="middle" class="svg-title">100 API</text>
+                  <text x="95" y="130" text-anchor="middle" class="svg-sub">Live Requests</text>
+
+                  <line x1="170" y1="113" x2="232" y2="113" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-6a)"/>
+
+                  <!-- Strangler Controller -->
+                  <rect x="240" y="54" width="186" height="118" rx="14" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="333" y="88" text-anchor="middle" class="svg-kicker">STRANGLER PATTERN</text>
+                  <text x="333" y="114" text-anchor="middle" class="svg-title">Controller / Proxy</text>
+                  <text x="333" y="138" text-anchor="middle" class="svg-sub">Splits Traffic &amp; Monitors</text>
+                  <text x="333" y="156" text-anchor="middle" class="svg-mono-xs">Instant 10% → 0% Dial</text>
+
+                  <!-- 90% Arrow to Monolith -->
+                  <path d="M 426 92 C 480 92, 500 58, 566 58" fill="none" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#arrow-6a)"/>
+                  <text x="498" y="56" text-anchor="middle" class="svg-mono-xs">90% (90 reqs)</text>
+
+                  <!-- Legacy Monolith -->
+                  <rect x="574" y="22" width="280" height="76" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="714" y="54" text-anchor="middle" class="svg-title">Legacy Monolith</text>
+                  <text x="714" y="76" text-anchor="middle" class="svg-sub">Safe Fallback (100% on Rollback)</text>
+
+                  <!-- 10% Arrow to Microservice -->
+                  <path d="M 426 134 C 480 134, 500 166, 566 166" fill="none" stroke="var(--warning)" stroke-width="2.2" marker-end="url(#arrow-6warn)"/>
+                  <text x="498" y="176" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">10% (10 reqs)</text>
+
+                  <!-- New Microservice -->
+                  <rect x="574" y="124" width="280" height="76" rx="12" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="714" y="156" text-anchor="middle" class="svg-title">New Payment Microservice</text>
+                  <text x="714" y="178" text-anchor="middle" class="svg-sub">If failure → Controller drops 10% to 0%</text>
+
+                  <!-- Canary Progression Strip -->
+                  <rect x="20" y="222" width="834" height="44" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.2"/>
+                  <text x="437" y="249" text-anchor="middle" class="svg-mono-md">Canary Progression:  0.1%  →  1%  →  5%  →  10%  →  50%  →  100% Live Users</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
           num: "6.2",
-          title: "The Three Essential Capabilities of an API Gateway",
-          type: "gateway-features",
-          items: [
-            {
-              tag: "Capability 01",
-              title: "API Composition (Payload Aggregation)",
-              desc: "Tailors response payloads by client device type. When a desktop loads 'My Orders', the Gateway queries Product, Invoice, and Ratings services simultaneously and aggregates them into one rich JSON response. For a mobile client on cellular data, it queries only Product and Invoice, eliminating unnecessary payload weight."
-            },
-            {
-              tag: "Capability 02",
-              title: "Centralized Authentication & Authorization (OAuth 2.0)",
-              desc: "Instead of duplicating JWT decryption and security checks inside every single microservice, the client passes an Access Token to the API Gateway. The Gateway validates the signature with the Auth Server once, injecting verified user claims into downstream request headers."
-            },
-            {
-              tag: "Capability 03",
-              title: "Dynamic Service Discovery Integration (Eureka / Consul)",
-              desc: "Because microservices auto-scale dynamically across dynamic IP addresses and ephemeral container ports, instances register their IP/port with a Service Discovery registry. The API Gateway queries Service Discovery in real time to resolve healthy destination endpoints."
-            }
-          ]
-        },
-        {
-          num: "6.3",
-          title: "Global Cloud Infrastructure: Regions vs Availability Zones (AZs)",
+          title: "Challenge 2: How to Manage Distributed Transactions? → SAGA Design Pattern",
           content: `
-            <div class="sub-card-grid-2">
-              <div class="sub-box">
-                <div class="sub-box__tag">Geographic Level</div>
-                <div class="sub-box__title">Region</div>
-                <div class="sub-box__body">
-                  A broad geographic territory (e.g., <strong>US-Massachusetts</strong> or <strong>US-California</strong>). Regions are isolated from each other to prevent shared global outages.
-                </div>
+            <ul class="notes-bullet-list">
+              <li><strong>The Problem:</strong> Suppose a single transaction spans 3 separate microservices, each with its own dedicated database:
+                <ol class="notes-ordered-list">
+                  <li><code>User Microservice</code> (6 DB tables updated → <strong>Success</strong>)</li>
+                  <li><code>Order Microservice</code> (5 DB tables updated → <strong>Success</strong>)</li>
+                  <li><code>Payment Microservice</code> (Needs 8 DB table updates → <strong>2 succeed, 6 FAIL</strong>)</li>
+                </ol>
+              </li>
+              <li>Because each service has a separate database, a simple local rollback cannot undo the committed changes in <code>Order DB</code> and <code>User DB</code>.</li>
+              <li><strong>The Solution:</strong> Use the <strong>SAGA Design Pattern</strong>, which manages multi-service distributed transactions and triggers compensating rollbacks across <code>Payment</code>, <code>Order</code>, and <code>User</code> microservices if any step fails.</li>
+            </ul>
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 6.2 · SAGA Pattern (Forward Steps &amp; Compensating Rollbacks)</span>
+                <span class="diagram-frame-tag">DISTRIBUTED MULTI-DATABASE ROLLBACK</span>
               </div>
-              <div class="sub-box">
-                <div class="sub-box__tag">Data Center Level</div>
-                <div class="sub-box__title">Availability Zone (AZ)</div>
-                <div class="sub-box__body">
-                  Physically separated, fault-tolerant data centers connected by high-speed fiber within a single Region:<br>
-                  • <em>Massachusetts Region:</em> Boston (AZ1) & Cambridge (AZ2)<br>
-                  • <em>California Region:</em> Los Angeles (AZ1) & San Francisco (AZ2)
-                </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="SAGA pattern diagram showing User Service updating 6 tables, Order Service updating 5 tables, Payment Service failing on 6 of 8 tables, and compensating rollback undoing all three in reverse">
+                  <defs>
+                    <marker id="arrow-6s" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--success)"/>
+                    </marker>
+                    <marker id="arrow-6r" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--danger)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Step 1: User -->
+                  <rect x="24" y="28" width="236" height="106" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="142" y="54" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">STEP 1 · SUCCESS ✓</text>
+                  <text x="142" y="80" text-anchor="middle" class="svg-title">User Microservice</text>
+                  <text x="142" y="106" text-anchor="middle" class="svg-mono-xs">6 DB Tables Updated</text>
+
+                  <line x1="260" y1="81" x2="314" y2="81" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-6s)"/>
+
+                  <!-- Step 2: Order -->
+                  <rect x="322" y="28" width="236" height="106" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="440" y="54" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">STEP 2 · SUCCESS ✓</text>
+                  <text x="440" y="80" text-anchor="middle" class="svg-title">Order Microservice</text>
+                  <text x="440" y="106" text-anchor="middle" class="svg-mono-xs">5 DB Tables Updated</text>
+
+                  <line x1="558" y1="81" x2="612" y2="81" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-6s)"/>
+
+                  <!-- Step 3: Payment FAIL -->
+                  <rect x="620" y="28" width="236" height="106" rx="14" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.6"/>
+                  <text x="738" y="54" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">STEP 3 · FAILED ✕</text>
+                  <text x="738" y="80" text-anchor="middle" class="svg-title">Payment Microservice</text>
+                  <text x="738" y="106" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">2 Tables OK · 6 Tables FAIL</text>
+
+                  <!-- Reverse SAGA Compensating Rollback Path -->
+                  <path d="M 738 134 L 738 192 L 440 192 L 440 142" fill="none" stroke="var(--danger)" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-6r)"/>
+                  <path d="M 440 192 L 142 192 L 142 142" fill="none" stroke="var(--danger)" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-6r)"/>
+
+                  <rect x="234" y="206" width="412" height="38" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                  <text x="440" y="230" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">SAGA Compensating Rollbacks: Undo Payment → Undo Order → Undo User</text>
+                </svg>
               </div>
-            </div>
+            </figure>
           `
         },
         {
-          num: "6.4",
-          title: "Complete 4-Step Global Request Lifecycle (End-to-End Visual Blueprint)",
+          num: "6.3",
+          title: "Challenge 3: How to Manage Data Consistency? → Outbox Pattern",
           content: `
-            <div class="blueprint-card" style="margin-bottom: 1.5rem;">
-              <div class="blueprint-header">
-                <span class="blueprint-title">📐 Technical Architecture Blueprint · Multi-Region Request Journey</span>
-                <span class="blueprint-badge">MILLIONS OF REQUESTS</span>
-              </div>
-              <div style="font-family:var(--font-mono); font-size:0.78rem; background:var(--bg-card); padding:1.25rem; border-radius:var(--r-sm); border:1px solid var(--border); line-height:1.9;">
-                <strong>[ 1. Client Mobile / Laptop (Location: California) ]</strong><br>
-                &nbsp;&nbsp;│ (Submits order: <code>POST /api/v1/order</code>)<br>
-                &nbsp;&nbsp;▼<br>
-                <strong>[ 2. DNS Anycast Load Balancer (AWS Route 53 / Azure Traffic Manager) ]</strong><br>
-                &nbsp;&nbsp;│ (Evaluates geographic latency: returns IP of closest healthy Regional Gateway)<br>
-                &nbsp;&nbsp;├─► <strong>[ API Gateway A (California - 18.10.5.22) ]</strong> ── queries ──► <strong>[ Netflix Eureka Registry ]</strong><br>
-                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ (Validates JWT auth + queries Eureka for healthy AZ)<br>
-                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br>
-                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>[ Internal Load Balancer (AZ-1: Los Angeles ALB) ]</strong><br>
-                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│ (Distributes via Round Robin / Least Connections)<br>
-                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─► [ Order Pod 1 ]<br>
-                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─► [ Order Pod 2 ] (Chosen & Executed)<br>
-                &nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─► [ Order Pod 3 ]<br>
-                &nbsp;&nbsp;│<br>
-                &nbsp;&nbsp;└─► <strong>[ API Gateway B (Massachusetts - 35.90.45.88) ]</strong> (Active Secondary Region for Failover)
-              </div>
-            </div>
+            <ul class="notes-bullet-list">
+              <li><strong>The Problem:</strong> During migration (before the monolith module is decommissioned), both the <strong>Monolith's Payment Table</strong> and the <strong>Payment Microservice's Dedicated DB</strong> exist at the same time. Both must hold identical data (e.g., if <code>x = 5</code> in the Monolith DB, it cannot be <code>x = 4</code> in the Microservice DB).</li>
+              <li><strong>The Solution (Outbox Pattern + Kafka):</strong>
+                <ol class="notes-ordered-list">
+                  <li>When a user makes a payment, the write operation is saved to the <strong>Monolith DB's <code>Payment Table</code></strong>.</li>
+                  <li>Simultaneously, the exact same write entry is recorded into an <strong><code>Outbox Table</code></strong> inside the same Monolith DB.</li>
+                  <li>From the <code>Outbox Table</code>, an event is pushed to <strong>Apache Kafka</strong>.</li>
+                  <li><strong>Kafka</strong> consumes/forwards that event to update the <strong>Payment Microservice's Database</strong>, keeping both databases 100% consistent.</li>
+                </ol>
+              </li>
+            </ul>
 
-            <div class="workflow-stack">
-              <div class="workflow-step">
-                <div class="step-circle">1</div>
-                <div>
-                  <div class="workflow-step__title">Step 1: Client Action</div>
-                  <div class="workflow-step__desc">The user clicks "Place Order" on their phone in California, initiating <code>POST /api/v1/order</code>.</div>
-                </div>
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 6.3 · Transactional Outbox Pattern + Apache Kafka Sync</span>
+                <span class="diagram-frame-tag">ZERO DATA DRIFT (x = 5 IN BOTH DBS)</span>
               </div>
-              <div class="workflow-step">
-                <div class="step-circle">2</div>
-                <div>
-                  <div class="workflow-step__title">Step 2: DNS Anycast Load Balancer (Region Selection)</div>
-                  <div class="workflow-step__desc">AWS Route 53 performs Geo-Proximity & Latency Routing, returning the public IP of Regional API Gateway A (California), ensuring minimal cross-country latency.</div>
-                </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 245" class="arch-svg" role="img" aria-label="Outbox Pattern diagram showing payment write saved atomically to Monolith Payment Table and Outbox Table, then streamed to Apache Kafka to keep Payment Microservice DB 100 percent consistent">
+                  <defs>
+                    <marker id="arrow-6o" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- User Payment Write -->
+                  <rect x="16" y="74" width="132" height="82" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="82" y="106" text-anchor="middle" class="svg-node">User Payment</text>
+                  <text x="82" y="128" text-anchor="middle" class="svg-mono-xs">Write: x = 5</text>
+
+                  <line x1="148" y1="115" x2="196" y2="115" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-6o)"/>
+
+                  <!-- Monolith DB Container -->
+                  <rect x="204" y="24" width="234" height="190" rx="16" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                  <text x="321" y="50" text-anchor="middle" class="svg-kicker">MONOLITH DATABASE (ATOMIC)</text>
+
+                  <rect x="224" y="64" width="194" height="54" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="321" y="88" text-anchor="middle" class="svg-node">1. Payment Table</text>
+                  <text x="321" y="106" text-anchor="middle" class="svg-mono-xs">Saved: x = 5 ✓</text>
+
+                  <rect x="224" y="134" width="194" height="58" rx="10" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.4"/>
+                  <text x="321" y="158" text-anchor="middle" class="svg-node">2. Outbox Table</text>
+                  <text x="321" y="178" text-anchor="middle" class="svg-mono-xs">Event Recorded: x = 5</text>
+
+                  <!-- Arrow Outbox -> Kafka -->
+                  <line x1="438" y1="162" x2="494" y2="162" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-6o)"/>
+                  <text x="466" y="150" text-anchor="middle" class="svg-mono-xs">3. Push</text>
+
+                  <!-- Apache Kafka -->
+                  <rect x="502" y="94" width="138" height="110" rx="14" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.6"/>
+                  <text x="571" y="130" text-anchor="middle" class="svg-kicker">EVENT BROKER</text>
+                  <text x="571" y="156" text-anchor="middle" class="svg-title">Apache Kafka</text>
+                  <text x="571" y="180" text-anchor="middle" class="svg-sub">Streams Event</text>
+
+                  <!-- Arrow Kafka -> Microservice DB -->
+                  <line x1="640" y1="149" x2="690" y2="149" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-6o)"/>
+                  <text x="665" y="138" text-anchor="middle" class="svg-mono-xs">4. Sync</text>
+
+                  <!-- Payment Microservice DB -->
+                  <rect x="698" y="76" width="166" height="138" rx="16" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="781" y="108" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">MICROSERVICE DB</text>
+                  <text x="781" y="134" text-anchor="middle" class="svg-title">Payment DB</text>
+                  <text x="781" y="160" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Updated: x = 5 ✓</text>
+                  <text x="781" y="186" text-anchor="middle" class="svg-sub">100% Consistent</text>
+                </svg>
               </div>
-              <div class="workflow-step">
-                <div class="step-circle">3</div>
-                <div>
-                  <div class="workflow-step__title">Step 3: Regional API Gateway + Eureka (AZ Selection)</div>
-                  <div class="workflow-step__desc">API Gateway A validates the user's OAuth2 JWT token, inspects <code>/api/v1/order</code>, and queries Service Discovery (Eureka) to check which AZ (AZ1 Los Angeles vs AZ2 San Francisco) is healthiest.</div>
-                </div>
-              </div>
-              <div class="workflow-step">
-                <div class="step-circle">4</div>
-                <div>
-                  <div class="workflow-step__title">Step 4: Internal Load Balancer (Instance Selection)</div>
-                  <div class="workflow-step__desc">The gateway forwards the request to the internal ALB inside AZ1, which evaluates active connection counts and routes the request to healthy instance Order-2.</div>
-                </div>
-              </div>
-            </div>
+            </figure>
           `
         }
       ]

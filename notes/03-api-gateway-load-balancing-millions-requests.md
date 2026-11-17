@@ -82,11 +82,9 @@ Traditional DNS servers return a static IP address. Intelligent DNS Load Balance
 
 ---
 
-## 6. How the System Handles Millions of Requests (Video Canvas Walkthrough)
+## 6. How the System Handles Millions of Requests (Multi-Region Topology)
 
-![YouTube Architecture Diagram](../assets/youtube_eraser_diagram.jpg)
-
-Here is the exact request lifecycle matching the YouTube video diagram:
+Here is the exact request lifecycle in a production multi-region deployment:
 
 ```
 [ Client Device (Mobile/Laptop) ]

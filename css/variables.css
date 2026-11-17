@@ -1,44 +1,42 @@
 /* ═══════════════════════════════════════════════════════════════
-   VARIABLES.CSS — Design tokens for OneNightRevise (System Design)
-   Matches Portfolio UI styling: Elegant Light Green & Deep Dark Green
+   VARIABLES.CSS — System Architecture & Engineering Reference
+   Clean Developer Docs Palette: Refined Light & Modern Slate Dark
    ═══════════════════════════════════════════════════════════════ */
 
 :root {
-  /* Backgrounds */
-  --bg-root:         #F2F6F3;
-  --bg-surface:      #E6EFE9;
+  /* ── LIGHT MODE (Crisp, High-Readability Engineering Paper) ── */
+  --bg-root:         #F8FAF9;
+  --bg-surface:      #EFF4F1;
   --bg-card:         #FFFFFF;
   --bg-card-raised:  #FFFFFF;
-  --bg-overlay:      rgba(15, 43, 38, 0.65);
-  --nav-bg:          rgba(242, 246, 243, 0.92);
+  --bg-overlay:      rgba(15, 23, 20, 0.6);
+  --nav-bg:          rgba(248, 250, 249, 0.92);
 
-  /* Primary Accent: Deep Forest Green */
-  --accent:          #004743;
-  --accent-hover:    #005E58;
-  --accent-light:    rgba(0, 71, 67, 0.08);
-  --accent-medium:   rgba(0, 71, 67, 0.15);
-  --accent-strong:   rgba(0, 71, 67, 0.26);
+  /* Primary Brand: Deep Forest Emerald */
+  --accent:          #085E48;
+  --accent-hover:    #064A39;
+  --accent-light:    rgba(8, 94, 72, 0.08);
+  --accent-medium:   rgba(8, 94, 72, 0.16);
+  --accent-strong:   rgba(8, 94, 72, 0.28);
 
-  /* Secondary Accent: Fresh Leaf Green / Gold */
-  --accent2:         #1B7F52;
-  --accent2-light:   rgba(27, 127, 82, 0.1);
-  --accent-gold:     #B8860B;
-  --accent-gold-bg:  rgba(184, 134, 11, 0.1);
+  /* Secondary Accent */
+  --accent2:         #1B7F5A;
+  --accent2-light:   rgba(27, 127, 90, 0.1);
 
-  /* Text */
-  --text-primary:    #122320;
-  --text-secondary:  #384E49;
-  --text-muted:      #6A817C;
-  --text-faint:      #A1B3AF;
+  /* Text Hierarchy */
+  --text-primary:    #111816;
+  --text-secondary:  #374A43;
+  --text-muted:      #667A72;
+  --text-faint:      #9FB0A9;
 
-  /* Borders */
-  --border-faint:    rgba(0, 71, 67, 0.07);
-  --border:          rgba(0, 71, 67, 0.13);
-  --border-strong:   rgba(0, 71, 67, 0.26);
+  /* Borders & Dividers */
+  --border-faint:    rgba(8, 94, 72, 0.06);
+  --border:          rgba(8, 94, 72, 0.14);
+  --border-strong:   rgba(8, 94, 72, 0.28);
 
-  /* Semantic */
-  --success:         #16a34a;
-  --success-bg:      rgba(22, 163, 74, 0.1);
+  /* Semantic Alerts */
+  --success:         #059669;
+  --success-bg:      rgba(5, 150, 105, 0.1);
   --warning:         #d97706;
   --warning-bg:      rgba(217, 119, 6, 0.1);
   --danger:          #dc2626;
@@ -46,17 +44,16 @@
   --info:            #0284c7;
   --info-bg:         rgba(2, 132, 199, 0.1);
 
-  /* Shadows */
-  --shadow-sm:       0 1px 3px rgba(0, 71, 67, 0.06), 0 1px 2px rgba(0, 71, 67, 0.03);
-  --shadow-md:       0 4px 16px rgba(0, 71, 67, 0.08), 0 2px 6px rgba(0, 71, 67, 0.04);
-  --shadow-lg:       0 12px 36px rgba(0, 71, 67, 0.12), 0 4px 12px rgba(0, 71, 67, 0.06);
-  --shadow-glow:     0 0 0 3px rgba(0, 71, 67, 0.18);
-  --card-glow:       0 0 24px -4px rgba(0, 71, 67, 0.12);
+  /* Elevation Shadows */
+  --shadow-sm:       0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-md:       0 4px 16px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-lg:       0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-glow:     0 0 0 3px rgba(8, 94, 72, 0.18);
 
   /* Typography Scale */
-  --font-display:    'Fraunces', Georgia, serif;
-  --font-body:       'DM Sans', system-ui, -apple-system, sans-serif;
-  --font-mono:       'DM Mono', 'Fira Code', monospace;
+  --font-display:    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body:       -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono:       "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Spacing */
   --gap-xs:  0.375rem;
@@ -67,11 +64,10 @@
   --gap-2xl: 4rem;
 
   /* Border radius */
-  --r-sm:  5px;
-  --r-md:  9px;
+  --r-sm:  6px;
+  --r-md:  10px;
   --r-lg:  14px;
   --r-xl:  18px;
-  --r-2xl: 26px;
   --r-full: 9999px;
 
   /* Transitions */
@@ -79,61 +75,57 @@
   --t-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   --t-slow:   0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Z-index layers */
+  /* Z-index */
   --z-base:    1;
-  --z-raised:  10;
-  --z-nav:     100;
+  --z-sidebar: 40;
+  --z-nav:     50;
   --z-modal:   999;
   --z-toast:   1000;
 }
 
-/* ── DARK THEME: Deep Pine & Emerald Green (No Matrix/Robotic theme) ── */
+/* ── MODERN SLATE DARK MODE (Softer, Refined, High Contrast — NOT swamp green) ── */
 [data-theme="dark"] {
-  --bg-root:         #071916;
-  --bg-surface:      #04110F;
-  --bg-card:         #0D2421;
-  --bg-card-raised:  #12312C;
-  --bg-overlay:      rgba(0, 0, 0, 0.82);
-  --nav-bg:          rgba(7, 25, 22, 0.92);
+  --bg-root:         #101514;   /* Deep charcoal with 2% muted slate */
+  --bg-surface:      #171E1C;   /* Slightly elevated background */
+  --bg-card:         #1E2724;   /* Clean distinct card surface */
+  --bg-card-raised:  #25322E;   /* Elevated panels */
+  --bg-overlay:      rgba(0, 0, 0, 0.8);
+  --nav-bg:          rgba(16, 21, 20, 0.92);
 
-  /* Primary Accent: Luminous Mint Green */
-  --accent:          #34D399;
-  --accent-hover:    #6EE7B7;
-  --accent-light:    rgba(52, 211, 153, 0.09);
-  --accent-medium:   rgba(52, 211, 153, 0.18);
-  --accent-strong:   rgba(52, 211, 153, 0.32);
+  /* Radiant Mint Emerald Accent */
+  --accent:          #10B981;
+  --accent-hover:    #34D399;
+  --accent-light:    rgba(16, 185, 129, 0.12);
+  --accent-medium:   rgba(16, 185, 129, 0.22);
+  --accent-strong:   rgba(16, 185, 129, 0.38);
 
-  /* Secondary Accent: Sage & Warm Gold */
-  --accent2:         #A7F3D0;
-  --accent2-light:   rgba(167, 243, 208, 0.12);
-  --accent-gold:     #F3C68F;
-  --accent-gold-bg:  rgba(243, 198, 143, 0.12);
+  --accent2:         #6EE7B7;
+  --accent2-light:   rgba(110, 231, 183, 0.12);
 
-  /* Text */
-  --text-primary:    #F2F7F5;
-  --text-secondary:  #B5CCC6;
-  --text-muted:      #759991;
-  --text-faint:      #4A6861;
+  /* Text Hierarchy */
+  --text-primary:    #F2F6F4;
+  --text-secondary:  #A4B8B0;
+  --text-muted:      #6E827A;
+  --text-faint:      #45544E;
 
   /* Borders */
-  --border-faint:    rgba(52, 211, 153, 0.08);
-  --border:          rgba(52, 211, 153, 0.15);
-  --border-strong:   rgba(52, 211, 153, 0.30);
+  --border-faint:    rgba(255, 255, 255, 0.06);
+  --border:          rgba(255, 255, 255, 0.11);
+  --border-strong:   rgba(16, 185, 129, 0.32);
 
   /* Semantic */
-  --success:         #4ade80;
-  --success-bg:      rgba(74, 222, 128, 0.12);
+  --success:         #34d399;
+  --success-bg:      rgba(52, 211, 153, 0.14);
   --warning:         #fbbf24;
-  --warning-bg:      rgba(251, 191, 36, 0.12);
+  --warning-bg:      rgba(251, 191, 36, 0.14);
   --danger:          #f87171;
-  --danger-bg:       rgba(248, 113, 113, 0.14);
+  --danger-bg:       rgba(248, 113, 113, 0.15);
   --info:            #38bdf8;
-  --info-bg:         rgba(56, 189, 248, 0.14);
+  --info-bg:         rgba(56, 189, 248, 0.15);
 
   /* Shadows */
-  --shadow-sm:       0 1px 3px rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25);
-  --shadow-md:       0 4px 18px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.25);
-  --shadow-lg:       0 12px 42px rgba(0, 0, 0, 0.55), 0 4px 14px rgba(0, 0, 0, 0.3);
-  --shadow-glow:     0 0 0 3px rgba(52, 211, 153, 0.22);
-  --card-glow:       0 0 28px -4px rgba(52, 211, 153, 0.14);
+  --shadow-sm:       0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md:       0 4px 18px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg:       0 12px 38px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-glow:     0 0 0 3px rgba(16, 185, 129, 0.24);
 }

@@ -1,23 +1,13 @@
 /* ═══════════════════════════════════════════════════════════════
-   UI.JS — Theme switching (Light Green & Dark Pine Green ONLY),
-           Scroll progress, TOC spy, Toast alerts, Search filter
+   UI.JS — Core Navigation, Collapsible Sidebar, Theme Toggler,
+           Search Filter, and Table of Contents Tracking
    ═══════════════════════════════════════════════════════════════ */
 
 const UI = (() => {
 
-  /* ── 1. THEME SWITCHER (Strictly Light Green & Dark Green) ── */
+  /* ── 1. THEME SWITCHER (Light & Modern Slate Dark) ──────────── */
   const Theme = {
     THEMES: ['light', 'dark'],
-
-    ICONS: {
-      light: '☀ Light Mode',
-      dark:  '🌙 Dark Mode'
-    },
-
-    TOASTS: {
-      light: '☀ Switched to Clean Light Green Theme',
-      dark:  '🌙 Switched to Deep Pine Dark Green Theme'
-    },
 
     init() {
       const saved = localStorage.getItem('onr-theme') || 'light';
@@ -48,12 +38,55 @@ const UI = (() => {
       }
 
       if (showToast) {
-        Toast.show(this.TOASTS[theme]);
+        Toast.show(theme === 'light' ? 'Light mode enabled' : 'Dark mode enabled');
       }
     }
   };
 
-  /* ── 2. TOAST SYSTEM ─────────────────────────────────────────── */
+  /* ── 2. COLLAPSIBLE SIDEBAR CONTROLLER ──────────────────────── */
+  const Sidebar = {
+    init() {
+      const shell = document.querySelector('.app-shell');
+      const toggleBtn = document.getElementById('sidebar-toggle');
+      if (!shell || !toggleBtn) return;
+
+      // Check saved preference (default to open on widescreen)
+      const savedState = localStorage.getItem('onr-sidebar') || 'open';
+      if (savedState === 'closed') {
+        shell.classList.add('sidebar-collapsed');
+        this.updateBtn(toggleBtn, false);
+      } else {
+        this.updateBtn(toggleBtn, true);
+      }
+
+      toggleBtn.addEventListener('click', () => {
+        const isCollapsed = shell.classList.toggle('sidebar-collapsed');
+        const state = isCollapsed ? 'closed' : 'open';
+        localStorage.setItem('onr-sidebar', state);
+        this.updateBtn(toggleBtn, !isCollapsed);
+        Toast.show(isCollapsed ? 'Sidebar hidden (Full-width reader mode)' : 'Sidebar visible');
+      });
+
+      // Keyboard shortcut: Press '[' to toggle sidebar
+      window.addEventListener('keydown', (e) => {
+        if (e.key === '[' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+          toggleBtn.click();
+        }
+      });
+    },
+
+    updateBtn(btn, isOpen) {
+      btn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="9" y1="3" x2="9" y2="21"></line>
+        </svg>
+        <span>${isOpen ? 'Hide Sidebar' : 'Show Sidebar'}</span>
+      `;
+    }
+  };
+
+  /* ── 3. TOAST NOTIFICATIONS ──────────────────────────────────── */
   const Toast = {
     container: null,
 
@@ -62,12 +95,12 @@ const UI = (() => {
       this.container.id = 'toast-container';
       this.container.style.cssText = `
         position: fixed;
-        bottom: 24px;
-        right: 24px;
+        bottom: 20px;
+        right: 20px;
         z-index: 9999;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
         pointer-events: none;
       `;
       document.body.appendChild(this.container);
@@ -80,31 +113,30 @@ const UI = (() => {
       toast.style.cssText = `
         background: var(--bg-card);
         color: var(--text-primary);
-        border: 1px solid var(--accent);
-        border-radius: var(--r-md);
-        padding: 0.65rem 1.1rem;
+        border: 1px solid var(--border);
+        border-radius: var(--r-sm);
+        padding: 0.5rem 0.85rem;
         font-family: var(--font-mono);
-        font-size: 0.8rem;
-        box-shadow: var(--shadow-lg);
+        font-size: 0.76rem;
+        box-shadow: var(--shadow-md);
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         pointer-events: auto;
-        animation: fadeInUp 0.25s ease;
+        animation: fadeIn 0.2s ease;
       `;
       toast.innerHTML = `<span style="color:var(--accent);">●</span> ${message}`;
       this.container.appendChild(toast);
 
       setTimeout(() => {
         toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 2600);
+        toast.style.transition = 'opacity 0.25s ease';
+        setTimeout(() => toast.remove(), 250);
+      }, 2000);
     }
   };
 
-  /* ── 3. SCROLL PROGRESS BAR ─────────────────────────────────── */
+  /* ── 4. SCROLL PROGRESS BAR ─────────────────────────────────── */
   function initProgressBar() {
     const bar = document.getElementById('progress-bar');
     if (!bar) return;
@@ -117,7 +149,7 @@ const UI = (() => {
     }, { passive: true });
   }
 
-  /* ── 4. TABLE OF CONTENTS ACTIVE SPY ────────────────────────── */
+  /* ── 5. TOC SPY ──────────────────────────────────────────────── */
   function initTocSpy() {
     const sections = document.querySelectorAll('.note-section');
     const tocLinks = document.querySelectorAll('.toc-link');
@@ -138,13 +170,13 @@ const UI = (() => {
         }
       });
     }, {
-      rootMargin: '-80px 0px -70% 0px'
+      rootMargin: '-70px 0px -70% 0px'
     });
 
     sections.forEach(s => observer.observe(s));
   }
 
-  /* ── 5. SEARCH & TOPIC FILTER ────────────────────────────────── */
+  /* ── 6. SEARCH & TOPIC FILTER ────────────────────────────────── */
   function initSearch() {
     const searchInput = document.getElementById('quick-search');
     if (!searchInput) return;
@@ -159,16 +191,12 @@ const UI = (() => {
           return;
         }
         const text = sec.textContent.toLowerCase();
-        if (text.includes(query)) {
-          sec.style.display = 'block';
-        } else {
-          sec.style.display = 'none';
-        }
+        sec.style.display = text.includes(query) ? 'block' : 'none';
       });
     });
   }
 
-  /* ── 6. ACCORDION SETUP ──────────────────────────────────────── */
+  /* ── 7. ACCORDION SETUP ──────────────────────────────────────── */
   function initAccordions() {
     document.querySelectorAll('.accordion__trigger').forEach(trigger => {
       trigger.addEventListener('click', () => {
@@ -181,6 +209,7 @@ const UI = (() => {
   return {
     init() {
       Theme.init();
+      Sidebar.init();
       Toast.init();
       initProgressBar();
       initTocSpy();

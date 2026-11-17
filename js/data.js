@@ -6,16 +6,17 @@
 const SYSTEM_DESIGN_NOTES = {
   meta: {
     title: "OneNightRevise — System Design Revision Notes",
-    totalTopics: 32
+    totalTopics: 37
   },
 
   navGroups: [
     { label: "01–06 Monolith", targetId: "topic-1-monolith" },
     { label: "07–11 Gateway", targetId: "topic-7-api-gateway" },
-    { label: "12–15 Load Balancing", targetId: "topic-12-load-balancing" },
+    { label: "12–15 LB", targetId: "topic-12-load-balancing" },
     { label: "16–18 Proxies", targetId: "topic-16-forward-proxy" },
     { label: "19–21 Protocols", targetId: "topic-19-networking-protocols" },
-    { label: "22–32 Scaling (0→1M)", targetId: "topic-22-what-is-scaling" }
+    { label: "22–32 Scaling", targetId: "topic-22-what-is-scaling" },
+    { label: "33–37 Caching", targetId: "topic-33-what-is-caching" }
   ],
 
   topics: [
@@ -4173,6 +4174,648 @@ const SYSTEM_DESIGN_NOTES = {
 
                   <rect x="622" y="198" width="238" height="46" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
                   <text x="741" y="226" text-anchor="middle" class="svg-node">4. Notification Service</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 33: WHAT IS CACHING & WHY DO WE NEED IT?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-33-what-is-caching",
+      number: "33",
+      shortLabel: "What is Caching",
+      title: "What is Caching & Why Do We Need It?",
+      summary: "Amazon/Flipkart frequently accessed data, latency comparison without cache (2+2+2+2 = 8 ms) vs. with in-memory Cache (2+1+1+2 = 6 ms), and the 4 key benefits of caching.",
+      subtopicLabels: ["33.1 E-Commerce Example", "33.2 Latency Without Cache (8ms)", "33.3 Latency With Cache (6ms)"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "33.1",
+          title: "Real-World Example (E-Commerce Frequently Asked Data)",
+          content: `
+            <p>In an e-commerce application like <strong>Amazon</strong> or <strong>Flipkart</strong>, certain data is accessed repeatedly (<strong>Commonly / Frequently Asked Data</strong>) — such as a <strong>User's Profile</strong> or repeatedly checking the price of a specific item.</p>
+          `
+        },
+        {
+          num: "33.2",
+          title: "Request Flow & Latency WITHOUT Caching (8 ms)",
+          content: `
+            <p>Suppose <strong>User A</strong> wants to access their profile when there is no cache:</p>
+            <ol class="notes-ordered-list" style="margin-top: 0.65rem;">
+              <li><code>Client (User A)</code> sends request to <code>Server</code>: <strong>2 ms</strong></li>
+              <li><code>Server</code> makes a <strong>Network Call</strong> to query the <code>Database</code>: <strong>2 ms</strong></li>
+              <li><code>Database</code> returns the response back to <code>Server</code>: <strong>2 ms</strong></li>
+              <li><code>Server</code> returns the profile response to <code>Client</code>: <strong>2 ms</strong></li>
+            </ol>
+            <div class="formula-box">Total Time Taken (Without Caching) = 2 + 2 + 2 + 2 = 8 ms</div>
+
+            <div class="sub-card-grid-3" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Problem 01</div>
+                <div class="sub-box__title">Extra Network Call</div>
+                <div class="sub-box__body">Every single profile view requires a network call to the database.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Problem 02</div>
+                <div class="sub-box__title">Repeated Recomputation</div>
+                <div class="sub-box__body">If User A accesses their profile 10 times, or 10,000 to 1 Million users repeatedly request their profiles in a single day, the server repeats the exact same database query every single time.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Problem 03</div>
+                <div class="sub-box__title">Heavy DB Load &amp; Slow Response</div>
+                <div class="sub-box__body">Database disk operations are very costly. Hitting the database repeatedly overloads the database and slows down the entire request-response cycle.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "33.3",
+          title: "Request Flow & Latency WITH Cache Memory (6 ms)",
+          content: `
+            <p><strong>What is Cache Memory?</strong> A <strong>fast, temporary, in-memory storage</strong> used to store frequently accessed data.</p>
+            <p style="margin-top: 0.65rem;">Now suppose <strong>User A</strong> requests their profile when <strong>Cache Memory</strong> is present:</p>
+            <ol class="notes-ordered-list" style="margin-top: 0.65rem;">
+              <li><code>Client (User A)</code> sends request to <code>Server</code>: <strong>2 ms</strong></li>
+              <li>Instead of going to the Database, the <code>Server</code> asks <code>Cache Memory</code> (<em>"Do you have User A's profile?"</em>): <strong>1 ms</strong> (fast because it is an in-memory solution).</li>
+              <li><code>Cache Memory</code> returns User A's profile to <code>Server</code>: <strong>1 ms</strong></li>
+              <li><code>Server</code> returns the response to <code>Client</code>: <strong>2 ms</strong></li>
+            </ol>
+            <div class="formula-box">Total Time Taken (With Cache Memory) = 2 + 1 + 1 + 2 = 6 ms</div>
+
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">4 KEY BENEFITS OF CACHING</div>
+              <ol class="notes-ordered-list" style="margin-top: 0.5rem;">
+                <li><strong>Avoids Extra Network Calls</strong> to the database.</li>
+                <li><strong>Avoids Recomputation</strong> for repeated identical requests.</li>
+                <li><strong>Reduces Database Load</strong> drastically.</li>
+                <li><strong>Makes Request-Response Time Fast.</strong></li>
+              </ol>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 33.1 · Latency Comparison: Without Cache (8 ms) vs. With Cache (6 ms)</span>
+                <span class="diagram-frame-tag">FASTER IN-MEMORY RETRIEVAL · REDUCED DB LOAD</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Caching latency comparison showing 8ms total time querying Database versus 6ms total time querying in-memory Cache">
+                  <defs>
+                    <marker id="arrow-33" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Without Cache -->
+                  <rect x="16" y="16" width="848" height="90" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.4"/>
+                  <text x="36" y="40" class="svg-kicker" style="fill: var(--warning);">WITHOUT CACHE · 2 + 2 + 2 + 2 = 8 MS</text>
+                  <rect x="36" y="52" width="130" height="40" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="101" y="77" text-anchor="middle" class="svg-node">User A</text>
+                  <line x1="166" y1="72" x2="254" y2="72" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-33)"/>
+                  <text x="210" y="64" text-anchor="middle" class="svg-mono-xs">2ms + 2ms</text>
+                  <rect x="262" y="52" width="144" height="40" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="334" y="77" text-anchor="middle" class="svg-node">Server</text>
+                  <line x1="406" y1="72" x2="516" y2="72" stroke="var(--warning)" stroke-width="2" marker-end="url(#arrow-33)"/>
+                  <text x="461" y="64" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">2ms + 2ms (DB Call)</text>
+                  <rect x="524" y="52" width="166" height="40" rx="8" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="607" y="77" text-anchor="middle" class="svg-node">Database (Disk)</text>
+                  <rect x="712" y="52" width="132" height="40" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="778" y="77" text-anchor="middle" class="svg-mono-md" style="fill: var(--danger);">8 ms Total</text>
+
+                  <!-- With Cache -->
+                  <rect x="16" y="124" width="848" height="90" rx="14" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="36" y="148" class="svg-kicker" style="fill: var(--success);">WITH CACHE MEMORY · 2 + 1 + 1 + 2 = 6 MS</text>
+                  <rect x="36" y="160" width="130" height="40" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="101" y="185" text-anchor="middle" class="svg-node">User A</text>
+                  <line x1="166" y1="180" x2="254" y2="180" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-33)"/>
+                  <text x="210" y="172" text-anchor="middle" class="svg-mono-xs">2ms + 2ms</text>
+                  <rect x="262" y="160" width="144" height="40" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="334" y="185" text-anchor="middle" class="svg-node">Server</text>
+                  <line x1="406" y1="180" x2="516" y2="180" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-33)"/>
+                  <text x="461" y="172" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">1ms + 1ms (In-Mem)</text>
+                  <rect x="524" y="160" width="166" height="40" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="607" y="185" text-anchor="middle" class="svg-node">Cache Memory</text>
+                  <rect x="712" y="160" width="132" height="40" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="778" y="185" text-anchor="middle" class="svg-mono-md" style="fill: var(--success);">6 ms Fast ✓</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 34: CACHING FLOW (CACHE HIT VS. CACHE MISS) & LIMITS
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-34-cache-hit-miss",
+      number: "34",
+      shortLabel: "Hit vs Miss",
+      title: "Caching Flow (Cache Hit vs. Cache Miss) & Why Not Store Everything in Cache?",
+      summary: "Step-by-step Cache Hit (DB untouched) vs. Cache Miss (DB lookup + write-back to Cache) flows, plus why we cannot replace Databases with Cache Memory.",
+      subtopicLabels: ["34.1 Cache Hit vs Cache Miss", "34.2 Why Not Store Everything in Cache?"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "34.1",
+          title: "Cache Hit vs. Cache Miss Flow",
+          content: `
+            <p>When <code>Client (User A)</code> requests their profile from the <code>Server</code>, the server checks the <code>Cache Memory</code> first:</p>
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Case 1 · Fast Path</div>
+                <div class="sub-box__title">Cache Hit (Data IS Present in Cache)</div>
+                <div class="sub-box__body">The Server checks the Cache → finds User A's profile → Cache returns the profile to the Server → Server returns it to the Client. (<strong>The Database is never called</strong>).</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--warning);">
+                <div class="sub-box__tag">Case 2 · Fallback + Populate</div>
+                <div class="sub-box__title">Cache Miss (Data is NOT Present in Cache)</div>
+                <div class="sub-box__body">The Server checks the Cache → User A's profile is <strong>not found</strong> (<strong>Cache Miss</strong>). The Server goes to the <strong>Database</strong>, fetches User A's profile, returns the profile to the <strong>Client</strong>, and <strong>simultaneously stores User A's profile in the Cache Memory</strong> for future requests.</div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 34.1 · Cache Hit vs. Cache Miss Execution Flow</span>
+                <span class="diagram-frame-tag">CHECK CACHE FIRST · POPULATE ON MISS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Side-by-side diagram showing Cache Hit returning profile directly without Database and Cache Miss fetching from Database and saving into Cache Memory">
+                  <defs>
+                    <marker id="arrow-34" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- LEFT: Cache Hit -->
+                  <rect x="16" y="16" width="412" height="208" rx="16" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="222" y="44" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">CASE 1 · CACHE HIT (DB NEVER CALLED)</text>
+
+                  <rect x="38" y="88" width="96" height="62" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="86" y="124" text-anchor="middle" class="svg-node">Server</text>
+
+                  <line x1="134" y1="108" x2="220" y2="108" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-34)"/>
+                  <text x="177" y="99" text-anchor="middle" class="svg-mono-xs">1. Lookup</text>
+                  <line x1="228" y1="132" x2="142" y2="132" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-34)"/>
+                  <text x="177" y="149" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">2. Found ✓</text>
+
+                  <rect x="228" y="82" width="174" height="74" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="315" y="114" text-anchor="middle" class="svg-title">Cache Memory</text>
+                  <text x="315" y="136" text-anchor="middle" class="svg-mono-xs">User A Profile ✓</text>
+
+                  <text x="222" y="198" text-anchor="middle" class="svg-sub">Fast return straight to Client (Zero DB Load)</text>
+
+                  <!-- RIGHT: Cache Miss -->
+                  <rect x="452" y="16" width="412" height="208" rx="16" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="658" y="44" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">CASE 2 · CACHE MISS (FETCH DB + STORE)</text>
+
+                  <rect x="472" y="96" width="94" height="60" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="519" y="131" text-anchor="middle" class="svg-node">Server</text>
+
+                  <path d="M 566 112 L 664 78" fill="none" stroke="var(--warning)" stroke-width="1.8" marker-end="url(#arrow-34)"/>
+                  <text x="612" y="84" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">1. Miss ✕</text>
+                  <rect x="672" y="54" width="170" height="48" rx="10" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="757" y="83" text-anchor="middle" class="svg-node">Cache (3. Store ✓)</text>
+
+                  <path d="M 566 140 L 664 166" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-34)"/>
+                  <text x="612" y="168" text-anchor="middle" class="svg-mono-xs">2. Fetch</text>
+                  <rect x="672" y="140" width="170" height="48" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="757" y="169" text-anchor="middle" class="svg-node">Database</text>
+
+                  <text x="658" y="210" text-anchor="middle" class="svg-sub">Returns to Client &amp; saves in Cache for next time</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "34.2",
+          title: "Interview Question: If Cache is so fast, why can't we store EVERYTHING in Cache instead of using a Database?",
+          content: `
+            <p><strong>Answer:</strong> We <strong>cannot</strong> store infinite/all data in Cache Memory because:</p>
+            <ol class="notes-ordered-list" style="margin-top: 0.65rem;">
+              <li>Cache is an expensive, limited <strong>in-memory (RAM) storage</strong> meant only for temporary, frequently accessed data.</li>
+              <li>If we dump tons of data into the Cache and <strong>overload the Cache</strong>, searching inside the Cache itself will become slow, degrading cache performance.</li>
+            </ol>
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">GOLDEN RULE</div>
+              <p style="margin-top: 0.45rem; color: var(--text-primary);">
+                Store infinite/permanent data in the <strong>Database</strong>, and store only <strong>relevant, frequently accessed data</strong> in the <strong>Cache Memory</strong>.
+              </p>
+            </div>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 35: LOCAL CACHING VS. DISTRIBUTED CACHING
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-35-local-vs-distributed-cache",
+      number: "35",
+      shortLabel: "Local vs Distributed",
+      title: "Local Caching vs. Distributed Caching (Solving Data Inconsistency)",
+      summary: "Why in-server Local Caching causes redundant misses and stale-data bugs across App Servers 1–3, and how a Global Distributed Cache (Redis Cluster) solves inconsistency.",
+      subtopicLabels: ["35.1 Local Caching", "35.2 2 Problems in Multi-Server", "35.3 Distributed Cache (Redis)"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "35.1",
+          title: "What is Local Caching?",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How it Works:</strong> The Cache Memory is placed <strong>inside the Application Server's own memory</strong> (In-Server Memory).</li>
+              <li><strong>When it Works Well:</strong> When you only have <strong>1 single Application Server</strong>. The client sends a request to the App Server, and the App Server fulfills it directly from its internal local cache.</li>
+            </ul>
+          `
+        },
+        {
+          num: "35.2",
+          title: "The 2 Major Problems with Local Caching (In Multi-Server Systems)",
+          content: `
+            <p>When we horizontally scale our application across multiple servers (<code>App Server 1</code>, <code>App Server 2</code>, <code>App Server 3</code>) behind a <strong>Load Balancer</strong>, every server has its own separate Local Cache (<code>Cache 1</code>, <code>Cache 2</code>, <code>Cache 3</code>):</p>
+
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Problem 01 · Wasted Lookups</div>
+                <div class="sub-box__title">Redundant Cache Misses &amp; Duplicate DB Queries</div>
+                <div class="sub-box__body">
+                  1. <strong>User X</strong> requests profile → Load Balancer routes to <strong><code>App Server 1</code></strong>.<br>
+                  2. <code>Cache 1</code> is empty (Miss) → fetches from DB, returns to User X, saves inside <strong><code>Cache 1</code></strong>.<br>
+                  3. Moments later, <strong>User X</strong> requests again → Load Balancer routes to <strong><code>App Server 2</code></strong>.<br>
+                  4. Even though <code>Cache 1</code> has it, <strong><code>Cache 2</code> is completely empty!</strong> Causes another Miss &amp; duplicate DB query.
+                </div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--danger);">
+                <div class="sub-box__tag">Problem 02 · Stale Data Bug</div>
+                <div class="sub-box__title">Data Inconsistency Across Servers</div>
+                <div class="sub-box__body">
+                  1. User X's old profile is saved in <strong><code>App Server 2</code>'s Local Cache (<code>Cache 2</code>)</strong>.<br>
+                  2. <strong>User X updates their profile</strong> → Load Balancer routes update to <strong><code>App Server 3</code></strong>.<br>
+                  3. <code>App Server 3</code> updates DB and saves new profile in <strong><code>Cache 3</code></strong>.<br>
+                  4. Next read hits <strong><code>App Server 2</code></strong> → returns <strong>old/stale profile from <code>Cache 2</code></strong>! (<code>Cache 3</code> has new data, <code>Cache 2</code> serves stale data → <strong>Data Inconsistency</strong>).
+                </div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "35.3",
+          title: "The Solution: Distributed Caching (Global Shared Cache — e.g., Redis)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How it Works:</strong> Instead of keeping separate local caches inside each server, we place a <strong>Global Cache (like Redis)</strong> at a <strong>shared external location</strong> that all Application Servers (<code>App Server 1</code>, <code>App Server 2</code>, <code>App Server 3</code>) connect to.</li>
+              <li><strong>How it Solves the Problems:</strong>
+                <ol class="notes-ordered-list" style="margin-top: 0.45rem;">
+                  <li><strong>Solves Data Inconsistency:</strong> Because <code>App Server 1</code>, <code>App Server 2</code>, and <code>App Server 3</code> all read from and write to the <strong>exact same shared Global Cache</strong>, an update made through <code>App Server 3</code> is immediately visible to <code>App Server 1</code> and <code>App Server 2</code>.</li>
+                  <li><strong>Independent Scaling &amp; No SPOF:</strong> If load on the Global Cache grows, we can horizontally scale <strong>Redis into a Redis Cluster with multiple instances</strong>, preventing the cache from becoming a Single Point of Failure.</li>
+                </ol>
+              </li>
+              <li><strong>Trade-Off (Local vs. Distributed Cache):</strong> <strong>Distributed Cache</strong> is <strong>Accurate &amp; Consistent</strong>, but slightly <strong>Slower</strong> than Local Cache because accessing an external shared cache adds <strong>1 extra Network Call</strong> from the App Server to Redis.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 35.1 · Local Cache Inconsistency Bug vs. Shared Global Distributed Cache (Redis)</span>
+                <span class="diagram-frame-tag">CONSISTENT SHARED STATE · REDIS CLUSTER</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 265" class="arch-svg" role="img" aria-label="Comparison of Local Caching where Cache 2 has stale data and Cache 3 has updated data versus Distributed Caching where App Servers 1, 2, and 3 share one Global Redis Cache">
+                  <defs>
+                    <marker id="arrow-35" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- LEFT: Local Cache Bug -->
+                  <rect x="16" y="16" width="412" height="232" rx="16" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.5"/>
+                  <text x="222" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">LOCAL CACHING (DATA INCONSISTENCY)</text>
+
+                  <rect x="34" y="64" width="114" height="108" rx="10" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="91" y="90" text-anchor="middle" class="svg-node">App 1</text>
+                  <rect x="44" y="106" width="94" height="52" rx="8" fill="var(--bg-subsection)" stroke="var(--border)"/>
+                  <text x="91" y="128" text-anchor="middle" class="svg-mono-xs">Cache 1</text>
+                  <text x="91" y="146" text-anchor="middle" class="svg-sub">Empty</text>
+
+                  <rect x="165" y="64" width="114" height="108" rx="10" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                  <text x="222" y="90" text-anchor="middle" class="svg-node">App 2</text>
+                  <rect x="175" y="106" width="94" height="52" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="222" y="128" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Cache 2</text>
+                  <text x="222" y="146" text-anchor="middle" class="svg-sub">OLD Data ✕</text>
+
+                  <rect x="296" y="64" width="114" height="108" rx="10" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="353" y="90" text-anchor="middle" class="svg-node">App 3</text>
+                  <rect x="306" y="106" width="94" height="52" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="353" y="128" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Cache 3</text>
+                  <text x="353" y="146" text-anchor="middle" class="svg-sub">NEW Data ✓</text>
+
+                  <text x="222" y="206" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Read on App 2 returns Stale Profile!</text>
+                  <text x="222" y="226" text-anchor="middle" class="svg-sub">Separate local memory per server</text>
+
+                  <!-- RIGHT: Distributed Cache (Redis) -->
+                  <rect x="452" y="16" width="412" height="232" rx="16" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="658" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">DISTRIBUTED CACHE (GLOBAL REDIS)</text>
+
+                  <rect x="474" y="62" width="108" height="44" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="528" y="89" text-anchor="middle" class="svg-node">App 1</text>
+
+                  <rect x="604" y="62" width="108" height="44" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="658" y="89" text-anchor="middle" class="svg-node">App 2</text>
+
+                  <rect x="734" y="62" width="108" height="44" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="788" y="89" text-anchor="middle" class="svg-node">App 3</text>
+
+                  <line x1="528" y1="106" x2="620" y2="144" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-35)"/>
+                  <line x1="658" y1="106" x2="658" y2="144" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-35)"/>
+                  <line x1="788" y1="106" x2="696" y2="144" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-35)"/>
+
+                  <rect x="524" y="150" width="268" height="62" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="658" y="176" text-anchor="middle" class="svg-title">Global Redis Cluster</text>
+                  <text x="658" y="198" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">100% Consistent · Scales Solo</text>
+
+                  <text x="658" y="232" text-anchor="middle" class="svg-sub">Trade-off: +1 network hop to Redis</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 36: CACHE EVICTION POLICIES (FIFO, LRU, LFU)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-36-cache-eviction",
+      number: "36",
+      shortLabel: "Eviction Policies",
+      title: "Cache Policies — Cache Eviction Policies (FIFO, LRU, LFU)",
+      summary: "How caches decide what to evict when full: FIFO (First In First Out & hourly-hot-key pitfall), LRU (Least Recently Used stack), and LFU (Least Frequently Used access counters).",
+      subtopicLabels: ["36.1 What are Cache Policies?", "36.2 FIFO", "36.3 LRU", "36.4 LFU"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "36.1",
+          title: "What are Cache Policies?",
+          content: `
+            <p>Rules that decide <strong>which data to load/keep in the cache</strong> and <strong>which data to evict (remove) out of the cache</strong>. Cache performance depends directly on these policies. There are two types:</p>
+            <ol class="notes-ordered-list" style="margin-top: 0.65rem;">
+              <li><strong>Cache Eviction Policy</strong> (Which data to remove when cache is full)</li>
+              <li><strong>Cache Write Policy</strong> (How and when to update data in Cache vs. Database)</li>
+            </ol>
+          `
+        },
+        {
+          num: "36.2",
+          title: "FIFO (First In, First Out)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How it Works:</strong> The data that was stored <strong>first</strong> in the cache is the <strong>first</strong> one to be removed when space is needed for new data.</li>
+              <li><strong>Example:</strong> Suppose data entries arrive in the order <code>1: A</code>, <code>2: B</code>, <code>3: C</code>. Since <strong><code>A</code></strong> entered the cache first, when a new entry <strong><code>D</code></strong> arrives, FIFO evicts <strong><code>A</code></strong>.</li>
+              <li><strong>Major Drawback:</strong> FIFO completely ignores <strong>how frequently or recently</strong> an item is accessed. Suppose <strong><code>A</code></strong> is accessed <strong>every single hour</strong>, whereas <strong><code>B</code></strong> and <strong><code>C</code></strong> are accessed only <strong>once every 5 days</strong>. Even though <code>A</code> is heavily used every hour, FIFO still blindly deletes <code>A</code> just because it arrived first.</li>
+            </ul>
+          `
+        },
+        {
+          num: "36.3",
+          title: "LRU (Least Recently Used)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How it Works:</strong> Tracks <strong>how recently</strong> each entry was accessed:
+                <ul class="notes-sub-list">
+                  <li><strong>Recently used entries</strong> are kept at the <strong>Top</strong> of the cache.</li>
+                  <li><strong>Least recently used entries</strong> (not accessed for a long time) sink to the <strong>Bottom</strong> of the cache and are kicked out first.</li>
+                </ul>
+              </li>
+              <li><strong>Example:</strong> Suppose the cache holds 5 entries (<code>A, B, C, D, E</code>):
+                <ul class="notes-sub-list">
+                  <li><code>A</code> → used a few seconds ago (Top) &nbsp;|&nbsp; <code>C</code> → used a few seconds ago (Top) &nbsp;|&nbsp; <code>D</code> → used a few minutes ago (Top)</li>
+                  <li><code>B</code> → used a few hours/days ago (Bottom) &nbsp;|&nbsp; <code>E</code> → used a few months ago (Bottom)</li>
+                </ul>
+              </li>
+              <li>When space is needed, LRU evicts the bottom-most entries (<strong><code>B</code> and <code>E</code></strong>) that haven't been used recently.</li>
+            </ul>
+          `
+        },
+        {
+          num: "36.4",
+          title: "LFU (Least Frequently Used)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How it Works:</strong> Tracks the <strong>access count (frequency)</strong> of every entry in the cache and evicts the entry that has been accessed the <strong>fewest number of times</strong>.</li>
+              <li><strong>Example:</strong> Suppose the cache has 3 entries (<code>A, B, C</code>):
+                <ul class="notes-sub-list">
+                  <li>Entry <code>A</code> → accessed <strong>5 times</strong></li>
+                  <li>Entry <code>B</code> → accessed <strong>3 times</strong></li>
+                  <li>Entry <code>C</code> → accessed <strong>only 1 time</strong></li>
+                </ul>
+              </li>
+              <li>When a new entry <strong><code>D</code></strong> needs to be inserted, LFU looks at the access counts (<code>5, 3, 1</code>) and evicts <strong><code>C</code></strong> because it is the least frequently used.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 36.1 · Cache Eviction Policies: FIFO vs. LRU vs. LFU</span>
+                <span class="diagram-frame-tag">ARRIVAL ORDER · RECENCY · FREQUENCY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Three-panel visual diagram comparing FIFO evicting oldest entry A, LRU evicting bottom old entries B and E, and LFU evicting lowest count entry C">
+                  <!-- FIFO -->
+                  <rect x="14" y="16" width="272" height="218" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.4"/>
+                  <text x="150" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">1. FIFO (FIRST IN, FIRST OUT)</text>
+
+                  <rect x="34" y="60" width="232" height="36" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="150" y="83" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">1: A (1st in) → Evicted ✕</text>
+                  <rect x="34" y="104" width="232" height="34" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="150" y="126" text-anchor="middle" class="svg-mono-xs">2: B (Stays)</text>
+                  <rect x="34" y="146" width="232" height="34" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="150" y="168" text-anchor="middle" class="svg-mono-xs">3: C (Stays)</text>
+                  <text x="150" y="212" text-anchor="middle" class="svg-sub">Ignores frequency &amp; recency</text>
+
+                  <!-- LRU -->
+                  <rect x="304" y="16" width="272" height="218" rx="14" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="440" y="42" text-anchor="middle" class="svg-kicker">2. LRU (LEAST RECENTLY USED)</text>
+
+                  <rect x="324" y="58" width="232" height="36" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="440" y="81" text-anchor="middle" class="svg-mono-xs">Top: A, C (Seconds ago ✓)</text>
+                  <rect x="324" y="102" width="232" height="34" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="440" y="124" text-anchor="middle" class="svg-mono-xs">Mid: D (Minutes ago)</text>
+                  <rect x="324" y="144" width="232" height="42" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="440" y="162" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Bottom: B (Days), E (Months)</text>
+                  <text x="440" y="179" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Kicked Out First ✕</text>
+                  <text x="440" y="214" text-anchor="middle" class="svg-sub">Keeps recently touched items</text>
+
+                  <!-- LFU -->
+                  <rect x="594" y="16" width="272" height="218" rx="14" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="730" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">3. LFU (LEAST FREQUENTLY USED)</text>
+
+                  <rect x="614" y="60" width="232" height="34" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="730" y="82" text-anchor="middle" class="svg-mono-xs">A → Accessed 5 times ✓</text>
+                  <rect x="614" y="102" width="232" height="34" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="730" y="124" text-anchor="middle" class="svg-mono-xs">B → Accessed 3 times</text>
+                  <rect x="614" y="144" width="232" height="36" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="730" y="167" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">C → 1 time (Evicted for D ✕)</text>
+                  <text x="730" y="212" text-anchor="middle" class="svg-sub">Evicts lowest access counter</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 37: CACHE WRITE POLICIES — WRITE-THROUGH VS. WRITE-BACK
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-37-cache-write-policies",
+      number: "37",
+      shortLabel: "Write Policies",
+      title: "Cache Write Policies — Write-Through vs. Write-Back",
+      summary: "Updating user age (17 → 18): Write-Through (synchronous Cache + DB update, strong consistency, slower writes) vs. Write-Back (fast Cache-only write + async background DB sync).",
+      subtopicLabels: ["37.1 Write-Through Policy", "37.2 Write-Back Policy", "37.3 Comparison Table"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "37.1",
+          title: "Write-Through Policy (Synchronous Cache + DB Update)",
+          content: `
+            <p>When a user updates data (e.g., changing their age from <code>17</code> to <code>18</code> or updating their phone number), <strong>where should we write the update first — Cache, Database, or both?</strong></p>
+            <ol class="notes-ordered-list" style="margin-top: 0.75rem;">
+              <li>The user sends an update request (e.g., update age from <code>17 → 18</code>) to the <code>App Server</code>.</li>
+              <li>The update goes to the <strong>Cache</strong> first (<code>Age = 18</code>).</li>
+              <li>The <strong>Cache immediately writes/reflects that update into the Database at the exact same time</strong> (<code>Age = 18</code> in DB).</li>
+              <li>Only after <strong>both</strong> the Cache and the Database are updated is the operation complete.</li>
+            </ol>
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Pro</div>
+                <div class="sub-box__title">Strong Data Consistency</div>
+                <div class="sub-box__body">Both the Cache and the Database are <strong>always 100% in sync</strong> at all times.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--warning);">
+                <div class="sub-box__tag">Con</div>
+                <div class="sub-box__title">Slow Writes</div>
+                <div class="sub-box__body">Because every write operation must wait for a network call and disk write to the <strong>Database</strong> before completing, write operations are <strong>slow</strong>.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "37.2",
+          title: "Write-Back Policy (Fast Cache Write + Asynchronous Background DB Update)",
+          content: `
+            <ol class="notes-ordered-list">
+              <li>The user sends an update request (e.g., update age from <code>17 → 18</code>) to the <code>App Server</code>.</li>
+              <li>The <code>App Server</code> updates the data <strong>ONLY in the Cache</strong> (<code>Age = 18</code> in Cache, while the Database still has <code>Age = 17</code>).</li>
+              <li>The <strong>Cache immediately sends a success response</strong> back to the <code>App Server</code>, which tells the user: <em>"Your age/phone number has been updated!"</em></li>
+              <li><strong>Later, asynchronously in the background</strong>, a background process writes the updated change (<code>Age = 18</code>) from the Cache into the <strong>Database</strong>.</li>
+            </ol>
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Pro</div>
+                <div class="sub-box__title">Very Fast Writes</div>
+                <div class="sub-box__body">Because the user doesn't wait for a Database network call — only the in-memory Cache is updated upfront — write operations are <strong>extremely fast</strong>.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--warning);">
+                <div class="sub-box__tag">Con</div>
+                <div class="sub-box__title">Temporary Data Inconsistency</div>
+                <div class="sub-box__body">During the time window between the immediate Cache update (<code>Age = 18</code>) and the delayed background Database write (where DB still holds <code>Age = 17</code>), the Cache and Database are temporarily <strong>inconsistent</strong>.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "37.3",
+          title: "Comparison: Write-Through vs. Write-Back",
+          content: `
+            <div class="comparison-table-wrapper">
+              <table class="spec-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Write-Through Policy</th>
+                    <th>Write-Back Policy</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Where Update Happens</strong></td>
+                    <td>Updated in <strong>Cache and Database at the same time</strong> (Synchronously)</td>
+                    <td>Updated in <strong>Cache first</strong>; written to <strong>Database later in background</strong> (Asynchronously)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Write Speed</strong></td>
+                    <td><strong>Slow Writes</strong> (Waits for DB network call)</td>
+                    <td><strong>Fast Writes</strong> (No immediate DB network call)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Data Consistency</strong></td>
+                    <td><strong>Always Consistent</strong> (Cache &amp; DB always in sync)</td>
+                    <td><strong>Temporarily Inconsistent</strong> (Until background sync finishes)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 37.1 · Write-Through (Synchronous) vs. Write-Back (Asynchronous Background Sync)</span>
+                <span class="diagram-frame-tag">UPDATE AGE: 17 → 18</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 245" class="arch-svg" role="img" aria-label="Comparison diagram of Write-Through updating Cache and Database synchronously to Age 18 versus Write-Back updating Cache immediately to Age 18 and syncing Database asynchronously later">
+                  <defs>
+                    <marker id="arrow-37" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- TOP: Write-Through -->
+                  <rect x="16" y="16" width="848" height="96" rx="14" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="36" y="40" class="svg-kicker">1. WRITE-THROUGH (SYNCHRONOUS · ALWAYS CONSISTENT · SLOWER WRITES)</text>
+
+                  <rect x="36" y="54" width="144" height="44" rx="9" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="108" y="81" text-anchor="middle" class="svg-node">App Server</text>
+
+                  <line x1="180" y1="76" x2="260" y2="76" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-37)"/>
+                  <text x="220" y="66" text-anchor="middle" class="svg-mono-xs">1. Age=18</text>
+
+                  <rect x="268" y="54" width="184" height="44" rx="9" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="360" y="81" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Cache: Age = 18 ✓</text>
+
+                  <line x1="452" y1="76" x2="548" y2="76" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-37)"/>
+                  <text x="500" y="66" text-anchor="middle" class="svg-mono-xs">2. Sync Now</text>
+
+                  <rect x="556" y="54" width="184" height="44" rx="9" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="648" y="81" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">DB: Age = 18 ✓</text>
+
+                  <text x="802" y="81" text-anchor="middle" class="svg-mono-xs">3. Done</text>
+
+                  <!-- BOTTOM: Write-Back -->
+                  <rect x="16" y="130" width="848" height="98" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="36" y="154" class="svg-kicker" style="fill: var(--warning);">2. WRITE-BACK (ASYNCHRONOUS · FAST WRITES · TEMPORARY INCONSISTENCY)</text>
+
+                  <rect x="36" y="168" width="144" height="44" rx="9" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="108" y="195" text-anchor="middle" class="svg-node">App Server</text>
+
+                  <line x1="180" y1="190" x2="260" y2="190" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-37)"/>
+                  <text x="220" y="180" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">1. Fast OK</text>
+
+                  <rect x="268" y="168" width="184" height="44" rx="9" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="360" y="195" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Cache: Age = 18 ✓</text>
+
+                  <line x1="452" y1="190" x2="548" y2="190" stroke="var(--warning)" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#arrow-37)"/>
+                  <text x="500" y="180" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">Later (Async)</text>
+
+                  <rect x="556" y="168" width="286" height="44" rx="9" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="699" y="195" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">DB: Age = 17 → Updates to 18 Later</text>
                 </svg>
               </div>
             </figure>

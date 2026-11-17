@@ -1,63 +1,113 @@
 /* ═══════════════════════════════════════════════════════════════
-   VARIABLES.CSS — SauceLabs Inspired Design Tokens
-   Warm Sunny Cream Light Mode & Deep Forest Green Footer Dark Mode
+   VARIABLES.CSS — SauceLabs Design System
+   Exact SauceLabs Fonts: P22 Mackinac Pro & Atkinson Hyperlegible Next
+   Sunny Radiant Amber Gradient & Soft Dimmed Cozy Dark Mode
    ═══════════════════════════════════════════════════════════════ */
 
-:root {
-  /* ── LIGHT MODE (SauceLabs Sunny Cream Glow & Deep Forest Pine) ── */
-  --bg-root:         #FAF5E8;                     /* Warm sunny ivory cream */
-  --bg-gradient:     radial-gradient(ellipse at 50% 0%, #FFFDF8 0%, #FBF3D4 45%, #F6E6A6 85%, #F4E297 100%);
-  --bg-surface:      #FFFDF9;                     /* Clean, luminous ivory (no muddy/dark patches) */
-  --bg-surface-tint: rgba(251, 243, 212, 0.45);   /* Soft subtle warm sunny wash */
-  --bg-card:         rgba(255, 255, 255, 0.92);   /* Luminous, readable card */
-  --bg-card-raised:  #FFFFFF;
-  --bg-overlay:      rgba(15, 30, 22, 0.6);
-  --nav-bg:          rgba(255, 255, 255, 0.92);
+/* ── SAUCELABS EXACT WEBFONTS (LOADED LOCALLY FOR MAXIMUM SPEED & ZERO BLUR) ── */
+@font-face {
+  font-family: 'P22 Mackinac Pro';
+  src: url('../assets/fonts/Mackinac-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
-  /* Primary Brand (SauceLabs Core Green & Dark Pill) */
-  --accent:          #0D3526;                     /* Deep Forest Pine */
-  --accent-hover:    #154E38;
-  --accent-light:    rgba(13, 53, 38, 0.08);
-  --accent-medium:   rgba(13, 53, 38, 0.16);
-  --accent-strong:   rgba(13, 53, 38, 0.3);
+@font-face {
+  font-family: 'P22 Mackinac Pro';
+  src: url('../assets/fonts/Mackinac-Book.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  src: url('../assets/fonts/AtkinsonHyperlegibleNext-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  src: url('../assets/fonts/AtkinsonHyperlegibleNext-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible Mono';
+  src: url('../assets/fonts/AtkinsonHyperlegibleMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Atkinson Hyperlegible Mono';
+  src: url('../assets/fonts/AtkinsonHyperlegibleMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ── LIGHT MODE (SauceLabs Sunny Radiant Cream Gradient & Crisp High Contrast) ── */
+  --bg-root:         #FAF1CE;                     /* Warm sunny gold-cream base */
+  --bg-gradient:     linear-gradient(180deg, #FDFCF7 0%, #FAF0CC 350px, #F6E49A 900px, #FAF1D1 1800px, #F5E397 2700px, #FBF2CE 3800px, #F5E398 100%);
+  --bg-surface:      rgba(255, 255, 255, 0.96);   /* Pure crisp readable sub-surfaces */
+  --bg-surface-tint: rgba(251, 242, 205, 0.55);   /* Soft subtle sunny wash */
+  --bg-card:         rgba(255, 254, 248, 0.94);   /* Warm luminous, razor-sharp readable card */
+  --bg-card-raised:  #FFFFFF;
+  --bg-overlay:      rgba(15, 30, 22, 0.5);
+  --nav-bg:          rgba(255, 255, 255, 0.96);
+
+  /* Primary Brand (SauceLabs Core Deep Forest Pine) */
+  --accent:          #0A3424;                     /* Deep Forest Pine */
+  --accent-hover:    #124B35;
+  --accent-light:    rgba(10, 52, 36, 0.08);
+  --accent-medium:   rgba(10, 52, 36, 0.16);
+  --accent-strong:   rgba(10, 52, 36, 0.3);
 
   /* Secondary & Pill Buttons */
-  --btn-dark:        #111A15;                     /* Deepest Black-Pine Pill */
-  --btn-dark-hover:  #202E26;
+  --btn-dark:        #111915;                     /* SauceLabs Signature Dark Black-Pine Pill */
+  --btn-dark-hover:  #1F2E26;
   --accent-gold:     #C98A2C;
-  --accent-gold-bg:  rgba(201, 138, 44, 0.12);
+  --accent-gold-bg:  rgba(201, 138, 44, 0.14);
 
-  /* Text Hierarchy */
-  --text-primary:    #121D17;                     /* Deep readable text */
-  --text-secondary:  #37463D;                     /* High-contrast body copy */
-  --text-muted:      #66786D;
-  --text-faint:      #9CAE9F;
+  /* High-Definition Text Hierarchy (Crisp, Razor-Sharp, Zero Blurriness) */
+  --text-primary:    #111915;                     /* Deepest, crystal-clear dark pine */
+  --text-secondary:  #223128;                     /* High-contrast, hyper-legible body text */
+  --text-muted:      #53655B;                     /* Subtle meta details */
+  --text-faint:      #869A8E;
 
   /* Borders & Dividers */
-  --border-faint:    rgba(13, 53, 38, 0.06);
-  --border:          rgba(201, 138, 44, 0.18);   /* Warm subtle amber border */
-  --border-strong:   rgba(13, 53, 38, 0.26);
+  --border-faint:    rgba(10, 52, 36, 0.08);
+  --border:          rgba(201, 138, 44, 0.28);   /* Warm golden-cream border */
+  --border-strong:   rgba(10, 52, 36, 0.32);
 
   /* Semantic Alerts (Harmonious Warm Amber / Ochre instead of harsh red) */
-  --success:         #0D6E54;
-  --success-bg:      rgba(13, 110, 84, 0.09);
-  --warning:         #B45309;                     /* Warm Amber Honey */
-  --warning-bg:      rgba(180, 83, 9, 0.09);
-  --danger:          #C2410C;                     /* Warm Terracotta Ochre (Soft & sophisticated, NO harsh red) */
-  --danger-bg:       rgba(194, 65, 12, 0.08);
+  --success:         #0A684F;
+  --success-bg:      rgba(10, 104, 79, 0.1);
+  --warning:         #B45309;                     /* Warm Honey Amber */
+  --warning-bg:      rgba(180, 83, 9, 0.1);
+  --danger:          #C2410C;                     /* Warm Terracotta Ochre (NO harsh red) */
+  --danger-bg:       rgba(194, 65, 12, 0.09);
   --info:            #0369A1;
-  --info-bg:         rgba(3, 105, 161, 0.08);
+  --info-bg:         rgba(3, 105, 161, 0.09);
 
   /* Shadows (SauceLabs Soft Depth) */
-  --shadow-sm:       0 2px 8px rgba(180, 140, 40, 0.05);
-  --shadow-md:       0 12px 36px rgba(180, 140, 40, 0.08);
-  --shadow-lg:       0 22px 60px rgba(180, 140, 40, 0.11);
-  --shadow-glow:     0 0 0 3px rgba(13, 53, 38, 0.15);
+  --shadow-sm:       0 2px 8px rgba(180, 140, 40, 0.07);
+  --shadow-md:       0 12px 36px rgba(180, 140, 40, 0.1);
+  --shadow-lg:       0 24px 64px rgba(180, 140, 40, 0.14);
+  --shadow-glow:     0 0 0 3px rgba(10, 52, 36, 0.15);
 
-  /* Typography Scale */
-  --font-display:    'Fraunces', Georgia, serif;
-  --font-body:       'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono:       'DM Mono', 'JetBrains Mono', Consolas, monospace;
+  /* Exact SauceLabs Typography Scale */
+  --font-display:    'P22 Mackinac Pro', Georgia, serif;
+  --font-body:       'Atkinson Hyperlegible Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono:       'Atkinson Hyperlegible Mono', 'DM Mono', Consolas, monospace;
 
   /* SauceLabs Generous Rounded Corners */
   --r-sm:   8px;
@@ -71,53 +121,53 @@
   --t-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── SAUCELABS FOOTER DARK GREEN THEME (Deep Forest Pine Gradient) ── */
+/* ── SOFT DIMMED COZY DARK MODE (Requested: "just dark the gradient not every bit so it dont have to look very dark") ── */
 [data-theme="dark"] {
-  --bg-root:         #081710;                     /* Deepest clean forest green */
-  --bg-gradient:     radial-gradient(ellipse at 50% 0%, #153828 0%, #0C2217 50%, #06130D 100%);
-  --bg-surface:      #0E271C;                     /* Clean, non-muddy elevated surface */
-  --bg-surface-tint: rgba(52, 211, 153, 0.08);
-  --bg-card:         rgba(18, 45, 33, 0.9);       /* Refined elevated dark pine card */
-  --bg-card-raised:  #1A4431;                     /* Floating element surface */
-  --bg-overlay:      rgba(3, 10, 6, 0.88);
-  --nav-bg:          rgba(10, 26, 18, 0.94);
+  --bg-root:         #242D26;                     /* Cozy warm olive charcoal (comfortably dimmed, NOT pitch dark) */
+  --bg-gradient:     linear-gradient(180deg, #2E3930 0%, #263128 350px, #202922 900px, #283329 1800px, #212A23 2700px, #29342A 3800px, #222B24 100%);
+  --bg-surface:      #323F35;                     /* Clean, comfortable, non-pitch-dark surface */
+  --bg-surface-tint: rgba(94, 234, 212, 0.08);
+  --bg-card:         rgba(42, 53, 44, 0.95);      /* Warm cozy elevated card */
+  --bg-card-raised:  #38483B;                     /* Floating element surface */
+  --bg-overlay:      rgba(15, 20, 16, 0.65);
+  --nav-bg:          rgba(38, 48, 40, 0.96);
 
   /* Mint Emerald Accent */
-  --accent:          #34D399;                     /* Radiant pass emerald green */
-  --accent-hover:    #6EE7B7;
-  --accent-light:    rgba(52, 211, 153, 0.12);
-  --accent-medium:   rgba(52, 211, 153, 0.22);
-  --accent-strong:   rgba(52, 211, 153, 0.4);
+  --accent:          #5EEAD4;                     /* Crisp radiant mint */
+  --accent-hover:    #99F6E4;
+  --accent-light:    rgba(94, 234, 212, 0.12);
+  --accent-medium:   rgba(94, 234, 212, 0.2);
+  --accent-strong:   rgba(94, 234, 212, 0.35);
 
-  --btn-dark:        #34D399;                     /* High-visibility pill button in dark mode */
-  --btn-dark-hover:  #6EE7B7;
+  --btn-dark:        #5EEAD4;                     /* Pill buttons in dark mode */
+  --btn-dark-hover:  #99F6E4;
   --accent-gold:     #FCD34D;
-  --accent-gold-bg:  rgba(252, 211, 77, 0.14);
+  --accent-gold-bg:  rgba(252, 211, 77, 0.16);
 
-  /* Text Hierarchy */
-  --text-primary:    #F3F9F6;                     /* Crisp off-white */
-  --text-secondary:  #B0C8BD;                     /* Clear readable pale sage */
-  --text-muted:      #789688;
-  --text-faint:      #4D6E60;
+  /* High-Definition Text in Dark Mode (100% Readable, Razor-Sharp) */
+  --text-primary:    #FFFFFF;                     /* Crisp white */
+  --text-secondary:  #D7E5DC;                     /* Soft comfortable sage */
+  --text-muted:      #9BB0A3;
+  --text-faint:      #73877B;
 
   /* Borders */
-  --border-faint:    rgba(255, 255, 255, 0.07);
-  --border:          rgba(52, 211, 153, 0.18);
-  --border-strong:   rgba(52, 211, 153, 0.35);
+  --border-faint:    rgba(255, 255, 255, 0.08);
+  --border:          rgba(255, 255, 255, 0.16);
+  --border-strong:   rgba(94, 234, 212, 0.38);
 
-  /* Semantic Alerts (Soft warm amber/coral in dark mode instead of pink/red) */
+  /* Semantic Alerts */
   --success:         #4ade80;
-  --success-bg:      rgba(74, 222, 128, 0.15);
+  --success-bg:      rgba(74, 222, 128, 0.16);
   --warning:         #fbbf24;
-  --warning-bg:      rgba(251, 191, 36, 0.15);
+  --warning-bg:      rgba(251, 191, 36, 0.16);
   --danger:          #fb923c;                     /* Warm Coral Amber in dark mode */
-  --danger-bg:       rgba(251, 146, 60, 0.15);
+  --danger-bg:       rgba(251, 146, 60, 0.16);
   --info:            #38bdf8;
-  --info-bg:         rgba(56, 189, 248, 0.16);
+  --info-bg:         rgba(56, 189, 248, 0.18);
 
   /* Shadows */
-  --shadow-sm:       0 2px 8px rgba(0, 0, 0, 0.35);
-  --shadow-md:       0 12px 36px rgba(0, 0, 0, 0.45);
-  --shadow-lg:       0 22px 60px rgba(0, 0, 0, 0.6);
-  --shadow-glow:     0 0 0 3px rgba(52, 211, 153, 0.25);
+  --shadow-sm:       0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-md:       0 12px 36px rgba(0, 0, 0, 0.22);
+  --shadow-lg:       0 24px 64px rgba(0, 0, 0, 0.3);
+  --shadow-glow:     0 0 0 3px rgba(94, 234, 212, 0.25);
 }

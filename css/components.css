@@ -1,27 +1,27 @@
 /* ═══════════════════════════════════════════════════════════════
    COMPONENTS.CSS — SauceLabs Style Generous Rounded Cards,
-                    Topic Focus Badges, and Architectural Schemas
+                    Topic Focus Badges, Technical Blueprints & Diagrams
    ═══════════════════════════════════════════════════════════════ */
 
 /* ── PRIMARY TOPIC CARD (FOCUS ON ONE THING AT ONCE) ──────────── */
 .topic-card {
   background: var(--bg-card);
-  background-image: linear-gradient(180deg, rgba(251, 243, 212, 0.4) 0%, rgba(255, 255, 255, 0) 180px);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border);
+  background-image: linear-gradient(180deg, rgba(251, 240, 204, 0.55) 0%, rgba(255, 254, 248, 0.94) 240px);
+  border: 1.5px solid var(--border);
   border-radius: var(--r-lg);
-  padding: clamp(1.75rem, 4vw, 2.75rem);
+  padding: clamp(2rem, 3.5vw, 3rem);
   box-shadow: var(--shadow-md);
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 2.25rem;
   position: relative;
   transition: border-color var(--t-normal), box-shadow var(--t-normal);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 [data-theme="dark"] .topic-card {
-  background-image: linear-gradient(180deg, rgba(52, 211, 153, 0.08) 0%, rgba(18, 45, 33, 0) 180px);
+  background-image: linear-gradient(180deg, rgba(94, 234, 212, 0.07) 0%, rgba(42, 53, 44, 0.95) 240px);
 }
 
 .topic-card:hover {
@@ -65,8 +65,8 @@
 
 .topic-title {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 2.35rem);
-  font-weight: 400;
+  font-size: clamp(1.85rem, 4vw, 2.45rem);
+  font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--text-primary);
@@ -76,6 +76,50 @@
   font-size: 1.05rem;
   color: var(--text-secondary);
   line-height: 1.8;
+  margin-top: 0.4rem;
+}
+
+/* ── NUMBERED SECTION HEADINGS (PROPER STRUCTURE 1.1, 1.2, ETC.) ─ */
+.section-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  margin-top: 0.5rem;
+}
+
+.section-numbered-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.25rem;
+}
+
+.section-index-badge {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: var(--btn-dark);
+  color: #FFFFFF;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.04em;
+}
+
+[data-theme="dark"] .section-index-badge {
+  background: var(--accent);
+  color: #111915;
+}
+
+.section-title-text {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
 /* ── SUB-CARDS (ROUNDED WITH PROPER PADDING) ──────────────────── */
@@ -83,14 +127,14 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.25rem;
-  margin: 1rem 0;
+  margin: 0.75rem 0;
 }
 
 .sub-card-grid-2 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.25rem;
-  margin: 1rem 0;
+  margin: 0.75rem 0;
 }
 
 .sub-box {
@@ -101,11 +145,12 @@
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
-  transition: transform var(--t-fast);
+  transition: transform var(--t-fast), border-color var(--t-fast);
 }
 
 .sub-box:hover {
-  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
 }
 
 .sub-box__tag {
@@ -114,48 +159,478 @@
   font-weight: 700;
   text-transform: uppercase;
   color: var(--accent);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
 }
 
 .sub-box__title {
-  font-weight: 700;
-  font-size: 1.05rem;
+  font-family: var(--font-body);
+  font-size: 1.08rem;
+  font-weight: 600;
   color: var(--text-primary);
+  line-height: 1.35;
 }
 
 .sub-box__body {
-  font-size: 0.94rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
   line-height: 1.7;
 }
 
-/* ── THE GOLDEN RULE CARD ─────────────────────────────────────── */
-.golden-rule-card {
+/* ── TECHNICAL ARCHITECTURE BLUEPRINTS (HIGHLY VISUAL DIAGRAMS) ─ */
+.blueprint-card {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 1.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.blueprint-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px dashed var(--border);
+}
+
+.blueprint-title {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.blueprint-badge {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
   background: var(--accent-light);
-  border: 1.5px solid var(--accent);
-  border-radius: var(--r-lg);
-  padding: 1.75rem 2rem;
-  margin: 1.5rem 0;
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+}
+
+/* System Container Box */
+.blueprint-system-container {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  position: relative;
+  transition: all var(--t-normal);
+}
+
+.blueprint-system-container.system-crashed {
+  border-color: #B45309;
+  background: rgba(245, 158, 11, 0.06);
+}
+
+.blueprint-container-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.blueprint-container-name {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.blueprint-tag-pill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+}
+
+/* Module Grid inside Single Process */
+.blueprint-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.blueprint-module-node {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 0.85rem 1rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: all var(--t-fast);
+}
+
+.blueprint-module-node .mod-sub {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+/* Crash state for in-memory modules */
+.blueprint-module-node.crashed-mod {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border-color: #B45309 !important;
+  color: #B45309 !important;
+  transform: scale(1.02);
+  box-shadow: 0 0 0 2px rgba(180, 83, 9, 0.25);
+}
+
+[data-theme="dark"] .blueprint-module-node.crashed-mod {
+  background: rgba(251, 191, 36, 0.18) !important;
+  border-color: #FCD34D !important;
+  color: #FCD34D !important;
+}
+
+.blueprint-module-node.collateral-crash {
+  opacity: 0.35;
+  text-decoration: line-through;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .blueprint-module-node.collateral-crash {
+  background: rgba(255, 255, 255, 0.05);
+  color: #9CA3AF;
+}
+
+/* Microservices Pod Grid */
+.blueprint-pods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.15rem;
+}
+
+.blueprint-pod-node {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: all var(--t-fast);
+}
+
+.blueprint-pod-node.pod-healthy {
+  border-left: 4px solid var(--success);
+}
+
+.blueprint-pod-node.pod-crashed {
+  border-left: 4px solid #B45309;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.pod-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.pod-port {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.pod-db-badge {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-align: center;
+}
+
+.pod-status-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+  text-align: center;
+}
+
+.pod-status-badge.status-ok {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success);
+}
+
+.pod-status-badge.status-down {
+  background: rgba(245, 158, 11, 0.15);
+  color: #B45309;
+  border: 1px solid #B45309;
+}
+
+/* Bus Connector Arrow */
+.blueprint-flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 0.25rem 0;
+}
+
+/* Central Shared DB Box */
+.blueprint-db-box {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  padding: 0.95rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Interactive Simulation Controls & Diagnostics */
+.blueprint-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.blueprint-action-btn {
+  background: var(--btn-dark);
+  color: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all var(--t-fast);
+}
+
+.blueprint-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .blueprint-action-btn {
+  background: var(--accent);
+  color: #111915;
+}
+
+.blueprint-reset-btn {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  padding: 0.5rem 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+
+.blueprint-reset-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.blueprint-diagnostic-box {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  border-radius: var(--r-sm);
+  padding: 0.9rem 1.15rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+}
+
+.blueprint-diagnostic-box.diagnostic-success {
+  background: var(--success-bg);
+  border-color: var(--success);
+}
+
+/* ── STRANGLER FIG INTERACTIVE SLIDER ─────────────────────────── */
+.canary-slider-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+}
+
+.canary-slider-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.canary-range-input {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.canary-flow-splits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.canary-split-col {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.canary-split-name {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.canary-split-pct {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ── HEAD-TO-HEAD COMPARISON TABLE ────────────────────────────── */
+.comparison-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  margin: 1rem 0;
+  background: var(--bg-surface);
+}
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  text-align: left;
+}
+
+.spec-table th {
+  background: var(--bg-card);
+  padding: 0.95rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+  border-bottom: 1.5px solid var(--border);
+}
+
+.spec-table td {
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.spec-table tr:last-child td {
+  border-bottom: none;
+}
+
+.spec-table tr:hover td {
+  background: var(--bg-card);
+}
+
+/* ── GOLDEN RULE CARD ─────────────────────────────────────────── */
+.golden-rule-card {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 1.4rem 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
 }
 
 .golden-rule-title {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #B45309;
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.5rem;
+}
+
+[data-theme="dark"] .golden-rule-title {
+  color: #FCD34D;
 }
 
 .golden-rule-comparison {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
-  margin-top: 0.5rem;
 }
 
 @media (max-width: 680px) {
@@ -203,7 +678,7 @@
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--danger);
+  color: #B45309;
   margin-bottom: 0.5rem;
 }
 
@@ -227,7 +702,7 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin: 1.5rem 0;
+  margin: 1rem 0;
 }
 
 .workflow-step {
@@ -238,13 +713,19 @@
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   padding: 1.25rem 1.5rem;
+  transition: transform var(--t-fast);
+}
+
+.workflow-step:hover {
+  transform: translateX(3px);
+  border-color: var(--border-strong);
 }
 
 .step-circle {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--btn-dark);
   color: #FFFFFF;
   display: flex;
   align-items: center;
@@ -257,11 +738,11 @@
 
 [data-theme="dark"] .step-circle {
   background: var(--accent);
-  color: #131916;
+  color: #111915;
 }
 
 .workflow-step__title {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.05rem;
   color: var(--text-primary);
   margin-bottom: 0.35rem;
@@ -273,267 +754,32 @@
   line-height: 1.7;
 }
 
-/* ── ARCHITECTURAL SCHEMAS & VISUALIZATION DIAGRAMS ───────────── */
-.arch-schema-card {
-  background: rgba(255, 255, 255, 0.95);
-  background-image: linear-gradient(180deg, rgba(251, 243, 212, 0.45) 0%, rgba(255, 255, 255, 0.8) 100%);
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: clamp(1.25rem, 3vw, 2rem);
-  margin: 1.5rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  box-shadow: 0 8px 24px rgba(180, 140, 40, 0.06);
-}
-
-[data-theme="dark"] .arch-schema-card {
-  background: rgba(18, 45, 33, 0.9);
-  background-image: linear-gradient(180deg, rgba(52, 211, 153, 0.08) 0%, rgba(18, 45, 33, 0.8) 100%);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-}
-
-.arch-schema-header {
+/* ── QUICK JUMP CAPSULE BAR ───────────────────────────────────── */
+.quick-jump-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  padding-bottom: 0.85rem;
-  border-bottom: 1px dashed var(--border);
-}
-
-.arch-schema-title {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.arch-schema-badge {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: var(--r-pill);
-  background: var(--accent-light);
-  color: var(--accent);
-  border: 1px solid var(--border);
-}
-
-/* Side-by-Side Architectural Comparison Grid (Monolith vs Microservices) */
-.arch-compare-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.75rem;
-  align-items: stretch;
-}
-
-@media (max-width: 960px) {
-  .arch-compare-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-}
-
-.arch-system-box {
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-md);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  box-shadow: var(--shadow-sm);
-}
-
-/* Sophisticated Warm Amber for Monolith Architecture (NO harsh red) */
-.arch-system-box--monolith {
-  border-color: rgba(217, 119, 6, 0.35);
-}
-
-.arch-system-box--microservices {
-  border-color: rgba(13, 110, 84, 0.35);
-}
-
-[data-theme="dark"] .arch-system-box--monolith {
-  border-color: rgba(251, 191, 36, 0.35);
-}
-
-[data-theme="dark"] .arch-system-box--microservices {
-  border-color: rgba(52, 211, 153, 0.4);
-}
-
-.arch-system-title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
-
-.arch-system-name {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-/* Monolith Internal Module Container */
-.monolith-container {
-  background: rgba(255, 253, 247, 0.95);
-  border: 1.5px dashed rgba(217, 119, 6, 0.32);
-  border-radius: var(--r-md);
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-}
-
-[data-theme="dark"] .monolith-container {
-  background: rgba(18, 45, 33, 0.85);
-  border-color: rgba(251, 191, 36, 0.3);
-}
-
-.monolith-container-label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
-
-.monolith-modules-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.monolith-mod {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  padding: 0.45rem 0.85rem;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-/* Warm Amber SPOF Module (Soft, clear, NO harsh red) */
-.monolith-mod--crash {
-  background: rgba(245, 158, 11, 0.12);
-  border-color: rgba(245, 158, 11, 0.45);
-  color: #B45309;
-  font-weight: 700;
-}
-
-[data-theme="dark"] .monolith-mod--crash {
-  background: rgba(251, 191, 36, 0.16);
-  border-color: rgba(251, 191, 36, 0.5);
-  color: #FCD34D;
-}
-
-.monolith-db-arrow {
-  text-align: center;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  padding: 0.25rem 0;
-}
-
-.shared-db-box {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--r-sm);
-  padding: 0.85rem;
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-/* Microservices Decoupled Services Grid */
-.microservices-services-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.micro-service-item {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  padding: 0.85rem 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.65rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 0;
 }
 
-.micro-service-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.micro-service-name {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.micro-service-port {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-muted);
-}
-
-.micro-service-db {
-  background: var(--bg-card);
+.jump-pill {
+  background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--r-pill);
-  padding: 0.3rem 0.75rem;
+  padding: 0.45rem 1.1rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all var(--t-fast);
+}
+
+.jump-pill:hover, .jump-pill.active {
+  background: var(--accent-light);
+  border-color: var(--accent);
   color: var(--accent);
-}
-
-.arch-alert-badge {
-  font-size: 0.82rem;
-  padding: 0.65rem 0.95rem;
-  border-radius: var(--r-sm);
-  line-height: 1.5;
-}
-
-/* Warm Amber SPOF Alert Badge (NO harsh red) */
-.arch-alert-badge--danger {
-  background: rgba(245, 158, 11, 0.08);
-  color: #92400E;
-  border: 1px solid rgba(245, 158, 11, 0.28);
-}
-
-[data-theme="dark"] .arch-alert-badge--danger {
-  background: rgba(251, 191, 36, 0.12);
-  color: #FCD34D;
-  border: 1px solid rgba(251, 191, 36, 0.3);
-}
-
-.arch-alert-badge--success {
-  background: var(--success-bg);
-  color: var(--success);
-  border: 1px solid var(--success);
 }
 
 /* ── INTERACTIVE SIMULATOR (EXPANDED TO FULL SCREEN WIDTH) ─────── */
@@ -626,29 +872,15 @@
   width: 100%;
 }
 
-/* Simulator Grid Nodes (Utilizing Full Screen Width Without Overflow) */
+/* Simulator Grid Nodes (Clean Fluid Responsive Layout) */
 .sim-grid {
   display: grid;
-  grid-template-columns: 240px 240px 1.15fr 1.45fr;
-  gap: 1.5rem;
-  align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
   position: relative;
   z-index: 2;
   width: 100%;
-}
-
-@media (max-width: 1200px) {
-  .sim-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-}
-
-@media (max-width: 720px) {
-  .sim-grid {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
 }
 
 .sim-box {

@@ -6,7 +6,7 @@
 const SYSTEM_DESIGN_NOTES = {
   meta: {
     title: "OneNightRevise — System Design Revision Notes",
-    totalTopics: 43
+    totalTopics: 49
   },
 
   navGroups: [
@@ -17,7 +17,8 @@ const SYSTEM_DESIGN_NOTES = {
     { label: "19–21 Protocols", targetId: "topic-19-networking-protocols" },
     { label: "22–32 Scaling", targetId: "topic-22-what-is-scaling" },
     { label: "33–37 Cache", targetId: "topic-33-what-is-caching" },
-    { label: "38–43 CAP", targetId: "topic-38-distributed-systems" }
+    { label: "38–43 CAP", targetId: "topic-38-distributed-systems" },
+    { label: "44–49 Rate Limit", targetId: "topic-44-rate-limiting" }
   ],
 
   topics: [
@@ -5484,6 +5485,690 @@ const SYSTEM_DESIGN_NOTES = {
                   <rect x="498" y="163" width="76" height="32" rx="16" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
                   <text x="536" y="184" text-anchor="middle" class="svg-mono-md" style="fill: var(--success);">AP</text>
                   <text x="592" y="184" class="svg-sub">Home feed always loads (slight delay is fine)</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 44: WHAT IS RATE LIMITING & WHY DO WE NEED IT?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-44-rate-limiting",
+      number: "44",
+      shortLabel: "Rate Limiting",
+      title: "What is Rate Limiting & Why Do We Need It?",
+      summary: "Stopping spam requests (refreshing YouTube 50 times in a row) that exploit server resources and delay genuine users, enforcing IP/user limits (3 req/min), and HTTP 429 Too Many Requests.",
+      subtopicLabels: ["44.1 Spam Request Problem", "44.2 Rate Limiter & HTTP 429"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "44.1",
+          title: "The Spam Request Problem (Resource Exploitation)",
+          content: `
+            <p>In any application, multiple users (Clients) send requests to a <strong>Server</strong>, and the Server sends back responses (forming a Request-Response cycle). Sometimes, a malicious or aggressive user (say, <strong>User A</strong>) continuously sends <strong>spam requests</strong> (<code>Req 1</code>, <code>Req 2</code>, <code>Req 3</code>, ...) — for example, going to a YouTube channel and hitting the browser refresh button 50 times in a row.</p>
+
+            <div class="sub-card-grid-3" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Impact 01</div>
+                <div class="sub-box__title">Resource Exploitation</div>
+                <div class="sub-box__body">User A exploits and hogs the server's resources (CPU, memory, threads).</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Impact 02</div>
+                <div class="sub-box__title">Server Slows Down</div>
+                <div class="sub-box__body">Flooded with spam requests from User A, the server gets overwhelmed and performance degrades.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--danger);">
+                <div class="sub-box__tag">Impact 03</div>
+                <div class="sub-box__title">Genuine Users Suffer</div>
+                <div class="sub-box__body">Genuine users' requests cannot be fulfilled on time and get delayed/forced to wait while User A hogs resources.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "44.2",
+          title: "How a Rate Limiter Solves This Problem (+ HTTP 429)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>To protect the server from spam requests, we configure and place a <strong>Rate Limiter</strong> in front of the Server.</li>
+              <li><strong>What a Rate Limiter Does:</strong> It restricts the <strong>rate</strong> at which a user (or a specific <strong>IP Address</strong>) can access the server within a given time window.</li>
+              <li><strong>Example Rule:</strong> <em>"A single user (single IP address) can send a maximum of <strong>3 requests per 1 minute</strong> to the server."</em>
+                <ul class="notes-sub-list">
+                  <li>When <strong>User A</strong> sends <code>Req 1</code>, <code>Req 2</code>, and <code>Req 3</code> within 1 minute → The Rate Limiter allows them through to the Server.</li>
+                  <li>The moment <strong>User A</strong> sends their <strong>4th request (<code>Req 4</code>)</strong> within that same minute → The Rate Limiter <strong>rejects the request</strong> (or tells User A to wait until the 1-minute time interval finishes before processing more requests).</li>
+                  <li>By blocking or delaying User A's spam requests, the server's resources stay free to serve genuine users smoothly.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">HTTP STATUS CODE FOR RATE LIMITING</div>
+              <p style="margin-top: 0.45rem; color: var(--text-primary); font-size: 1.03rem;">
+                When a user exceeds the allowed limit (e.g., more than 3 requests per minute), the server/rate limiter returns a <strong><code>429</code> Error Response</strong> — meaning <strong>"Too Many Requests"</strong>.
+              </p>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 44.1 · Rate Limiter Protecting the Server (Rule: Max 3 Req / Min)</span>
+                <span class="diagram-frame-tag">HTTP 429 TOO MANY REQUESTS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 245" class="arch-svg" role="img" aria-label="Rate Limiter diagram allowing User A requests 1 to 3, blocking Request 4 with HTTP 429 Too Many Requests, while keeping Server healthy for Genuine User B">
+                  <defs>
+                    <marker id="arrow-44" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Spammer User A -->
+                  <rect x="20" y="24" width="182" height="86" rx="12" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="111" y="54" text-anchor="middle" class="svg-title">User A (Spam)</text>
+                  <text x="111" y="76" text-anchor="middle" class="svg-mono-xs">Req 1, 2, 3 ✓</text>
+                  <text x="111" y="96" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Req 4, 5, ..., 50 ✕</text>
+
+                  <!-- Genuine User B -->
+                  <rect x="20" y="134" width="182" height="86" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="111" y="166" text-anchor="middle" class="svg-title">User B (Genuine)</text>
+                  <text x="111" y="190" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Normal Request ✓</text>
+
+                  <line x1="202" y1="67" x2="310" y2="104" stroke="var(--warning)" stroke-width="1.8" marker-end="url(#arrow-44)"/>
+                  <line x1="202" y1="177" x2="310" y2="142" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-44)"/>
+
+                  <!-- Rate Limiter -->
+                  <rect x="318" y="48" width="224" height="148" rx="16" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="430" y="78" text-anchor="middle" class="svg-kicker">EDGE PROTECTION</text>
+                  <text x="430" y="106" text-anchor="middle" class="svg-title">Rate Limiter</text>
+                  <text x="430" y="130" text-anchor="middle" class="svg-mono-xs">Rule: Max 3 Req / 1 Min</text>
+                  <rect x="340" y="148" width="180" height="32" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="430" y="169" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Req 4+ → HTTP 429 ✕</text>
+
+                  <!-- Forward to Server -->
+                  <line x1="542" y1="122" x2="650" y2="122" stroke="var(--success)" stroke-width="2.2" marker-end="url(#arrow-44)"/>
+                  <text x="596" y="110" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Allowed Only</text>
+
+                  <!-- Protected Server -->
+                  <rect x="658" y="66" width="200" height="112" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="758" y="104" text-anchor="middle" class="svg-title">Backend Server</text>
+                  <text x="758" y="128" text-anchor="middle" class="svg-sub">Resources Free &amp; Fast ✓</text>
+                  <text x="758" y="150" text-anchor="middle" class="svg-mono-xs">Serves User B Smoothly</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 45: RATE LIMITING STRATEGY 1 — TOKEN BUCKET ALGORITHM
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-45-token-bucket",
+      number: "45",
+      shortLabel: "Token Bucket",
+      title: "Rate Limiting Strategy 1 — Token Bucket Algorithm",
+      summary: "Bucket capacity (5 tokens), fixed-rate Refiller Service (3 tokens/sec), Scenarios A–C (multi-user, single-user burst, idle overflow cap), and burst starvation latency drawback.",
+      subtopicLabels: ["45.1 Core Components", "45.2 Working Scenarios (A–C)", "45.3 Major Drawbacks"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "45.1",
+          title: "Core Components of Token Bucket Algorithm",
+          content: `
+            <div class="sub-card-grid-3">
+              <div class="sub-box">
+                <div class="sub-box__tag">Component 01</div>
+                <div class="sub-box__title">The Bucket</div>
+                <div class="sub-box__body">A container that holds <strong>Tokens</strong> up to a fixed maximum capacity (e.g., <strong>Bucket Capacity = 5 Tokens</strong>).</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Component 02</div>
+                <div class="sub-box__title">The Refiller Service</div>
+                <div class="sub-box__body">A background service that continuously refills the bucket with tokens at a <strong>fixed rate</strong> (e.g., <strong>Refill Rate = 3 Tokens per second</strong>).</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--accent);">
+                <div class="sub-box__tag">Component 03</div>
+                <div class="sub-box__title">The Rule</div>
+                <div class="sub-box__body">A user <strong>must grab 1 Token</strong> from the bucket to reach the Server. If a Token exists → processed. If the bucket is empty (<code>0 Tokens</code>) → rejected/blocked.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "45.2",
+          title: "Step-by-Step Working Scenarios",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Scenario A: Multiple Users Arriving in 1 Second</strong>
+                <ul class="notes-sub-list">
+                  <li>At <strong>Second 1</strong>, the Refiller puts <strong>3 Tokens</strong> into the bucket.</li>
+                  <li>Suppose 4 users (<code>User A</code>, <code>User B</code>, <code>User C</code>, <code>User D</code>) arrive in that first second: <code>User A</code> takes <strong>Token 1</strong> (processed), <code>User B</code> takes <strong>Token 2</strong> (processed), <code>User C</code> takes <strong>Token 3</strong> (processed).</li>
+                  <li><code>User D</code> arrives and checks the bucket → <strong>The bucket is now completely empty (0 Tokens left)!</strong> Therefore, <code>User D</code>'s request is rejected.</li>
+                  <li>At <strong>Second 2</strong>, the Refiller again adds <strong>3 new Tokens</strong> for the next batch.</li>
+                </ul>
+              </li>
+              <li><strong>Scenario B: Single User Consuming All Tokens</strong>
+                <ul class="notes-sub-list">
+                  <li>If <strong><code>User A</code></strong> alone sends <strong>3 requests</strong> in a single second, <code>User A</code> takes all 3 tokens (<code>Token 1</code>, <code>Token 2</code>, <code>Token 3</code>). The bucket becomes empty, and any next user arriving in that second is blocked.</li>
+                </ul>
+              </li>
+              <li><strong>Scenario C: Idle Bucket &amp; Maximum Capacity Cap (Bucket Overflow Prevention)</strong>
+                <ul class="notes-sub-list">
+                  <li>Suppose <strong>Bucket Capacity = 5 Tokens</strong> and <strong>Refill Rate = 3 Tokens/sec</strong>, and no user arrives for 2 seconds:</li>
+                  <li><strong>Second 1:</strong> Refiller adds <strong>3 Tokens</strong> (Bucket = <code>3 Tokens</code>).</li>
+                  <li><strong>Second 2:</strong> Refiller tries to add <strong>3 more Tokens</strong> (<code>3 + 3 = 6 Tokens</code>). Because <strong>Bucket Capacity is capped at 5 Tokens</strong>, only <strong>2 more Tokens</strong> fit (bringing it to max <code>5 Tokens</code>), and the extra token is discarded.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 45.1 · Token Bucket Algorithm (Capacity = 5, Refill Rate = 3/sec)</span>
+                <span class="diagram-frame-tag">1 REQUEST = 1 TOKEN · EMPTY BUCKET = 429 REJECT</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 245" class="arch-svg" role="img" aria-label="Token Bucket diagram showing Refiller adding 3 tokens per second to a bucket of max capacity 5, allowing User A B C with tokens to reach Server while rejecting User D when empty">
+                  <defs>
+                    <marker id="arrow-45" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Refiller Service -->
+                  <rect x="20" y="64" width="184" height="114" rx="14" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.6"/>
+                  <text x="112" y="94" text-anchor="middle" class="svg-kicker">BACKGROUND SERVICE</text>
+                  <text x="112" y="120" text-anchor="middle" class="svg-title">Refiller</text>
+                  <text x="112" y="144" text-anchor="middle" class="svg-mono-xs">+3 Tokens / sec</text>
+                  <text x="112" y="164" text-anchor="middle" class="svg-sub">Excess discarded &gt; 5</text>
+
+                  <line x1="204" y1="121" x2="270" y2="121" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-45)"/>
+
+                  <!-- Bucket Container -->
+                  <rect x="278" y="34" width="214" height="176" rx="16" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="385" y="60" text-anchor="middle" class="svg-kicker">TOKEN BUCKET (MAX 5)</text>
+
+                  <!-- 3 Active Tokens -->
+                  <circle cx="332" cy="108" r="22" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="332" y="113" text-anchor="middle" class="svg-mono-xs">T1</text>
+
+                  <circle cx="385" cy="108" r="22" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="385" y="113" text-anchor="middle" class="svg-mono-xs">T2</text>
+
+                  <circle cx="438" cy="108" r="22" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="438" y="113" text-anchor="middle" class="svg-mono-xs">T3</text>
+
+                  <!-- 2 Empty Capacity Slots -->
+                  <circle cx="358" cy="160" r="20" fill="none" stroke="var(--border-strong)" stroke-dasharray="4 3"/>
+                  <circle cx="412" cy="160" r="20" fill="none" stroke="var(--border-strong)" stroke-dasharray="4 3"/>
+                  <text x="385" y="198" text-anchor="middle" class="svg-sub">Second 1: 3 Tokens Available</text>
+
+                  <!-- Users -> Server / Rejected -->
+                  <path d="M 492 94 L 580 62" fill="none" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-45)"/>
+                  <rect x="588" y="24" width="272" height="82" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="724" y="54" text-anchor="middle" class="svg-node">Users A, B, C grab T1, T2, T3 ✓</text>
+                  <text x="724" y="76" text-anchor="middle" class="svg-sub">Forwarded to Backend Server</text>
+                  <text x="724" y="96" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Processed Normally</text>
+
+                  <path d="M 492 152 L 580 180" fill="none" stroke="var(--danger)" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arrow-45)"/>
+                  <rect x="588" y="138" width="272" height="82" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.5"/>
+                  <text x="724" y="168" text-anchor="middle" class="svg-node" style="fill: var(--danger);">User D arrives → 0 Tokens Left ✕</text>
+                  <text x="724" y="190" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Rejected (HTTP 429)</text>
+                  <text x="724" y="208" text-anchor="middle" class="svg-sub">Must wait for next Refiller tick</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "45.3",
+          title: "Major Drawbacks of Token Bucket Algorithm",
+          content: `
+            <div class="callout-highlight-box" style="border-left-color: var(--warning);">
+              <div class="callout-highlight-tag" style="color: var(--warning);">DRAWBACK · BURST STARVATION &amp; HIGH WAIT TIME</div>
+              <ul class="notes-bullet-list" style="margin-top: 0.55rem;">
+                <li>Suppose the bucket is empty, and the Refiller is set to refill <strong>20 Tokens every 5 seconds</strong>.</li>
+                <li>At <strong>Second 1</strong>, the Refiller adds <strong>20 Tokens</strong> into the bucket. Immediately in that very first second, a single aggressive user (<strong><code>User A</code></strong>) fires <strong>20 requests at once</strong>, consuming <strong>all 20 Tokens</strong> and emptying the bucket in the 1st second itself.</li>
+                <li>Now, when a genuine user (<strong><code>User B</code></strong>) arrives right after, the bucket is empty and the Refiller won't run again until the 5-second interval finishes.</li>
+                <li><strong>Impact:</strong> <code>User B</code> is forced to <strong>wait for 4 full seconds</strong>, causing a massive delay in response time and <strong>increasing system latency</strong>.</li>
+              </ul>
+            </div>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 46: RATE LIMITING STRATEGY 2 — LEAKY BUCKET ALGORITHM
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-46-leaky-bucket",
+      number: "46",
+      shortLabel: "Leaky Bucket",
+      title: "Rate Limiting Strategy 2 — Leaky Bucket Algorithm",
+      summary: "Water bucket with a small bottom hole smoothing 1,000 req/s bursts into a constant 100 req/s drip, plus step-by-step numerical queue overflow example (900 → 1,800 → ~800 dropped).",
+      subtopicLabels: ["46.1 Core Concept & Analogy", "46.2 Queue Delay & Overflow Math"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "46.1",
+          title: "Core Concept & Analogy",
+          content: `
+            <p>Imagine a physical water bucket with a <strong>small hole at the bottom</strong>. No matter how fast you pour water into the top of the bucket, water drips (leaks) out of the bottom hole at a <strong>steady, constant rate</strong>.</p>
+            <ul class="notes-bullet-list" style="margin-top: 0.75rem;">
+              <li><strong>Incoming Requests (Top of Bucket):</strong> Requests from different users (<code>User A</code>, <code>User B</code>, <code>User C</code>, etc.) are poured into the <strong>Bucket</strong> at a high/variable rate (e.g., <strong>1,000 requests per second</strong>).</li>
+              <li><strong>Leaking Requests (Hole at Bottom of Bucket):</strong> The hole at the bottom leaks requests out to the <strong>Server</strong> at a strict, constant rate matching the <strong>Server's exact processing capacity</strong> (e.g., <strong>2 requests per second</strong> or <strong>100 requests per second</strong>).</li>
+              <li><strong>Key Benefit:</strong> Even if a sudden burst of 1,000 requests/second hits the bucket, the Server only receives requests at its comfortable capacity (e.g., 2 requests/second), preventing the server from ever getting overwhelmed or exploited.</li>
+            </ul>
+          `
+        },
+        {
+          num: "46.2",
+          title: "Major Drawback of Leaky Bucket Algorithm (Queue Delay & Bucket Overflow)",
+          content: `
+            <p>Because the rate of requests entering the bucket is much higher than the rate of requests leaking out to the server, the bucket quickly fills up, causing heavy waiting delays:</p>
+            <div class="sub-card-grid-3" style="margin-top: 0.85rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Second 1</div>
+                <div class="sub-box__title">900 Remaining</div>
+                <div class="sub-box__body"><code>1,000</code> requests enter, Server processes <code>100</code>.<br><code>1,000 − 100 = 900 requests</code> left in bucket.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--warning);">
+                <div class="sub-box__tag">Second 2</div>
+                <div class="sub-box__title">1,800 Remaining</div>
+                <div class="sub-box__body">Another <code>1,000</code> enter (<code>900 + 1,000 = 1,900</code>), Server processes <code>100</code>.<br><code>1,900 − 100 = 1,800</code> (only <code>200</code> slots left!).</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--danger);">
+                <div class="sub-box__tag">Second 3 · Overflow!</div>
+                <div class="sub-box__title">~800 Dropped / Delayed</div>
+                <div class="sub-box__body">Next <code>1,000</code> requests hit the <code>2,000</code> max capacity limit → roughly <strong>800 requests get dropped or suffer massive waiting delays</strong>.</div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 46.1 · Leaky Bucket Constant Leak &amp; Queue Overflow (Cap: 2,000)</span>
+                <span class="diagram-frame-tag">1,000 REQ/S IN → 100 REQ/S CONSTANT OUT</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 245" class="arch-svg" role="img" aria-label="Leaky Bucket diagram showing 1000 req/s burst pouring into a 2000 capacity bucket, filling from 900 to 1800 to overflow of 800 requests, while leaking steadily at 100 req/s to the server">
+                  <defs>
+                    <marker id="arrow-46" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Variable Burst Input -->
+                  <rect x="20" y="64" width="184" height="114" rx="14" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="112" y="96" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">VARIABLE BURST IN</text>
+                  <text x="112" y="122" text-anchor="middle" class="svg-title">1,000 req / sec</text>
+                  <text x="112" y="148" text-anchor="middle" class="svg-sub">Users A, B, C, ...</text>
+
+                  <line x1="204" y1="121" x2="278" y2="121" stroke="var(--warning)" stroke-width="2.4" marker-end="url(#arrow-46)"/>
+
+                  <!-- Leaky Bucket Queue -->
+                  <rect x="286" y="24" width="276" height="196" rx="16" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="424" y="50" text-anchor="middle" class="svg-kicker">LEAKY BUCKET (MAX CAP: 2,000)</text>
+
+                  <rect x="308" y="64" width="232" height="36" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="424" y="87" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Sec 3: Cap 2,000 → ~800 Dropped ✕</text>
+
+                  <rect x="308" y="110" width="232" height="36" rx="8" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="424" y="133" text-anchor="middle" class="svg-mono-xs">Sec 2: 1,800 Queued (200 slots left)</text>
+
+                  <rect x="308" y="156" width="232" height="36" rx="8" fill="var(--accent-light)" stroke="var(--accent)"/>
+                  <text x="424" y="179" text-anchor="middle" class="svg-mono-xs">Sec 1: 900 Queued (1000 − 100)</text>
+
+                  <!-- Steady Constant Leak Out -->
+                  <line x1="562" y1="121" x2="652" y2="121" stroke="var(--success)" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-46)"/>
+                  <text x="607" y="108" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Steady Leak</text>
+                  <text x="607" y="142" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">100 req/s</text>
+
+                  <!-- Protected Server -->
+                  <rect x="660" y="64" width="200" height="114" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="760" y="100" text-anchor="middle" class="svg-title">Backend Server</text>
+                  <text x="760" y="126" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Constant 100 req/s ✓</text>
+                  <text x="760" y="150" text-anchor="middle" class="svg-sub">Never overwhelmed</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 47: RATE LIMITING STRATEGY 3 — FIXED WINDOW COUNTER
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-47-fixed-window",
+      number: "47",
+      shortLabel: "Fixed Window",
+      title: "Rate Limiting Strategy 3 — Fixed Window Counter Algorithm",
+      summary: "Fixed 1-second windows with Counter reset to 0 (Threshold: 3 req/sec), walkthrough across Windows 1–3, and the Boundary Traffic Spike drawback (0.5s to 1.5s processing 4 requests).",
+      subtopicLabels: ["47.1 Core Setup", "47.2 Windows 1–3 Walkthrough", "47.3 Boundary Spike Problem"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "47.1",
+          title: "Core Concept & Setup",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>In the <strong>Fixed Window Counter Algorithm</strong>, we divide time into <strong>fixed-size windows</strong> and maintain a <strong>Counter</strong> to count the number of requests arriving in each window.</li>
+              <li><strong>How the Window Size is Decided:</strong>
+                <ol class="notes-ordered-list" style="margin-top: 0.4rem;">
+                  <li><strong>Decide a Threshold Value:</strong> e.g., <strong>Threshold = 3 requests per second</strong> (maximum 3 requests in 1 second).</li>
+                  <li><strong>Define Fixed Window Size:</strong> Since threshold is <code>3 requests/second</code>, we define a <strong>Fixed Window Size of 1 second</strong> (time can be seconds, minutes, etc.).</li>
+                </ol>
+              </li>
+              <li><strong>Graph &amp; Counter Representation:</strong> Y-Axis = Number of Requests, X-Axis = Time in 1-second intervals (<code>1st s</code>, <code>2nd s</code>, <code>3rd s</code>, <code>4th s</code>). For each window, Counter starts at <code>0</code>:
+                <ul class="notes-sub-list">
+                  <li>If <code>Counter &lt; Threshold (3)</code> → Increment counter and <strong>process the request</strong>.</li>
+                  <li>If <code>Counter == Threshold (3)</code> → <strong>Reject any further requests</strong> in that window.</li>
+                  <li>When the 1-second window ends and the next begins → <strong>Reset Counter back to <code>0</code></strong>.</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "47.2",
+          title: "Step-by-Step Working Scenarios Across Windows",
+          content: `
+            <div class="sub-card-grid-3">
+              <div class="sub-box">
+                <div class="sub-box__tag">Window 1 (0s – 1s)</div>
+                <div class="sub-box__title">Counter: 0 → 1 → 3</div>
+                <div class="sub-box__body">
+                  • 1st req arrives → <code>Counter: 0 → 1</code> (Processed ✓)<br>
+                  • 2 more reqs arrive → <code>Counter: 1 → 3</code> (Both Processed ✓)
+                </div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Window 2 (1s – 2s)</div>
+                <div class="sub-box__title">Reset 0 → 2 → 3 (2 Rejected)</div>
+                <div class="sub-box__body">
+                  • Resets to <code>0</code>. First 2 reqs arrive → <code>Counter = 2</code> (Processed ✓)<br>
+                  • Next 3 reqs arrive → Only <strong>1 processed</strong> (<code>Counter = 3</code>), <strong>remaining 2 rejected ✕</strong>.
+                </div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Window 3 (2s – 3s)</div>
+                <div class="sub-box__title">Reset 0 → 3 (1 Rejected)</div>
+                <div class="sub-box__body">
+                  • Resets to <code>0</code>. 3 reqs arrive together → all 3 processed (<code>Counter = 3</code> ✓)<br>
+                  • 1 more req arrives → <strong>Rejected ✕</strong> (limit reached).
+                </div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "47.3",
+          title: "Major Drawback: Boundary Traffic Spike Problem",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>Fixed windows cover <code>0 to 1s</code>, <code>1 to 2s</code>, <code>2 to 3s</code>, etc. However, look at the 1-second interval spanning the boundary from <strong><code>0.5s to 1.5s</code></strong> (<code>1.5 − 0.5 = 1 second</code>):</li>
+              <li>Between <code>0.5s and 1.0s</code> (latter half of Window 1): Server processed <strong>2 requests</strong>.</li>
+              <li>Between <code>1.0s and 1.5s</code> (first half of Window 2): Server processed <strong>2 requests</strong>.</li>
+            </ul>
+            <div class="formula-box">Total Processed in 1 Second (0.5s → 1.5s) = 2 + 2 = 4 Requests (&gt; Threshold of 3!)</div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 47.1 · Fixed Window Counter &amp; The 0.5s–1.5s Boundary Spike Violation</span>
+                <span class="diagram-frame-tag">THRESHOLD = 3 REQ/S · BOUNDARY ALLOWS 4 REQ/S</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Fixed Window Counter timeline showing Window 1 0 to 1s with 3 requests, Window 2 1 to 2s with 3 accepted and 2 rejected, and the 0.5s to 1.5s boundary spike totaling 4 requests">
+                  <!-- Window 1 -->
+                  <rect x="24" y="56" width="268" height="120" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="158" y="42" text-anchor="middle" class="svg-kicker">WINDOW 1 (0s – 1s) · COUNT = 3/3</text>
+                  <circle cx="84" cy="116" r="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="84" y="121" text-anchor="middle" class="svg-mono-xs">R1</text>
+                  <circle cx="206" cy="116" r="14" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="206" y="121" text-anchor="middle" class="svg-mono-xs">R2</text>
+                  <circle cx="256" cy="116" r="14" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="256" y="121" text-anchor="middle" class="svg-mono-xs">R3</text>
+
+                  <!-- Window 2 -->
+                  <rect x="306" y="56" width="268" height="120" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="440" y="42" text-anchor="middle" class="svg-kicker">WINDOW 2 (1s – 2s) · RESET → 3/3</text>
+                  <circle cx="344" cy="116" r="14" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="344" y="121" text-anchor="middle" class="svg-mono-xs">R4</text>
+                  <circle cx="394" cy="116" r="14" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="394" y="121" text-anchor="middle" class="svg-mono-xs">R5</text>
+                  <circle cx="468" cy="116" r="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="468" y="121" text-anchor="middle" class="svg-mono-xs">R6</text>
+                  <circle cx="534" cy="116" r="14" fill="var(--danger-bg)" stroke="var(--danger)" stroke-dasharray="3 2"/>
+                  <text x="534" y="121" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">✕2</text>
+
+                  <!-- Window 3 -->
+                  <rect x="588" y="56" width="268" height="120" rx="12" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="722" y="42" text-anchor="middle" class="svg-kicker">WINDOW 3 (2s – 3s) · RESET → 3/3</text>
+                  <circle cx="654" cy="116" r="14" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="654" y="121" text-anchor="middle" class="svg-mono-xs">3✓</text>
+                  <circle cx="766" cy="116" r="14" fill="var(--danger-bg)" stroke="var(--danger)" stroke-dasharray="3 2"/>
+                  <text x="766" y="121" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">✕1</text>
+
+                  <!-- Highlighted Boundary Violation Box (0.5s to 1.5s) -->
+                  <rect x="170" y="76" width="260" height="132" rx="12" fill="none" stroke="var(--danger)" stroke-width="2" stroke-dasharray="6 4"/>
+                  <rect x="184" y="184" width="232" height="28" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="300" y="203" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">0.5s – 1.5s = 4 Reqs (&gt; Limit 3!)</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 48: RATE LIMITING STRATEGY 4 — SLIDING WINDOW LOG
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-48-sliding-window-log",
+      number: "48",
+      shortLabel: "Sliding Log",
+      title: "Rate Limiting Strategy 4 — Sliding Window Log Algorithm",
+      summary: "Eliminating boundary spikes using a Request Log of exact timestamps (3 req / 5 sec window), evicting expired timestamps as the window slides (0–5s → 1–6s → 2–7s → 3–8s).",
+      subtopicLabels: ["48.1 Core Concept & Request Log", "48.2 Sliding Scenarios (A–D)"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "48.1",
+          title: "Core Concept & How It Solves the Fixed Window Problem",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>The boundary spike problem of the Fixed Window Counter Algorithm is solved by the <strong>Sliding Window Log Algorithm</strong>.</li>
+              <li><strong>Threshold &amp; Window Setup:</strong> Suppose we set a threshold of <strong>3 requests per 5 seconds</strong> (<strong>Window Size = 5 seconds</strong>).</li>
+              <li><strong>Maintaining a Request Log:</strong> Instead of a simple counter, we maintain a <strong>Request Log</strong> recording the <strong>exact timestamp</strong> of each incoming request. Whenever a new request arrives later, we <strong>slide our 5-second window forward</strong>, and any old timestamp falling <strong>outside the sliding 5-second window</strong> is treated as an <strong>expired log</strong> and <strong>removed from the Request Log</strong>.</li>
+            </ul>
+          `
+        },
+        {
+          num: "48.2",
+          title: "Step-by-Step Working Scenarios (Sliding the 5-Second Window)",
+          content: `
+            <div class="workflow-stack">
+              <div class="workflow-step">
+                <div class="step-circle">A</div>
+                <div>
+                  <div class="workflow-step__title">Scenario A: Initial Window (<code>0s to 5s</code>)</div>
+                  <div class="workflow-step__desc">
+                    • 1st Request (<code>0s–1s</code>, logged as <code>1s</code>) → Processed. Log: <code>[1s]</code><br>
+                    • 2nd Request (<code>2s–3s</code>, logged as <code>3s</code>) → Processed. Log: <code>[1s, 3s]</code><br>
+                    • 3rd Request (at <code>4.5s</code>) → Processed. Log: <code>[1s, 3s, 4.5s]</code> (All 3 slots full).
+                  </div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">B</div>
+                <div>
+                  <div class="workflow-step__title">Scenario B: Window Slides to <code>1s to 6s</code> (New Req at <code>6s</code>)</div>
+                  <div class="workflow-step__desc">Window slides forward to <code>1s–6s</code>. Timestamp <code>1s</code> falls outside → <strong>expired &amp; removed</strong>, leaving <code>[3s, 4.5s]</code> (only 2 left). The new request at <code>6s</code> is <strong>accepted</strong> → Log: <code>[3s, 4.5s, 6s]</code>.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">C</div>
+                <div>
+                  <div class="workflow-step__title">Scenario C: Window Slides to <code>2s to 7s</code> (2 New Reqs in <code>6s–7s</code>)</div>
+                  <div class="workflow-step__desc">Inside <code>2s–7s</code>, all 3 timestamps (<code>3s</code>, <code>4.5s</code>, <code>6s</code>) are still active (3/3 full). Therefore, <strong>both new requests in <code>6s–7s</code> are REJECTED ✕</strong>.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">D</div>
+                <div>
+                  <div class="workflow-step__title">Scenario D: Window Slides to <code>3s to 8s</code> (1 New Req in <code>7s–8s</code>)</div>
+                  <div class="workflow-step__desc">Timestamp <code>3s</code> now falls outside <code>3s–8s</code> → <strong>expired &amp; removed</strong>, leaving only 2 active entries <code>[4.5s, 6s]</code>. Since <code>2 &lt; 3</code>, the new request in <code>7s–8s</code> is <strong>processed ✓</strong> and added to the Request Log.</div>
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 48.1 · Sliding Window Log Progression (Max 3 Requests / 5 Seconds)</span>
+                <span class="diagram-frame-tag">EXACT TIMESTAMPS · EXPIRED LOG EVICTION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Sliding Window Log progression across four 5-second windows: 0-5s full, 1-6s evicting 1s and accepting 6s, 2-7s rejecting 2 requests, and 3-8s evicting 3s and accepting new request">
+                  <!-- Row A -->
+                  <rect x="18" y="14" width="844" height="48" rx="10" fill="var(--bg-subsection)" stroke="var(--border)"/>
+                  <text x="36" y="43" class="svg-mono-xs">A. [0s → 5s]</text>
+                  <rect x="172" y="23" width="250" height="30" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="297" y="43" text-anchor="middle" class="svg-mono-xs">Log: [ 1s, 3s, 4.5s ] (3/3 Full)</text>
+                  <text x="444" y="43" class="svg-sub">All 3 initial requests processed ✓</text>
+
+                  <!-- Row B -->
+                  <rect x="18" y="72" width="844" height="48" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)"/>
+                  <text x="36" y="101" class="svg-mono-xs">B. [1s → 6s]</text>
+                  <rect x="172" y="81" width="94" height="30" rx="8" fill="var(--danger-bg)" stroke="var(--danger)" stroke-dasharray="3 2"/>
+                  <text x="219" y="101" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">1s Exp ✕</text>
+                  <rect x="278" y="81" width="246" height="30" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="401" y="101" text-anchor="middle" class="svg-mono-xs">Log: [ 3s, 4.5s, 6s ] ✓</text>
+                  <text x="542" y="101" class="svg-sub">1s removed → 6s accepted</text>
+
+                  <!-- Row C -->
+                  <rect x="18" y="130" width="844" height="48" rx="10" fill="var(--bg-subsection)" stroke="var(--danger)"/>
+                  <text x="36" y="159" class="svg-mono-xs">C. [2s → 7s]</text>
+                  <rect x="278" y="139" width="246" height="30" rx="8" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="401" y="159" text-anchor="middle" class="svg-mono-xs">Log: [ 3s, 4.5s, 6s ] (Full)</text>
+                  <rect x="540" y="139" width="302" height="30" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="691" y="159" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">2 New Reqs (6s–7s) REJECTED ✕</text>
+
+                  <!-- Row D -->
+                  <rect x="18" y="188" width="844" height="48" rx="10" fill="var(--bg-subsection)" stroke="var(--success)"/>
+                  <text x="36" y="217" class="svg-mono-xs">D. [3s → 8s]</text>
+                  <rect x="278" y="197" width="94" height="30" rx="8" fill="var(--danger-bg)" stroke="var(--danger)" stroke-dasharray="3 2"/>
+                  <text x="325" y="217" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">3s Exp ✕</text>
+                  <rect x="384" y="197" width="256" height="30" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="512" y="217" text-anchor="middle" class="svg-mono-xs">Log: [ 4.5s, 6s, 7.5s ] ✓</text>
+                  <text x="658" y="217" class="svg-sub">3s removed → New req accepted</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 49: RATE LIMITING STRATEGY 5 — SLIDING WINDOW COUNTER
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-49-sliding-window-counter",
+      number: "49",
+      shortLabel: "Sliding Counter",
+      title: "Rate Limiting Strategy 5 — Sliding Window Counter Algorithm",
+      summary: "Hybrid approach combining Fixed Window Counter + Sliding Window Log: weighted overlap taking X% from Current Window + (100−X)% from Previous Window (10% & 20% examples).",
+      subtopicLabels: ["49.1 Hybrid Core Concept", "49.2 Numerical Examples (10% & 20%)"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "49.1",
+          title: "Core Concept (Hybrid Approach)",
+          content: `
+            <p>The <strong>Sliding Window Counter Algorithm</strong> is a <strong>Hybrid Approach</strong> that combines both:</p>
+            <ol class="notes-ordered-list" style="margin-top: 0.5rem;">
+              <li><strong>Fixed Window Counter Algorithm</strong></li>
+              <li><strong>Sliding Window Log Algorithm</strong></li>
+            </ol>
+            <ul class="notes-bullet-list" style="margin-top: 0.75rem;">
+              <li>Just like Fixed Window Counter, time is divided into fixed-size windows (e.g., <code>1-second</code> windows with a threshold of <strong>3 requests per second</strong>), where each full window represents <strong>100%</strong>.</li>
+              <li>When a request arrives partway into the <strong>Current Window</strong> (after <strong><code>X%</code></strong> has elapsed), we dynamically form a sliding window by combining:</li>
+            </ul>
+            <div class="formula-box">Sliding Window (100%) = X% of Current Window + (100 − X)% of Previous Window</div>
+          `
+        },
+        {
+          num: "49.2",
+          title: "Step-by-Step Numerical Examples (Partial Window Overlap)",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Example 1 · At 3.1s (10% Elapsed)</div>
+                <div class="sub-box__title">10% Current + 90% Previous</div>
+                <div class="sub-box__body">
+                  • <strong>Setup:</strong> Threshold = <code>3 req/sec</code>, Current window = <code>3s–4s</code>.<br>
+                  • A new request arrives at <strong><code>3.1s</code></strong> (<code>10%</code> into Current Window → 1 req).<br>
+                  • Remaining <code>90%</code> of Previous Window (<code>2s–3s</code>) had <code>0</code> requests.<br>
+                  • <strong>Total:</strong> <code>1 + 0 = 1 request</code> ≤ 3 → <strong>Approved ✓</strong>.
+                </div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--warning);">
+                <div class="sub-box__tag">Example 2 · At 20% Elapsed</div>
+                <div class="sub-box__title">20% Current + 80% Previous</div>
+                <div class="sub-box__body">
+                  • <strong>Setup:</strong> Threshold = <code>3 req/sec</code>. Trailing <code>80%</code> of Previous Window already had <strong>2 approved requests</strong>.<br>
+                  • Now <strong>2 new requests</strong> arrive in the <code>20%</code> of Current Window:<br>
+                  &nbsp;&nbsp;1. <strong>1st New Req:</strong> <code>2 + 1 = 3</code> → <strong>Approved ✓</strong> (hits limit of 3).<br>
+                  &nbsp;&nbsp;2. <strong>2nd New Req:</strong> Exceeds max limit of 3 → <strong>Rejected ✕</strong>.
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 49.1 · Sliding Window Counter Hybrid Overlap (80% Previous + 20% Current)</span>
+                <span class="diagram-frame-tag">THRESHOLD = 3 REQ/SEC · DYNAMIC WEIGHTED WINDOW</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Sliding Window Counter diagram showing 80 percent of Previous Window holding 2 requests combined with 20 percent of Current Window approving 1st new request and rejecting 2nd">
+                  <!-- Previous Window -->
+                  <rect x="24" y="48" width="404" height="106" rx="12" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.4"/>
+                  <text x="226" y="34" text-anchor="middle" class="svg-kicker">PREVIOUS WINDOW (100%)</text>
+
+                  <!-- Ignored 20% of Prev -->
+                  <rect x="34" y="60" width="76" height="82" rx="8" fill="var(--bg-surface)" stroke="var(--border)" opacity="0.5"/>
+                  <text x="72" y="105" text-anchor="middle" class="svg-sub">20% Old</text>
+
+                  <!-- Active 80% of Prev -->
+                  <rect x="118" y="60" width="300" height="82" rx="8" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="268" y="92" text-anchor="middle" class="svg-node">Trailing 80% of Previous Window</text>
+                  <text x="268" y="116" text-anchor="middle" class="svg-mono-xs">Already has 2 Approved Requests</text>
+
+                  <!-- Current Window -->
+                  <rect x="442" y="48" width="414" height="106" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="649" y="34" text-anchor="middle" class="svg-kicker">CURRENT WINDOW (100%)</text>
+
+                  <!-- Active 20% of Current -->
+                  <rect x="452" y="60" width="160" height="82" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="532" y="86" text-anchor="middle" class="svg-mono-xs">Elapsed 20%</text>
+                  <text x="532" y="108" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">1st New → 2+1=3 ✓</text>
+                  <text x="532" y="128" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">2nd New → Reject ✕</text>
+
+                  <!-- Future 80% of Current -->
+                  <rect x="622" y="60" width="224" height="82" rx="8" fill="var(--bg-surface)" stroke="var(--border)" stroke-dasharray="4 3" opacity="0.65"/>
+                  <text x="734" y="105" text-anchor="middle" class="svg-sub">Remaining 80% (Future)</text>
+
+                  <!-- Combined Bracket -->
+                  <rect x="118" y="166" width="494" height="36" rx="10" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.4"/>
+                  <text x="365" y="189" text-anchor="middle" class="svg-mono-xs">Active Sliding Window = 80% Prev (2 reqs) + 20% Current (max 1 more req) = Limit 3</text>
                 </svg>
               </div>
             </figure>

@@ -6,7 +6,7 @@
 const SYSTEM_DESIGN_NOTES = {
   meta: {
     title: "OneNightRevise — System Design Revision Notes",
-    totalTopics: 54
+    totalTopics: 62
   },
 
   navGroups: [
@@ -19,7 +19,9 @@ const SYSTEM_DESIGN_NOTES = {
     { label: "33–37 Cache", targetId: "topic-33-what-is-caching" },
     { label: "38–43 CAP", targetId: "topic-38-distributed-systems" },
     { label: "44–49 Rate Limit", targetId: "topic-44-rate-limiting" },
-    { label: "50–54 HTTPS/SSL", targetId: "topic-50-http-symmetric-encryption" }
+    { label: "50–54 HTTPS/SSL", targetId: "topic-50-http-symmetric-encryption" },
+    { label: "55–59 DB & Storage", targetId: "topic-55-database-choice" },
+    { label: "60–62 SPOF", targetId: "topic-60-what-is-spof" }
   ],
 
   topics: [
@@ -6796,7 +6798,1503 @@ const SYSTEM_DESIGN_NOTES = {
             </figure>
           `
         }
+        ]
+      },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 55: WHY DATABASE CHOICE MATTERS & FACTORS AFFECTING DATABASE SELECTION
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-55-database-choice",
+      number: "55",
+      shortLabel: "Database Choice",
+      title: "Why Database Choice Matters & Factors Affecting Database Selection",
+      summary: "\"How good your design is and how well you can scale your system depends on the choice of database that you have used.\" Why database choice dictates scalability, latency, and consistency without changing functional code, and the 3 core decision factors: Data Structure, Query Pattern, and Scale Ceiling.",
+      subtopicLabels: ["55.1 Functional vs Non-Functional Impact","55.2 Factor 1: Structure of Data","55.3 Factor 2: Query Pattern","55.4 Factor 3: Scale Ceiling"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "55.1",
+          title: "1. Why Database Choice Matters in System Design",
+          content: `
+
+          <blockquote class="notes-quote" style="border-left-color: var(--primary);">
+            <strong>&ldquo;How good your design is and how well you can scale your system depends on the choice of database that you have used.&rdquo;</strong>
+          </blockquote>
+
+          <ul class="notes-bullet-list" style="margin-top: 1rem;">
+            <li>Whether you are preparing for a <strong>System Design Interview</strong> or architecting a <strong>large-scale production system</strong>, choosing the right database is one of the highest-leverage engineering decisions you will ever make.</li>
+            <li><strong>Functional vs. Non-Functional Requirements:</strong>
+              <ul class="notes-sub-list">
+                <li><strong>Functional Requirements (Features):</strong> Your database choice does <em>not</em> fundamentally prevent your functional requirements from working. You can build user authentication, an e-commerce catalog, or a checkout cart on top of MySQL, PostgreSQL, MongoDB, or Cassandra — the core business features will execute in all of them.</li>
+                <li><strong>Non-Functional Requirements (Architecture Quality):</strong> However, your database selection <strong>heavily impacts</strong> your system's non-functional attributes: <strong>Scalability, Read/Write Latency, Availability, Fault Tolerance, ACID Consistency guarantees, and Operating Cost</strong>. A database poorly matched to your query pattern will bottleneck your entire architecture under traffic spikes.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 55.1 · Functional Logic vs Non-Functional Database Scale Impact</span>
+              <span class="diagram-frame-tag">SAME FEATURES · DRAMATICALLY DIFFERENT SCALE &amp; LATENCY</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Diagram contrasting Functional requirements handled in application code with Non-Functional constraints like latency, throughput, consistency, and scale ceiling strictly determined by database engine architecture">
+                <!-- App Logic Block -->
+                <rect x="20" y="25" width="260" height="200" rx="14" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="150" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">APPLICATION CODE LAYER</text>
+                <text x="150" y="78" text-anchor="middle" class="svg-title">Functional Requirements</text>
+                <rect x="36" y="94" width="228" height="116" rx="10" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="50" y="120" class="svg-node">✓ User Login &amp; Auth</text>
+                <text x="50" y="145" class="svg-node">✓ Add Item to Cart</text>
+                <text x="50" y="170" class="svg-node">✓ Checkout &amp; Pay</text>
+                <text x="50" y="195" class="svg-sub" style="fill: var(--text-tertiary);">Code works identically on any DB engine</text>
+
+                <!-- Arrow -->
+                <path d="M 280 125 L 340 125" class="svg-arrow" stroke="var(--primary)"/>
+                <polygon points="340,125 330,119 330,131" fill="var(--primary)"/>
+                <text x="310" y="115" text-anchor="middle" class="svg-mono-xs">Hits Storage</text>
+
+                <!-- Database Choice Block -->
+                <rect x="345" y="25" width="515" height="200" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                <text x="602" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">DATABASE ENGINE SELECTION</text>
+                <text x="602" y="78" text-anchor="middle" class="svg-title">Non-Functional Constraints (Make or Break)</text>
+
+                <g transform="translate(365, 95)">
+                  <!-- Card 1 -->
+                  <rect x="0" y="0" width="150" height="115" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="75" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">LATENCY &amp; IOPS</text>
+                  <text x="75" y="52" text-anchor="middle" class="svg-node">Disk vs RAM</text>
+                  <text x="75" y="72" text-anchor="middle" class="svg-sub">8ms Disk Read</text>
+                  <text x="75" y="92" text-anchor="middle" class="svg-sub">vs 1ms In-Memory</text>
+
+                  <!-- Card 2 -->
+                  <rect x="162" y="0" width="150" height="115" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="237" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">ACID &amp; JOINS</text>
+                  <text x="237" y="52" text-anchor="middle" class="svg-node">Consistency</text>
+                  <text x="237" y="72" text-anchor="middle" class="svg-sub">Strict Money Debit</text>
+                  <text x="237" y="92" text-anchor="middle" class="svg-sub">vs Eventual Sync</text>
+
+                  <!-- Card 3 -->
+                  <rect x="324" y="0" width="150" height="115" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="399" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--accent); font-weight: 700;">SCALE CEILING</text>
+                  <text x="399" y="52" text-anchor="middle" class="svg-node">Throughput</text>
+                  <text x="399" y="72" text-anchor="middle" class="svg-sub">10K QPS (RDBMS)</text>
+                  <text x="399" y="92" text-anchor="middle" class="svg-sub">vs 1M+ QPS (NoSQL)</text>
+                </g>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        },
+        {
+          num: "55.2",
+          title: "2. Three Key Factors That Determine Database Choice",
+          content: `
+
+          <p>When selecting a database for any tier of your architecture, evaluate these <strong>three fundamental pillars</strong>:</p>
+
+          <div class="sub-card-grid-3" style="margin-top: 1rem;">
+            <div class="sub-box">
+              <div class="sub-box__tag">Factor 01 · Data Format</div>
+              <div class="sub-box__title">1. Structure of Data</div>
+              <div class="sub-box__body">
+                <strong>• Structured Data:</strong> Data organized with a <strong>fixed format / strict schema</strong> (e.g. relational tables with rigid rows &amp; columns).<br>
+                <strong>• Unstructured / Semi-Structured Data:</strong> Data with <strong>no fixed format</strong>, no predefined model, or dynamic attributes (JSON docs, key-value blobs, columnar partitions).
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Factor 02 · Access Method</div>
+              <div class="sub-box__title">2. Query Pattern</div>
+              <div class="sub-box__body">
+                How does your app read &amp; write?<br>
+                <strong>• Relational Joins &amp; ACID:</strong> Combining tables (<code>JOIN users ON orders</code>) or atomic balance transfers → Pick <strong>SQL / RDBMS</strong>.<br>
+                <strong>• Simple Key Lookup:</strong> <em>"Get me value for key X"</em> in sub-milliseconds → Pick <strong>Key-Value Store (Redis)</strong>.
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Factor 03 · Data Volume &amp; QPS</div>
+              <div class="sub-box__title">3. Amount of Scale</div>
+              <div class="sub-box__body">
+                <strong>• Small Scale:</strong> Few users, small data → <strong>PostgreSQL / MySQL</strong> (simple management &amp; ACID out of the box).<br>
+                <strong>• Medium Scale:</strong> Millions of rows &amp; thousands of QPS → Still easily handled by an <strong>RDBMS with indexing &amp; read replicas</strong>.<br>
+                <strong>• Massive Scale:</strong> Billions of records &amp; millions of QPS → Requires a distributed <strong>NoSQL database</strong>.
+              </div>
+            </div>
+          </div>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 55.2 · The 3 Database Selection Pillars: Structure, Query Pattern &amp; Scale Tier</span>
+              <span class="diagram-frame-tag">ENGINEERING EVALUATION MATRIX</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 260" class="arch-svg" role="img" aria-label="Visual evaluation matrix showing the three pillars of database choice: Data Structure (Fixed schema vs Schemaless), Query Pattern (Complex Joins vs Key-Value), and Scale Ceiling (Small/Medium SQL vs Massive NoSQL)">
+                <!-- Pillar 1 -->
+                <rect x="20" y="20" width="260" height="220" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                <rect x="36" y="36" width="228" height="32" rx="6" fill="var(--primary-bg)"/>
+                <text x="150" y="57" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">PILLAR 1: DATA STRUCTURE</text>
+                <rect x="36" y="80" width="228" height="64" rx="8" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="50" y="104" class="svg-node">Fixed Schema (Tables)</text>
+                <text x="50" y="126" class="svg-sub">Strict Rows &amp; Columns → RDBMS</text>
+                <rect x="36" y="156" width="228" height="68" rx="8" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="50" y="180" class="svg-node">Schemaless / Polymorphic</text>
+                <text x="50" y="202" class="svg-sub">JSON Docs, Media Blobs → NoSQL</text>
+
+                <!-- Pillar 2 -->
+                <rect x="310" y="20" width="260" height="220" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                <rect x="326" y="36" width="228" height="32" rx="6" fill="var(--accent-bg)"/>
+                <text x="440" y="57" text-anchor="middle" class="svg-mono-xs" style="fill: var(--accent); font-weight: 700;">PILLAR 2: QUERY PATTERN</text>
+                <rect x="326" y="80" width="228" height="64" rx="8" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="340" y="104" class="svg-node">Relational JOINs &amp; ACID</text>
+                <text x="340" y="126" class="svg-sub">Multi-table atomic transactions</text>
+                <rect x="326" y="156" width="228" height="68" rx="8" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="340" y="180" class="svg-node">Key-Value Point Lookup</text>
+                <text x="340" y="202" class="svg-sub">GET key:id → 1ms response (Redis)</text>
+
+                <!-- Pillar 3 -->
+                <rect x="600" y="20" width="260" height="220" rx="12" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                <rect x="616" y="36" width="228" height="32" rx="6" fill="var(--success-bg)"/>
+                <text x="730" y="57" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">PILLAR 3: SCALE CEILING</text>
+                <rect x="616" y="80" width="228" height="64" rx="8" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="630" y="104" class="svg-node">Small &amp; Medium Scale</text>
+                <text x="630" y="126" class="svg-sub">Millions of records → SQL (PostgreSQL)</text>
+                <rect x="616" y="156" width="228" height="68" rx="8" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="630" y="180" class="svg-node">Massive Scale (Billions)</text>
+                <text x="630" y="202" class="svg-sub">Petabytes &amp; 1M+ QPS → Cassandra</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 56: CACHING SOLUTIONS (REDIS & IN-MEMORY DATA STORES)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-56-caching-solutions-redis",
+      number: "56",
+      shortLabel: "Caching & Redis",
+      title: "Caching Solutions (Redis & In-Memory Data Stores)",
+      summary: "Slashing Frequently Asked Data latency from 8ms down to 6ms, eliminating inter-service network hops between microservices (User Service to Inventory Service), and Redis Key-Value RAM store mechanics.",
+      subtopicLabels: ["56.1 Latency Optimization (8ms vs 6ms)","56.2 Caching Remote Service Calls","56.3 Redis Key-Value Architecture"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "56.1",
+          title: "1. Use Case 1 — Frequently Asked Data (Latency Optimization: 8ms vs 6ms)",
+          content: `
+
+          <div class="callout-highlight-box" style="border-left-color: var(--danger);">
+            <div class="callout-highlight-tag" style="color: var(--danger);">THE PROBLEM: REPEATED DISK QUERIES WITHOUT CACHING (8 MS LATENCY)</div>
+            <p style="margin-top: 0.5rem;">Suppose users repeatedly request the same piece of data (<strong>Frequently Asked Data</strong>) — such as a User Profile, Homepage Banners, or trending product details. Without caching, every request hits the primary disk database:</p>
+            <ol class="notes-ordered-list" style="margin-top: 0.6rem;">
+              <li><code>Client &rarr; Server</code>: Network travel = <strong>2 ms</strong></li>
+              <li><code>Server &rarr; Database</code>: Query over internal network = <strong>2 ms</strong></li>
+              <li><code>Database &rarr; Server</code>: Disk read &amp; return = <strong>2 ms</strong></li>
+              <li><code>Server &rarr; Client</code>: Arranging &amp; returning HTTP response = <strong>2 ms</strong></li>
+            </ol>
+            <p style="margin-top: 0.6rem;"><strong>Total Round-Trip Latency:</strong> <code>2 + 2 + 2 + 2 = </code><strong>8 ms</strong>. When thousands of concurrent users arrive, repeated disk queries overwhelm the database and cause severe degradation.</p>
+          </div>
+
+          <div class="callout-highlight-box" style="border-left-color: var(--success); margin-top: 1rem;">
+            <div class="callout-highlight-tag" style="color: var(--success);">THE SOLUTION: IN-MEMORY CACHE (REDUCED TO 6 MS!)</div>
+            <p style="margin-top: 0.5rem;">We store a copy of the Frequently Asked Data locally in an <strong>in-memory Cache</strong> (stored in <strong>RAM</strong> instead of spinning disk/SSD):</p>
+            <ul class="notes-bullet-list" style="margin-top: 0.6rem;">
+              <li><strong>Step 1 (First Request / Cache Miss):</strong> Client asks Server (2 ms). Server fetches from DB (2 ms + 2 ms) and immediately <strong>stores a copy in the Cache</strong>, then returns to Client (2 ms). Total = 8 ms for the initial fetch.</li>
+              <li><strong>Step 2 (Subsequent Requests / Cache Hit):</strong> Every subsequent request skips the database entirely:
+                <div class="notes-mono-block" style="margin: 0.5rem 0;">Client &rarr; Server (2 ms) &rarr; Cache RAM Read (1 ms) &rarr; Cache to Server (1 ms) &rarr; Server to Client (2 ms) = 6 ms!</div>
+              </li>
+              <li><strong>Why Cache is Faster:</strong> RAM read access is measured in <strong>nanoseconds</strong> compared to milliseconds for disk I/O. The database is shielded from repetitive traffic, and user response time drops by 25%.</li>
+            </ul>
+          </div>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 56.1 · Latency Benchmark: 8ms Without Cache vs 6ms With In-Memory Cache</span>
+              <span class="diagram-frame-tag">25% LATENCY REDUCTION · 0% DATABASE LOAD ON CACHE HITS</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Timeline and architecture diagram comparing 8ms request without cache against 6ms request with in-memory Redis cache">
+                <!-- TOP: Without Cache (8ms) -->
+                <rect x="20" y="20" width="840" height="95" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                <text x="35" y="42" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">WITHOUT CACHE · 4 HOPS · TOTAL: 8 MS</text>
+
+                <!-- Flow items -->
+                <rect x="40" y="52" width="100" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="90" y="74" text-anchor="middle" class="svg-node">Client</text>
+                <text x="90" y="90" text-anchor="middle" class="svg-sub">User Request</text>
+
+                <path d="M 140 76 L 250 76" class="svg-arrow" stroke="var(--danger)"/>
+                <text x="195" y="68" text-anchor="middle" class="svg-mono-xs">2 ms</text>
+
+                <rect x="250" y="52" width="130" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="315" y="74" text-anchor="middle" class="svg-node">App Server</text>
+                <text x="315" y="90" text-anchor="middle" class="svg-sub">API Endpoint</text>
+
+                <path d="M 380 76 L 500 76" class="svg-arrow" stroke="var(--danger)"/>
+                <text x="440" y="68" text-anchor="middle" class="svg-mono-xs">2 ms (Query)</text>
+
+                <rect x="500" y="52" width="150" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                <text x="575" y="74" text-anchor="middle" class="svg-node">Database (Disk)</text>
+                <text x="575" y="90" text-anchor="middle" class="svg-sub">Heavy Disk I/O</text>
+
+                <path d="M 650 76 L 730 76" class="svg-arrow" stroke="var(--danger)"/>
+                <text x="690" y="68" text-anchor="middle" class="svg-mono-xs">2 ms (Data)</text>
+
+                <rect x="730" y="52" width="110" height="48" rx="6" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                <text x="785" y="74" text-anchor="middle" class="svg-node" style="fill: var(--danger); font-weight: 700;">8 ms Total</text>
+                <text x="785" y="90" text-anchor="middle" class="svg-sub">Slow &amp; Overloaded</text>
+
+                <!-- BOTTOM: With Cache (6ms) -->
+                <rect x="20" y="130" width="840" height="100" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                <text x="35" y="152" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">WITH REDIS CACHE · FAST RAM LOOKUP · TOTAL: 6 MS (SAVE 25%)</text>
+
+                <rect x="40" y="162" width="100" height="52" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="90" y="186" text-anchor="middle" class="svg-node">Client</text>
+                <text x="90" y="202" text-anchor="middle" class="svg-sub">User Request</text>
+
+                <path d="M 140 188 L 250 188" class="svg-arrow" stroke="var(--success)"/>
+                <text x="195" y="180" text-anchor="middle" class="svg-mono-xs">2 ms</text>
+
+                <rect x="250" y="162" width="130" height="52" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="315" y="186" text-anchor="middle" class="svg-node">App Server</text>
+                <text x="315" y="202" text-anchor="middle" class="svg-sub">Checks Cache</text>
+
+                <path d="M 380 188 L 500 188" class="svg-arrow" stroke="var(--success)"/>
+                <text x="440" y="180" text-anchor="middle" class="svg-mono-xs">1 ms (RAM Get)</text>
+
+                <rect x="500" y="162" width="150" height="52" rx="6" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
+                <text x="575" y="184" text-anchor="middle" class="svg-node" style="fill: var(--success);">Redis Cache (RAM)</text>
+                <text x="575" y="202" text-anchor="middle" class="svg-mono-xs">Key-Value Sub-ms</text>
+
+                <path d="M 650 188 L 730 188" class="svg-arrow" stroke="var(--success)"/>
+                <text x="690" y="180" text-anchor="middle" class="svg-mono-xs">1 ms + 2 ms</text>
+
+                <rect x="730" y="162" width="110" height="52" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                <text x="785" y="184" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">6 ms Total</text>
+                <text x="785" y="202" text-anchor="middle" class="svg-sub">25% Faster ✓</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        },
+        {
+          num: "56.2",
+          title: "2. Use Case 2 — Caching Remote Service Calls (Microservices)",
+          content: `
+
+          <ul class="notes-bullet-list">
+            <li><strong>The Microservices Inter-Service Problem:</strong>
+              <ul class="notes-sub-list">
+                <li>Suppose you are building an Amazon-like e-commerce platform with microservices: <strong>User Service</strong> and <strong>Inventory Service</strong> (which tracks real-time item stock).</li>
+                <li>Whenever a user views an item or proceeds through a workflow, the <strong>User Service</strong> must call the <strong>Inventory Service</strong> over the network (<code>2 ms</code> request + <code>2 ms</code> response = <code>4 ms</code> inter-service round trip).</li>
+                <li>Making repetitive remote RPC/REST network calls to another microservice continuously adds network overhead, serializes/deserializes JSON, and ties up connection pools.</li>
+              </ul>
+            </li>
+            <li><strong>The Caching Solution:</strong>
+              <ul class="notes-sub-list">
+                <li>We <strong>cache the Inventory Service response</strong> inside Redis at the shared caching layer or within the User Service boundary.</li>
+                <li>Now, instead of dispatching a slow remote network call across services every single time, the User Service reads the cached product inventory response locally from Redis in sub-milliseconds and fulfills the user request instantly.</li>
+              </ul>
+            </li>
+          </ul>
+        
+          `
+        },
+        {
+          num: "56.3",
+          title: "3. Redis as a Caching Solution (Key-Value RAM Store)",
+          content: `
+
+          <p>For high-performance caching, the global standard is <strong>Redis (Remote Dictionary Server)</strong>, an in-memory <strong>Key-Value data store</strong>.</p>
+
+          <div class="sub-card-grid-2" style="margin-top: 1rem;">
+            <div class="sub-box">
+              <div class="sub-box__tag">Storage Primitive</div>
+              <div class="sub-box__title">Key-Value Structure</div>
+              <div class="sub-box__body">
+                <strong>• Key:</strong> A unique string identifier (e.g., <code>user:1082</code> or <code>item:4091:stock</code>).<br>
+                <strong>• Value:</strong> The stored payload (e.g., serialized JSON User Profile, integer stock count, or string hash).
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Memory vs Disk</div>
+              <div class="sub-box__title">In-Memory RAM Engine</div>
+              <div class="sub-box__body">
+                Redis resides entirely in <strong>RAM (Random Access Memory)</strong>. Unlike traditional databases that seek rotating disk platters or SSD flash sectors, Redis executes O(1) memory pointer lookups in microseconds.
+              </div>
+            </div>
+          </div>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 56.2 · Microservices Inter-Service Caching vs Remote Network Calls</span>
+              <span class="diagram-frame-tag">ELIMINATING REMOTE RPC HOPS</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Diagram showing User Service reading cached product inventory from Redis RAM instead of making slow repeated 4ms remote RPC calls to Inventory Service">
+                <!-- User Service -->
+                <rect x="30" y="30" width="220" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="140" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">MICROSERVICE A</text>
+                <text x="140" y="82" text-anchor="middle" class="svg-title">User Service</text>
+                <rect x="50" y="105" width="180" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="140" y="132" text-anchor="middle" class="svg-node">Needs Product Stock</text>
+                <text x="140" y="152" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">1. Checks Redis first</text>
+                <text x="140" y="172" text-anchor="middle" class="svg-sub">Key: stock:prod_99</text>
+
+                <!-- Middle: Redis Cache -->
+                <rect x="330" y="30" width="220" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                <text x="440" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">IN-MEMORY CACHE</text>
+                <text x="440" y="82" text-anchor="middle" class="svg-title">Redis RAM Store</text>
+                <rect x="350" y="105" width="180" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                <text x="440" y="132" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">KEY: stock:prod_99</text>
+                <text x="440" y="154" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">VALUE: 45 units</text>
+                <text x="440" y="180" text-anchor="middle" class="svg-sub">&lt; 1 ms RAM Lookup ✓</text>
+
+                <!-- Right: Remote Inventory Service -->
+                <rect x="630" y="30" width="220" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.5"/>
+                <text x="740" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">MICROSERVICE B</text>
+                <text x="740" y="82" text-anchor="middle" class="svg-title">Inventory Service</text>
+                <rect x="650" y="105" width="180" height="95" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                <text x="740" y="132" text-anchor="middle" class="svg-node">Remote Network RPC</text>
+                <text x="740" y="152" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">2 ms Req + 2 ms Res</text>
+                <text x="740" y="174" text-anchor="middle" class="svg-sub">Skipped on Cache Hit ✕</text>
+
+                <!-- Arrows -->
+                <path d="M 250 145 L 330 145" class="svg-arrow" stroke="var(--success)"/>
+                <path d="M 330 160 L 250 160" class="svg-arrow" stroke="var(--success)"/>
+                <path d="M 550 152 L 630 152" class="svg-arrow-dashed" stroke="var(--danger)"/>
+                <text x="590" y="142" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Only on Miss</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 57: BLOB STORAGE (AWS S3) & CDN FOR STATIC DATA
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-57-blob-storage-cdn",
+      number: "57",
+      shortLabel: "Blob & CDN",
+      title: "Blob Storage (AWS S3) & CDN for Static Data",
+      summary: "Decoupling heavy static media (product images, 4K videos, audio tracks) from databases into AWS S3 Object Storage, and eliminating cross-geography latency via a global CDN Edge hierarchy with India → Japan → USA fallback.",
+      subtopicLabels: ["57.1 AWS S3 Blob Storage","57.2 Cross-Geography Latency","57.3 Multi-Tier CDN Edge Fallback"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "57.1",
+          title: "1. Storing Static Data in Blob Storage (AWS S3)",
+          content: `
+
+          <ul class="notes-bullet-list">
+            <li><strong>What is Static Data?</strong> Large, immutable or rarely modified media files such as <strong>Images, Videos, and Audio Files</strong>:
+              <ul class="notes-sub-list">
+                <li><strong>Amazon / E-Commerce:</strong> Hundreds of millions of product photos, 360-degree interactive views, and unboxing videos.</li>
+                <li><strong>Netflix / YouTube / Spotify:</strong> Terabytes and petabytes of movie streams, 4K web series episodes, and high-fidelity audio tracks.</li>
+              </ul>
+            </li>
+            <li><strong>Why NOT Store Static Media in a Relational Database?</strong>
+              <ul class="notes-sub-list">
+                <li>Storing multi-megabyte media files as binary columns (<code>BLOB</code>) inside MySQL or PostgreSQL rapidly bloats database storage, degrades backup/restore operations, chokes database memory buffer pools, and cripples read/write performance.</li>
+              </ul>
+            </li>
+            <li><strong>Where We Store It — Object / Blob Storage:</strong>
+              <ul class="notes-sub-list">
+                <li>We decouple static media into dedicated <strong>Blob Storage</strong>, where data is stored in the form of discrete <strong>Objects</strong> accessible via unique HTTP URLs.</li>
+                <li><strong>Industry Standard:</strong> <strong>AWS S3 (Simple Storage Service)</strong> — engineered for 99.999999999% (11 9's) durability, virtually infinite scale, and cost-effective tiered storage.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 57.1 · Decoupled Media Architecture: Database Metadata vs AWS S3 Object Storage</span>
+              <span class="diagram-frame-tag">BLOB DECOUPLING PATTERN</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing database storing small JSON metadata and S3 image URL while heavy 5MB image is stored as an object in AWS S3">
+                <!-- User Upload -->
+                <rect x="25" y="30" width="180" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="115" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CLIENT UPLOAD</text>
+                <text x="115" y="82" text-anchor="middle" class="svg-title">Product Creator</text>
+                <rect x="40" y="100" width="150" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="115" y="125" text-anchor="middle" class="svg-node">Product Image</text>
+                <text x="115" y="145" text-anchor="middle" class="svg-mono-xs">shoe_photo.jpg (5 MB)</text>
+                <text x="115" y="168" text-anchor="middle" class="svg-sub">Title, Price, Specs</text>
+
+                <!-- Arrows -->
+                <path d="M 205 105 L 340 75" class="svg-arrow" stroke="var(--primary)"/>
+                <path d="M 205 145 L 340 165" class="svg-arrow" stroke="var(--success)"/>
+
+                <!-- Top: Database Metadata -->
+                <rect x="340" y="25" width="515" height="85" rx="10" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="360" y="50" class="svg-node" style="fill: var(--primary); font-weight: 700;">Relational Database (PostgreSQL / MySQL) — Metadata Only</text>
+                <text x="360" y="72" class="svg-mono-xs">id: 101 | title: "Air Zoom" | price: $120 | image_url: "https://s3.aws.com/shoes/101.jpg"</text>
+                <text x="360" y="92" class="svg-sub" style="fill: var(--text-tertiary);">Lightweight table row (&lt; 1 KB) — zero database bloat</text>
+
+                <!-- Bottom: AWS S3 Object Store -->
+                <rect x="340" y="125" width="515" height="85" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                <text x="360" y="150" class="svg-node" style="fill: var(--success); font-weight: 700;">AWS S3 (Simple Storage Service) — Dedicated Blob Object Store</text>
+                <text x="360" y="172" class="svg-mono-xs">s3://bucket-ecommerce/shoes/101.jpg (Raw 5 MB binary object)</text>
+                <text x="360" y="192" class="svg-sub" style="fill: var(--success);">11 9's durability · Virtually unlimited storage scale · Direct HTTP streaming</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        },
+        {
+          num: "57.2",
+          title: "2. Solving Global Latency With a CDN (Content Delivery Network)",
+          content: `
+
+          <div class="callout-highlight-box" style="border-left-color: var(--danger);">
+            <div class="callout-highlight-tag" style="color: var(--danger);">THE PROBLEM: CROSS-GEOGRAPHY TRANS-OCEANIC LATENCY</div>
+            <p style="margin-top: 0.5rem;">Suppose you build a Netflix-like streaming platform and host your <strong>Primary AWS S3 Storage in the USA (us-east-1)</strong>:</p>
+            <ul class="notes-bullet-list" style="margin-top: 0.5rem;">
+              <li>Now, massive viewer traffic begins arriving from <strong>India</strong> streaming HD movies and web series.</li>
+              <li>Because the media resides in USA data centers, every packet must travel thousands of miles through undersea fiber-optic cables and dozens of international router hops.</li>
+              <li><strong>Result:</strong> High latency (250ms+ round trips), video buffering, dropped frames, and poor user retention.</li>
+            </ul>
+          </div>
+
+          <div class="callout-highlight-box" style="border-left-color: var(--success); margin-top: 1rem;">
+            <div class="callout-highlight-tag" style="color: var(--success);">THE SOLUTION: S3 STORAGE + GLOBAL CDN WITH REGIONAL FALLBACK</div>
+            <p style="margin-top: 0.5rem;">We combine our <strong>Primary S3 Storage</strong> with a <strong>CDN (Content Delivery Network)</strong> — a distributed network of edge Point-of-Presence (PoP) proxy servers located in major cities worldwide (India, Japan, France, Germany, USA):</p>
+            <ol class="notes-ordered-list" style="margin-top: 0.6rem;">
+              <li><strong>Step 1 (Edge Serve):</strong> When a user in India requests a movie, the request hits the <strong>India CDN Edge</strong> in Mumbai/Delhi (served in &lt; 15 ms).</li>
+              <li><strong>Step 2 (Regional Edge Fallback):</strong> If the requested movie is <strong>not available (Cache Miss)</strong> in the India CDN edge, the request cascades to the <strong>nearest Regional CDN PoP (e.g. Japan CDN)</strong>.</li>
+              <li><strong>Step 3 (Origin Fallback):</strong> Only if the asset is missing across all regional edge caches does the request reach the <strong>Primary S3 Origin in the USA</strong>. The file is fetched, served to the user, and cached at the edge for all future Indian viewers.</li>
+            </ol>
+          </div>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 57.2 · Global CDN Edge Hierarchy &amp; S3 Origin Fallback (India → Japan → USA)</span>
+              <span class="diagram-frame-tag">MULTI-TIER EDGE CACHE ARCHITECTURE</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Architecture diagram showing Indian user requesting media from local India CDN edge (15ms), falling back to Japan regional CDN on miss, and finally fetching from USA S3 origin">
+                <!-- User in India -->
+                <rect x="20" y="35" width="160" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="100" y="62" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CLIENT REQUEST</text>
+                <text x="100" y="86" text-anchor="middle" class="svg-title">User in India</text>
+                <rect x="35" y="105" width="130" height="90" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="100" y="132" text-anchor="middle" class="svg-node">Requests Movie</text>
+                <text x="100" y="152" text-anchor="middle" class="svg-mono-xs">"Stranger Things"</text>
+                <text x="100" y="174" text-anchor="middle" class="svg-sub">Low latency goal</text>
+
+                <!-- India CDN Edge -->
+                <rect x="230" y="35" width="180" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                <text x="320" y="62" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">STEP 1: LOCAL EDGE</text>
+                <text x="320" y="86" text-anchor="middle" class="svg-title">India CDN (Mumbai)</text>
+                <rect x="245" y="105" width="150" height="90" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                <text x="320" y="132" text-anchor="middle" class="svg-node">Edge Cache Hit</text>
+                <text x="320" y="152" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">&lt; 15 ms Latency ✓</text>
+                <text x="320" y="174" text-anchor="middle" class="svg-sub">90%+ traffic served here</text>
+
+                <!-- Japan CDN Regional -->
+                <rect x="460" y="35" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                <text x="550" y="62" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">STEP 2: CACHE MISS</text>
+                <text x="550" y="86" text-anchor="middle" class="svg-title">Japan Regional CDN</text>
+                <rect x="475" y="105" width="150" height="90" rx="8" fill="var(--bg-surface)" stroke="var(--warning)"/>
+                <text x="550" y="132" text-anchor="middle" class="svg-node">Nearest Regional PoP</text>
+                <text x="550" y="152" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">~60 ms Latency</text>
+                <text x="550" y="174" text-anchor="middle" class="svg-sub">Regional shield tier</text>
+
+                <!-- USA S3 Origin -->
+                <rect x="690" y="35" width="170" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.5"/>
+                <text x="775" y="62" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">STEP 3: ORIGIN</text>
+                <text x="775" y="86" text-anchor="middle" class="svg-title">USA AWS S3 Bucket</text>
+                <rect x="705" y="105" width="140" height="90" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                <text x="775" y="132" text-anchor="middle" class="svg-node">Primary Storage</text>
+                <text x="775" y="152" text-anchor="middle" class="svg-mono-xs">250 ms+ (Origin)</text>
+                <text x="775" y="174" text-anchor="middle" class="svg-sub">Only on cold start miss</text>
+
+                <!-- Connecting Arrows -->
+                <path d="M 180 145 L 230 145" class="svg-arrow" stroke="var(--primary)"/>
+                <path d="M 410 145 L 460 145" class="svg-arrow-dashed" stroke="var(--warning)"/>
+                <path d="M 640 145 L 690 145" class="svg-arrow-dashed" stroke="var(--danger)"/>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 58: TEXT SEARCH ENGINES (ELASTICSEARCH) & DATA WAREHOUSES
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-58-elasticsearch-data-warehouse",
+      number: "58",
+      shortLabel: "Elasticsearch & DWH",
+      title: "Text Search Engines (Elasticsearch) & Data Warehouses",
+      summary: "Empowering fast e-commerce search with Apache Lucene Inverted Indexes, Fuzzy Searching (typo tolerance for 'Protein'), and prefix Autocomplete, why Elasticsearch is NOT a source of truth for live stock availability, and OLAP Data Warehouses for company-wide analytics.",
+      subtopicLabels: ["58.1 Fuzzy Search & Autocomplete","58.2 ES vs Live Database (Source of Truth)","58.3 OLAP Data Warehouses"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "58.1",
+          title: "1. Implementing Search Functionality With Elasticsearch",
+          content: `
+
+          <ul class="notes-bullet-list">
+            <li>In an e-commerce platform like <strong>Amazon</strong>, users search millions of catalog items using <strong>Product Name, Brand, Category, or description keywords</strong>.</li>
+            <li>Relational databases fail miserably at full-text search: running <code>LIKE '%protein%'</code> forces full-table disk scans that collapse under concurrent queries.</li>
+            <li>To enable lightning-fast text search, we deploy an <strong>Elasticsearch Cluster</strong> (built on the open-source <strong>Apache Lucene</strong> search engine library).</li>
+            <li><strong>Two Killer Capabilities Provided by Elasticsearch:</strong>
+              <ul class="notes-sub-list">
+                <li><strong>1. Fuzzy Searching (Typo Tolerance):</strong>
+                  Suppose a user wants to search for <strong>&ldquo;Protein&rdquo;</strong> (<code>P-R-O-T-E-I-N</code>), but accidentally mistypes it (e.g. replacing &lsquo;I&rsquo; with &lsquo;E&rsquo; as <em>&ldquo;Protean&rdquo;</em>). Using Lucene's Levenshtein distance matching, Elasticsearch understands the user's intent and returns all <strong>Protein-related items</strong>.
+                </li>
+                <li><strong>2. Autocompletion &amp; Prefix Suggestion:</strong>
+                  As soon as a shopper types the first few letters (e.g., <code>PROT</code>), Elasticsearch queries edge n-grams in its inverted index to instantly suggest <code>Protein Powder</code>, <code>Protein Bar</code>, and <code>Protein Shake</code>.
+                </li>
+              </ul>
+            </li>
+            <li><strong>How New Products Are Indexed:</strong> Whenever a new product is added to the catalog (e.g., <strong>Pintola Peanut Butter</strong>), an event publishes the product metadata into the Elasticsearch Cluster so it is instantly searchable.</li>
+          </ul>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 58.1 · Elasticsearch Inverted Index, Fuzzy Typo Matching &amp; Prefix Autocomplete</span>
+              <span class="diagram-frame-tag">APACHE LUCENE INVERTED INDEX ENGINE</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Architecture diagram showing user typing misspelled keyword 'Protean' into search bar, and Elasticsearch Lucene Inverted Index matching it via Levenshtein fuzzy distance and suggesting autocompletions in milliseconds">
+                <!-- User Search Bar -->
+                <rect x="25" y="30" width="220" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="135" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CLIENT SEARCH INPUT</text>
+                <text x="135" y="82" text-anchor="middle" class="svg-title">User Search Query</text>
+                <rect x="40" y="100" width="190" height="100" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="55" y="125" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">Typo: "Protean"</text>
+                <text x="55" y="148" class="svg-mono-xs" style="fill: var(--primary);">Prefix: "PROT..."</text>
+                <text x="55" y="172" class="svg-sub" style="fill: var(--text-tertiary);">Hits /api/v1/search</text>
+
+                <!-- Arrows -->
+                <path d="M 245 130 L 330 130" class="svg-arrow" stroke="var(--primary)"/>
+
+                <!-- Elasticsearch Cluster -->
+                <rect x="330" y="30" width="525" height="190" rx="10" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.8"/>
+                <text x="592" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--accent);">TEXT SEARCH CLUSTER (APACHE LUCENE)</text>
+                <text x="592" y="82" text-anchor="middle" class="svg-title">Elasticsearch Inverted Index &amp; Fuzzy Matcher</text>
+
+                <g transform="translate(350, 95)">
+                  <!-- Subcard 1 -->
+                  <rect x="0" y="0" width="235" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                  <text x="117" y="24" text-anchor="middle" class="svg-mono-xs" style="fill: var(--accent); font-weight: 700;">FUZZY MATCHING (TYPO TOLERANT)</text>
+                  <text x="117" y="48" text-anchor="middle" class="svg-node">"Protean" &rarr; "Protein" ✓</text>
+                  <text x="117" y="70" text-anchor="middle" class="svg-sub">Levenshtein edit distance = 1</text>
+                  <text x="117" y="90" text-anchor="middle" class="svg-sub">Returns all Whey / Plant Protein</text>
+
+                  <!-- Subcard 2 -->
+                  <rect x="250" y="0" width="235" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                  <text x="367" y="24" text-anchor="middle" class="svg-mono-xs" style="fill: var(--accent); font-weight: 700;">PREFIX AUTOCOMPLETION</text>
+                  <text x="367" y="48" text-anchor="middle" class="svg-node">"PROT" &rarr; Suggestions</text>
+                  <text x="367" y="70" text-anchor="middle" class="svg-mono-xs" style="fill: var(--text-secondary);">• Protein Bars</text>
+                  <text x="367" y="90" text-anchor="middle" class="svg-mono-xs" style="fill: var(--text-secondary);">• Protein Powder Whey</text>
+                </g>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        },
+        {
+          num: "58.2",
+          title: "2. Elasticsearch vs. Actual Database (Not a Source of Truth!)",
+          content: `
+
+          <p>A crucial system design principle: <strong>Elasticsearch is a specialized search index, NOT a primary source of truth!</strong></p>
+
+          <div class="sub-card-grid-2" style="margin-top: 1rem;">
+            <div class="sub-box">
+              <div class="sub-box__tag">Durability Guarantees</div>
+              <div class="sub-box__title">Primary DB vs Elasticsearch</div>
+              <div class="sub-box__body">
+                <strong>• Primary Database (RDBMS/NoSQL):</strong> Strictly guarantees data durability via Write-Ahead Logs (WAL), replication, and fsync transactions.<br>
+                <strong>• Elasticsearch:</strong> Focuses on inverted index searching and aggregation. It does <strong>not</strong> give a strict guarantee against data loss under network partitions or node crashes.
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Live State Integrity</div>
+              <div class="sub-box__title">In Stock vs Out of Stock</div>
+              <div class="sub-box__body">
+                When a user searches for <em>&ldquo;Pintola Peanut Butter&rdquo;</em>, Elasticsearch returns matching product records.<br>
+                However, Elasticsearch <strong>CANNOT tell you if it is In Stock or Out of Stock in real-time</strong>! The system must query the <strong>Inventory Service</strong> and its primary database for live inventory levels.
+              </div>
+            </div>
+          </div>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 58.2 · Search Engine vs Source of Truth: Elasticsearch Query &rarr; Inventory DB Stock Verification</span>
+              <span class="diagram-frame-tag">SEPARATION OF DISCOVERY VS INVENTORY INTEGRITY</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing client searching for product in Elasticsearch for discovery, followed by API Gateway validating real-time stock availability against the Inventory Service's transactional database">
+                <!-- User Search -->
+                <rect x="20" y="30" width="160" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="100" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">STEP 1: DISCOVER</text>
+                <text x="100" y="82" text-anchor="middle" class="svg-title">User Search</text>
+                <rect x="35" y="100" width="130" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="100" y="125" text-anchor="middle" class="svg-node">"Pintola Butter"</text>
+                <text x="100" y="145" text-anchor="middle" class="svg-mono-xs">Keyword Query</text>
+                <text x="100" y="168" text-anchor="middle" class="svg-sub">Needs Matching IDs</text>
+
+                <!-- Elasticsearch Node -->
+                <rect x="240" y="30" width="260" height="170" rx="10" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+                <text x="370" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--accent);">SEARCH INDEX ONLY</text>
+                <text x="370" y="82" text-anchor="middle" class="svg-title">Elasticsearch Cluster</text>
+                <rect x="255" y="100" width="230" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                <text x="370" y="124" text-anchor="middle" class="svg-node">Returns Product IDs</text>
+                <text x="370" y="145" text-anchor="middle" class="svg-mono-xs">[prod_501, prod_502]</text>
+                <text x="370" y="168" text-anchor="middle" class="svg-sub" style="fill: var(--danger); font-weight: 700;">NOT Source of Truth for Stock ✕</text>
+
+                <!-- Arrows -->
+                <path d="M 180 115 L 240 115" class="svg-arrow" stroke="var(--primary)"/>
+                <path d="M 500 115 L 580 115" class="svg-arrow" stroke="var(--success)"/>
+
+                <!-- Inventory Service (Source of Truth) -->
+                <rect x="580" y="30" width="280" height="170" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                <text x="720" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">STEP 2: SOURCE OF TRUTH</text>
+                <text x="720" y="82" text-anchor="middle" class="svg-title">Inventory Service &amp; Database</text>
+                <rect x="595" y="100" width="250" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                <text x="720" y="124" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Live Stock Verification ✓</text>
+                <text x="720" y="145" text-anchor="middle" class="svg-mono-xs">prod_501: 12 Units Left (In Stock)</text>
+                <text x="720" y="168" text-anchor="middle" class="svg-sub">Guaranteed ACID transactional count</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        },
+        {
+          num: "58.3",
+          title: "3. Data Warehouse (Analytics & Large-Scale Reporting)",
+          content: `
+
+          <div class="callout-highlight-box" style="border-left-color: var(--accent);">
+            <div class="callout-highlight-tag" style="color: var(--accent);">OLAP DATA WAREHOUSE (SNOWFLAKE, BIGQUERY, REDSHIFT)</div>
+            <ul class="notes-bullet-list" style="margin-top: 0.5rem;">
+              <li><strong>When to Use:</strong> Whenever you need to run business intelligence, cohort metrics, revenue aggregations, and executive reports across <strong>all historical and operational data across the company</strong>.</li>
+              <li><strong>What It Is:</strong> A <strong>Data Warehouse</strong> is a large, columnar database where you dump copies of all transactional and event data (via periodic ETL/ELT pipelines).</li>
+              <li><strong>OLTP vs. OLAP Separation:</strong> Running heavy analytical queries with millions of row scans on your live <strong>OLTP (Online Transaction Processing) database</strong> would lock tables and crash live customer checkouts. Instead, analysts run heavy analytical queries exclusively against the <strong>OLAP (Online Analytical Processing) Data Warehouse</strong>.</li>
+            </ul>
+          </div>
+        
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 59: SQL VS. NOSQL DECISION FRAMEWORK & REAL-WORLD HYBRID ARCHITECTURE
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-59-sql-vs-nosql-hybrid",
+      number: "59",
+      shortLabel: "SQL vs NoSQL Hybrid",
+      title: "SQL vs. NoSQL Decision Framework & Real-World Hybrid Architecture",
+      summary: "The step-by-step decision framework (Structured ACID RDBMS vs Columnar Cassandra for ever-growing data vs Document MongoDB for polymorphic cart attributes), and Amazon's Order Service hybrid architecture (Live Orders in SQL + Cron + Cassandra Archive).",
+      subtopicLabels: ["59.1 SQL vs NoSQL Decision Tree","59.2 Columnar vs Document NoSQL","59.3 Amazon Order Service Hybrid Architecture"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "59.1",
+          title: "1. Step-by-Step Decision Framework: SQL vs. NoSQL",
+          content: `
+
+          <div class="sub-card-grid-2" style="margin-top: 1rem;">
+            <div class="sub-box">
+              <div class="sub-box__tag">Path A · Structured Data</div>
+              <div class="sub-box__title">Fixed Format / Rows &amp; Columns</div>
+              <div class="sub-box__body">
+                <strong>Question:</strong> <em>Do you need strict ACID properties (Atomicity, Consistency, Isolation, Durability) or financial transactions?</em><br>
+                <strong>• Example (Payment Service):</strong> User A sends money to User B. Money debited from A <strong>must</strong> be credited to B — it must never happen that money is lost mid-flight.<br>
+                <strong>&rarr; If YES:</strong> Pick an <strong>RDBMS / SQL Database</strong> (PostgreSQL, MySQL).<br>
+                <strong>&rarr; If NO:</strong> You can use <strong>either SQL or NoSQL</strong>.
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Path B · Unstructured Data</div>
+              <div class="sub-box__title">No Fixed Schema / Predefined Model</div>
+              <div class="sub-box__body">
+                Choose between two primary NoSQL database engines:<br>
+                <strong>1. Columnar Database (e.g. Apache Cassandra):</strong> Finite set of queries, massive data volume, and <strong>ever-increasing historical data</strong> over time.<br>
+                <strong>2. Document Database (e.g. MongoDB):</strong> Wide variety of queries, nested documents, and <strong>heterogeneous polymorphic attributes</strong> across items (e.g. Shopping Cart).
+              </div>
+            </div>
+          </div>
+
+          <div class="callout-highlight-box" style="border-left-color: var(--primary); margin-top: 1rem;">
+            <div class="callout-highlight-tag" style="color: var(--primary);">SHOPPING CART EXAMPLE: WHY DOCUMENT DB (MONGODB) WINS FOR POLYMORPHIC ITEMS</div>
+            <p style="margin-top: 0.5rem;">Suppose you build an Amazon or Swiggy Cart Service where users add completely diverse items into the same cart:</p>
+            <ul class="notes-bullet-list" style="margin-top: 0.5rem;">
+              <li><strong>Shirt:</strong> <code>Shoulder Width</code>, <code>Chest Size</code>, <code>Fabric</code>, <code>Sleeve Length</code></li>
+              <li><strong>Smart TV:</strong> <code>Screen Size (55")</code>, <code>Resolution (4K)</code>, <code>HDMI Ports</code>, <code>Refresh Rate (120Hz)</code></li>
+              <li><strong>iPhone:</strong> <code>Storage (256GB)</code>, <code>Color (Titanium)</code>, <code>Carrier Lock</code></li>
+            </ul>
+            <p style="margin-top: 0.5rem;">A rigid relational table would require hundreds of sparse <code>NULL</code> columns. A <strong>Document DB (MongoDB)</strong> stores each item as a self-contained BSON/JSON document, allowing every key to possess completely different attributes naturally.</p>
+          </div>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 59.1 · Complete Decision Tree: SQL (RDBMS) vs Columnar (Cassandra) vs Document (MongoDB)</span>
+              <span class="diagram-frame-tag">ARCHITECTURAL SELECTION ROADMAP</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 270" class="arch-svg" role="img" aria-label="Decision tree evaluating Structured vs Unstructured data, ACID transactions, finite queries, and polymorphic cart attributes to select between MySQL PostgreSQL, Cassandra, or MongoDB">
+                <!-- Root Node -->
+                <rect x="330" y="15" width="220" height="45" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8"/>
+                <text x="440" y="35" text-anchor="middle" class="svg-node" style="font-weight: 700;">Data Structure Evaluation</text>
+                <text x="440" y="50" text-anchor="middle" class="svg-mono-xs">Structured vs Unstructured?</text>
+
+                <!-- Branch Left: Structured -->
+                <path d="M 330 37 L 160 37 L 160 85" class="svg-arrow" stroke="var(--primary)"/>
+                <text x="235" y="30" text-anchor="middle" class="svg-mono-xs">Structured</text>
+
+                <rect x="50" y="85" width="220" height="50" rx="8" fill="var(--bg-subsection)" stroke="var(--warning)"/>
+                <text x="160" y="106" text-anchor="middle" class="svg-node">Need ACID / Financial?</text>
+                <text x="160" y="124" text-anchor="middle" class="svg-sub">Strict transaction guarantees</text>
+
+                <!-- Left Outcomes -->
+                <path d="M 110 135 L 70 175" class="svg-arrow" stroke="var(--success)"/>
+                <text x="75" y="155" class="svg-mono-xs" style="fill: var(--success);">YES</text>
+                <rect x="10" y="175" width="130" height="75" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                <text x="75" y="200" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">SQL / RDBMS</text>
+                <text x="75" y="220" text-anchor="middle" class="svg-mono-xs">PostgreSQL / MySQL</text>
+                <text x="75" y="238" text-anchor="middle" class="svg-sub">ACID Transactions</text>
+
+                <path d="M 210 135 L 240 175" class="svg-arrow" stroke="var(--text-tertiary)"/>
+                <text x="240" y="155" class="svg-mono-xs" style="fill: var(--text-tertiary);">NO</text>
+                <rect x="160" y="175" width="140" height="75" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="230" y="200" text-anchor="middle" class="svg-node">SQL or NoSQL</text>
+                <text x="230" y="220" text-anchor="middle" class="svg-sub">Either engine works</text>
+                <text x="230" y="238" text-anchor="middle" class="svg-mono-xs">Pick team comfort</text>
+
+                <!-- Branch Right: Unstructured -->
+                <path d="M 550 37 L 720 37 L 720 85" class="svg-arrow" stroke="var(--accent)"/>
+                <text x="645" y="30" text-anchor="middle" class="svg-mono-xs">Unstructured</text>
+
+                <rect x="610" y="85" width="220" height="50" rx="8" fill="var(--bg-subsection)" stroke="var(--accent)"/>
+                <text x="720" y="106" text-anchor="middle" class="svg-node">Query Pattern &amp; Attributes?</text>
+                <text x="720" y="124" text-anchor="middle" class="svg-sub">Finite queries vs polymorphic items</text>
+
+                <!-- Right Outcomes -->
+                <path d="M 670 135 L 610 175" class="svg-arrow" stroke="var(--accent)"/>
+                <rect x="530" y="175" width="160" height="75" rx="8" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.5"/>
+                <text x="610" y="200" text-anchor="middle" class="svg-node" style="fill: var(--accent); font-weight: 700;">Columnar NoSQL</text>
+                <text x="610" y="220" text-anchor="middle" class="svg-mono-xs">Apache Cassandra</text>
+                <text x="610" y="238" text-anchor="middle" class="svg-sub">Finite Queries · Ever-Growing</text>
+
+                <path d="M 770 135 L 800 175" class="svg-arrow" stroke="var(--primary)"/>
+                <rect x="710" y="175" width="160" height="75" rx="8" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="790" y="200" text-anchor="middle" class="svg-node" style="fill: var(--primary); font-weight: 700;">Document DB</text>
+                <text x="790" y="220" text-anchor="middle" class="svg-mono-xs">MongoDB / DynamoDB</text>
+                <text x="790" y="238" text-anchor="middle" class="svg-sub">Dynamic Cart Attributes</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        },
+        {
+          num: "59.2",
+          title: "2. Real-World Hybrid Architecture Example (Amazon Order Service)",
+          content: `
+
+          <p>In large-scale production architectures, <strong>we rarely rely on only a single database</strong> — multiple specialized databases work symbiotically:</p>
+
+          <div class="callout-highlight-box" style="border-left-color: var(--danger);">
+            <div class="callout-highlight-tag" style="color: var(--danger);">THE SCALE BOTTLENECK: STORING ALL ORDERS FOREVER IN RDBMS</div>
+            <ul class="notes-bullet-list" style="margin-top: 0.5rem;">
+              <li>In an Amazon-like e-commerce platform, the <strong>Order Service</strong> places orders, coordinates with Payment, updates Inventory, and triggers Notifications.</li>
+              <li>Because payments can fail and orders can be cancelled or modified within the return window, the Order Service <strong>requires strict ACID transactional guarantees</strong> &rarr; so we must choose an <strong>RDBMS (SQL) database</strong>.</li>
+              <li><strong>The Massive Growth Problem:</strong> If Amazon has 10 million users and takes <strong>100,000 new orders every day</strong>, order rows accumulate relentlessly. Storing all historical orders forever inside a single RDBMS will exhaust disk storage, blow up index trees, and crash query performance!</li>
+            </ul>
+          </div>
+
+          <div class="callout-highlight-box" style="border-left-color: var(--success); margin-top: 1rem;">
+            <div class="callout-highlight-tag" style="color: var(--success);">THE HYBRID SOLUTION: LIVE RDBMS + CRON MIGRATION + CASSANDRA ARCHIVE</div>
+            <ol class="notes-ordered-list" style="margin-top: 0.5rem;">
+              <li><strong>1. Live Orders in RDBMS (SQL):</strong> Keep <strong>only Live / Recent Orders</strong> (orders still within the 10-day or 30-day return window where transactional updates and cancellations can still happen) inside the <strong>RDBMS database</strong>.</li>
+              <li><strong>2. Past Orders in Cassandra (Columnar NoSQL):</strong> Once an order is older than 30 days, it is completely finalized and never requires ACID modifications.</li>
+              <li><strong>3. Scheduled Cron Job Migration:</strong> A background <strong>Past Order Service</strong> runs periodic Cron Jobs to extract finalized orders from the RDBMS, write them into an <strong>Apache Cassandra</strong> cluster (built for petabytes of ever-increasing immutable data), and purge them from the primary RDBMS.</li>
+            </ol>
+            <p style="margin-top: 0.6rem;"><strong>Key Takeaway:</strong> <strong>RDBMS</strong> provides ACID guarantees for active orders, while <strong>Cassandra</strong> provides massive horizontal scale for eternal order history!</p>
+          </div>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 59.2 · Amazon Order Service Hybrid Architecture (Live SQL DB + Cron Migration + Cassandra Past Orders)</span>
+              <span class="diagram-frame-tag">DUAL-DATABASE HYBRID PATTERN</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Architecture diagram showing active orders handled by PostgreSQL RDBMS with ACID guarantees, migrated by a periodic Cron Job into Apache Cassandra for petabyte-scale historical storage">
+                <!-- Order Service -->
+                <rect x="25" y="30" width="180" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="115" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">ACTIVE TRANSACTIONS</text>
+                <text x="115" y="82" text-anchor="middle" class="svg-title">Order Service</text>
+                <rect x="40" y="105" width="150" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="115" y="132" text-anchor="middle" class="svg-node">New Orders</text>
+                <text x="115" y="152" text-anchor="middle" class="svg-mono-xs">100K Orders/Day</text>
+                <text x="115" y="174" text-anchor="middle" class="svg-sub">Handles Checkout &amp; Pay</text>
+
+                <!-- Arrows -->
+                <path d="M 205 140 L 290 140" class="svg-arrow" stroke="var(--primary)"/>
+
+                <!-- Live Orders RDBMS -->
+                <rect x="290" y="30" width="220" height="190" rx="10" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                <text x="400" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">TIER 1: LIVE ORDERS</text>
+                <text x="400" y="82" text-anchor="middle" class="svg-title">RDBMS (SQL / Postgres)</text>
+                <rect x="305" y="105" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                <text x="400" y="130" text-anchor="middle" class="svg-node" style="fill: var(--primary); font-weight: 700;">Active &amp; Within 30 Days</text>
+                <text x="400" y="152" text-anchor="middle" class="svg-mono-xs">Strict ACID Transactions</text>
+                <text x="400" y="174" text-anchor="middle" class="svg-sub">Small, lean, lightning-fast</text>
+
+                <!-- Cron Migration Bridge -->
+                <path d="M 510 140 L 610 140" class="svg-arrow" stroke="var(--warning)"/>
+                <rect x="520" y="115" width="80" height="50" rx="6" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                <text x="560" y="135" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning); font-weight: 700;">CRON JOB</text>
+                <text x="560" y="152" text-anchor="middle" class="svg-sub">> 30 Days</text>
+
+                <!-- Cassandra Past Orders -->
+                <rect x="610" y="30" width="245" height="190" rx="10" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.8"/>
+                <text x="732" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--accent);">TIER 2: HISTORICAL ARCHIVE</text>
+                <text x="732" y="82" text-anchor="middle" class="svg-title">Apache Cassandra NoSQL</text>
+                <rect x="625" y="105" width="215" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                <text x="732" y="130" text-anchor="middle" class="svg-node" style="fill: var(--accent); font-weight: 700;">Past Orders (Finalized)</text>
+                <text x="732" y="152" text-anchor="middle" class="svg-mono-xs">Ever-Growing Billions Rows</text>
+                <text x="732" y="174" text-anchor="middle" class="svg-sub">Massive write scale · Never crashes</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 60: WHAT IS A SINGLE POINT OF FAILURE (SPOF)?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-60-what-is-spof",
+      number: "60",
+      shortLabel: "What is SPOF?",
+      title: "What is a Single Point of Failure (SPOF)?",
+      summary: "The definition and catastrophic blast radius of a Single Point of Failure (System Downtime, Data Loss, User Churn), and the 7 vulnerable architectural tiers: App Servers, Load Balancers, Databases, Caches, Data Centers, AZs, and Geographic Regions.",
+      subtopicLabels: ["60.1 Definition & Blast Radius","60.2 The 7 Vulnerable Architectural Tiers"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "60.1",
+          title: "1. Definition & Impact of a Single Point of Failure (SPOF)",
+          content: `
+
+          <blockquote class="notes-quote" style="border-left-color: var(--danger);">
+            <strong>&ldquo;A Single Point of Failure (SPOF) is any single component in your system whose failure can bring down the entire system.&rdquo;</strong>
+          </blockquote>
+
+          <p style="margin-top: 1rem;">In any distributed architecture, if the crash of <strong>one single server, wire, or process</strong> causes the whole platform to stop operating, that unredundant component is a Single Point of Failure.</p>
+
+          <div class="sub-card-grid-3" style="margin-top: 1rem;">
+            <div class="sub-box" style="border-left: 3.5px solid var(--danger);">
+              <div class="sub-box__tag">Impact 01</div>
+              <div class="sub-box__title">1. System Downtime</div>
+              <div class="sub-box__body">The entire application crashes or returns 502/503 HTTP errors. Revenue-generating customer flows immediately halt.</div>
+            </div>
+
+            <div class="sub-box" style="border-left: 3.5px solid var(--danger);">
+              <div class="sub-box__tag">Impact 02</div>
+              <div class="sub-box__title">2. Potential Data Loss</div>
+              <div class="sub-box__body">If an un-replicated database disk crashes, in-flight transactions and non-backed-up records can be permanently destroyed.</div>
+            </div>
+
+            <div class="sub-box" style="border-left: 3.5px solid var(--danger);">
+              <div class="sub-box__tag">Impact 03</div>
+              <div class="sub-box__title">3. User Churn &amp; Frustration</div>
+              <div class="sub-box__body">Users blocked from using the app switch to competitors, damaging brand reputation, contractual SLAs, and trust.</div>
+            </div>
+          </div>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 60.1 · Anatomy of a Single Point of Failure: The Domino Effect of Unredundant Design</span>
+              <span class="diagram-frame-tag">CRITICAL RISK ASSESSMENT</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing client requests hitting a single unredundant component that crashes and blocks the entire backend architecture">
+                <!-- Clients -->
+                <rect x="25" y="30" width="170" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="110" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">THOUSANDS OF USERS</text>
+                <text x="110" y="82" text-anchor="middle" class="svg-title">Active Clients</text>
+                <rect x="40" y="100" width="140" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="110" y="125" text-anchor="middle" class="svg-node">Sending Requests</text>
+                <text x="110" y="145" text-anchor="middle" class="svg-mono-xs">POST /checkout</text>
+                <text x="110" y="168" text-anchor="middle" class="svg-sub">Expects 200 OK</text>
+
+                <!-- Arrow -->
+                <path d="M 195 115 L 290 115" class="svg-arrow" stroke="var(--danger)"/>
+
+                <!-- The SPOF Component -->
+                <rect x="290" y="25" width="280" height="180" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="2"/>
+                <text x="430" y="54" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">SINGLE POINT OF FAILURE (SPOF)</text>
+                <text x="430" y="80" text-anchor="middle" class="svg-title" style="fill: var(--danger);">Single Unredundant Instance</text>
+                <rect x="310" y="98" width="240" height="90" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                <text x="430" y="125" text-anchor="middle" class="svg-node" style="fill: var(--danger); font-weight: 700;">💥 COMPONENT CRASHES!</text>
+                <text x="430" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">No Backup / Standby Node</text>
+                <text x="430" y="170" text-anchor="middle" class="svg-sub">All incoming traffic gets blocked</text>
+
+                <!-- Arrow -->
+                <path d="M 570 115 L 660 115" class="svg-arrow-dashed" stroke="var(--text-tertiary)"/>
+                <text x="615" y="105" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">BLOCKED</text>
+
+                <!-- Blocked Backend -->
+                <rect x="660" y="30" width="195" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--border-strong)"/>
+                <text x="757" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--text-tertiary);">HEALTHY BACKEND</text>
+                <text x="757" y="82" text-anchor="middle" class="svg-title">Unreachable Services</text>
+                <rect x="675" y="100" width="165" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="757" y="125" text-anchor="middle" class="svg-node">Services are Alive</text>
+                <text x="757" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Cannot receive traffic</text>
+                <text x="757" y="168" text-anchor="middle" class="svg-sub">System-wide 100% outage</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        },
+        {
+          num: "60.2",
+          title: "2. Components That Can Become a Single Point of Failure",
+          content: `
+
+          <p>Any critical layer in your architecture becomes a Single Point of Failure if you deploy only a <strong>single instance</strong> without redundancy:</p>
+
+          <div class="sub-card-grid-2" style="margin-top: 1rem;">
+            <div class="sub-box">
+              <div class="sub-box__tag">Tier 01 &amp; 02</div>
+              <div class="sub-box__title">Compute &amp; Routing</div>
+              <div class="sub-box__body">
+                <strong>• Application Servers:</strong> A single server running Node.js or Spring Boot crashes on an uncaught exception or OOM.<br>
+                <strong>• Load Balancers:</strong> A single NGINX or HAProxy gateway failing halts all routing to healthy app servers.
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Tier 03 &amp; 04</div>
+              <div class="sub-box__title">Data &amp; In-Memory State</div>
+              <div class="sub-box__body">
+                <strong>• Databases:</strong> A single primary database instance suffering disk corruption stops all reads and writes.<br>
+                <strong>• Cache (Redis):</strong> Single-instance cache dying causes a "Cache Avalanche" that crashes the backend database.
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Tier 05, 06 &amp; 07</div>
+              <div class="sub-box__title">Physical Infrastructure</div>
+              <div class="sub-box__body">
+                <strong>• Data Centers:</strong> Power grid blackout, fiber line severing, or cooling failure takes down the whole facility.<br>
+                <strong>• Availability Zones (AZs):</strong> Severe localized network partition across adjacent buildings.<br>
+                <strong>• Geographic Regions:</strong> Major regional cloud outage (e.g. AWS us-east-1 DNS failure).
+              </div>
+            </div>
+          </div>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 60.2 · The 7 Critical Architecture Tiers Vulnerable to Single Points of Failure</span>
+              <span class="diagram-frame-tag">FULL ARCHITECTURAL BLAST RADIUS</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Horizontal tier diagram displaying all 7 architectural layers that can become single points of failure: App Server, Load Balancer, Database, Cache, Data Center, Availability Zone, and Region">
+                <!-- 7 Tiers displayed horizontally -->
+                <g transform="translate(10, 30)">
+                  <!-- 1. App Server -->
+                  <rect x="0" y="0" width="115" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.2"/>
+                  <text x="57" y="26" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">TIER 01</text>
+                  <text x="57" y="50" text-anchor="middle" class="svg-node" style="font-weight: 700;">App Server</text>
+                  <rect x="10" y="65" width="95" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="57" y="90" text-anchor="middle" class="svg-mono-xs">OOM Crash</text>
+                  <text x="57" y="112" text-anchor="middle" class="svg-sub">Uncaught Err</text>
+                  <text x="57" y="136" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Single VM ✕</text>
+
+                  <!-- 2. Load Balancer -->
+                  <rect x="125" y="0" width="115" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.2"/>
+                  <text x="182" y="26" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">TIER 02</text>
+                  <text x="182" y="50" text-anchor="middle" class="svg-node" style="font-weight: 700;">Load Balancer</text>
+                  <rect x="135" y="65" width="95" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="182" y="90" text-anchor="middle" class="svg-mono-xs">Gateway Halt</text>
+                  <text x="182" y="112" text-anchor="middle" class="svg-sub">No Route</text>
+                  <text x="182" y="136" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Single LB ✕</text>
+
+                  <!-- 3. Database -->
+                  <rect x="250" y="0" width="115" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.2"/>
+                  <text x="307" y="26" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">TIER 03</text>
+                  <text x="307" y="50" text-anchor="middle" class="svg-node" style="font-weight: 700;">Database</text>
+                  <rect x="260" y="65" width="95" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="307" y="90" text-anchor="middle" class="svg-mono-xs">Disk Fail</text>
+                  <text x="307" y="112" text-anchor="middle" class="svg-sub">Data Loss</text>
+                  <text x="307" y="136" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Single DB ✕</text>
+
+                  <!-- 4. Cache -->
+                  <rect x="375" y="0" width="115" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.2"/>
+                  <text x="432" y="26" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">TIER 04</text>
+                  <text x="432" y="50" text-anchor="middle" class="svg-node" style="font-weight: 700;">Cache</text>
+                  <rect x="385" y="65" width="95" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="432" y="90" text-anchor="middle" class="svg-mono-xs">Avalanche</text>
+                  <text x="432" y="112" text-anchor="middle" class="svg-sub">RAM Crash</text>
+                  <text x="432" y="136" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Single Redis ✕</text>
+
+                  <!-- 5. Data Center -->
+                  <rect x="500" y="0" width="115" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.2"/>
+                  <text x="557" y="26" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">TIER 05</text>
+                  <text x="557" y="50" text-anchor="middle" class="svg-node" style="font-weight: 700;">Data Center</text>
+                  <rect x="510" y="65" width="95" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="557" y="90" text-anchor="middle" class="svg-mono-xs">Power Cut</text>
+                  <text x="557" y="112" text-anchor="middle" class="svg-sub">Fiber Cut</text>
+                  <text x="557" y="136" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Single DC ✕</text>
+
+                  <!-- 6. Availability Zone -->
+                  <rect x="625" y="0" width="115" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.2"/>
+                  <text x="682" y="26" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">TIER 06</text>
+                  <text x="682" y="50" text-anchor="middle" class="svg-node" style="font-weight: 700;">Availability Zone</text>
+                  <rect x="635" y="65" width="95" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="682" y="90" text-anchor="middle" class="svg-mono-xs">Zone Blackout</text>
+                  <text x="682" y="112" text-anchor="middle" class="svg-sub">Flood / Storm</text>
+                  <text x="682" y="136" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Single AZ ✕</text>
+
+                  <!-- 7. Region -->
+                  <rect x="750" y="0" width="110" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.2"/>
+                  <text x="805" y="26" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">TIER 07</text>
+                  <text x="805" y="50" text-anchor="middle" class="svg-node" style="font-weight: 700;">Region</text>
+                  <rect x="760" y="65" width="90" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="805" y="90" text-anchor="middle" class="svg-mono-xs">Backbone Fail</text>
+                  <text x="805" y="112" text-anchor="middle" class="svg-sub">Geo Disaster</text>
+                  <text x="805" y="136" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Single Geo ✕</text>
+                </g>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 61: LAYER-BY-LAYER ELIMINATION OF SINGLE POINTS OF FAILURE
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-61-layer-by-layer-spof-elimination",
+      number: "61",
+      shortLabel: "Eliminating SPOFs",
+      title: "Layer-by-Layer Elimination of Single Points of Failure",
+      summary: "A step-by-step 6-layer blueprint to systematically eradicate SPOFs from the smallest VM to entire continents: Horizontal App Servers &rarr; Redundant Load Balancers &rarr; Database Master-Slave Replication &rarr; Multi-Data Center &rarr; Multi-AZ &rarr; Multi-Region Geo Routing.",
+      subtopicLabels: ["61.1 Layers 1 & 2: App Servers & Load Balancers","61.2 Layer 3: Database Master-Slave","61.3 Layers 4–6: Data Center, AZ & Region"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "61.1",
+          title: "1. Layers 1 & 2 — Application Server & Load Balancer Redundancy",
+          content: `
+
+          <div class="sub-card-grid-2" style="margin-top: 1rem;">
+            <div class="sub-box">
+              <div class="sub-box__tag">Layer 01 Elimination</div>
+              <div class="sub-box__title">Application Server Redundancy</div>
+              <div class="sub-box__body">
+                <strong>• The Problem:</strong> A single Application Server handling client traffic crashes (due to uncaught exceptions, CPU spikes, or memory leaks), taking down the entire service.<br>
+                <strong>• The Solution:</strong> <strong>Horizontally scale</strong> the application by deploying <strong>multiple stateless Application Servers</strong> (Server 1, Server 2, Server 3). If Server 1 dies, remaining servers fulfill traffic seamlessly.
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Layer 02 Elimination</div>
+              <div class="sub-box__title">Load Balancer Redundancy</div>
+              <div class="sub-box__body">
+                <strong>• The Problem:</strong> When we place a single Load Balancer in front of our scaled servers, <strong>the Load Balancer itself becomes the SPOF</strong>! If that single LB crashes, zero client requests reach healthy app servers.<br>
+                <strong>• The Solution:</strong> Deploy <strong>multiple Load Balancers</strong> in an <strong>Active-Active or Active-Passive pair</strong> with Virtual IP (VRRP) and DNS Round-Robin failover.
+              </div>
+            </div>
+          </div>
+        
+          `
+        },
+        {
+          num: "61.2",
+          title: "2. Layer 3 — Database Master-Slave Replication",
+          content: `
+
+          <ul class="notes-bullet-list">
+            <li><strong>The Problem:</strong> Even after scaling compute and routing, a single database instance will crash the entire platform if its disk corrupts or its process dies.</li>
+            <li><strong>The Solution — Master-Slave Architecture &amp; Data Replication:</strong>
+              <ul class="notes-sub-list">
+                <li>Deploy multiple database nodes in a <strong>Master-Slave (Primary-Replica)</strong> topology:
+                  <ul class="notes-sub-list">
+                    <li><strong>Master Node (Primary):</strong> Dedicated to handling <strong>all Write operations (INSERT, UPDATE, DELETE)</strong>.</li>
+                    <li><strong>Slave Nodes (Replicas):</strong> Continuously <strong>replicate data from the Master</strong> via binlogs/WAL and serve <strong>all Read operations (SELECT)</strong>.</li>
+                  </ul>
+                </li>
+                <li><strong>Automatic Failover:</strong> If the Master node crashes, an automated consensus monitor (e.g. Raft / Orchestrator) immediately promotes one of the healthy Slaves to become the new Master — ensuring zero downtime and preventing data loss!</li>
+              </ul>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 61.1 · Layers 1–3: Redundant Load Balancers, Horizontal Servers &amp; Master-Slave DB</span>
+              <span class="diagram-frame-tag">ZERO SPOF IN THE SOFTWARE STACK</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 260" class="arch-svg" role="img" aria-label="End-to-end architecture diagram showing dual redundant load balancers distributing traffic to 3 horizontal app servers, which write to a DB Master and read from replicated DB Slaves">
+                <!-- Dual Load Balancers -->
+                <rect x="20" y="25" width="180" height="210" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="110" y="50" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">LAYER 2: LOAD BALANCERS</text>
+                <rect x="35" y="65" width="150" height="70" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                <text x="110" y="92" text-anchor="middle" class="svg-node">Active LB 1 ✓</text>
+                <text x="110" y="112" text-anchor="middle" class="svg-mono-xs">Virtual IP (VRRP)</text>
+
+                <rect x="35" y="148" width="150" height="70" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="110" y="175" text-anchor="middle" class="svg-node">Passive LB 2 (Standby)</text>
+                <text x="110" y="195" text-anchor="middle" class="svg-sub">Instant Auto-Failover</text>
+
+                <!-- Arrows -->
+                <path d="M 185 100 L 290 80" class="svg-arrow" stroke="var(--primary)"/>
+                <path d="M 185 100 L 290 130" class="svg-arrow" stroke="var(--primary)"/>
+                <path d="M 185 100 L 290 180" class="svg-arrow" stroke="var(--primary)"/>
+
+                <!-- Layer 1: App Servers -->
+                <rect x="290" y="25" width="220" height="210" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                <text x="400" y="50" text-anchor="middle" class="svg-kicker" style="fill: var(--accent);">LAYER 1: HORIZONTAL SERVERS</text>
+                <rect x="305" y="65" width="190" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                <text x="400" y="91" text-anchor="middle" class="svg-node">App Server 1 (Stateless)</text>
+
+                <rect x="305" y="117" width="190" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                <text x="400" y="143" text-anchor="middle" class="svg-node">App Server 2 (Stateless)</text>
+
+                <rect x="305" y="169" width="190" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                <text x="400" y="195" text-anchor="middle" class="svg-node">App Server 3 (Stateless)</text>
+
+                <!-- Arrows -->
+                <path d="M 510 90 L 610 80" class="svg-arrow" stroke="var(--warning)"/>
+                <path d="M 510 160 L 610 170" class="svg-arrow" stroke="var(--success)"/>
+
+                <!-- Layer 3: Master-Slave Database -->
+                <rect x="610" y="25" width="250" height="210" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.8"/>
+                <text x="735" y="50" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">LAYER 3: DB MASTER-SLAVE</text>
+
+                <rect x="625" y="65" width="220" height="65" rx="8" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                <text x="735" y="90" text-anchor="middle" class="svg-node" style="fill: var(--warning); font-weight: 700;">DB Master (Writes Only)</text>
+                <text x="735" y="112" text-anchor="middle" class="svg-sub">Replicates WAL to Slaves</text>
+
+                <rect x="625" y="145" width="220" height="75" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                <text x="735" y="170" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">DB Slaves 1 &amp; 2 (Reads Only)</text>
+                <text x="735" y="190" text-anchor="middle" class="svg-mono-xs">Exact Replicated Data ✓</text>
+                <text x="735" y="208" text-anchor="middle" class="svg-sub">Promoted if Master dies</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        },
+        {
+          num: "61.3",
+          title: "3. Layers 4, 5 & 6 — Data Centers, Availability Zones & Geographic Regions",
+          content: `
+
+          <p>Even with completely redundant software components, physical catastrophe can strike hardware infrastructure. Here is how we eliminate SPOFs at the physical layers:</p>
+
+          <div class="sub-card-grid-3" style="margin-top: 1rem;">
+            <div class="sub-box">
+              <div class="sub-box__tag">Layer 04 Elimination</div>
+              <div class="sub-box__title">Multi-Data Center</div>
+              <div class="sub-box__body">
+                <strong>• Problem:</strong> If all servers and databases reside inside one physical building (Data Center), a power outage or fire kills the entire platform.<br>
+                <strong>• Solution:</strong> Replicate across <strong>multiple physical Data Centers</strong> inside the same Availability Zone.
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Layer 05 Elimination</div>
+              <div class="sub-box__title">Multi-Availability Zone</div>
+              <div class="sub-box__body">
+                <strong>• Problem:</strong> A localized flood, fiber backbone failure, or earthquake takes down all Data Centers within an AZ.<br>
+                <strong>• Solution:</strong> Deploy across <strong>multiple isolated Availability Zones</strong> (<code>AZ 1</code>, <code>AZ 2</code>, <code>AZ 3</code>) separated by tens of kilometers with dedicated low-latency fiber.
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Layer 06 Elimination</div>
+              <div class="sub-box__title">Multi-Geographic Region</div>
+              <div class="sub-box__body">
+                <strong>• Problem:</strong> A continental undersea fiber cut or government regulatory blackout knocks out an entire Region (e.g. India Region).<br>
+                <strong>• Solution:</strong> Replicate across <strong>multiple Geographic Regions</strong> (US-East, EU-Central, AP-South). Global Anycast DNS routes traffic away from failing regions.
+              </div>
+            </div>
+          </div>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 61.2 · Layers 4–6: Hierarchical Geographic Resilience (Data Center &rarr; AZ &rarr; Multi-Region)</span>
+              <span class="diagram-frame-tag">GLOBAL DISASTER TOLERANCE</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Hierarchical diagram displaying multiple Data Centers forming Availability Zones, and multiple Availability Zones forming isolated Geographic Regions with automatic cross-continental failover">
+                <!-- Region 1 -->
+                <rect x="20" y="20" width="400" height="215" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                <text x="220" y="46" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">GEOGRAPHIC REGION 1 (AP-SOUTH / INDIA)</text>
+
+                <!-- AZ 1 in Region 1 -->
+                <rect x="35" y="60" width="175" height="155" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="122" y="82" text-anchor="middle" class="svg-node" style="font-weight: 700;">Availability Zone 1</text>
+                <rect x="45" y="95" width="155" height="50" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                <text x="122" y="117" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">Data Center A</text>
+                <text x="122" y="135" text-anchor="middle" class="svg-sub">Servers + DB Master</text>
+                <rect x="45" y="152" width="155" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="122" y="174" text-anchor="middle" class="svg-mono-xs">Data Center B</text>
+                <text x="122" y="192" text-anchor="middle" class="svg-sub">Redundant Standby</text>
+
+                <!-- AZ 2 in Region 1 -->
+                <rect x="225" y="60" width="180" height="155" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="315" y="82" text-anchor="middle" class="svg-node" style="font-weight: 700;">Availability Zone 2</text>
+                <rect x="237" y="95" width="156" height="50" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                <text x="315" y="117" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">Data Center C</text>
+                <text x="315" y="135" text-anchor="middle" class="svg-sub">Replicated Slaves</text>
+                <rect x="237" y="152" width="156" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="315" y="174" text-anchor="middle" class="svg-mono-xs">Data Center D</text>
+                <text x="315" y="192" text-anchor="middle" class="svg-sub">Auto Failover Target</text>
+
+                <!-- Cross Region Failover Pipe -->
+                <path d="M 420 125 L 460 125" class="svg-arrow" stroke="var(--accent)"/>
+                <text x="440" y="115" text-anchor="middle" class="svg-mono-xs" style="fill: var(--accent);">SYNC</text>
+
+                <!-- Region 2 -->
+                <rect x="460" y="20" width="400" height="215" rx="12" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.8"/>
+                <text x="660" y="46" text-anchor="middle" class="svg-kicker" style="fill: var(--accent);">GEOGRAPHIC REGION 2 (EU-CENTRAL / EUROPE)</text>
+
+                <!-- AZ 1 in Region 2 -->
+                <rect x="475" y="60" width="175" height="155" rx="8" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                <text x="562" y="82" text-anchor="middle" class="svg-node" style="font-weight: 700;">Availability Zone 1</text>
+                <rect x="485" y="95" width="155" height="105" rx="6" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="562" y="130" text-anchor="middle" class="svg-node">Full Mirror Stack</text>
+                <text x="562" y="152" text-anchor="middle" class="svg-mono-xs">Cross-Region Replicas</text>
+                <text x="562" y="174" text-anchor="middle" class="svg-sub">Survives full India outage</text>
+
+                <!-- AZ 2 in Region 2 -->
+                <rect x="665" y="60" width="180" height="155" rx="8" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                <text x="755" y="82" text-anchor="middle" class="svg-node" style="font-weight: 700;">Availability Zone 2</text>
+                <rect x="677" y="95" width="156" height="105" rx="6" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                <text x="755" y="130" text-anchor="middle" class="svg-node">Global Anycast</text>
+                <text x="755" y="152" text-anchor="middle" class="svg-mono-xs">DNS Route53 Failover</text>
+                <text x="755" y="174" text-anchor="middle" class="svg-sub">99.999% Availability</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 62: CORE STRATEGIES TO AVOID SINGLE POINTS OF FAILURE & REALISTIC GOAL
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-62-spof-strategies-realistic-goal",
+      number: "62",
+      shortLabel: "SPOF Strategies",
+      title: "Core Strategies to Avoid Single Points of Failure & Realistic Goal",
+      summary: "The 4 core resilience pillars: Redundancy (Active-Active vs Active-Passive standby), Data Replication, Geographic Distribution, and Graceful Degradation (Netflix recommendation fallback), plus why 100% elimination is impossible and the true goal of SPOF minimization.",
+      subtopicLabels: ["62.1 4 Core Strategies","62.2 Active vs Passive Redundancy","62.3 Graceful Degradation","62.4 Realistic Goal: Minimizing SPOFs"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "62.1",
+          title: "1. Four Core Strategies to Avoid SPOFs",
+          content: `
+
+          <div class="sub-card-grid-2" style="margin-top: 1rem;">
+            <div class="sub-box">
+              <div class="sub-box__tag">Strategy 01 · Instance Redundancy</div>
+              <div class="sub-box__title">1. Redundancy (Active &amp; Passive)</div>
+              <div class="sub-box__body">
+                Deploy multiple instances of every software component (App Servers, Load Balancers) so that another component can immediately take over if one fails.<br>
+                <strong>• Active Components:</strong> Always up and running, concurrently sharing live user load.<br>
+                <strong>• Passive / Standby Components:</strong> Kept as warm or cold backups that take over when an active node fails.
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Strategy 02 · State Synchronization</div>
+              <div class="sub-box__title">2. Data Replication</div>
+              <div class="sub-box__body">
+                Continuously replicate database state across multiple nodes (Master-Slave / Leader-Follower replication). If one node crashes, another node with the exact identical data is already standing by to serve requests without data loss.
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Strategy 03 · Fault Isolation</div>
+              <div class="sub-box__title">3. Geographic Distribution</div>
+              <div class="sub-box__body">
+                Distribute Data Centers, Servers, Load Balancers, and Databases across <strong>multiple Availability Zones and multiple Geographic Regions</strong> (and leverage CDNs for static media). Ensures natural disasters or power blackouts never kill the app.
+              </div>
+            </div>
+
+            <div class="sub-box">
+              <div class="sub-box__tag">Strategy 04 · Partial Fault Tolerance</div>
+              <div class="sub-box__title">4. Graceful Handling of Failures</div>
+              <div class="sub-box__body">
+                If <strong>one non-critical microservice</strong> fails, <strong>the entire application must NOT crash</strong>!<br>
+                <strong>• Netflix Example:</strong> If Netflix's complex ML <strong>Recommendation Service</strong> crashes, the homepage should still render default top-10 lists and video playback must continue. Never take down the entire streaming platform just because recommendations failed!
+              </div>
+            </div>
+          </div>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 62.1 · The 4 Resilience Pillars: Redundancy, Replication, Geo-Distribution &amp; Graceful Degradation</span>
+              <span class="diagram-frame-tag">DISTRIBUTED FAULT-TOLERANT ARCHITECTURE</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Visual four-pillar diagram showcasing Redundancy (active passive), Replication (master slave), Geographic Distribution (multi region), and Graceful Degradation (Netflix recommendation fallback)">
+                <!-- Pillar 1 -->
+                <rect x="20" y="25" width="195" height="205" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                <text x="117" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">PILLAR 01</text>
+                <text x="117" y="76" text-anchor="middle" class="svg-title">Redundancy</text>
+                <rect x="32" y="95" width="171" height="120" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="117" y="122" text-anchor="middle" class="svg-node" style="fill: var(--primary);">Multiple Instances</text>
+                <text x="117" y="145" text-anchor="middle" class="svg-sub">• Active-Active Nodes</text>
+                <text x="117" y="168" text-anchor="middle" class="svg-sub">• Active-Passive Standby</text>
+                <text x="117" y="195" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Instant takeover ✓</text>
+
+                <!-- Pillar 2 -->
+                <rect x="235" y="25" width="195" height="205" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                <text x="332" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">PILLAR 02</text>
+                <text x="332" y="76" text-anchor="middle" class="svg-title">Replication</text>
+                <rect x="247" y="95" width="171" height="120" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="332" y="122" text-anchor="middle" class="svg-node" style="fill: var(--success);">Data Sync</text>
+                <text x="332" y="145" text-anchor="middle" class="svg-sub">• Master-Slave DBs</text>
+                <text x="332" y="168" text-anchor="middle" class="svg-sub">• Write-Ahead Logs</text>
+                <text x="332" y="195" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Zero data loss ✓</text>
+
+                <!-- Pillar 3 -->
+                <rect x="450" y="25" width="195" height="205" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                <text x="547" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--accent);">PILLAR 03</text>
+                <text x="547" y="76" text-anchor="middle" class="svg-title">Geo Distribution</text>
+                <rect x="462" y="95" width="171" height="120" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="547" y="122" text-anchor="middle" class="svg-node" style="fill: var(--accent);">Physical Isolation</text>
+                <text x="547" y="145" text-anchor="middle" class="svg-sub">• Multi-AZ Deployments</text>
+                <text x="547" y="168" text-anchor="middle" class="svg-sub">• Multi-Region Clouds</text>
+                <text x="547" y="195" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Survives disasters ✓</text>
+
+                <!-- Pillar 4 -->
+                <rect x="665" y="25" width="195" height="205" rx="10" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                <text x="762" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">PILLAR 04</text>
+                <text x="762" y="76" text-anchor="middle" class="svg-title">Graceful Failure</text>
+                <rect x="677" y="95" width="171" height="120" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                <text x="762" y="122" text-anchor="middle" class="svg-node" style="fill: var(--warning);">Partial Degradation</text>
+                <text x="762" y="145" text-anchor="middle" class="svg-sub">• Netflix ML fails gracefully</text>
+                <text x="762" y="168" text-anchor="middle" class="svg-sub">• Video streaming stays up</text>
+                <text x="762" y="195" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">No total crash ✓</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        },
+        {
+          num: "62.2",
+          title: "2. Realistic Goal: Minimizing Single Points of Failure",
+          content: `
+
+          <ul class="notes-bullet-list">
+            <li><strong>Can SPOFs Be 100% Eliminated?</strong>
+              <ul class="notes-sub-list">
+                <li><strong>NO.</strong> A Single Point of Failure is not something you can completely erase to 0% in distributed systems. Hardware will fail, cables will be cut, memory bits will flip, and software bugs will occur. Absolute 100.000% immunity does not exist in engineering.</li>
+              </ul>
+            </li>
+            <li><strong>What Is Our Real Goal?</strong>
+              <ul class="notes-sub-list">
+                <li>Our engineering objective is to <strong>MINIMIZE Single Points of Failure as much as practically and economically possible</strong>.</li>
+                <li>We design blast radiuses such that when any localized component encounters an error, <strong>the entire system does NOT crash or go down</strong>.</li>
+              </ul>
+            </li>
+            <li><strong>The 3 Proven Engineering Benefits of Minimizing SPOFs:</strong>
+              <ul class="notes-sub-list">
+                <li><strong>1. Maximizes Reliability:</strong> Systems consistently deliver correct, predictable results without data corruption.</li>
+                <li><strong>2. Maximizes Availability (High Availability / 99.999%):</strong> Ensures users can access critical services 24/7/365 with near-zero downtime.</li>
+                <li><strong>3. Maximizes Resilience:</strong> Enables systems to absorb shock, self-heal, and recover automatically from partial outages.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame" style="margin-top: 1.25rem;">
+            <div class="diagram-frame-header">
+              <span class="diagram-frame-title">Diagram 62.2 · Blast Radius Containment: Isolated Micro-Failure vs Total System Collapse</span>
+              <span class="diagram-frame-tag">RESILIENCE &amp; FAULT ISOLATION MATRIX</span>
+            </div>
+            <div class="diagram-svg-wrap">
+              <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram contrasting uncontained SPOF causing total system collapse with blast radius containment isolating the failure to a non-critical subservice">
+                <!-- Bad: Uncontained SPOF -->
+                <rect x="25" y="25" width="400" height="185" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.5"/>
+                <text x="225" y="50" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">UNCONTAINED SPOF (NAIVE DESIGN)</text>
+                <text x="225" y="74" text-anchor="middle" class="svg-title" style="fill: var(--danger);">One Failure Crashes Everything</text>
+
+                <rect x="45" y="90" width="160" height="100" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                <text x="125" y="115" text-anchor="middle" class="svg-node" style="fill: var(--danger);">Non-Critical Bug</text>
+                <text x="125" y="135" text-anchor="middle" class="svg-mono-xs">Recommendation Dies</text>
+                <text x="125" y="160" text-anchor="middle" class="svg-sub" style="fill: var(--danger);">Uncaught in Monolith</text>
+
+                <path d="M 205 140 L 255 140" class="svg-arrow" stroke="var(--danger)"/>
+
+                <rect x="255" y="90" width="150" height="100" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                <text x="330" y="115" text-anchor="middle" class="svg-node" style="fill: var(--danger); font-weight: 700;">100% OUTAGE</text>
+                <text x="330" y="135" text-anchor="middle" class="svg-mono-xs">All Users Blocked</text>
+                <text x="330" y="160" text-anchor="middle" class="svg-sub">Complete Platform Crash</text>
+
+                <!-- Good: Minimizing SPOF -->
+                <rect x="455" y="25" width="400" height="185" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                <text x="655" y="50" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">CONTAINED BLAST RADIUS (OUR GOAL)</text>
+                <text x="655" y="74" text-anchor="middle" class="svg-title" style="fill: var(--success);">Minimizing Single Points of Failure</text>
+
+                <rect x="475" y="90" width="160" height="100" rx="8" fill="var(--bg-surface)" stroke="var(--warning)"/>
+                <text x="555" y="115" text-anchor="middle" class="svg-node">Service Degrades</text>
+                <text x="555" y="135" text-anchor="middle" class="svg-mono-xs">Recommendation Dies</text>
+                <text x="555" y="160" text-anchor="middle" class="svg-sub" style="fill: var(--warning); font-weight: 700;">Isolated via Circuit Breaker</text>
+
+                <path d="M 635 140 L 685 140" class="svg-arrow" stroke="var(--success)"/>
+
+                <rect x="685" y="90" width="150" height="100" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                <text x="760" y="115" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">99.999% UP ✓</text>
+                <text x="760" y="135" text-anchor="middle" class="svg-mono-xs">Core App Operates</text>
+                <text x="760" y="160" text-anchor="middle" class="svg-sub">Streaming Uninterrupted</text>
+              </svg>
+            </div>
+          </figure>
+        
+          `
+        }
       ]
     }
-  ]
-};
+    ]
+  };

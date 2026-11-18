@@ -23,7 +23,8 @@ const SYSTEM_DESIGN_NOTES = {
     { label: "55–59 DB & Storage", targetId: "topic-55-database-choice" },
     { label: "60–62 SPOF", targetId: "topic-60-what-is-spof" },
     { label: "63–66 Message Queues", targetId: "topic-63-message-queues-async" },
-    { label: "67–69 Consistent Hashing", targetId: "topic-67-load-balancing-modulo-hashing" }
+    { label: "67–69 Consistent Hashing", targetId: "topic-67-load-balancing-modulo-hashing" },
+    { label: "70–72 DB Sharding", targetId: "topic-70-inside-database-bottlenecks" }
   ],
 
   topics: [
@@ -13689,6 +13690,786 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
 
               <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
                 INTERLEAVED VIRTUAL NODES GUARANTEE UNIFORM HASH DISTRIBUTION ACROSS PHYSICAL HARDWARE
+              </text>
+            </svg>
+          </figure>
+        `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 70: WHAT IS INSIDE A DATABASE & WHY A SINGLE DATABASE BECOMES A BOTTLENECK
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-70-inside-database-bottlenecks",
+      number: "70",
+      title: "What Is Inside a Database & Why a Single Database Becomes a Bottleneck",
+      tag: "Database Architecture",
+      readTime: "10 min",
+      difficulty: "Core Architecture",
+      diagramCount: 3,
+      description: "Unpacks what storing data on a database server physically means: an EC2 virtual machine running a MySQL process on port 3306 backed by CPU, RAM buffer pools, and local disk. Analyzes the 5 primary reasons a single database server becomes a bottleneck when an app goes viral, and traces the systemic cascading failures that result.",
+      sections: [
+        {
+          num: "70.1",
+          title: "What \"Storing Data in a Database\" Actually Means",
+          content: `
+          <p>Consider an Instagram-like social media application:</p>
+          <ul>
+            <li>In the early stage with low traffic (a few thousand users), your system runs comfortably with <strong>1 App Server</strong> and <strong>1 Database Server</strong>.</li>
+            <li>Suddenly, a famous celebrity mentions your platform &rarr; your app goes viral, bringing <strong>millions of users</strong>, posts, comments, likes, and followers.</li>
+          </ul>
+          <p><strong>What is physically happening inside that Database Server?</strong></p>
+          <ol>
+            <li>The Database Server is simply a <strong>Virtual Machine / EC2 Instance</strong> provisioned with a fixed allocation of <strong>CPU cores, RAM (Memory), and Local Disk (SSD/EBS)</strong>.</li>
+            <li>On that machine, a <strong>MySQL Server process</strong> is installed and actively listening on default port <strong>3306</strong>. That running background daemon is your "Database".</li>
+            <li>When client requests arrive from the App Server to port 3306:
+              <ul>
+                <li><strong>Write Queries (INSERT, UPDATE, DELETE):</strong> The MySQL process parses the SQL, writes the change into an in-memory redo log / buffer pool, and flushes it onto the <strong>Local Disk</strong>.</li>
+                <li><strong>Read Queries (SELECT):</strong> The MySQL process scans indexes in RAM or seeks data blocks from the <strong>Local Disk</strong> and serializes the result over TCP back to the caller.</li>
+              </ul>
+            </li>
+          </ol>
+          <p>With a few thousand users, this single EC2 machine easily handles the throughput. But once traffic surges to millions of concurrent users, this single node hits physical constraints and becomes the primary bottleneck of the entire system.</p>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Physical Anatomy of a Database Server: EC2, MySQL Process & Storage Engine</span>
+              <span class="badge badge-accent">DATABASE INTERNALS</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Physical Anatomy of a Database Server">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- App Server -->
+              <rect x="35" y="45" width="190" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--primary)">APPLICATION SERVER</text>
+              <text x="50" y="90" class="svg-title">API Cluster Node</text>
+              <text x="50" y="112" class="svg-sub">• Fired by user actions</text>
+              <text x="50" y="128" class="svg-sub">• Opens TCP Connection</text>
+              <rect x="50" y="138" width="160" height="26" rx="4" fill="var(--primary-bg)" />
+              <text x="55" y="155" class="svg-mono-xs" fill="var(--primary)">TCP Socket &rarr; :3306</text>
+
+              <!-- Arrow -->
+              <path d="M 225 112 L 295 112" stroke="var(--primary)" stroke-width="2.5" />
+              <text x="235" y="102" class="svg-mono-xs" fill="var(--primary)">SQL Query</text>
+
+              <!-- EC2 Machine Boundary -->
+              <rect x="295" y="35" width="550" height="160" rx="10" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="2" />
+              <text x="315" y="58" class="svg-kicker" fill="var(--accent)">PHYSICAL / VIRTUAL EC2 INSTANCE (PORT 3306)</text>
+
+              <!-- MySQL Process -->
+              <rect x="315" y="70" width="165" height="110" rx="6" fill="var(--primary-bg)" stroke="var(--primary)" />
+              <text x="325" y="92" class="svg-node" font-weight="700" fill="var(--primary)">MySQL Daemon</text>
+              <text x="325" y="112" class="svg-sub">• SQL Parser & Optimizer</text>
+              <text x="325" y="128" class="svg-sub">• Connection Threads</text>
+              <text x="325" y="144" class="svg-sub">• Transaction Lock Mgr</text>
+              <rect x="325" y="152" width="145" height="18" rx="3" fill="var(--bg-surface)" />
+              <text x="330" y="165" class="svg-mono-xs">InnoDB Engine</text>
+
+              <!-- Memory Buffer Pool (RAM) -->
+              <rect x="495" y="70" width="165" height="110" rx="6" fill="var(--success-bg)" stroke="var(--success)" />
+              <text x="505" y="92" class="svg-node" font-weight="700" fill="var(--success)">RAM Buffer Pool</text>
+              <text x="505" y="112" class="svg-sub">• In-Memory Page Cache</text>
+              <text x="505" y="128" class="svg-sub">• B-Tree Indexes</text>
+              <text x="505" y="144" class="svg-sub">• Read/Write Buffers</text>
+              <rect x="505" y="152" width="145" height="18" rx="3" fill="var(--bg-surface)" />
+              <text x="510" y="165" class="svg-mono-xs" fill="var(--success)">Access Time: ~10-100ns</text>
+
+              <!-- Arrow RAM to Disk -->
+              <path d="M 660 112 L 675 112" stroke="var(--border-strong)" stroke-width="2" />
+
+              <!-- Local Disk -->
+              <rect x="675" y="70" width="155" height="110" rx="6" fill="var(--bg-subtle)" stroke="var(--border-strong)" />
+              <text x="685" y="92" class="svg-node" font-weight="700">Local Disk (EBS)</text>
+              <text x="685" y="112" class="svg-sub">• .ibd Table Files</text>
+              <text x="685" y="128" class="svg-sub">• WAL / Redo Logs</text>
+              <text x="685" y="144" class="svg-sub">• Cold Data Pages</text>
+              <rect x="685" y="152" width="135" height="18" rx="3" fill="var(--bg-surface)" />
+              <text x="690" y="165" class="svg-mono-xs" fill="var(--danger)">Access: ~1-10ms (1000x)</text>
+
+              <text x="440" y="212" class="svg-mono-xs" text-anchor="middle">
+                A DATABASE IS SIMPLY A RUNNING PROCESS MANAGING RAM BUFFERS AND WRITING TO LOCAL DISK STORAGE
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "70.2",
+          title: "Five Reasons a Single Database Becomes a Bottleneck",
+          content: `
+          <p>When an application scales to millions of users, a single database server degrades across five fundamental physical dimensions:</p>
+          <ol>
+            <li><strong>Too Many Concurrent Queries (Query Backlog):</strong>
+              <p>Every query requires a database connection thread, CPU slice, and RAM allocation. If <strong>2,000 queries/sec</strong> arrive while the server's CPU and disk can only process <strong>1,000 queries/sec</strong>, the surplus 1,000 queries queue up. Response latency spikes exponentially as queries wait in line.</p>
+            </li>
+            <li><strong>Exploding Table Rows (Disk Seek Penalties):</strong>
+              <p>When a <code>Posts</code> table swells from 100K rows to <strong>10 billion rows</strong>, even indexed B-Tree lookups require deeper tree traversals across more disk blocks. Formula: <code>More Rows &rarr; More Block Seeks &rarr; Slower Queries</code>.</p>
+            </li>
+            <li><strong>Index & Cache Inefficiency (Memory Eviction):</strong>
+              <p>For small tables, the entire index fits in RAM for ultra-fast nanosecond lookups. When table sizes exceed available server RAM, the <strong>Index File spills onto Disk</strong>. The buffer pool thrashes: new queries constantly evict cached pages, forcing the database to read from disk. <strong>Accessing Disk is ~1,000x slower than accessing RAM!</strong></p>
+            </li>
+            <li><strong>Row-Level & Table Locking Contention:</strong>
+              <p>When multiple users concurrently interact with the same row (e.g. <code>User A</code> and <code>User B</code> liking <code>User C</code>'s viral post at the exact same instant), database engines apply <strong>exclusive row locks</strong> to prevent race conditions. The second transaction must block and wait, creating lock queues and connection pile-ups.</p>
+            </li>
+            <li><strong>Hardware Resource Saturation:</strong>
+              <p>When CPU utilization, RAM usage, and Disk IOPS reach <strong>90%–100%</strong>, the operating system spends more time context-switching between threads and paging memory than executing queries.</p>
+            </li>
+          </ol>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">The 5 Core Physical Drivers of Database Resource Exhaustion</span>
+              <span class="badge badge-danger">SATURATION MECHANICS</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Five reasons why a single database becomes a bottleneck">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Box 1 -->
+              <rect x="25" y="45" width="155" height="135" rx="6" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.5" />
+              <text x="35" y="66" class="svg-kicker" fill="var(--danger)">1. QUERY BACKLOG</text>
+              <text x="35" y="86" class="svg-title">Queue Overflow</text>
+              <text x="35" y="106" class="svg-sub">• 2,000 incoming qps</text>
+              <text x="35" y="122" class="svg-sub">• Capacity: 1,000 qps</text>
+              <rect x="35" y="132" width="135" height="36" rx="4" fill="var(--danger-bg)" />
+              <text x="40" y="147" class="svg-mono-xs" fill="var(--danger)">1,000 queries wait</text>
+              <text x="40" y="161" class="svg-mono-xs" fill="var(--danger)">in thread queue</text>
+
+              <!-- Box 2 -->
+              <rect x="190" y="45" width="155" height="135" rx="6" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.5" />
+              <text x="200" y="66" class="svg-kicker" fill="var(--warning)">2. TABLE BLOAT</text>
+              <text x="200" y="86" class="svg-title">10B Rows on Disk</text>
+              <text x="200" y="106" class="svg-sub">• Massive scan depth</text>
+              <text x="200" y="122" class="svg-sub">• High page fragment</text>
+              <rect x="200" y="132" width="135" height="36" rx="4" fill="var(--warning-bg)" />
+              <text x="205" y="147" class="svg-mono-xs" fill="var(--warning)">More Rows &rarr;</text>
+              <text x="205" y="161" class="svg-mono-xs" fill="var(--warning)">Slower Disk Seeks</text>
+
+              <!-- Box 3 -->
+              <rect x="355" y="45" width="165" height="135" rx="6" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.5" />
+              <text x="365" y="66" class="svg-kicker" fill="var(--danger)">3. CACHE THRASHING</text>
+              <text x="365" y="86" class="svg-title">RAM Eviction Spills</text>
+              <text x="365" y="106" class="svg-sub">• Index exceeds RAM</text>
+              <text x="365" y="122" class="svg-sub">• Constant cache drop</text>
+              <rect x="365" y="132" width="145" height="36" rx="4" fill="var(--danger-bg)" />
+              <text x="370" y="147" class="svg-mono-xs" fill="var(--danger)">Disk Read: 1,000x</text>
+              <text x="370" y="161" class="svg-mono-xs" fill="var(--danger)">slower than Memory</text>
+
+              <!-- Box 4 -->
+              <rect x="530" y="45" width="155" height="135" rx="6" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.5" />
+              <text x="540" y="66" class="svg-kicker" fill="var(--warning)">4. ROW LOCKING</text>
+              <text x="540" y="86" class="svg-title">Lock Contention</text>
+              <text x="540" y="106" class="svg-sub">• Concurrent likes</text>
+              <text x="540" y="122" class="svg-sub">• Transaction waits</text>
+              <rect x="540" y="132" width="135" height="36" rx="4" fill="var(--warning-bg)" />
+              <text x="545" y="147" class="svg-mono-xs" fill="var(--warning)">Mutex Serialization</text>
+              <text x="545" y="161" class="svg-mono-xs" fill="var(--warning)">Blocks threads</text>
+
+              <!-- Box 5 -->
+              <rect x="695" y="45" width="160" height="135" rx="6" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.5" />
+              <text x="705" y="66" class="svg-kicker" fill="var(--danger)">5. SATURATION</text>
+              <text x="705" y="86" class="svg-title">99% CPU / IOPS</text>
+              <text x="705" y="106" class="svg-sub">• CPU pinned at 100%</text>
+              <text x="705" y="122" class="svg-sub">• Disk I/O choked</text>
+              <rect x="705" y="132" width="140" height="36" rx="4" fill="var(--danger-bg)" />
+              <text x="710" y="147" class="svg-mono-xs" fill="var(--danger)">Kernel Context Thrash</text>
+              <text x="710" y="161" class="svg-mono-xs" fill="var(--danger)">Unresponsive Node</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                PHYSICAL BOTTLENECK: CONCURRENT QUERIES &bull; TABLE BLOAT &bull; CACHE EVICTION &bull; ROW LOCKS &bull; RESOURCE SATURATION
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "70.3",
+          title: "Impact When a Database Gets Overloaded",
+          content: `
+          <p>When a database server exceeds its physical capacity, the failure does not remain isolated to database queries—it triggers a <strong>Cascading System Failure</strong>:</p>
+          <ul>
+            <li><strong>Query Execution Stalls:</strong> Simple <code>SELECT</code> queries that normally execute in 2ms balloon to 10–30 seconds.</li>
+            <li><strong>Upstream App Servers Freeze:</strong> Application servers open database connections to run queries. When the database stops responding quickly, all worker threads in the App Server connection pool block, waiting for replies.</li>
+            <li><strong>Gateway Timeouts (HTTP 504):</strong> Incoming client requests cannot acquire an app server thread, causing load balancers and API Gateways to drop traffic with HTTP 504 Gateway Timeouts.</li>
+            <li><strong>Contagion Across Healthy Services:</strong> Other completely unrelated microservices (e.g., Notification or Inventory) that share or interact with that database crash as well, dragging down the entire platform.</li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Cascading Collapse: How a Saturated Database Topples the Entire Stack</span>
+              <span class="badge badge-danger">SYSTEMIC COLLAPSE</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Impact when a database gets overloaded">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Client Drop -->
+              <rect x="35" y="45" width="180" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--danger)">CLIENT EXPERIENCE</text>
+              <text x="50" y="90" class="svg-title">User Outage</text>
+              <text x="50" y="112" class="svg-sub">• Spinning loading icon</text>
+              <text x="50" y="128" class="svg-sub">• App completely frozen</text>
+              <rect x="50" y="138" width="150" height="26" rx="4" fill="var(--danger-bg)" />
+              <text x="55" y="155" class="svg-mono-xs" fill="var(--danger)" font-weight="700">HTTP 504 Gateway Timeout</text>
+
+              <!-- Reverse Arrow -->
+              <path d="M 295 112 L 215 112" stroke="var(--danger)" stroke-width="2.5" stroke-dasharray="4,2" />
+
+              <!-- App Server Blocked -->
+              <rect x="295" y="45" width="240" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.8" />
+              <text x="310" y="68" class="svg-kicker" fill="var(--warning)">APPLICATION SERVERS</text>
+              <text x="310" y="90" class="svg-title">Worker Thread Depletion</text>
+              <text x="310" y="112" class="svg-sub">• Connection pool exhausted (200/200)</text>
+              <text x="310" y="128" class="svg-sub">• All worker threads blocked on I/O</text>
+              <rect x="310" y="138" width="210" height="26" rx="4" fill="var(--warning-bg)" />
+              <text x="315" y="155" class="svg-mono-xs" fill="var(--warning)">Cannot accept new user requests</text>
+
+              <!-- Reverse Arrow -->
+              <path d="M 615 112 L 535 112" stroke="var(--danger)" stroke-width="2.5" />
+
+              <!-- Saturated DB -->
+              <rect x="615" y="45" width="230" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="2" />
+              <text x="630" y="68" class="svg-kicker" fill="var(--danger)">OVERLOADED DATABASE</text>
+              <text x="630" y="90" class="svg-title">Single Point of Collapse</text>
+              <text x="630" y="112" class="svg-sub">• CPU: 100% | IOPS: Throttled</text>
+              <text x="630" y="128" class="svg-sub">• Query latency: 2ms &rarr; 25,000ms</text>
+              <rect x="630" y="138" width="200" height="26" rx="4" fill="var(--danger-bg)" />
+              <text x="635" y="155" class="svg-mono-xs" fill="var(--danger)" font-weight="700">Cascading Failures to Upstream</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                DATABASE LATENCY TOXICITY SPREADS BACKWARDS THROUGH CONNECTION POOLS TO TAKE DOWN ALL SERVICES
+              </text>
+            </svg>
+          </figure>
+        `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 71: VERTICAL SCALING VS. HORIZONTAL SCALING (DATABASE SHARDING)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-71-vertical-vs-horizontal-sharding",
+      number: "71",
+      title: "Vertical Scaling vs. Horizontal Scaling (Database Sharding)",
+      tag: "Database Scaling",
+      readTime: "11 min",
+      difficulty: "Advanced Systems",
+      diagramCount: 4,
+      description: "Compares Vertical Scaling (Scale Up) and its hard physical ceilings with Horizontal Scaling (Scale Out) via Database Sharding. Walks through a concrete 100M-user partitioning model, defines Sharding Keys (User ID vs Geographic Region), and analyzes the devastating risk of Hot Shards.",
+      sections: [
+        {
+          num: "71.1",
+          title: "Vertical Scaling (Scale Up) & Its Limits",
+          content: `
+          <p>When a database server begins struggling under traffic, the first instinctive response is <strong>Vertical Scaling (Scale Up)</strong>:</p>
+          <ul>
+            <li><strong>How It Works:</strong> You upgrade the existing virtual machine or hardware instance with higher specifications:
+              <ul>
+                <li>Upgrade CPU from 8 cores &rarr; 32 cores &rarr; 128 cores</li>
+                <li>Upgrade RAM from 16 GB &rarr; 128 GB &rarr; 1 TB</li>
+                <li>Upgrade Disks from standard SSD &rarr; High-IOPS Provisioned NVMe</li>
+              </ul>
+            </li>
+            <li><strong>The Hard Physical Limit:</strong>
+              <p>Vertical scaling has an inescapable ceiling. Motherboards, chipsets, and hypervisors have maximum physical limits. Furthermore, cost grows exponentially rather than linearly (a 128-core, 1TB RAM server costs tens of thousands of dollars per month). Once you hit the maximum hardware tier and your viral app is still choking, <strong>Vertical Scaling can no longer save you</strong>.</p>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Vertical Scaling: Exponential Cost & The Inescapable Physical Hardware Ceiling</span>
+              <span class="badge badge-warning">SCALE-UP LIMITS</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Vertical Scaling Limits">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Box 1: Small Server -->
+              <rect x="35" y="65" width="180" height="115" rx="6" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.5" />
+              <text x="50" y="88" class="svg-kicker" fill="var(--primary)">TIER 1 (STANDARD)</text>
+              <text x="50" y="108" class="svg-title">4 vCPU &bull; 16GB RAM</text>
+              <text x="50" y="128" class="svg-sub">• Cost: $50 / mo</text>
+              <rect x="50" y="138" width="150" height="22" rx="3" fill="var(--primary-bg)" />
+              <text x="55" y="153" class="svg-mono-xs" fill="var(--primary)">Capacity: 1,000 QPS</text>
+
+              <!-- Arrow -->
+              <path d="M 215 122 L 265 122" stroke="var(--primary)" stroke-width="2" />
+
+              <!-- Box 2: Upgraded Server -->
+              <rect x="265" y="55" width="200" height="125" rx="6" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="1.8" />
+              <text x="280" y="78" class="svg-kicker" fill="var(--accent)">TIER 2 (LARGE)</text>
+              <text x="280" y="98" class="svg-title">32 vCPU &bull; 128GB RAM</text>
+              <text x="280" y="118" class="svg-sub">• Cost: $1,200 / mo</text>
+              <text x="280" y="134" class="svg-sub">• 10x Price Spike</text>
+              <rect x="280" y="142" width="170" height="22" rx="3" fill="var(--accent-light)" />
+              <text x="285" y="157" class="svg-mono-xs" fill="var(--accent)">Capacity: 8,000 QPS</text>
+
+              <!-- Arrow -->
+              <path d="M 465 122 L 515 122" stroke="var(--primary)" stroke-width="2" />
+
+              <!-- Box 3: Maximum Hardware Ceiling -->
+              <rect x="515" y="40" width="330" height="145" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="2" />
+              <text x="530" y="63" class="svg-kicker" fill="var(--danger)">TIER 3: MAXIMUM HARDWARE CEILING</text>
+              <text x="530" y="85" class="svg-title">128 vCPU &bull; 1TB RAM &bull; Monster Box</text>
+              <text x="530" y="105" class="svg-sub">• Astronomical Cost: $25,000+ / month</text>
+              <text x="530" y="121" class="svg-sub">• Single Point of Failure (SPOF) remains</text>
+              <rect x="530" y="132" width="300" height="38" rx="4" fill="var(--danger-bg)" />
+              <text x="535" y="148" class="svg-mono-xs" fill="var(--danger)" font-weight="700">HARD PHYSICAL CEILING REACHED!</text>
+              <text x="535" y="162" class="svg-mono-xs" fill="var(--danger)">Cannot add more CPU or RAM to 1 machine</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                VERTICAL SCALING EVENTUALLY TERMINATES AT A HARD HARDWARE BARRIER WITH PROHIBITIVE FINANCIAL COST
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "71.2",
+          title: "Horizontal Scaling (Scale Out) & What is Database Sharding?",
+          content: `
+          <p>Instead of relying on one super-expensive monster server, modern distributed data systems turn to <strong>Horizontal Scaling (Scale Out)</strong> via <strong>Database Sharding</strong>:</p>
+          <ul>
+            <li><strong>Definition of Database Sharding:</strong>
+              <p>Sharding is an architectural partitioning technique where one massive database is broken into multiple <strong>smaller, independent databases</strong> distributed across separate server instances.</p>
+            </li>
+            <li><strong>What is a Shard?</strong>
+              <p>Each independent database slice is called a <strong>Shard</strong>. Every individual Shard is a standalone server instance provisioned with its own dedicated CPU, RAM, and Local Disk, storing a <strong>disjoint subset of the overall dataset</strong>.</p>
+            </li>
+            <li><strong>Independent Scalability:</strong>
+              <p>Instead of 1 database scanning 100 million rows, 10 shards each scan only 10 million rows. Each shard operates completely independently, and you can add new shards indefinitely as data grows.</p>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Horizontal Database Sharding: Slicing a Monolith into Independent Engines</span>
+              <span class="badge badge-accent">HORIZONTAL PARTITIONING</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="What is database sharding">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Monolithic Database -->
+              <rect x="35" y="45" width="220" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--danger)">MONOLITHIC DATABASE</text>
+              <text x="50" y="90" class="svg-title">Single Huge Instance</text>
+              <text x="50" y="112" class="svg-sub">• 100 Million rows in 1 table</text>
+              <text x="50" y="128" class="svg-sub">• 100% load on 1 disk</text>
+              <rect x="50" y="138" width="190" height="26" rx="4" fill="var(--danger-bg)" />
+              <text x="55" y="155" class="svg-mono-xs" fill="var(--danger)">Choked by query volume</text>
+
+              <!-- Central Split Arrow -->
+              <path d="M 255 112 L 345 70" stroke="var(--primary)" stroke-width="2.5" />
+              <path d="M 255 112 L 345 112" stroke="var(--primary)" stroke-width="2.5" />
+              <path d="M 255 112 L 345 155" stroke="var(--primary)" stroke-width="2.5" />
+              <text x="270" y="95" class="svg-mono-xs" fill="var(--primary)" font-weight="700">SHARDING</text>
+
+              <!-- Shard 1 -->
+              <rect x="345" y="40" width="490" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5" />
+              <text x="360" y="65" class="svg-node" font-weight="700" fill="var(--success)">Shard 1 (Independent Server)</text>
+              <text x="580" y="65" class="svg-mono-xs">Users 1 &bull; User 2 &bull; 10M rows</text>
+              <text x="750" y="65" class="svg-mono-xs" fill="var(--primary)">Dedicated CPU/RAM</text>
+
+              <!-- Shard 2 -->
+              <rect x="345" y="92" width="490" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5" />
+              <text x="360" y="117" class="svg-node" font-weight="700" fill="var(--success)">Shard 2 (Independent Server)</text>
+              <text x="580" y="117" class="svg-mono-xs">User 3 &bull; User 4 &bull; 10M rows</text>
+              <text x="750" y="117" class="svg-mono-xs" fill="var(--primary)">Dedicated CPU/RAM</text>
+
+              <!-- Shard 3 -->
+              <rect x="345" y="144" width="490" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5" />
+              <text x="360" y="169" class="svg-node" font-weight="700" fill="var(--success)">Shard 3 (Independent Server)</text>
+              <text x="580" y="169" class="svg-mono-xs">User 5 &bull; User 6 &bull; 10M rows</text>
+              <text x="750" y="169" class="svg-mono-xs" fill="var(--primary)">Dedicated CPU/RAM</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                EACH SHARD IS AN AUTONOMOUS DATABASE INSTANCE HOSTING A DISJOINT SLICE OF THE GLOBAL DATASET
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "71.3",
+          title: "How Sharding Works (100 Million Users Example)",
+          content: `
+          <p>Let's examine how a <strong>100 Million User</strong> table is partitioned across multiple shards:</p>
+          <ul>
+            <li>Instead of maintaining a single massive 100M-row table on one machine, you deploy <strong>10 independent Shard instances</strong>:
+              <ul>
+                <li><strong>Shard 1:</strong> Stores User IDs <code>1 to 10,000,000</code></li>
+                <li><strong>Shard 2:</strong> Stores User IDs <code>10,000,001 to 20,000,000</code></li>
+                <li><strong>Shard 3:</strong> Stores User IDs <code>20,000,001 to 30,000,000</code></li>
+                <li>...</li>
+                <li><strong>Shard 10:</strong> Stores User IDs <code>90,000,001 to 100,000,000</code></li>
+              </ul>
+            </li>
+            <li><strong>Query Routing:</strong>
+              <p>A lightweight <strong>Routing Proxy / Data Access Layer</strong> intercepts client queries. When a request asks for <code>User #24,192,840</code>, the router calculates the destination shard (<code>Shard 3</code>) and directs the query straight to that specific machine. Shards 1, 2, and 4–10 are never touched!</p>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Range-Based Sharding Execution: Routing 100M Rows Across 10 Independent Instances</span>
+              <span class="badge badge-accent">QUERY ROUTING TOPOLOGY</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="100 million users sharding example">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Incoming Query -->
+              <rect x="35" y="45" width="200" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--primary)">INCOMING QUERY</text>
+              <text x="50" y="90" class="svg-title">Client Request</text>
+              <rect x="50" y="105" width="170" height="28" rx="4" fill="var(--primary-bg)" />
+              <text x="55" y="123" class="svg-mono-xs" fill="var(--primary)">SELECT * WHERE id=24.5M</text>
+              <text x="50" y="152" class="svg-sub">User Profile lookup</text>
+
+              <!-- Arrow -->
+              <path d="M 235 112 L 305 112" stroke="var(--primary)" stroke-width="2.5" />
+
+              <!-- Shard Router -->
+              <rect x="305" y="40" width="220" height="150" rx="10" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="2" />
+              <text x="320" y="63" class="svg-kicker" fill="var(--accent)">ROUTING PROXY / DAL</text>
+              <text x="320" y="85" class="svg-title">Shard Partition Router</text>
+              <rect x="320" y="95" width="190" height="44" rx="4" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="325" y="112" class="svg-mono-xs" font-weight="700">Range Rule: 20M–30M</text>
+              <text x="325" y="128" class="svg-mono-xs" fill="var(--success)">&rarr; Target: Shard 3</text>
+              <text x="320" y="162" class="svg-sub">• Eliminates 90% wasted cluster load</text>
+
+              <!-- Route directly to Shard 3 -->
+              <path d="M 525 112 L 620 112" stroke="var(--success)" stroke-width="3" />
+
+              <!-- Shard Stack -->
+              <rect x="620" y="35" width="225" height="44" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="635" y="58" class="svg-mono-xs">Shard 1 &bull; Range: 1M &ndash; 10M</text>
+              <text x="780" y="58" class="svg-mono-xs" fill="var(--text-muted)">Idle</text>
+
+              <rect x="620" y="88" width="225" height="50" rx="6" fill="var(--success-bg)" stroke="var(--success)" stroke-width="2" />
+              <text x="635" y="112" class="svg-node" font-weight="700" fill="var(--success)">Shard 3 &bull; Target Hit!</text>
+              <text x="635" y="128" class="svg-mono-xs" fill="var(--success)">Range: 20M &ndash; 30M &bull; Fast 2ms query</text>
+
+              <rect x="620" y="147" width="225" height="44" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="635" y="170" class="svg-mono-xs">Shard 10 &bull; Range: 90M &ndash; 100M</text>
+              <text x="780" y="170" class="svg-mono-xs" fill="var(--text-muted)">Idle</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                ROUTER INSPECTS SHARD KEY AND DIRECTS QUERIES STRICTLY TO THE RELEVANT PARTITION
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "71.4",
+          title: "The Sharding Key & Hot Shards",
+          content: `
+          <p>Choosing the correct <strong>Sharding Key</strong> is the single most critical architectural decision when designing partitioned data architectures:</p>
+          <ul>
+            <li><strong>What is a Sharding Key?</strong>
+              <p>The Sharding Key is the designated attribute/column (e.g. <code>user_id</code>, <code>tenant_id</code>, <code>country_code</code>) used by the partition algorithm to assign a record to its target shard.</p>
+            </li>
+            <li><strong>Common Sharding Key Examples:</strong>
+              <ul>
+                <li><strong>User ID:</strong> Hash or range of user ID distributes users evenly across all shards.</li>
+                <li><strong>Geographic Location (Country / Region):</strong> Indian users on <code>Shard_IN</code>, US users on <code>Shard_US</code>, European users on <code>Shard_EU</code> (satisfies data sovereignty regulations like GDPR).</li>
+              </ul>
+            </li>
+            <li><strong>The Hot Shard Problem:</strong>
+              <p>If you select an improper sharding key, traffic will distribute unevenly. For example, if you shard an Instagram-like platform by <strong>Country</strong>, and an Indian celebrity with 100M followers goes live in India, <strong>Shard_IN melts under 99% CPU load (a Hot Shard)</strong> while <code>Shard_US</code> and <code>Shard_EU</code> sit completely idle. A great sharding key must guarantee uniform write and read entropy.</p>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">The Hot Shard Vulnerability: Skewed Entropy Causing Localized Meltdown</span>
+              <span class="badge badge-danger">SHARDING KEY RISKS</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Sharding Key and Hot Shards">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Poor Sharding Key choice -->
+              <rect x="35" y="45" width="220" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--danger)">POOR SHARDING KEY</text>
+              <text x="50" y="90" class="svg-title">Key: Country Code</text>
+              <text x="50" y="112" class="svg-sub">• Viral Indian celebrity post</text>
+              <text x="50" y="128" class="svg-sub">• 90% of all platform traffic</text>
+              <rect x="50" y="138" width="190" height="26" rx="4" fill="var(--danger-bg)" />
+              <text x="55" y="155" class="svg-mono-xs" fill="var(--danger)">Massive Traffic Skew</text>
+
+              <!-- Dense arrow stream to Hot Shard -->
+              <path d="M 255 100 L 340 70" stroke="var(--danger)" stroke-width="3.5" />
+              <path d="M 255 112 L 340 75" stroke="var(--danger)" stroke-width="2.5" stroke-dasharray="3,2" />
+              <path d="M 255 125 L 340 120" stroke="var(--text-muted)" stroke-width="1" />
+              <path d="M 255 135 L 340 165" stroke="var(--text-muted)" stroke-width="1" />
+
+              <!-- Hot Shard 1 -->
+              <rect x="340" y="40" width="495" height="50" rx="6" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="2" />
+              <text x="355" y="62" class="svg-node" font-weight="700" fill="var(--danger)">Shard 1 (India) &bull; HOT SHARD MELTDOWN!</text>
+              <text x="355" y="78" class="svg-mono-xs" fill="var(--danger)">95% CPU &bull; Query Queue Backlog &bull; App Timeouts</text>
+
+              <!-- Cold Shard 2 -->
+              <rect x="340" y="98" width="495" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="355" y="122" class="svg-node">Shard 2 (United States) &bull; Cold Shard</text>
+              <text x="650" y="122" class="svg-mono-xs" fill="var(--success)">CPU: 5% (Underutilized)</text>
+
+              <!-- Cold Shard 3 -->
+              <rect x="340" y="148" width="495" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="355" y="172" class="svg-node">Shard 3 (Europe) &bull; Cold Shard</text>
+              <text x="650" y="172" class="svg-mono-xs" fill="var(--success)">CPU: 3% (Underutilized)</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                POOR SHARDING KEY CAUSES HOT SHARDS: CHOOSE HIGH-CARDINALITY KEYS WITH UNIFORM VALUE ENTROPY
+              </text>
+            </svg>
+          </figure>
+        `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 72: HIGH AVAILABILITY IN SHARDS & CHALLENGES / TRADE-OFFS OF SHARDING
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-72-sharding-ha-tradeoffs",
+      number: "72",
+      title: "High Availability in Shards & Challenges / Trade-offs of Sharding",
+      tag: "Cluster Resiliency",
+      readTime: "9 min",
+      difficulty: "Advanced Systems",
+      diagramCount: 3,
+      description: "Covers high-availability architecture inside sharded databases via per-shard Master-Slave replication. Establishes the operational prerequisites before sharding is justified, and evaluates the two primary architectural trade-offs: Cross-Shard Joins and Distributed Cross-Shard Transactions.",
+      sections: [
+        {
+          num: "72.1",
+          title: "Protecting Each Shard From Failure (Master-Slave Architecture per Shard)",
+          content: `
+          <p>When you partition your database into shards, failure domains become localized but severe:</p>
+          <ul>
+            <li><strong>The Localized Failure Problem:</strong>
+              <p>Suppose <code>Shard 1</code> (hosting Users <code>1 to 10 Million</code>) crashes or suffers hardware disk failure. Users on Shards 2 through 10 experience zero disruption, <strong>but all 10 million users on Shard 1 completely lose access to their accounts!</strong></p>
+            </li>
+            <li><strong>The Solution — High Availability per Shard:</strong>
+              <p>Every individual Shard must be architected as a high-availability cluster using a <strong>Master-Slave Replication Pair</strong>:</p>
+              <ul>
+                <li><strong>1 Master Database:</strong> Handles all write queries (INSERT, UPDATE) and writes transaction logs.</li>
+                <li><strong>2+ Slave Database Replicas:</strong> Continuously replicate from the Master, serve read traffic, and automatically promote to Master if the primary node crashes.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">High Availability Topology: Master-Slave Replication Inside Every Individual Shard</span>
+              <span class="badge badge-success">CLUSTER RESILIENCY</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Master-Slave Architecture inside each Shard">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Shard 1 Cluster -->
+              <rect x="35" y="40" width="380" height="150" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="63" class="svg-kicker" fill="var(--primary)">SHARD 1 REPLICATION GROUP (USERS 1-10M)</text>
+
+              <!-- Master 1 -->
+              <rect x="50" y="75" width="160" height="48" rx="6" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.5" />
+              <text x="60" y="96" class="svg-node" font-weight="700" fill="var(--primary)">Shard 1 Master</text>
+              <text x="60" y="112" class="svg-mono-xs">Writes & Replication Log</text>
+
+              <!-- Arrow Master to Slaves -->
+              <path d="M 210 99 L 245 99" stroke="var(--primary)" stroke-width="2" />
+
+              <!-- Slaves 1 -->
+              <rect x="245" y="75" width="155" height="48" rx="6" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5" />
+              <text x="255" y="96" class="svg-node" font-weight="700" fill="var(--success)">2x Slave Replicas</text>
+              <text x="255" y="112" class="svg-mono-xs">Reads & Auto-Failover</text>
+
+              <rect x="50" y="135" width="350" height="42" rx="4" fill="var(--bg-subtle)" />
+              <text x="60" y="152" class="svg-mono-xs" font-weight="600">If Master crashes &rarr; Slave 1 automatically promotes</text>
+              <text x="60" y="167" class="svg-mono-xs" fill="var(--success)">&check; Zero downtime for Users 1 to 10 Million</text>
+
+              <!-- Shard 2 Cluster -->
+              <rect x="450" y="40" width="395" height="150" rx="8" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="1.8" />
+              <text x="465" y="63" class="svg-kicker" fill="var(--accent)">SHARD 2 REPLICATION GROUP (USERS 10M-20M)</text>
+
+              <!-- Master 2 -->
+              <rect x="465" y="75" width="165" height="48" rx="6" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.5" />
+              <text x="475" y="96" class="svg-node" font-weight="700" fill="var(--accent)">Shard 2 Master</text>
+              <text x="475" y="112" class="svg-mono-xs">Writes & Replication Log</text>
+
+              <!-- Arrow -->
+              <path d="M 630 99 L 665 99" stroke="var(--accent)" stroke-width="2" />
+
+              <!-- Slaves 2 -->
+              <rect x="665" y="75" width="165" height="48" rx="6" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5" />
+              <text x="675" y="96" class="svg-node" font-weight="700" fill="var(--success)">2x Slave Replicas</text>
+              <text x="675" y="112" class="svg-mono-xs">Reads & Auto-Failover</text>
+
+              <rect x="465" y="135" width="365" height="42" rx="4" fill="var(--bg-subtle)" />
+              <text x="475" y="152" class="svg-mono-xs" font-weight="600">Every individual shard scales reads independently</text>
+              <text x="475" y="167" class="svg-mono-xs" fill="var(--accent)">Master failures stay localized and auto-heal in seconds</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                HIGH AVAILABILITY FORMULA: EACH SHARD RUNS AN INTERNAL MASTER-SLAVE CLUSTER WITH AUTOMATED FAILOVER
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "72.2",
+          title: "When Should You Use Sharding?",
+          content: `
+          <p>Database Sharding introduces massive operational and development complexity. It should <strong>never be your first tool</strong>.</p>
+          <p>Follow the <strong>5-Stage Database Optimization Hierarchy</strong> before adopting Sharding:</p>
+          <ol>
+            <li><strong>Stage 1 — Index & Query Optimization:</strong> Ensure proper compound indexes exist and eliminate N+1 queries.</li>
+            <li><strong>Stage 2 — In-Memory Caching (Redis / Memcached):</strong> Cache frequently queried rows to absorb 85–95% of database reads.</li>
+            <li><strong>Stage 3 — Master-Slave Read Replicas:</strong> Offload read queries to 2–5 read replicas.</li>
+            <li><strong>Stage 4 — Vertical Scaling:</strong> Upgrade CPU and RAM to high-tier cloud instances.</li>
+            <li><strong>Stage 5 — Database Sharding (The Final Frontier):</strong> Adopt sharding only when data volume and write queries exceed what a single master instance can physically write to disk!</li>
+          </ol>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">The 5-Stage Database Optimization Ladder: When Sharding is Actually Justified</span>
+              <span class="badge badge-accent">SCALING HIERARCHY</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="When to use sharding optimization ladder">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Step 1 -->
+              <rect x="25" y="50" width="150" height="125" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <circle cx="45" cy="72" r="10" fill="var(--primary-bg)" />
+              <text x="45" y="76" text-anchor="middle" font-size="10" font-weight="700" fill="var(--primary)">1</text>
+              <text x="65" y="76" class="svg-title">Indexes</text>
+              <text x="35" y="100" class="svg-sub">• Compound indexes</text>
+              <text x="35" y="116" class="svg-sub">• Query tuning</text>
+              <rect x="35" y="132" width="130" height="24" rx="4" fill="var(--bg-subtle)" />
+              <text x="40" y="148" class="svg-mono-xs">Cost: Free & Easy</text>
+
+              <!-- Arrow -->
+              <path d="M 175 112 L 195 112" stroke="var(--primary)" stroke-width="2" />
+
+              <!-- Step 2 -->
+              <rect x="195" y="50" width="150" height="125" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <circle cx="215" cy="72" r="10" fill="var(--primary-bg)" />
+              <text x="215" y="76" text-anchor="middle" font-size="10" font-weight="700" fill="var(--primary)">2</text>
+              <text x="235" y="76" class="svg-title">Caching</text>
+              <text x="205" y="100" class="svg-sub">• Redis / Memcached</text>
+              <text x="205" y="116" class="svg-sub">• Absorbs 90% reads</text>
+              <rect x="205" y="132" width="130" height="24" rx="4" fill="var(--primary-bg)" />
+              <text x="210" y="148" class="svg-mono-xs" fill="var(--primary)">Caches Hot Data</text>
+
+              <!-- Arrow -->
+              <path d="M 345 112 L 365 112" stroke="var(--primary)" stroke-width="2" />
+
+              <!-- Step 3 -->
+              <rect x="365" y="50" width="150" height="125" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <circle cx="385" cy="72" r="10" fill="var(--primary-bg)" />
+              <text x="385" y="76" text-anchor="middle" font-size="10" font-weight="700" fill="var(--primary)">3</text>
+              <text x="405" y="76" class="svg-title">Read Slaves</text>
+              <text x="375" y="100" class="svg-sub">• Master-Slave split</text>
+              <text x="375" y="116" class="svg-sub">• Offload reads</text>
+              <rect x="375" y="132" width="130" height="24" rx="4" fill="var(--success-bg)" />
+              <text x="380" y="148" class="svg-mono-xs" fill="var(--success)">Scales Read Load</text>
+
+              <!-- Arrow -->
+              <path d="M 515 112 L 535 112" stroke="var(--primary)" stroke-width="2" />
+
+              <!-- Step 4 -->
+              <rect x="535" y="50" width="150" height="125" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <circle cx="555" cy="72" r="10" fill="var(--warning-bg)" />
+              <text x="555" y="76" text-anchor="middle" font-size="10" font-weight="700" fill="var(--warning)">4</text>
+              <text x="575" y="76" class="svg-title">Scale Up</text>
+              <text x="545" y="100" class="svg-sub">• Larger CPU / RAM</text>
+              <text x="545" y="116" class="svg-sub">• High-IOPS SSD</text>
+              <rect x="545" y="132" width="130" height="24" rx="4" fill="var(--warning-bg)" />
+              <text x="550" y="148" class="svg-mono-xs" fill="var(--warning)">Hardware Boost</text>
+
+              <!-- Arrow -->
+              <path d="M 685 112 L 705 112" stroke="var(--danger)" stroke-width="2.5" />
+
+              <!-- Step 5 -->
+              <rect x="705" y="45" width="150" height="135" rx="6" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="2" />
+              <circle cx="725" cy="68" r="10" fill="var(--danger-bg)" />
+              <text x="725" y="72" text-anchor="middle" font-size="10" font-weight="700" fill="var(--danger)">5</text>
+              <text x="745" y="72" class="svg-title" fill="var(--danger)">SHARDING</text>
+              <text x="715" y="96" class="svg-sub">• Writes exceed 1 box</text>
+              <text x="715" y="112" class="svg-sub">• Data exceeds 1TB+</text>
+              <rect x="715" y="128" width="130" height="38" rx="4" fill="var(--danger-bg)" />
+              <text x="720" y="144" class="svg-mono-xs" fill="var(--danger)" font-weight="700">FINAL RESORT</text>
+              <text x="720" y="158" class="svg-mono-xs" fill="var(--danger)">High Complexity</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                EXHAUST INDEXING, CACHING, READ REPLICAS AND VERTICAL SCALING BEFORE TAKING ON SHARDING COMPLEXITY
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "72.3",
+          title: "Major Challenges & Trade-offs of Sharding",
+          content: `
+          <p>Because database sharding fragments data across independent physical servers, two fundamental SQL operations become extraordinarily difficult:</p>
+          <ol>
+            <li><strong>Cross-Shard Joins:</strong>
+              <p>In a monolithic database, joining <code>Users</code> with <code>Orders</code> is executed in-memory by the database query engine in a few milliseconds. In a sharded setup, <code>User #101</code> lives on <strong>Shard 1</strong>, but their <code>Orders</code> might live on <strong>Shard 4</strong>. Executing a SQL <code>JOIN</code> requires fetching rows over the network from both machines and performing the merge in the application layer—resulting in <strong>high network latency and slow queries</strong>.</p>
+            </li>
+            <li><strong>Cross-Shard Distributed Transactions (2-Phase Commit):</strong>
+              <p>When a transaction must update records on two different shards simultaneously (e.g., transferring money from Alice on Shard 1 to Bob on Shard 2), the system cannot use simple local ACID locking. It must employ complex <strong>Distributed Transactions (Two-Phase Commit / 2PC)</strong> or asynchronous <strong>Saga Orchestrators</strong>. 2PC introduces coordinator bottlenecks and leaves locks held over network calls, sharply reducing system write throughput.</p>
+            </li>
+          </ol>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">The 2 Major Trade-offs: Cross-Shard Joins & Distributed 2-Phase Commits</span>
+              <span class="badge badge-danger">ARCHITECTURAL TRADE-OFFS</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Challenges and trade-offs of sharding">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Left Side: Cross-Shard Join -->
+              <rect x="35" y="40" width="380" height="150" rx="8" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.8" />
+              <text x="50" y="63" class="svg-kicker" fill="var(--warning)">TRADE-OFF 1: CROSS-SHARD JOINS</text>
+              <text x="50" y="85" class="svg-title">Network-Bound SQL Queries</text>
+
+              <rect x="50" y="95" width="160" height="38" rx="4" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="60" y="112" class="svg-mono-xs" font-weight="700">Shard 1: User Profile</text>
+              <text x="60" y="125" class="svg-mono-xs">id=101, name="Alice"</text>
+
+              <path d="M 210 114 L 245 114" stroke="var(--warning)" stroke-width="2" stroke-dasharray="3,2" />
+
+              <rect x="245" y="95" width="155" height="38" rx="4" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="255" y="112" class="svg-mono-xs" font-weight="700">Shard 4: Orders</text>
+              <text x="255" y="125" class="svg-mono-xs">order_ids: [501, 502]</text>
+
+              <text x="50" y="152" class="svg-sub">• Cannot run native SQL JOIN across servers</text>
+              <text x="50" y="168" class="svg-sub" fill="var(--danger)">&rarr; App layer must fetch & merge over network: 50x slower!</text>
+
+              <!-- Right Side: Cross-Shard Transactions -->
+              <rect x="440" y="40" width="405" height="150" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.8" />
+              <text x="455" y="63" class="svg-kicker" fill="var(--danger)">TRADE-OFF 2: DISTRIBUTED TRANSACTIONS</text>
+              <text x="455" y="85" class="svg-title">Two-Phase Commit (2PC) Overhead</text>
+
+              <!-- 2PC flow -->
+              <rect x="455" y="95" width="170" height="38" rx="4" fill="var(--primary-bg)" />
+              <text x="465" y="112" class="svg-mono-xs" font-weight="700">Shard 1: Debit Alice</text>
+              <text x="465" y="125" class="svg-mono-xs">Locks Alice's row</text>
+
+              <path d="M 625 114 L 665 114" stroke="var(--danger)" stroke-width="2" />
+
+              <rect x="665" y="95" width="165" height="38" rx="4" fill="var(--primary-bg)" />
+              <text x="675" y="112" class="svg-mono-xs" font-weight="700">Shard 2: Credit Bob</text>
+              <text x="675" y="125" class="svg-mono-xs">Locks Bob's row</text>
+
+              <text x="455" y="152" class="svg-sub">• Requires 2PC coordinator lock across network</text>
+              <text x="455" y="168" class="svg-sub" fill="var(--danger)">&rarr; High risk of deadlocks & severe throughput penalty</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                SHARDING SPLITS STORAGE HORIZONTALLY AT THE EXPENSE OF CROSS-NODE JOINS & DISTRIBUTED ACID LOCKS
               </text>
             </svg>
           </figure>

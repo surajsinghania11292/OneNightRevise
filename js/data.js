@@ -6,17 +6,18 @@
 const SYSTEM_DESIGN_NOTES = {
   meta: {
     title: "OneNightRevise — System Design Revision Notes",
-    totalTopics: 37
+    totalTopics: 43
   },
 
   navGroups: [
     { label: "01–06 Monolith", targetId: "topic-1-monolith" },
     { label: "07–11 Gateway", targetId: "topic-7-api-gateway" },
     { label: "12–15 LB", targetId: "topic-12-load-balancing" },
-    { label: "16–18 Proxies", targetId: "topic-16-forward-proxy" },
+    { label: "16–18 Proxy", targetId: "topic-16-forward-proxy" },
     { label: "19–21 Protocols", targetId: "topic-19-networking-protocols" },
     { label: "22–32 Scaling", targetId: "topic-22-what-is-scaling" },
-    { label: "33–37 Caching", targetId: "topic-33-what-is-caching" }
+    { label: "33–37 Cache", targetId: "topic-33-what-is-caching" },
+    { label: "38–43 CAP", targetId: "topic-38-distributed-systems" }
   ],
 
   topics: [
@@ -4816,6 +4817,673 @@ const SYSTEM_DESIGN_NOTES = {
 
                   <rect x="556" y="168" width="286" height="44" rx="9" fill="var(--warning-bg)" stroke="var(--warning)"/>
                   <text x="699" y="195" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">DB: Age = 17 → Updates to 18 Later</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 38: WHAT ARE DISTRIBUTED SYSTEMS?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-38-distributed-systems",
+      number: "38",
+      shortLabel: "Distributed Systems",
+      title: "What are Distributed Systems?",
+      summary: "Multiple independent computers (Computer 1, 2, 3) working together to solve a large problem while appearing as ONE single computer to the end user — powered by Horizontal Scaling, Load Balancers, and Networking Protocols.",
+      subtopicLabels: ["38.1 Core Definition & Single-System Illusion", "38.2 Scaling, LB & Protocols Fit In"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "38.1",
+          title: "Core Definition & Concept",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>All the foundational concepts covered earlier — <strong>Load Balancers</strong>, <strong>Horizontal Scaling</strong>, <strong>Regions</strong>, and <strong>Availability Zones</strong> — are core building blocks of <strong>Distributed Systems</strong>.</li>
+              <li><strong>What happens in a Distributed System?</strong>
+                <ul class="notes-sub-list">
+                  <li>We have <strong>multiple independent computers/servers (nodes)</strong> (<code>Computer 1</code>, <code>Computer 2</code>, <code>Computer 3</code>) where the exact same application (e.g., an e-commerce app) is hosted, providing the exact same features, functionalities, and qualities.</li>
+                  <li><strong>Single-System Illusion:</strong> Even though multiple independent servers are working behind the scenes to fulfill requests, to the <strong>end user</strong>, it appears as if <strong>only ONE single computer</strong> is handling their task.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">FORMAL DEFINITION</div>
+              <p style="margin-top: 0.45rem; color: var(--text-primary); font-size: 1.05rem;">
+                A <strong>Distributed System</strong> is a system of <strong>multiple independent computers working together to solve a large problem</strong>, while <strong>appearing as a single computer to the user</strong>.
+              </p>
+            </div>
+          `
+        },
+        {
+          num: "38.2",
+          title: "How Load Balancers, Horizontal Scaling & Networking Protocols Fit In",
+          content: `
+            <div class="sub-card-grid-3">
+              <div class="sub-box">
+                <div class="sub-box__tag">Why Multiple Nodes?</div>
+                <div class="sub-box__title">Horizontal Scaling</div>
+                <div class="sub-box__body">Every single server has a hardware capacity limit. At <strong>1 Million concurrent requests</strong>, one server gets exhausted. Through Horizontal Scaling, we add multiple identical servers (<code>Server 1</code>, <code>Server 2</code>, <code>Server 3</code>) hosting the app.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">How Traffic Splits?</div>
+                <div class="sub-box__title">Load Balancer (No SPOF)</div>
+                <div class="sub-box__body">Sits in front of the servers and distributes the 1 Million requests so no server gets overloaded. If <code>Server 1</code> crashes, the Load Balancer seamlessly routes new user requests to <code>Server 2</code> or <code>Server 3</code>.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">How Nodes Talk?</div>
+                <div class="sub-box__title">Networking Protocols</div>
+                <div class="sub-box__body">All independent nodes/servers communicate and coordinate with each other over the network using <strong>Networking Protocols</strong>.</div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 38.1 · The Distributed System Single-Computer Illusion</span>
+                <span class="diagram-frame-tag">MULTIPLE INDEPENDENT NODES → ONE UNIFIED INTERFACE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 235" class="arch-svg" role="img" aria-label="Distributed System diagram showing End User seeing one single system while Load Balancer distributes 1 Million requests across Computer 1, Computer 2, and Computer 3 communicating via Networking Protocols">
+                  <defs>
+                    <marker id="arrow-38" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- End User -->
+                  <rect x="20" y="72" width="154" height="90" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="97" y="106" text-anchor="middle" class="svg-title">End User</text>
+                  <text x="97" y="128" text-anchor="middle" class="svg-sub">Thinks it's just</text>
+                  <text x="97" y="146" text-anchor="middle" class="svg-mono-xs">1 Single System</text>
+
+                  <line x1="174" y1="117" x2="236" y2="117" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-38)"/>
+                  <text x="205" y="105" text-anchor="middle" class="svg-mono-xs">1M Reqs</text>
+
+                  <!-- Distributed Cluster Illusion Boundary -->
+                  <rect x="244" y="18" width="616" height="198" rx="18" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="6 4"/>
+                  <text x="552" y="42" text-anchor="middle" class="svg-kicker">BEHIND THE SCENES · DISTRIBUTED SYSTEM (APPEARS AS ONE COMPUTER)</text>
+
+                  <!-- Load Balancer -->
+                  <rect x="266" y="74" width="158" height="86" rx="12" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.6"/>
+                  <text x="345" y="108" text-anchor="middle" class="svg-title">Load Balancer</text>
+                  <text x="345" y="130" text-anchor="middle" class="svg-sub">Splits load &amp;</text>
+                  <text x="345" y="146" text-anchor="middle" class="svg-mono-xs">Eliminates SPOF</text>
+
+                  <!-- Arrows to 3 Nodes -->
+                  <path d="M 424 100 L 490 74" fill="none" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-38)"/>
+                  <line x1="424" y1="117" x2="490" y2="117" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-38)"/>
+                  <path d="M 424 134 L 490 162" fill="none" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-38)"/>
+
+                  <!-- Independent Nodes -->
+                  <rect x="498" y="54" width="160" height="40" rx="9" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="578" y="79" text-anchor="middle" class="svg-node">Server 1 (Node 1)</text>
+
+                  <rect x="498" y="100" width="160" height="40" rx="9" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="578" y="125" text-anchor="middle" class="svg-node">Server 2 (Node 2)</text>
+
+                  <rect x="498" y="146" width="160" height="40" rx="9" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="578" y="171" text-anchor="middle" class="svg-node">Server 3 (Node 3)</text>
+
+                  <!-- Coordination Bracket -->
+                  <rect x="682" y="68" width="158" height="104" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="761" y="102" text-anchor="middle" class="svg-kicker">COORDINATION</text>
+                  <text x="761" y="126" text-anchor="middle" class="svg-node">Networking</text>
+                  <text x="761" y="144" text-anchor="middle" class="svg-node">Protocols</text>
+                  <text x="761" y="164" text-anchor="middle" class="svg-sub">Nodes talk together</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 39: WHY DO WE NEED DISTRIBUTED SYSTEMS? (3 MAJOR ADVANTAGES)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-39-why-distributed",
+      number: "39",
+      shortLabel: "3 Advantages",
+      title: "Why Do We Need Distributed Systems? (3 Major Advantages)",
+      summary: "Scalability across multiple nodes, Fault Tolerance eliminating Single Point of Failure, and Low Latency via geographic distribution (India vs. USA google.com example).",
+      subtopicLabels: ["39.1 Scalability & Fault Tolerance", "39.2 Low Latency (India vs USA)"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "39.1",
+          title: "Scalability & Fault Tolerance",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">Advantage 01</div>
+                <div class="sub-box__title">1. Scalability</div>
+                <div class="sub-box__body">When the number of users in an application grows rapidly, a single server cannot fulfill all requests on its own. Distributed systems allow us to easily add more servers and distribute user requests across multiple server instances to handle massive scale seamlessly.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Advantage 02</div>
+                <div class="sub-box__title">2. Fault Tolerance (No SPOF)</div>
+                <div class="sub-box__body">In a single-server system, if that one server crashes, no user requests can be fulfilled (Single Point of Failure). In a distributed system with multiple servers, if one server crashes, user traffic is automatically routed to another healthy server, keeping the app online.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "39.2",
+          title: "3. Low Latency (Geographic Distribution Example)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The High-Latency Problem:</strong> Suppose <code>google.com</code>'s server is hosted only in <strong>India</strong>. If a user in <strong>India</strong> accesses <code>google.com</code>, the request is served quickly. However, if a user in the <strong>USA</strong> tries to access <code>google.com</code>, their request has to travel across the globe to the server in India and back. This long travel distance increases <strong>latency</strong>, and even a half-second (<code>0.5s</code>) delay creates a bad user experience.</li>
+              <li><strong>The Distributed Solution:</strong> If huge traffic is coming from the USA, we host an additional application server directly in the <strong>USA</strong>. Now, requests from USA users are routed to the local <strong>USA Server</strong> instead of traveling to India, drastically reducing latency.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 39.1 · Geographic Distribution for Low Latency (India &amp; USA Servers)</span>
+                <span class="diagram-frame-tag">SERVE USERS FROM NEAREST LOCATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Geographic low latency diagram comparing slow 0.5s round trip from USA to India against fast local USA Server and local India Server">
+                  <defs>
+                    <marker id="arrow-39" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Top: Problem -->
+                  <rect x="16" y="16" width="848" height="82" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.4"/>
+                  <text x="36" y="40" class="svg-kicker" style="fill: var(--warning);">BEFORE (SINGLE SERVER IN INDIA ONLY)</text>
+                  <rect x="36" y="50" width="160" height="36" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="116" y="73" text-anchor="middle" class="svg-node">USA User</text>
+                  <line x1="196" y1="68" x2="646" y2="68" stroke="var(--danger)" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#arrow-39)"/>
+                  <text x="421" y="60" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Long Cross-Globe Round Trip (~0.5s+ High Latency ✕)</text>
+                  <rect x="654" y="50" width="186" height="36" rx="8" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="747" y="73" text-anchor="middle" class="svg-node">India Server</text>
+
+                  <!-- Bottom: Distributed Solution -->
+                  <rect x="16" y="114" width="848" height="90" rx="14" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="36" y="138" class="svg-kicker" style="fill: var(--success);">AFTER (DISTRIBUTED REGIONAL SERVERS → LOW LATENCY ✓)</text>
+
+                  <rect x="36" y="150" width="136" height="40" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="104" y="175" text-anchor="middle" class="svg-node">USA User</text>
+                  <line x1="172" y1="170" x2="232" y2="170" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-39)"/>
+                  <rect x="240" y="150" width="174" height="40" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="327" y="175" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Local USA Server ✓</text>
+
+                  <rect x="466" y="150" width="136" height="40" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="534" y="175" text-anchor="middle" class="svg-node">India User</text>
+                  <line x1="602" y1="170" x2="662" y2="170" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-39)"/>
+                  <rect x="670" y="150" width="174" height="40" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="757" y="175" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Local India Server ✓</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 40: KEY CHALLENGES — AGREEMENT (CONSENSUS) & CAP INTRO
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-40-consensus-cap-intro",
+      number: "40",
+      shortLabel: "Consensus & CAP",
+      title: "Key Challenges & Concepts in Distributed Systems (Agreement & CAP Theorem)",
+      summary: "Millisecond Agreement (Consensus) when User A on Server 2 and User B on Server 3 simultaneously buy the last 1 iPhone in stock, plus introduction to the CAP Theorem.",
+      subtopicLabels: ["40.1 Agreement (Consensus)", "40.2 CAP Theorem Intro"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "40.1",
+          title: "Agreement (Consensus Across Multiple Servers in Milliseconds)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Real-World E-Commerce Scenario (Buying the Last iPhone in Stock):</strong>
+                <ul class="notes-sub-list">
+                  <li>Suppose an e-commerce platform runs on 3 distributed servers (<code>Server 1</code>, <code>Server 2</code>, <code>Server 3</code>) connected to a Database.</li>
+                  <li>In the Database, there is <strong>only 1 iPhone left in stock</strong>.</li>
+                  <li>At the exact same instant: <strong>User A</strong> hits <strong><code>Server 2</code></strong> to buy the iPhone, and <strong>User B</strong> hits <strong><code>Server 3</code></strong> to buy the exact same iPhone.</li>
+                </ul>
+              </li>
+              <li><strong>The Challenge:</strong> <code>Server 2</code> wants to fulfill User A's order, and <code>Server 3</code> wants to fulfill User B's order — but there is only 1 iPhone available. In a distributed system, all servers must <strong>trust each other and reach an Agreement (Consensus) within milliseconds</strong> (just like real-time auction bidding in milliseconds) to decide which single user (<code>User A</code> or <code>User B</code>) actually gets the iPhone before committing the decision.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 40.1 · Distributed Agreement (Consensus for the Last 1 iPhone in Stock)</span>
+                <span class="diagram-frame-tag">MILLISECOND CONSENSUS ACROSS NODES</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Consensus diagram showing User A hitting Server 2 and User B hitting Server 3 at the exact same instant for 1 iPhone left in stock, requiring millisecond agreement before DB commit">
+                  <defs>
+                    <marker id="arrow-40" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- User A & User B -->
+                  <rect x="20" y="34" width="150" height="62" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="95" y="62" text-anchor="middle" class="svg-node">User A</text>
+                  <text x="95" y="82" text-anchor="middle" class="svg-mono-xs">Buy iPhone (t=0ms)</text>
+
+                  <rect x="20" y="132" width="150" height="62" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="95" y="160" text-anchor="middle" class="svg-node">User B</text>
+                  <text x="95" y="180" text-anchor="middle" class="svg-mono-xs">Buy iPhone (t=0ms)</text>
+
+                  <line x1="170" y1="65" x2="240" y2="65" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-40)"/>
+                  <line x1="170" y1="163" x2="240" y2="163" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-40)"/>
+
+                  <!-- Server 2 & Server 3 Reaching Consensus -->
+                  <rect x="248" y="34" width="166" height="62" rx="12" fill="var(--accent-light)" stroke="var(--accent)"/>
+                  <text x="331" y="62" text-anchor="middle" class="svg-node">Server 2</text>
+                  <text x="331" y="82" text-anchor="middle" class="svg-sub">Wants User A to win</text>
+
+                  <rect x="248" y="132" width="166" height="62" rx="12" fill="var(--accent-light)" stroke="var(--accent)"/>
+                  <text x="331" y="160" text-anchor="middle" class="svg-node">Server 3</text>
+                  <text x="331" y="180" text-anchor="middle" class="svg-sub">Wants User B to win</text>
+
+                  <!-- Consensus Link -->
+                  <line x1="331" y1="96" x2="331" y2="132" stroke="var(--warning)" stroke-width="2.2" stroke-dasharray="4 3"/>
+
+                  <!-- Consensus Engine -->
+                  <path d="M 414 65 L 492 106" fill="none" stroke="var(--warning)" stroke-width="1.8" marker-end="url(#arrow-40)"/>
+                  <path d="M 414 163 L 492 126" fill="none" stroke="var(--warning)" stroke-width="1.8" marker-end="url(#arrow-40)"/>
+
+                  <rect x="500" y="64" width="166" height="100" rx="14" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.6"/>
+                  <text x="583" y="96" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">AGREEMENT</text>
+                  <text x="583" y="122" text-anchor="middle" class="svg-title">Consensus</text>
+                  <text x="583" y="146" text-anchor="middle" class="svg-sub">Decides 1 winner in ms</text>
+
+                  <line x1="666" y1="114" x2="712" y2="114" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-40)"/>
+
+                  <!-- DB Stock = 1 -->
+                  <rect x="720" y="64" width="142" height="100" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="791" y="96" text-anchor="middle" class="svg-node">Database</text>
+                  <text x="791" y="122" text-anchor="middle" class="svg-mono-xs">Stock = 1 iPhone</text>
+                  <text x="791" y="146" text-anchor="middle" class="svg-sub">1 Confirmed ✓</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "40.2",
+          title: "Introduction to the CAP Theorem",
+          content: `
+            <p>A fundamental principle of Distributed Systems is the <strong>CAP Theorem</strong>, where:</p>
+            <div class="sub-card-grid-3" style="margin-top: 0.85rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">C</div>
+                <div class="sub-box__title">Consistency</div>
+                <div class="sub-box__body">Every node holds the exact same latest data.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">A</div>
+                <div class="sub-box__title">Availability</div>
+                <div class="sub-box__body">Every node responds with a valid non-error response.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">P</div>
+                <div class="sub-box__title">Partition Tolerance</div>
+                <div class="sub-box__body">System stays operational despite network breaks between nodes.</div>
+              </div>
+            </div>
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">CORE RULE OF CAP THEOREM</div>
+              <p style="margin-top: 0.45rem; color: var(--text-primary);">
+                In any distributed system, <strong>you cannot achieve all three (Consistency, Availability, and Partition Tolerance) at the exact same time</strong>.
+              </p>
+            </div>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 41: WHAT IS THE CAP THEOREM & ITS 3 CORE PROPERTIES?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-41-cap-properties",
+      number: "41",
+      shortLabel: "CAP Properties",
+      title: "What is the CAP Theorem & Its 3 Core Properties?",
+      summary: "Deep dive into Consistency (C), Availability (A), and Partition Tolerance (P) using App Server A and Database Nodes B & C (updating variable a from 10 to 5).",
+      subtopicLabels: ["41.1 Distributed Master-Slave Context", "41.2 C, A, and P with Example"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "41.1",
+          title: "Distributed Systems & Master-Slave Context",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>In a Distributed System, we use <strong>multiple Application Servers</strong> (so if one App Server fails or traffic spikes, requests are routed to other App Servers).</li>
+              <li>Similarly, to scale the Database, we use a <strong>Master-Slave Architecture</strong> (1 Master Node for <strong>Write operations</strong> and multiple Slave Nodes for <strong>Read operations</strong>), where data written to the Master is replicated across all Slave Nodes so every DB node holds the same data.</li>
+              <li><strong>What is CAP?</strong> <code>C</code> (Consistency), <code>A</code> (Availability), and <code>P</code> (Partition Tolerance) are the three desirable properties of any Distributed System.</li>
+            </ul>
+          `
+        },
+        {
+          num: "41.2",
+          title: "Understanding Each Property with an Example (App A, DB Nodes B & C)",
+          content: `
+            <p>Suppose we have an Application Server <strong><code>A</code></strong> and two Database Nodes <strong><code>B</code></strong> and <strong><code>C</code></strong>, where initially both DB nodes hold a variable <code>a = 10</code>:</p>
+
+            <div class="sub-card-grid-3" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Property 1 · C</div>
+                <div class="sub-box__title">Consistency (C)</div>
+                <div class="sub-box__body">
+                  Every database node holds the exact same, most up-to-date data at the same time.<br><br>
+                  <strong>Example:</strong> A user updates <code>a</code> from <code>10 → 5</code> on App <code>A</code>. App <code>A</code> writes <code>a = 5</code> to Node <code>B</code>, and Node <code>B</code> immediately <strong>replicates</strong> <code>a = 5</code> to Node <code>C</code>. Reads from either <code>B</code> or <code>C</code> return <code>a = 5</code>.
+                </div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Property 2 · A</div>
+                <div class="sub-box__title">Availability (A)</div>
+                <div class="sub-box__body">
+                  <strong>All database nodes (<code>B</code> and <code>C</code>) must remain up and at least respond</strong> to every incoming request with a <strong>non-error response</strong> (whether success or failure, the node itself must respond and not be unreachable).
+                </div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Property 3 · P</div>
+                <div class="sub-box__title">Partition Tolerance (P)</div>
+                <div class="sub-box__body">
+                  <strong>Partition:</strong> A communication/network breakage between DB nodes <code>B</code> and <code>C</code> preventing replication.<br><br>
+                  <strong>Partition Tolerance:</strong> Even if communication breaks between <code>B</code> and <code>C</code> (so <code>B</code> cannot replicate <code>a = 5</code> to <code>C</code>), <strong>the overall system must NOT fail or go down</strong>.
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 41.1 · The 3 CAP Properties Illustrated (App A, DB Nodes B &amp; C)</span>
+                <span class="diagram-frame-tag">CONSISTENCY · AVAILABILITY · PARTITION TOLERANCE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Three-panel diagram illustrating Consistency B=5 and C=5, Availability both B and C responding, and Partition Tolerance network cut between B and C">
+                  <defs>
+                    <marker id="arrow-41" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Panel 1: Consistency -->
+                  <rect x="14" y="16" width="272" height="198" rx="14" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.4"/>
+                  <text x="150" y="42" text-anchor="middle" class="svg-kicker">1. CONSISTENCY (C)</text>
+                  <rect x="108" y="56" width="84" height="34" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="150" y="78" text-anchor="middle" class="svg-mono-xs">App A</text>
+                  <rect x="34" y="118" width="94" height="52" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="81" y="140" text-anchor="middle" class="svg-node">Node B</text>
+                  <text x="81" y="158" text-anchor="middle" class="svg-mono-xs">a = 5 ✓</text>
+                  <line x1="128" y1="144" x2="164" y2="144" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-41)"/>
+                  <rect x="172" y="118" width="94" height="52" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="219" y="140" text-anchor="middle" class="svg-node">Node C</text>
+                  <text x="219" y="158" text-anchor="middle" class="svg-mono-xs">a = 5 ✓</text>
+                  <text x="150" y="196" text-anchor="middle" class="svg-sub">Both return same latest value</text>
+
+                  <!-- Panel 2: Availability -->
+                  <rect x="304" y="16" width="272" height="198" rx="14" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.4"/>
+                  <text x="440" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">2. AVAILABILITY (A)</text>
+                  <rect x="398" y="56" width="84" height="34" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="440" y="78" text-anchor="middle" class="svg-mono-xs">App A</text>
+                  <line x1="422" y1="90" x2="378" y2="114" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-41)"/>
+                  <line x1="458" y1="90" x2="502" y2="114" stroke="var(--success)" stroke-width="1.8" marker-end="url(#arrow-41)"/>
+                  <rect x="324" y="118" width="96" height="52" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="372" y="140" text-anchor="middle" class="svg-node">Node B</text>
+                  <text x="372" y="158" text-anchor="middle" class="svg-mono-xs">Responds ✓</text>
+                  <rect x="460" y="118" width="96" height="52" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="508" y="140" text-anchor="middle" class="svg-node">Node C</text>
+                  <text x="508" y="158" text-anchor="middle" class="svg-mono-xs">Responds ✓</text>
+                  <text x="440" y="196" text-anchor="middle" class="svg-sub">All nodes up &amp; non-error reply</text>
+
+                  <!-- Panel 3: Partition Tolerance -->
+                  <rect x="594" y="16" width="272" height="198" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.4"/>
+                  <text x="730" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">3. PARTITION TOLERANCE (P)</text>
+                  <rect x="614" y="106" width="92" height="56" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="660" y="132" text-anchor="middle" class="svg-node">Node B</text>
+                  <text x="660" y="150" text-anchor="middle" class="svg-mono-xs">a = 5</text>
+
+                  <line x1="706" y1="134" x2="754" y2="134" stroke="var(--danger)" stroke-width="2" stroke-dasharray="4 3"/>
+                  <text x="730" y="124" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">✕ Cut</text>
+
+                  <rect x="754" y="106" width="92" height="56" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="800" y="132" text-anchor="middle" class="svg-node">Node C</text>
+                  <text x="800" y="150" text-anchor="middle" class="svg-mono-xs">a = 10</text>
+                  <text x="730" y="194" text-anchor="middle" class="svg-sub">Network breaks → System stays up</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 42: WHY C+A+P TOGETHER IS IMPOSSIBLE & THE 3 COMBINATIONS
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-42-cap-combinations",
+      number: "42",
+      shortLabel: "AP vs CP vs CA",
+      title: "Why We Cannot Have All Three (C, A, and P) Together & The 3 Combinations",
+      summary: "Proof of why C+A+P fails during a network partition (B has a=5 while C has a=10), breakdown of AP vs. CP vs. CA, and why real distributed systems NEVER drop Partition Tolerance (P).",
+      subtopicLabels: ["42.1 Proof C+A+P is Impossible", "42.2 AP, CP, and CA Explained"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "42.1",
+          title: "Proof: Why C + A + P Together is Impossible",
+          content: `
+            <p><strong>CAP Theorem states:</strong> In a distributed system, <strong>you CANNOT achieve all three properties (<code>Consistency</code>, <code>Availability</code>, and <code>Partition Tolerance</code>) at the exact same time</strong>. You can only pick <strong>2 out of 3</strong> (<code>AP</code>, <code>CP</code>, or <code>CA</code>).</p>
+
+            <ol class="notes-ordered-list" style="margin-top: 0.75rem;">
+              <li>Suppose App Server <code>A</code> is connected to DB Nodes <code>B</code> and <code>C</code> (initially <code>a = 10</code> on both). Normally, <code>A</code> updates <code>B</code> to <code>a = 5</code>, <code>B</code> replicates to <code>C</code> (<code>a = 5</code>), and both respond (Consistency + Availability).</li>
+              <li>Now introduce <strong>Partition Tolerance (<code>P</code>)</strong>: a <strong>network/communication breakage</strong> happens between Node <code>B</code> and Node <code>C</code>, and we keep both nodes up.</li>
+              <li>A user updates <code>a = 5</code> on Node <code>B</code>. Because of the network partition, Node <code>B</code> <strong>cannot replicate</strong> this update to Node <code>C</code> (<code>B</code> has <code>a = 5</code>, while <code>C</code> still has <code>a = 10</code>).</li>
+              <li><strong>The Dilemma:</strong>
+                <ul class="notes-sub-list">
+                  <li>If we keep both <code>B</code> and <code>C</code> up and responding (<strong>Availability <code>A</code></strong>), Node <code>C</code> returns stale data (<code>a = 10</code>), so <strong>we lose Consistency (<code>C</code>)</strong> → <strong><code>AP</code> System</strong>.</li>
+                  <li>If we refuse to serve stale data to preserve <strong>Consistency (<code>C</code>)</strong>, we must <strong>shut down / disable Node <code>C</code></strong>, so not all nodes respond and <strong>we lose Availability (<code>A</code>)</strong> → <strong><code>CP</code> System</strong>.</li>
+                </ul>
+              </li>
+            </ol>
+          `
+        },
+        {
+          num: "42.2",
+          title: "Breakdown of the 3 Pairs (AP, CP, and CA)",
+          content: `
+            <div class="sub-card-grid-3">
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Pair 1 · Drop Consistency</div>
+                <div class="sub-box__title">AP (Availability + Partition Tolerance)</div>
+                <div class="sub-box__body">
+                  Network breaks between <code>B</code> and <code>C</code>. <code>B</code> holds <code>a = 5</code> while <code>C</code> still has <code>a = 10</code> (inconsistent), <strong>but BOTH nodes stay up and respond</strong> to queries from App <code>A</code>.
+                </div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--accent);">
+                <div class="sub-box__tag">Pair 2 · Drop Availability</div>
+                <div class="sub-box__title">CP (Consistency + Partition Tolerance)</div>
+                <div class="sub-box__body">
+                  Used in <strong>Ticket Booking</strong> where stale data is unacceptable. During a partition (<code>B=5</code>, <code>C=10</code>), <strong>we disable Node <code>C</code></strong> and keep only Node <code>B</code> active so every read returns consistent <code>a = 5</code>.
+                </div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--warning);">
+                <div class="sub-box__tag">Pair 3 · Single DB Only</div>
+                <div class="sub-box__title">CA (No Partition Tolerance)</div>
+                <div class="sub-box__body">
+                  Shutting down the entire system on a network glitch is unacceptable. Achieving <code>CA</code> is only possible with <strong>1 Single Database Node</strong> (NOT distributed) where no network partition can occur.
+                </div>
+              </div>
+            </div>
+
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">GOLDEN RULE IN REAL DISTRIBUTED SYSTEMS</div>
+              <p style="margin-top: 0.45rem; color: var(--text-primary);">
+                <strong>In the real world, you NEVER trade off on Partition Tolerance (<code>P</code>).</strong> Network failures between nodes are inevitable. Therefore, in any real-world distributed system, your real choice is strictly between <strong><code>AP</code></strong> and <strong><code>CP</code></strong>.
+              </p>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 42.1 · Network Partition Dilemma: AP vs. CP vs. Why CA Isn't Distributed</span>
+                <span class="diagram-frame-tag">REAL DISTRIBUTED CHOICE: AP OR CP</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="CAP Theorem tradeoff diagram showing AP keeping B=5 and C=10 up, CP disabling C to serve only consistent B=5, and CA existing only on a single non-distributed database">
+                  <!-- AP -->
+                  <rect x="14" y="16" width="272" height="218" rx="14" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="150" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">AP · DROP CONSISTENCY</text>
+                  <rect x="34" y="64" width="98" height="66" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="83" y="92" text-anchor="middle" class="svg-node">Node B ✓</text>
+                  <text x="83" y="114" text-anchor="middle" class="svg-mono-xs">a = 5</text>
+
+                  <text x="150" y="102" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">✕</text>
+
+                  <rect x="168" y="64" width="98" height="66" rx="10" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="217" y="92" text-anchor="middle" class="svg-node">Node C ✓</text>
+                  <text x="217" y="114" text-anchor="middle" class="svg-mono-xs">a = 10 (Stale)</text>
+
+                  <text x="150" y="164" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Both B &amp; C stay UP</text>
+                  <text x="150" y="186" text-anchor="middle" class="svg-sub">High availability, temporary</text>
+                  <text x="150" y="204" text-anchor="middle" class="svg-sub">inconsistency allowed</text>
+
+                  <!-- CP -->
+                  <rect x="304" y="16" width="272" height="218" rx="14" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="440" y="42" text-anchor="middle" class="svg-kicker">CP · DROP AVAILABILITY</text>
+                  <rect x="324" y="64" width="98" height="66" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="373" y="92" text-anchor="middle" class="svg-node">Node B ✓</text>
+                  <text x="373" y="114" text-anchor="middle" class="svg-mono-xs">a = 5 (Live)</text>
+
+                  <text x="440" y="102" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">✕</text>
+
+                  <rect x="458" y="64" width="98" height="66" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-dasharray="4 3" opacity="0.72"/>
+                  <text x="507" y="92" text-anchor="middle" class="svg-node">Node C ✕</text>
+                  <text x="507" y="114" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Shut Down</text>
+
+                  <text x="440" y="164" text-anchor="middle" class="svg-mono-xs">100% Consistent (a = 5)</text>
+                  <text x="440" y="186" text-anchor="middle" class="svg-sub">Ideal for Ticket Booking</text>
+                  <text x="440" y="204" text-anchor="middle" class="svg-sub">&amp; Financial Transactions</text>
+
+                  <!-- CA -->
+                  <rect x="594" y="16" width="272" height="218" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.4"/>
+                  <text x="730" y="42" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">CA · NON-DISTRIBUTED ONLY</text>
+                  <rect x="646" y="64" width="168" height="66" rx="12" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="730" y="92" text-anchor="middle" class="svg-title">1 Single DB</text>
+                  <text x="730" y="114" text-anchor="middle" class="svg-mono-xs">No Partition Possible</text>
+
+                  <text x="730" y="164" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">Never trade off P in</text>
+                  <text x="730" y="186" text-anchor="middle" class="svg-sub">real distributed systems!</text>
+                  <text x="730" y="204" text-anchor="middle" class="svg-sub">Real choice = AP or CP</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 43: REAL-WORLD APPLICATION OF CAP THEOREM (BOOKMYSHOW)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-43-cap-bookmyshow",
+      number: "43",
+      shortLabel: "CAP: BookMyShow",
+      title: "Real-World Application of CAP Theorem (BookMyShow Example)",
+      summary: "Choosing CP vs. AP microservice-by-microservice in BookMyShow: Booking Service strictly uses CP (no double seat bookings), while Search & Recommendation Services use AP for high availability.",
+      subtopicLabels: ["43.1 BookMyShow Microservices", "43.2 Choosing CP vs AP Per Service"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "43.1",
+          title: "BookMyShow Architecture (3 Core Microservices)",
+          content: `
+            <p>In a real-world microservice architecture, you don't apply just <code>CP</code> or <code>AP</code> to the entire company — you choose <strong><code>CP</code> or <code>AP</code> service-by-service</strong> based on what each microservice does.</p>
+            <div class="sub-card-grid-3" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Service 01</div>
+                <div class="sub-box__title">Booking Service</div>
+                <div class="sub-box__body">Manages concurrent movie ticket bookings and seat reservations.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Service 02</div>
+                <div class="sub-box__title">Search Service</div>
+                <div class="sub-box__body">Allows users to search for different movies and theaters.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Service 03</div>
+                <div class="sub-box__title">Recommendation Service</div>
+                <div class="sub-box__body">Recommends movies on the user's home page.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "43.2",
+          title: "Which CAP Property to Choose for Each Service?",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box" style="border-left: 3.5px solid var(--accent);">
+                <div class="sub-box__tag">Booking Service → Choose CP</div>
+                <div class="sub-box__title">Consistency + Partition Tolerance</div>
+                <div class="sub-box__body">When two users try to book the exact same movie seat concurrently, <strong>you cannot drop Consistency</strong> (otherwise two people will book the same seat). Therefore, the Booking Service strictly prioritizes <strong>Consistency (<code>CP</code>)</strong>.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Search &amp; Recommendation → Choose AP</div>
+                <div class="sub-box__title">Availability + Partition Tolerance</div>
+                <div class="sub-box__body">These are the initial <strong>user-facing services</strong> users interact with first when opening the app. If a new movie listing or recommendation is slightly delayed by a few seconds on one node, it doesn't break anything — what matters most is that the home page and search bar always load fast and never fail (<strong><code>AP</code></strong>).</div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 43.1 · BookMyShow Microservices CAP Strategy (Per-Service Selection)</span>
+                <span class="diagram-frame-tag">CP FOR SEAT BOOKINGS · AP FOR SEARCH &amp; HOME FEED</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 225" class="arch-svg" role="img" aria-label="BookMyShow CAP strategy diagram showing Booking Service configured as CP for strict seat consistency while Search and Recommendation Services are configured as AP for maximum availability">
+                  <defs>
+                    <marker id="arrow-43" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- User -> API Gateway -->
+                  <rect x="20" y="72" width="168" height="82" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="104" y="106" text-anchor="middle" class="svg-title">BookMyShow</text>
+                  <text x="104" y="128" text-anchor="middle" class="svg-sub">App / API Gateway</text>
+
+                  <path d="M 188 94 L 278 52" fill="none" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-43)"/>
+                  <line x1="188" y1="113" x2="278" y2="113" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-43)"/>
+                  <path d="M 188 132 L 278 174" fill="none" stroke="var(--success)" stroke-width="2" marker-end="url(#arrow-43)"/>
+
+                  <!-- Booking Service (CP) -->
+                  <rect x="286" y="18" width="574" height="58" rx="12" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.6"/>
+                  <text x="310" y="52" class="svg-title">Booking Service</text>
+                  <rect x="498" y="31" width="76" height="32" rx="16" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="1.5"/>
+                  <text x="536" y="52" text-anchor="middle" class="svg-mono-md" style="fill: var(--accent);">CP</text>
+                  <text x="592" y="52" class="svg-sub">Zero double seat bookings (Strict Consistency)</text>
+
+                  <!-- Search Service (AP) -->
+                  <rect x="286" y="84" width="574" height="58" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="310" y="118" class="svg-title">Search Service</text>
+                  <rect x="498" y="97" width="76" height="32" rx="16" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="536" y="118" text-anchor="middle" class="svg-mono-md" style="fill: var(--success);">AP</text>
+                  <text x="592" y="118" class="svg-sub">Movie/Theater search always fast &amp; available</text>
+
+                  <!-- Recommendation Service (AP) -->
+                  <rect x="286" y="150" width="574" height="58" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="310" y="184" class="svg-title">Recommendation Service</text>
+                  <rect x="498" y="163" width="76" height="32" rx="16" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="536" y="184" text-anchor="middle" class="svg-mono-md" style="fill: var(--success);">AP</text>
+                  <text x="592" y="184" class="svg-sub">Home feed always loads (slight delay is fine)</text>
                 </svg>
               </div>
             </figure>

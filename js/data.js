@@ -21,7 +21,9 @@ const SYSTEM_DESIGN_NOTES = {
     { label: "44–49 Rate Limit", targetId: "topic-44-rate-limiting" },
     { label: "50–54 HTTPS/SSL", targetId: "topic-50-http-symmetric-encryption" },
     { label: "55–59 DB & Storage", targetId: "topic-55-database-choice" },
-    { label: "60–62 SPOF", targetId: "topic-60-what-is-spof" }
+    { label: "60–62 SPOF", targetId: "topic-60-what-is-spof" },
+    { label: "63–66 Message Queues", targetId: "topic-63-message-queues-async" },
+    { label: "67–69 Consistent Hashing", targetId: "topic-67-load-balancing-modulo-hashing" }
   ],
 
   topics: [
@@ -890,7 +892,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 10px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 9px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Step 1 -->
     <rect x="25" y="45" width="125" height="135" rx="8" class="svg-bg" />
@@ -8181,7 +8183,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Spammer Client A -->
     <rect x="30" y="35" width="200" height="85" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="2" />
@@ -8356,7 +8358,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Refill Engine -->
     <rect x="40" y="50" width="190" height="120" rx="8" class="svg-bg" />
@@ -8525,7 +8527,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Drawback 1: Burst Dump -->
     <rect x="30" y="45" width="250" height="145" rx="8" class="svg-bg" stroke="var(--warning)" stroke-width="1.5" />
@@ -8603,7 +8605,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Left: Bursty Tap -->
     <rect x="30" y="45" width="190" height="135" rx="8" class="svg-bg" />
@@ -8780,7 +8782,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Timeline header -->
     <line x1="40" y1="50" x2="840" y2="50" stroke="var(--border-color)" stroke-width="2" />
@@ -8871,7 +8873,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Window 1 Box -->
     <rect x="40" y="50" width="370" height="110" rx="8" class="svg-bg" />
@@ -9002,7 +9004,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Current Sliding Window Banner -->
     <rect x="30" y="30" width="820" height="35" rx="6" fill="var(--bg-subtle)" stroke="var(--border-color)" />
@@ -9172,7 +9174,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Previous Window Block -->
     <rect x="40" y="45" width="220" height="125" rx="8" class="svg-bg" />
@@ -9323,7 +9325,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Client Box -->
     <rect x="40" y="50" width="200" height="125" rx="8" class="svg-bg" />
@@ -9403,7 +9405,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Client Encryption -->
     <rect x="40" y="45" width="220" height="135" rx="8" class="svg-bg" />
@@ -9564,7 +9566,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Server Keypair Generation -->
     <rect x="40" y="45" width="240" height="140" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="1.5" />
@@ -9757,7 +9759,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Client Box -->
     <rect x="30" y="45" width="200" height="140" rx="8" class="svg-bg" />
@@ -9908,7 +9910,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Left: CA Authority -->
     <rect x="40" y="45" width="230" height="140" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="1.5" />
@@ -9992,7 +9994,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Step 1: CSR -->
     <rect x="40" y="45" width="220" height="140" rx="8" class="svg-bg" />
@@ -10130,7 +10132,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Left: Paid CA-Signed -->
     <rect x="40" y="40" width="370" height="150" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="2" />
@@ -10219,7 +10221,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 10px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 9px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Trick A: Tampering Content -->
     <rect x="25" y="45" width="190" height="135" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="1.5" />
@@ -10296,7 +10298,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Offline OS Installation -->
     <rect x="40" y="45" width="250" height="135" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="1.5" />
@@ -10738,7 +10740,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Upstream Caller: Order Service -->
     <rect x="40" y="45" width="200" height="135" rx="8" class="svg-bg" />
@@ -11192,7 +11194,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- OLTP Section -->
     <rect x="30" y="45" width="200" height="135" rx="8" class="svg-bg" />
@@ -11691,7 +11693,7 @@ const SYSTEM_DESIGN_NOTES = {
       .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
       .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
     </style>
-    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+    <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
     <!-- Layer 2: Dual Load Balancer with VIP -->
     <rect x="30" y="40" width="370" height="150" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="2" />
@@ -12102,6 +12104,1597 @@ const SYSTEM_DESIGN_NOTES = {
           `
         }
       ]
-    }
-    ]
+    },
+  
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 63: WHAT ARE MESSAGE QUEUES & WHY DO WE NEED ASYNCHRONOUS COMMUNICATION?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-63-message-queues-async",
+      number: "63",
+      title: "What are Message Queues & Why Do We Need Asynchronous Communication?",
+      tag: "Decoupling & Scalability",
+      readTime: "9 min",
+      difficulty: "Fundamental",
+      diagramCount: 4,
+      description: "Deep dive into Message Queues as intermediary communication channels between microservices. Explores synchronous vs asynchronous communication, the 3 fatal flaws of synchronous calls (availability dependency, blocking latency, and in-flight data loss), and how message queues guarantee high availability and non-blocking performance.",
+      sections: [
+        {
+          num: "63.1",
+          title: "Definition of a Message Queue",
+          content: `
+          <p>A <strong>Message Queue</strong> is a communication mechanism that enables different parts of a system (such as decoupled microservices) to send and receive messages asynchronously without waiting on each other.</p>
+          <p>In an e-commerce application like <strong>Amazon</strong> or <strong>Flipkart</strong>, multiple independent services execute dedicated business domains:</p>
+          <ul>
+            <li><strong>Order Service:</strong> Validates user checkouts and creates order records.</li>
+            <li><strong>Inventory Service:</strong> Tracks and reserves warehouse stock.</li>
+            <li><strong>Payment Service:</strong> Communicates with banking gateways to charge payment cards.</li>
+            <li><strong>Notification Service:</strong> Dispatches SMS, push notifications, and emails to the user.</li>
+          </ul>
+          <p>Instead of tightly coupling these services with direct network calls, a Message Queue acts as an <strong>intermediary buffer</strong>. It temporarily holds messages produced by <strong>Producers (Publishers)</strong> and delivers them safely to <strong>Consumers (Subscribers)</strong>.</p>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Message Queue as Intermediary Buffer</span>
+              <span class="badge badge-accent">ASYNCHRONOUS DECOUPLING</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Message Queue acting as intermediary buffer between services">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Producer: Order Service -->
+              <rect x="35" y="45" width="200" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="70" class="svg-kicker" fill="var(--primary)">PRODUCER SERVICE</text>
+              <text x="50" y="92" class="svg-title">Order Service</text>
+              <text x="50" y="114" class="svg-sub">• Accepts user checkout</text>
+              <text x="50" y="132" class="svg-sub">• Publishes order event</text>
+              <rect x="50" y="142" width="170" height="24" rx="4" fill="var(--primary-bg)" />
+              <text x="55" y="158" class="svg-mono-xs" fill="var(--primary)">Enqueue: order_id: 10482</text>
+
+              <!-- Arrow Producer to Queue -->
+              <path d="M 235 112 L 315 112" stroke="var(--primary)" stroke-width="2.5" />
+              <text x="245" y="102" class="svg-mono-xs" fill="var(--primary)">Push Event</text>
+
+              <!-- Message Queue Buffer -->
+              <rect x="315" y="40" width="250" height="150" rx="10" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="2" />
+              <text x="330" y="65" class="svg-kicker" fill="var(--accent)">MESSAGE QUEUE BROKER</text>
+              <text x="330" y="87" class="svg-title">Persistent FIFO Buffer</text>
+              <rect x="330" y="98" width="220" height="36" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <rect x="335" y="103" width="45" height="26" rx="4" fill="var(--accent)" opacity="0.3" />
+              <text x="345" y="120" class="svg-mono-xs" font-weight="700">Msg 1</text>
+              <rect x="385" y="103" width="45" height="26" rx="4" fill="var(--accent)" opacity="0.3" />
+              <text x="395" y="120" class="svg-mono-xs" font-weight="700">Msg 2</text>
+              <rect x="435" y="103" width="45" height="26" rx="4" fill="var(--accent)" opacity="0.3" />
+              <text x="445" y="120" class="svg-mono-xs" font-weight="700">Msg 3</text>
+              <text x="488" y="120" class="svg-mono-xs">... Queue</text>
+              <text x="330" y="155" class="svg-sub">• Safely stores in-flight events</text>
+              <text x="330" y="172" class="svg-sub">• Absorbs traffic surges reliably</text>
+
+              <!-- Arrow Queue to Consumers -->
+              <path d="M 565 85 L 635 65" stroke="var(--success)" stroke-width="2" />
+              <path d="M 565 112 L 635 112" stroke="var(--success)" stroke-width="2" />
+              <path d="M 565 140 L 635 160" stroke="var(--success)" stroke-width="2" />
+
+              <!-- Consumers Stack -->
+              <rect x="635" y="40" width="210" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="650" y="65" class="svg-node" font-weight="600">Inventory Service</text>
+
+              <rect x="635" y="92" width="210" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="650" y="117" class="svg-node" font-weight="600">Payment Service</text>
+
+              <rect x="635" y="144" width="210" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="650" y="169" class="svg-node" font-weight="600">Notification Service</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                PRODUCER NEVER CALLS CONSUMERS DIRECTLY • BROKER GUARANTEES ASYNCHRONOUS DELIVERY
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "63.2",
+          title: "Synchronous vs. Asynchronous Communication Between Microservices",
+          content: `
+          <p>Microservices can interact using two primary paradigms:</p>
+          <ul>
+            <li><strong>Synchronous Communication:</strong> Real-time, direct RPCs (REST APIs, gRPC). The caller sends a request and <em>blocks</em> waiting for the callee's response.</li>
+            <li><strong>Asynchronous Communication:</strong> Event-driven messaging via Message Queues. The caller publishes an event and immediately returns to continue its own execution.</li>
+          </ul>
+          <p>Imagine a flash sale (e.g. Amazon Big Billion Days) where <code>Order Service</code> experiences <strong>10,000 new orders per second</strong>. For every order of Peanut Butter (stock = 5):</p>
+          <ol>
+            <li><code>Order Service</code> calls <code>Inventory Service</code> to decrement stock (5 &rarr; 4).</li>
+            <li><code>Order Service</code> calls <code>Payment Service</code> to charge the user's card.</li>
+            <li><code>Order Service</code> calls <code>Notification Service</code> to dispatch confirmation emails.</li>
+          </ol>
+          <p>Under synchronous communication, every single one of those 10,000 requests per second forces <code>Order Service</code> to wait on 3 remote downstream network hops in sequence.</p>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Synchronous Lockstep vs. Asynchronous Event Pipeline</span>
+              <span class="badge badge-accent">COMMUNICATION PARADIGMS</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Synchronous vs Asynchronous Communication Comparison">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Top: Synchronous Flow -->
+              <rect x="30" y="30" width="820" height="80" rx="8" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.5" />
+              <text x="45" y="52" class="svg-kicker" fill="var(--warning)">SYNCHRONOUS COMMUNICATION (REST / GRPC)</text>
+              <!-- Flow boxes -->
+              <rect x="45" y="60" width="130" height="38" rx="6" fill="var(--warning-bg)" />
+              <text x="110" y="83" class="svg-node" text-anchor="middle" font-weight="600">Order Svc</text>
+
+              <path d="M 175 79 L 235 79" stroke="var(--warning)" stroke-width="2" />
+              <text x="205" y="73" class="svg-mono-xs" text-anchor="middle" fill="var(--warning)">Block (50ms)</text>
+
+              <rect x="235" y="60" width="140" height="38" rx="6" fill="var(--warning-bg)" />
+              <text x="305" y="83" class="svg-node" text-anchor="middle" font-weight="600">Inventory Svc</text>
+
+              <path d="M 375 79 L 435 79" stroke="var(--warning)" stroke-width="2" />
+              <text x="405" y="73" class="svg-mono-xs" text-anchor="middle" fill="var(--warning)">Block (120ms)</text>
+
+              <rect x="435" y="60" width="140" height="38" rx="6" fill="var(--warning-bg)" />
+              <text x="505" y="83" class="svg-node" text-anchor="middle" font-weight="600">Payment Svc</text>
+
+              <path d="M 575 79 L 635 79" stroke="var(--warning)" stroke-width="2" />
+              <text x="605" y="73" class="svg-mono-xs" text-anchor="middle" fill="var(--warning)">Block (40ms)</text>
+
+              <rect x="635" y="60" width="140" height="38" rx="6" fill="var(--warning-bg)" />
+              <text x="705" y="83" class="svg-node" text-anchor="middle" font-weight="600">Notify Svc</text>
+
+              <!-- Bottom: Asynchronous Flow -->
+              <rect x="30" y="125" width="820" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5" />
+              <text x="45" y="147" class="svg-kicker" fill="var(--success)">ASYNCHRONOUS COMMUNICATION (MESSAGE QUEUE)</text>
+              <rect x="45" y="155" width="140" height="42" rx="6" fill="var(--success-bg)" />
+              <text x="115" y="180" class="svg-node" text-anchor="middle" font-weight="600">Order Svc</text>
+
+              <path d="M 185 176 L 275 176" stroke="var(--success)" stroke-width="2.5" />
+              <text x="230" y="168" class="svg-mono-xs" text-anchor="middle" fill="var(--success)">Push & Return (2ms)</text>
+
+              <rect x="275" y="155" width="220" height="42" rx="6" fill="var(--primary-bg)" stroke="var(--primary)" />
+              <text x="385" y="180" class="svg-node" text-anchor="middle" font-weight="700" fill="var(--primary)">Message Queue Broker</text>
+
+              <path d="M 495 165 L 560 160" stroke="var(--success)" stroke-width="1.8" />
+              <path d="M 495 176 L 560 176" stroke="var(--success)" stroke-width="1.8" />
+              <path d="M 495 187 L 560 192" stroke="var(--success)" stroke-width="1.8" />
+
+              <rect x="560" y="155" width="280" height="42" rx="6" fill="var(--bg-subtle)" />
+              <text x="700" y="180" class="svg-mono-xs" text-anchor="middle" font-weight="600">
+                Independent Concurrent Consumers
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "63.3",
+          title: "Three Major Problems With Synchronous Communication",
+          content: `
+          <p>Direct synchronous communication introduces three critical systemic liabilities into distributed architectures:</p>
+          <ol>
+            <li><strong>Hard Availability Dependency:</strong> If <code>Order Service</code> must synchronously call <code>Payment Service</code>, the payment service must be healthy at that exact millisecond. If <code>Payment Service</code> is undergoing maintenance or experiencing a temporary network partition, the user's order fails completely.</li>
+            <li><strong>Response Delay & Blocking Nature:</strong> Synchronous calls hold open operating system threads, TCP sockets, and memory buffers while awaiting downstream completion. If payment processing takes 3 seconds due to external banking delays, <code>Order Service</code> is held hostage and cannot execute remaining tasks.</li>
+            <li><strong>Catastrophic Data Loss:</strong> If <code>Order Service</code> sends an HTTP POST request to <code>Payment Service</code>, and <code>Payment Service</code> crashes midway through execution before committing to disk, the transaction state vanishes into the void.</li>
+          </ol>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">3 Critical Vulnerabilities of Direct Synchronous Calls</span>
+              <span class="badge badge-danger">SYSTEMIC BOTTLENECKS</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Three major problems of synchronous communication">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Problem 1: Hard Availability -->
+              <rect x="35" y="45" width="250" height="145" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.5" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--danger)">PROBLEM 1: HARD AVAILABILITY</text>
+              <text x="50" y="90" class="svg-title">All-or-Nothing Uptime</text>
+              <text x="50" y="112" class="svg-sub">• Downstream MUST be 100% up</text>
+              <text x="50" y="128" class="svg-sub">• If Payment Svc is rebooting,</text>
+              <text x="50" y="144" class="svg-sub">• Order Service crashes immediately</text>
+              <rect x="50" y="154" width="210" height="24" rx="4" fill="var(--danger-bg)" />
+              <text x="55" y="170" class="svg-mono-xs" fill="var(--danger)">HTTP 503 Cascading Failure</text>
+
+              <!-- Problem 2: Blocking Threads -->
+              <rect x="315" y="45" width="250" height="145" rx="8" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.5" />
+              <text x="330" y="68" class="svg-kicker" fill="var(--warning)">PROBLEM 2: BLOCKING DELAY</text>
+              <text x="330" y="90" class="svg-title">Thread Pool Depletion</text>
+              <text x="330" y="112" class="svg-sub">• Caller blocked waiting for reply</text>
+              <text x="330" y="128" class="svg-sub">• 3-second bank latency stalls caller</text>
+              <text x="330" y="144" class="svg-sub">• Web workers exhausted & queue locks</text>
+              <rect x="330" y="154" width="210" height="24" rx="4" fill="var(--warning-bg)" />
+              <text x="335" y="170" class="svg-mono-xs" fill="var(--warning)">High Latency & Thread Exhaustion</text>
+
+              <!-- Problem 3: Data Loss -->
+              <rect x="595" y="45" width="250" height="145" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.5" />
+              <text x="610" y="68" class="svg-kicker" fill="var(--danger)">PROBLEM 3: DATA LOSS</text>
+              <text x="610" y="90" class="svg-title">In-Flight Packet Drop</text>
+              <text x="610" y="112" class="svg-sub">• If callee crashes during process,</text>
+              <text x="610" y="128" class="svg-sub">• In-flight payload is permanently lost</text>
+              <text x="610" y="144" class="svg-sub">• Requires complex rollback sagas</text>
+              <rect x="610" y="154" width="210" height="24" rx="4" fill="var(--danger-bg)" />
+              <text x="615" y="170" class="svg-mono-xs" fill="var(--danger)">Unrecoverable State Corruption</text>
+
+              <text x="440" y="212" class="svg-mono-xs" text-anchor="middle">
+                DIRECT SYNCHRONOUS COUPLING MULTIPLIES LATENCY AND DIVIDES SYSTEM AVAILABILITY
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "63.4",
+          title: "How Asynchronous Communication (Message Queues) Solves All 3 Problems",
+          content: `
+          <p>By interposing a Message Queue between producers and consumers, all three synchronous liabilities are completely neutralized:</p>
+          <ul>
+            <li><strong>Availability Independence:</strong> <code>Order Service</code> does not care if <code>Payment Service</code> is online, restarting, or lagging. It simply drops the message into the queue. The queue holds the message durably until <code>Payment Service</code> comes online.</li>
+            <li><strong>Non-Blocking Execution (Low Latency):</strong> <code>Order Service</code> enqueues the message in 1–2 milliseconds and immediately confirms checkout to the customer, continuing on to other tasks without ever stalling.</li>
+            <li><strong>Guaranteed Durability & Zero Data Loss:</strong> Messages are safely written to durable disk buffers inside the broker cluster. Even if consumer instances crash repeatedly, the messages remain intact in the queue and are safely reprocessed upon recovery.</li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Message Queue Architecture: Neutralizing Availability & Latency Risks</span>
+              <span class="badge badge-success">FAULT RESILIENCE</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="How Message Queues solve synchronous problems">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Order Svc -->
+              <rect x="35" y="45" width="210" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="70" class="svg-kicker" fill="var(--primary)">ORDER SERVICE (PRODUCER)</text>
+              <text x="50" y="92" class="svg-title">Instant Non-Blocking Push</text>
+              <text x="50" y="112" class="svg-sub">• Drops payload in queue (2ms)</text>
+              <text x="50" y="128" class="svg-sub">• Immediately frees worker thread</text>
+              <rect x="50" y="138" width="180" height="28" rx="4" fill="var(--success-bg)" />
+              <text x="55" y="156" class="svg-mono-xs" fill="var(--success)" font-weight="700">✓ User checkout confirmed!</text>
+
+              <!-- Arrow -->
+              <path d="M 245 112 L 320 112" stroke="var(--success)" stroke-width="2.5" />
+
+              <!-- Durable Broker -->
+              <rect x="320" y="40" width="260" height="150" rx="10" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="2" />
+              <text x="335" y="65" class="svg-kicker" fill="var(--success)">DURABLE BROKER BUFFER</text>
+              <text x="335" y="87" class="svg-title">Persistent Message Queue</text>
+              <text x="335" y="108" class="svg-node">• <b>Disk-backed persistence:</b> Zero loss</text>
+              <text x="335" y="126" class="svg-node">• <b>Decoupled uptime:</b> Consumer agnostic</text>
+              <rect x="335" y="138" width="225" height="38" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="345" y="155" class="svg-mono-xs">Buffer holds 100K messages safely</text>
+              <text x="345" y="169" class="svg-mono-xs" fill="var(--success)">Consumer pulls at its own pace</text>
+
+              <!-- Arrow -->
+              <path d="M 580 112 L 645 112" stroke="var(--primary)" stroke-width="2.5" />
+
+              <!-- Consumer Service -->
+              <rect x="645" y="45" width="200" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.8" />
+              <text x="660" y="70" class="svg-kicker">PAYMENT CONSUMER</text>
+              <text x="660" y="92" class="svg-title">Pulls On Demand</text>
+              <text x="660" y="112" class="svg-sub">• Reads messages at steady rate</text>
+              <text x="660" y="128" class="svg-sub">• Recovers gracefully after reboot</text>
+              <rect x="660" y="138" width="170" height="28" rx="4" fill="var(--primary-bg)" />
+              <text x="665" y="156" class="svg-mono-xs" fill="var(--primary)">ACK sent after DB write</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                ASYNCHRONOUS BUFFERING CONVERTS UNPREDICTABLE TRAFFIC SPIKES INTO SMOOTH WORKLOAD EXECUTION
+              </text>
+            </svg>
+          </figure>
+        `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 64: CORE COMPONENTS & WORKING LIFECYCLE OF A MESSAGE QUEUE
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-64-message-queue-components-lifecycle",
+      number: "64",
+      title: "Core Components & Working Lifecycle of a Message Queue",
+      tag: "Queue Internals",
+      readTime: "7 min",
+      difficulty: "Fundamental",
+      diagramCount: 2,
+      description: "Detailed breakdown of the five primary architectural components of any message queue system (Producer, Consumer, Queue, Broker, and Message Payload vs Metadata), accompanied by the complete 5-step operational lifecycle from message creation to broker acknowledgement and final garbage collection.",
+      sections: [
+        {
+          num: "64.1",
+          title: "Five Core Components of a Message Queue",
+          content: `
+          <p>Every message queuing system is structured around five foundational building blocks:</p>
+          <ol>
+            <li><strong>Producer (or Publisher):</strong> The client or microservice that creates messages and pushes them into the message queue.</li>
+            <li><strong>Consumer (or Subscriber):</strong> The service instance that pulls or receives messages from the queue and executes domain logic.</li>
+            <li><strong>Queue:</strong> The internal ordered data structure (often FIFO) where messages reside while awaiting processing.</li>
+            <li><strong>Broker (Queue Manager):</strong> The server process (e.g. RabbitMQ node, Kafka broker) that routes, stores, protects, and delivers messages.</li>
+            <li><strong>Message:</strong> The atomic unit of data transmitted through the pipeline, consisting of:
+              <ul>
+                <li><strong>Payload:</strong> The primary business data (e.g., <code>{"orderId": 402, "amount": 99.00}</code>).</li>
+                <li><strong>Metadata:</strong> Control headers, correlation IDs, timestamps, retry counts, and priority flags.</li>
+              </ul>
+            </li>
+          </ol>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">The 5 Core Architectural Components of a Message Queue</span>
+              <span class="badge badge-accent">ARCHITECTURE PRIMITIVES</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Five core components of a message queue">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Component 1: Producer -->
+              <rect x="30" y="45" width="160" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="45" y="68" class="svg-kicker" fill="var(--primary)">1. PRODUCER</text>
+              <text x="45" y="90" class="svg-title">Publisher Node</text>
+              <text x="45" y="112" class="svg-sub">• Creates messages</text>
+              <text x="45" y="128" class="svg-sub">• Appends metadata</text>
+              <rect x="45" y="138" width="130" height="26" rx="4" fill="var(--primary-bg)" />
+              <text x="50" y="155" class="svg-mono-xs" fill="var(--primary)">e.g. Order Svc</text>
+
+              <!-- Arrow 1->4 -->
+              <path d="M 190 112 L 235 112" stroke="var(--primary)" stroke-width="2.5" />
+
+              <!-- Component 4 & 3: Broker & Queue -->
+              <rect x="235" y="40" width="370" height="150" rx="10" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="2" />
+              <text x="250" y="63" class="svg-kicker" fill="var(--accent)">4. BROKER (QUEUE MANAGER)</text>
+              <text x="250" y="85" class="svg-title">RabbitMQ / Kafka Daemon</text>
+
+              <!-- Nested Queue -->
+              <rect x="250" y="95" width="340" height="50" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="260" y="115" class="svg-kicker">3. QUEUE (FIFO DATA STRUCTURE)</text>
+              <!-- 5. Message Anatomy -->
+              <rect x="260" y="122" width="150" height="18" rx="3" fill="var(--accent)" opacity="0.25" />
+              <text x="265" y="135" class="svg-mono-xs" font-weight="700">5. Payload: JSON Body</text>
+              <rect x="415" y="122" width="165" height="18" rx="3" fill="var(--accent-gold-bg)" />
+              <text x="420" y="135" class="svg-mono-xs" font-weight="700">Metadata: Header / Priority</text>
+
+              <text x="250" y="165" class="svg-sub">• Manages network buffers, consumer leases & persistent commit logs</text>
+
+              <!-- Arrow Broker to Consumer -->
+              <path d="M 605 112 L 670 112" stroke="var(--success)" stroke-width="2.5" />
+
+              <!-- Component 2: Consumer -->
+              <rect x="670" y="45" width="175" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8" />
+              <text x="685" y="68" class="svg-kicker" fill="var(--success)">2. CONSUMER</text>
+              <text x="685" y="90" class="svg-title">Subscriber Worker</text>
+              <text x="685" y="112" class="svg-sub">• Pulls messages</text>
+              <text x="685" y="128" class="svg-sub">• Executes task</text>
+              <rect x="685" y="138" width="145" height="26" rx="4" fill="var(--success-bg)" />
+              <text x="690" y="155" class="svg-mono-xs" fill="var(--success)">Sends ACK on finish</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                ANATOMY: PRODUCER &bull; BROKER &bull; QUEUE &bull; MESSAGE (PAYLOAD + METADATA) &bull; CONSUMER
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "64.2",
+          title: "Step-by-Step Working Lifecycle",
+          content: `
+          <p>The standard operating lifecycle of a message follows a rigorous 5-step transaction sequence:</p>
+          <ol>
+            <li><strong>Message Creation:</strong> The Producer serializes the event payload, populates header metadata (timestamps, correlation ID), and signs the message.</li>
+            <li><strong>Message Enqueue:</strong> The Producer sends the message over a persistent TCP connection (e.g., AMQP, Kafka protocol) to the Broker.</li>
+            <li><strong>Broker Acknowledgement to Producer:</strong> The Broker confirms receipt by persisting the record and returning an ACK to the Producer: <em>"Message successfully committed to queue."</em></li>
+            <li><strong>Message Retrieval / Consumption:</strong> An available Consumer worker pulls (or is pushed) the message from the queue and executes business processing.</li>
+            <li><strong>Consumer Acknowledgement & Broker Deletion:</strong>
+              <ul>
+                <li>Upon successful execution, the Consumer issues an explicit ACK back to the Broker.</li>
+                <li>The Broker receives the ACK and permanently purges/acknowledges the message from the queue, preventing duplicate delivery.</li>
+              </ul>
+            </li>
+          </ol>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">5-Step Sequential Lifecycle of a Queued Message</span>
+              <span class="badge badge-accent">TRANSACTION LIFECYCLE</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Five step working lifecycle of a message queue">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Step 1 -->
+              <rect x="25" y="50" width="145" height="125" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <circle cx="45" cy="70" r="10" fill="var(--primary-bg)" />
+              <text x="45" y="74" text-anchor="middle" font-size="10" font-weight="700" fill="var(--primary)">1</text>
+              <text x="62" y="74" class="svg-title">Create</text>
+              <text x="35" y="98" class="svg-sub">• Producer builds</text>
+              <text x="35" y="114" class="svg-sub">payload & headers</text>
+              <rect x="35" y="130" width="125" height="22" rx="4" fill="var(--bg-subtle)" />
+              <text x="40" y="145" class="svg-mono-xs">Payload + Headers</text>
+
+              <!-- Arrow 1->2 -->
+              <path d="M 170 112 L 195 112" stroke="var(--primary)" stroke-width="2" />
+
+              <!-- Step 2 -->
+              <rect x="195" y="50" width="145" height="125" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <circle cx="215" cy="70" r="10" fill="var(--primary-bg)" />
+              <text x="215" y="74" text-anchor="middle" font-size="10" font-weight="700" fill="var(--primary)">2</text>
+              <text x="232" y="74" class="svg-title">Enqueue</text>
+              <text x="205" y="98" class="svg-sub">• Pushed over TCP</text>
+              <text x="205" y="114" class="svg-sub">to Broker buffer</text>
+              <rect x="205" y="130" width="125" height="22" rx="4" fill="var(--primary-bg)" />
+              <text x="210" y="145" class="svg-mono-xs" fill="var(--primary)">Network Push</text>
+
+              <!-- Arrow 2->3 -->
+              <path d="M 340 112 L 365 112" stroke="var(--primary)" stroke-width="2" />
+
+              <!-- Step 3 -->
+              <rect x="365" y="50" width="145" height="125" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <circle cx="385" cy="70" r="10" fill="var(--accent-light)" />
+              <text x="385" y="74" text-anchor="middle" font-size="10" font-weight="700" fill="var(--accent)">3</text>
+              <text x="402" y="74" class="svg-title">Broker ACK</text>
+              <text x="375" y="98" class="svg-sub">• Broker commits to</text>
+              <text x="375" y="114" class="svg-sub">durable storage</text>
+              <rect x="375" y="130" width="125" height="22" rx="4" fill="var(--accent-light)" />
+              <text x="380" y="145" class="svg-mono-xs" fill="var(--accent)">Producer ACK</text>
+
+              <!-- Arrow 3->4 -->
+              <path d="M 510 112 L 535 112" stroke="var(--primary)" stroke-width="2" />
+
+              <!-- Step 4 -->
+              <rect x="535" y="50" width="150" height="125" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <circle cx="555" cy="70" r="10" fill="var(--warning-bg)" />
+              <text x="555" y="74" text-anchor="middle" font-size="10" font-weight="700" fill="var(--warning)">4</text>
+              <text x="572" y="74" class="svg-title">Retrieve</text>
+              <text x="545" y="98" class="svg-sub">• Consumer pulls</text>
+              <text x="545" y="114" class="svg-sub">and processes task</text>
+              <rect x="545" y="130" width="130" height="22" rx="4" fill="var(--warning-bg)" />
+              <text x="550" y="145" class="svg-mono-xs" fill="var(--warning)">Worker Execution</text>
+
+              <!-- Arrow 4->5 -->
+              <path d="M 685 112 L 710 112" stroke="var(--primary)" stroke-width="2" />
+
+              <!-- Step 5 -->
+              <rect x="710" y="50" width="145" height="125" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8" />
+              <circle cx="730" cy="70" r="10" fill="var(--success-bg)" />
+              <text x="730" y="74" text-anchor="middle" font-size="10" font-weight="700" fill="var(--success)">5</text>
+              <text x="747" y="74" class="svg-title">ACK & Purge</text>
+              <text x="720" y="98" class="svg-sub">• Consumer sends ACK</text>
+              <text x="720" y="114" class="svg-sub">• Message deleted</text>
+              <rect x="720" y="130" width="125" height="22" rx="4" fill="var(--success-bg)" />
+              <text x="725" y="145" class="svg-mono-xs" fill="var(--success)">Zero Duplicate</text>
+
+              <text x="440" y="205" class="svg-mono-xs" text-anchor="middle">
+                TWO-PHASE HANDSHAKE: BROKER ACK TO PRODUCER &rarr; CONSUMER ACK TO BROKER (SAFE GUARANTEES)
+              </text>
+            </svg>
+          </figure>
+        `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 65: TYPES OF MESSAGE QUEUES — POINT-TO-POINT QUEUE (RABBITMQ)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-65-point-to-point-queue-rabbitmq",
+      number: "65",
+      title: "Types of Message Queues — Point-to-Point Queue (RabbitMQ)",
+      tag: "Queue Patterns",
+      readTime: "10 min",
+      difficulty: "Core Architecture",
+      diagramCount: 3,
+      description: "Clarifies the key conceptual distinction between the Producer-Consumer (Point-to-Point) model and the Pub-Sub model. Explores RabbitMQ mechanics, competing consumers, short message lifecycles, and 3 production use cases: spike absorption, horizontal worker distribution, and YouTube-style non-blocking video transcoding.",
+      sections: [
+        {
+          num: "65.1",
+          title: "Producer-Consumer Model vs. Pub-Sub Model (Clearing the Confusion)",
+          content: `
+          <p>Engineers frequently confuse the <strong>Producer-Consumer Model</strong> and the <strong>Publisher-Subscriber (Pub-Sub) Model</strong>. They serve fundamentally distinct topologies:</p>
+          <ul>
+            <li><strong>Producer-Consumer Model (Point-to-Point):</strong>
+              <ul>
+                <li>Communication is <strong>1-to-1</strong>. One Producer sends a task intended for <strong>one logical Consumer service</strong>.</li>
+                <li>Even when running 10 replica containers of that consumer (<code>Payment Worker 1</code>, <code>Payment Worker 2</code>, etc.), they act as <strong>Competing Consumers</strong>. Exactly one worker processes each message; it is <em>never</em> duplicated across workers.</li>
+              </ul>
+            </li>
+            <li><strong>Publisher-Subscriber Model (Pub-Sub):</strong>
+              <ul>
+                <li>Communication is <strong>1-to-Many</strong>. One Producer broadcasts an event, and <strong>multiple distinct consumer services</strong> (e.g. Inventory, Billing, Notifications) each receive their own copy of the event.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Point-to-Point Competing Consumers vs. Pub-Sub Broadcast</span>
+              <span class="badge badge-accent">PATTERN DIFFERENTIATION</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Producer-Consumer vs Pub-Sub Models">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Top: Point to Point -->
+              <rect x="30" y="25" width="820" height="90" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.5" />
+              <text x="45" y="46" class="svg-kicker" fill="var(--primary)">1. PRODUCER-CONSUMER (POINT-TO-POINT: 1 PRODUCER &rarr; 1 CONSUMER DOMAIN)</text>
+              <rect x="45" y="55" width="130" height="45" rx="6" fill="var(--primary-bg)" />
+              <text x="110" y="82" class="svg-node" text-anchor="middle" font-weight="600">Order Svc</text>
+
+              <path d="M 175 77 L 245 77" stroke="var(--primary)" stroke-width="2" />
+
+              <rect x="245" y="55" width="180" height="45" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="335" y="75" class="svg-mono-xs" text-anchor="middle" font-weight="700">P2P Queue (RabbitMQ)</text>
+              <text x="335" y="90" class="svg-mono-xs" text-anchor="middle">Dispatches to 1 worker only</text>
+
+              <path d="M 425 68 L 520 55" stroke="var(--primary)" stroke-width="1.5" />
+              <path d="M 425 77 L 520 77" stroke="var(--primary)" stroke-width="1.5" />
+              <path d="M 425 86 L 520 98" stroke="var(--primary)" stroke-width="1.5" />
+
+              <!-- Competing consumers -->
+              <rect x="520" y="42" width="145" height="24" rx="4" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="592" y="58" class="svg-mono-xs" text-anchor="middle">Payment Worker 1</text>
+              <rect x="520" y="66" width="145" height="24" rx="4" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="592" y="82" class="svg-mono-xs" text-anchor="middle">Payment Worker 2</text>
+              <rect x="520" y="90" width="145" height="24" rx="4" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="592" y="106" class="svg-mono-xs" text-anchor="middle">Payment Worker 3</text>
+
+              <rect x="680" y="55" width="155" height="45" rx="6" fill="var(--primary-bg)" />
+              <text x="757" y="75" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--primary)">COMPETING CONSUMERS</text>
+              <text x="757" y="90" class="svg-mono-xs" text-anchor="middle">1 Task = 1 Worker</text>
+
+              <!-- Bottom: Pub-Sub -->
+              <rect x="30" y="125" width="820" height="90" rx="8" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="1.5" />
+              <text x="45" y="146" class="svg-kicker" fill="var(--accent)">2. PUBLISHER-SUBSCRIBER (PUB-SUB: 1 PRODUCER &rarr; MULTIPLE DIFFERENT SERVICES)</text>
+              <rect x="45" y="155" width="130" height="45" rx="6" fill="var(--accent-light)" />
+              <text x="110" y="182" class="svg-node" text-anchor="middle" font-weight="600">Order Svc</text>
+
+              <path d="M 175 177 L 245 177" stroke="var(--accent)" stroke-width="2" />
+
+              <rect x="245" y="155" width="180" height="45" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="335" y="175" class="svg-mono-xs" text-anchor="middle" font-weight="700">Kafka Topic: orders</text>
+              <text x="335" y="190" class="svg-mono-xs" text-anchor="middle">Broadcasts to all subscribers</text>
+
+              <path d="M 425 168 L 520 155" stroke="var(--accent)" stroke-width="1.5" />
+              <path d="M 425 177 L 520 177" stroke="var(--accent)" stroke-width="1.5" />
+              <path d="M 425 186 L 520 198" stroke="var(--accent)" stroke-width="1.5" />
+
+              <rect x="520" y="142" width="145" height="24" rx="4" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="592" y="158" class="svg-mono-xs" text-anchor="middle">Inventory Service</text>
+              <rect x="520" y="166" width="145" height="24" rx="4" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="592" y="182" class="svg-mono-xs" text-anchor="middle">Payment Service</text>
+              <rect x="520" y="190" width="145" height="24" rx="4" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="592" y="206" class="svg-mono-xs" text-anchor="middle">Notification Svc</text>
+
+              <rect x="680" y="155" width="155" height="45" rx="6" fill="var(--accent-light)" />
+              <text x="757" y="175" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--accent)">INDEPENDENT COPIES</text>
+              <text x="757" y="190" class="svg-mono-xs" text-anchor="middle">All 3 receive event</text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "65.2",
+          title: "How Point-to-Point Queue (RabbitMQ) Works",
+          content: `
+          <p>A Point-to-Point Queue (most famously embodied by <strong>RabbitMQ</strong>) coordinates work with strict delivery semantics:</p>
+          <ol>
+            <li><strong>Single Consumer Processing:</strong> Even if 100 workers subscribe to the queue, every message is allocated to exactly <em>one</em> worker via round-robin or prefetch limits.</li>
+            <li><strong>Short Message Lifecycle:</strong> Unlike Kafka (which retains log files on disk for days), RabbitMQ is designed for transient execution. Once a consumer confirms successful completion via an <strong>Acknowledgement (ACK)</strong>, the broker immediately deletes the message from the queue.</li>
+            <li><strong>Negative Acknowledgement (NACK):</strong> If a consumer crashes midway or throws an unhandled error, it returns a <code>NACK</code> (or the TCP connection drops). The broker promptly re-enqueues the message to be picked up by another healthy worker.</li>
+          </ol>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">RabbitMQ Mechanics: Single Worker Lease & Immediate Deletion on ACK</span>
+              <span class="badge badge-accent">RABBITMQ SEMANTICS</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="How Point to Point Queue works">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Step 1 Enqueue -->
+              <rect x="35" y="45" width="190" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--primary)">1. PRODUCER ENQUEUE</text>
+              <text x="50" y="90" class="svg-title">Order Service</text>
+              <text x="50" y="112" class="svg-sub">• Pushes task: <code>pay_order_44</code></text>
+              <text x="50" y="128" class="svg-sub">• Awaits no downstream logic</text>
+              <rect x="50" y="138" width="160" height="26" rx="4" fill="var(--primary-bg)" />
+              <text x="55" y="155" class="svg-mono-xs" fill="var(--primary)">Delivery Mode: Persistent</text>
+
+              <!-- Arrow -->
+              <path d="M 225 112 L 295 112" stroke="var(--primary)" stroke-width="2.5" />
+
+              <!-- RabbitMQ Point to Point Queue -->
+              <rect x="295" y="40" width="280" height="150" rx="10" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="2" />
+              <text x="310" y="63" class="svg-kicker" fill="var(--accent)">RABBITMQ BROKER QUEUE</text>
+              <text x="310" y="85" class="svg-title">Point-to-Point Lease</text>
+              <rect x="310" y="95" width="250" height="36" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="320" y="117" class="svg-mono-xs" font-weight="700">Msg #44 &bull; Leased to Worker 2</text>
+              <text x="310" y="150" class="svg-sub">• Message locked while processing</text>
+              <text x="310" y="168" class="svg-sub" fill="var(--danger)">• On ACK &rarr; PURGED from memory/disk</text>
+
+              <!-- Arrow -->
+              <path d="M 575 112 L 645 112" stroke="var(--success)" stroke-width="2.5" />
+
+              <!-- Worker -->
+              <rect x="645" y="45" width="200" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8" />
+              <text x="660" y="68" class="svg-kicker" fill="var(--success)">2. COMPETING WORKER 2</text>
+              <text x="660" y="90" class="svg-title">Payment Worker</text>
+              <text x="660" y="112" class="svg-sub">• Executes charge via Stripe</text>
+              <text x="660" y="128" class="svg-sub">• Returns basic_ack(delivery_tag)</text>
+              <rect x="660" y="138" width="170" height="26" rx="4" fill="var(--success-bg)" />
+              <text x="665" y="155" class="svg-mono-xs" fill="var(--success)" font-weight="700">&check; Task Done & Deleted</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                TRANSIENT QUEUE SEMANTICS: ONCE ACKNOWLEDGED, MESSAGES ARE PERMANENTLY REMOVED
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "65.3",
+          title: "Three Key Use Cases of Point-to-Point Queue (RabbitMQ)",
+          content: `
+          <p>Point-to-Point queues excel across three core architectural challenges:</p>
+          <ol>
+            <li><strong>Traffic Surge Absorption (Protecting Fragile Downstreams):</strong>
+              <p>During a flash sale, <code>Order Service</code> experiences <strong>10,000 req/sec</strong>, but downstream <code>Payment Service</code> can only safely handle <strong>100 req/sec</strong> without blowing database connection pools. Placing a Point-to-Point queue in between buffers all 10,000 requests; the payment service pulls at its safe threshold of 100 req/sec with zero crashes.</p>
+            </li>
+            <li><strong>Elastic Workload Distribution (Horizontal Worker Scaling):</strong>
+              <p>When tasks accumulate in the queue, operations teams simply spawn additional worker replicas (<code>Worker 1, 2, 3... N</code>). The queue automatically load-balances jobs across all workers without code changes.</p>
+            </li>
+            <li><strong>Non-Blocking User Buffering (YouTube Video Transcoding):</strong>
+              <p>On YouTube, users upload massive 4K video files. The <code>Video Processing Service</code> must transcode them into 1080p, 720p, 480p, extract audio, and generate thumbnails. We cannot force users to wait in their browsers for 15 minutes. Instead, the upload endpoint stores the file in S3, enqueues an encoding task into RabbitMQ, and returns <em>"Video uploaded, processing in background"</em> in 200 milliseconds!</p>
+            </li>
+          </ol>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">YouTube Asynchronous Video Processing Pipeline</span>
+              <span class="badge badge-accent">PRODUCTION USE CASE</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="YouTube Video Transcoding Pipeline with RabbitMQ">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- User Upload -->
+              <rect x="35" y="45" width="200" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--primary)">1. YOUTUBE CLIENT</text>
+              <text x="50" y="90" class="svg-title">User Video Upload</text>
+              <text x="50" y="112" class="svg-sub">• Uploads 4GB 4K raw video</text>
+              <text x="50" y="128" class="svg-sub">• Instant 200 OK response</text>
+              <rect x="50" y="138" width="170" height="26" rx="4" fill="var(--success-bg)" />
+              <text x="55" y="155" class="svg-mono-xs" fill="var(--success)" font-weight="700">"Uploaded! Transcoding..."</text>
+
+              <!-- Arrow -->
+              <path d="M 235 112 L 315 112" stroke="var(--primary)" stroke-width="2.5" />
+              <text x="245" y="102" class="svg-mono-xs" fill="var(--primary)">Task: encode</text>
+
+              <!-- RabbitMQ Transcoding Queue -->
+              <rect x="315" y="40" width="240" height="150" rx="10" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="2" />
+              <text x="330" y="63" class="svg-kicker" fill="var(--accent)">RABBITMQ TASK QUEUE</text>
+              <text x="330" y="85" class="svg-title">Transcode Buffer</text>
+              <text x="330" y="106" class="svg-sub">• 100K queued videos</text>
+              <rect x="330" y="115" width="210" height="35" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="340" y="137" class="svg-mono-xs" font-weight="700">vid_101.mp4 &bull; vid_102.mp4</text>
+              <text x="330" y="172" class="svg-sub">Buffers burst without dropping jobs</text>
+
+              <!-- Arrow -->
+              <path d="M 555 112 L 635 112" stroke="var(--success)" stroke-width="2.5" />
+
+              <!-- Transcoding Fleet -->
+              <rect x="635" y="40" width="210" height="150" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.8" />
+              <text x="650" y="63" class="svg-kicker" fill="var(--success)">2. ENCODING WORKER POOL</text>
+              <text x="650" y="83" class="svg-title">FFmpeg Workers (Auto-scale)</text>
+              <text x="650" y="103" class="svg-sub">• Worker 1: 1080p transcoder</text>
+              <text x="650" y="121" class="svg-sub">• Worker 2: 720p transcoder</text>
+              <text x="650" y="139" class="svg-sub">• Worker 3: Audio & Thumbnail</text>
+              <rect x="650" y="148" width="180" height="24" rx="4" fill="var(--primary-bg)" />
+              <text x="655" y="164" class="svg-mono-xs" fill="var(--primary)">Pushes chunks to S3 / CloudFront</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                RATE LIMITING & BUFFERING: ACCEPT ALL USER TRAFFIC &bull; PROCESS AT HARDWARE CAPACITY WITHOUT OVERHEATING
+              </text>
+            </svg>
+          </figure>
+        `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 66: PUB-SUB QUEUE (KAFKA), PRIORITY QUEUE, DEAD LETTER QUEUE & USING KAFKA + RABBITMQ TOGETHER
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-66-pubsub-kafka-priority-dlq",
+      number: "66",
+      title: "Pub-Sub Queue (Kafka), Priority Queue, Dead Letter Queue & Using Kafka + RabbitMQ Together",
+      tag: "Streaming & Reliability",
+      readTime: "11 min",
+      difficulty: "Advanced Systems",
+      diagramCount: 3,
+      description: "Covers the Publisher-Subscriber model via Apache Kafka topics and log partitions. Explains how enterprise architectures unify Kafka (for high-throughput event broadcasting) and RabbitMQ (for task-level worker queueing), followed by dedicated patterns for Priority Queues and Dead Letter Queues (DLQs).",
+      sections: [
+        {
+          num: "66.1",
+          title: "Publish-Subscribe (Pub-Sub) Queue — Apache Kafka",
+          content: `
+          <p>The <strong>Publish-Subscribe (Pub-Sub)</strong> model is designed for <strong>1-to-Many broadcasting</strong>. Whenever an event happens in one domain, multiple independent downstream services must be informed simultaneously.</p>
+          <p>In <strong>Apache Kafka</strong>:</p>
+          <ul>
+            <li>Producers publish events into <strong>Topics</strong> (ordered, distributed append-only commit logs).</li>
+            <li>Multiple consumer groups (Subscribers) subscribe to the Topic. Each consumer group maintains its own independent <strong>offset pointer</strong> into the log.</li>
+            <li>Reading a message <strong>does not delete it</strong>. All subscribers read the exact same event at their own processing speeds, and data is retained on disk according to retention policies (e.g. 7 days).</li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Apache Kafka Topic Partitioning & Multi-Consumer Broadcasting</span>
+              <span class="badge badge-accent">PUB-SUB BROADCAST</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Apache Kafka Pub-Sub Architecture">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Publisher -->
+              <rect x="35" y="45" width="190" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--primary)">PUBLISHER</text>
+              <text x="50" y="90" class="svg-title">Order Service</text>
+              <text x="50" y="112" class="svg-sub">• Broadcasts single event:</text>
+              <rect x="50" y="122" width="160" height="42" rx="4" fill="var(--primary-bg)" />
+              <text x="55" y="138" class="svg-mono-xs" fill="var(--primary)" font-weight="700">Event: "Order Placed"</text>
+              <text x="55" y="154" class="svg-mono-xs">{ orderId: 889, total: $45 }</text>
+
+              <!-- Arrow -->
+              <path d="M 225 112 L 295 112" stroke="var(--primary)" stroke-width="2.5" />
+
+              <!-- Kafka Topic -->
+              <rect x="295" y="40" width="260" height="150" rx="10" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="2" />
+              <text x="310" y="63" class="svg-kicker" fill="var(--accent)">APACHE KAFKA CLUSTER</text>
+              <text x="310" y="85" class="svg-title">Topic: order-events</text>
+              <rect x="310" y="95" width="230" height="40" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="320" y="114" class="svg-mono-xs" font-weight="700">Partition 0 &bull; Log Offset [0..1482]</text>
+              <text x="320" y="128" class="svg-mono-xs">Append-only durable commit log</text>
+              <text x="310" y="156" class="svg-sub">• Messages NOT deleted upon read</text>
+              <text x="310" y="172" class="svg-sub">• Retained on disk for N days</text>
+
+              <!-- Arrows to 3 distinct subscribers -->
+              <path d="M 555 85 L 635 65" stroke="var(--accent)" stroke-width="2" />
+              <path d="M 555 112 L 635 112" stroke="var(--accent)" stroke-width="2" />
+              <path d="M 555 140 L 635 160" stroke="var(--accent)" stroke-width="2" />
+
+              <!-- Subscribers -->
+              <rect x="635" y="40" width="210" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="650" y="65" class="svg-node" font-weight="600">Inventory Service (Deducts stock)</text>
+
+              <rect x="635" y="92" width="210" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="650" y="117" class="svg-node" font-weight="600">Payment Service (Charges card)</text>
+
+              <rect x="635" y="144" width="210" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="650" y="169" class="svg-node" font-weight="600">Notification Svc (Sends email)</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                1 EVENT BROADCAST &rarr; INDEPENDENT CONSUMER OFFSETS &bull; NO MESSAGE CONTENTION
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "66.2",
+          title: "How Kafka & RabbitMQ Work Together in a Real-World Application",
+          content: `
+          <p>Architects do not have to choose between Kafka or RabbitMQ exclusively. High-scale production systems combine both tools synergistically:</p>
+          <ul>
+            <li><strong>Kafka at the Ingestion / Broadcast Layer (1-to-Many):</strong>
+              <p>When an order is created, <code>Order Service</code> pushes the raw event into <strong>Kafka</strong>. Kafka acts as the central event spine, broadcasting the event to <code>Notification Service</code>, <code>Inventory Service</code>, and <code>Analytics Pipeline</code>.</p>
+            </li>
+            <li><strong>RabbitMQ at the Transactional Workload Layer (1-to-1):</strong>
+              <p>For the payment processing phase, payments must be executed carefully across a pool of competing workers with granular message acknowledgements, retry limits, and dead-letter handling. The payment events stream from Kafka into a <strong>RabbitMQ Point-to-Point Queue</strong>, where multiple worker instances pull and execute charges without stepping on each other.</p>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Hybrid Pipeline: Kafka Event Spine + RabbitMQ Worker Distribution</span>
+              <span class="badge badge-accent">ENTERPRISE ARCHITECTURE</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Kafka and RabbitMQ working together in a production system">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Ingestion: Order Svc -->
+              <rect x="30" y="45" width="160" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="45" y="68" class="svg-kicker" fill="var(--primary)">1. INGESTION</text>
+              <text x="45" y="90" class="svg-title">Order Svc</text>
+              <text x="45" y="112" class="svg-sub">Publishes event:</text>
+              <rect x="45" y="122" width="130" height="26" rx="4" fill="var(--primary-bg)" />
+              <text x="50" y="139" class="svg-mono-xs" fill="var(--primary)">order.created</text>
+              <text x="45" y="168" class="svg-sub">High-velocity stream</text>
+
+              <!-- Arrow -->
+              <path d="M 190 112 L 235 112" stroke="var(--primary)" stroke-width="2.5" />
+
+              <!-- Kafka Broadcast Spine -->
+              <rect x="235" y="40" width="220" height="150" rx="8" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="2" />
+              <text x="250" y="63" class="svg-kicker" fill="var(--accent)">2. BROADCAST (KAFKA)</text>
+              <text x="250" y="85" class="svg-title">Kafka Event Spine</text>
+              <text x="250" y="105" class="svg-sub">1-to-Many distribution</text>
+              <!-- Branching out -->
+              <rect x="250" y="115" width="190" height="24" rx="4" fill="var(--bg-subtle)" />
+              <text x="255" y="131" class="svg-mono-xs">&rarr; Analytics & Warehouse</text>
+              <rect x="250" y="145" width="190" height="24" rx="4" fill="var(--bg-subtle)" />
+              <text x="255" y="161" class="svg-mono-xs">&rarr; Inventory & Notify</text>
+
+              <!-- Arrow to RabbitMQ -->
+              <path d="M 455 112 L 505 112" stroke="var(--accent)" stroke-width="2.5" />
+              <text x="460" y="102" class="svg-mono-xs">Pay stream</text>
+
+              <!-- RabbitMQ Point to Point Queue -->
+              <rect x="505" y="40" width="170" height="150" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="515" y="63" class="svg-kicker" fill="var(--primary)">3. WORKLOAD QUEUE</text>
+              <text x="515" y="83" class="svg-title">RabbitMQ Queue</text>
+              <text x="515" y="103" class="svg-sub">P2P Worker buffer</text>
+              <rect x="515" y="112" width="150" height="42" rx="4" fill="var(--primary-bg)" />
+              <text x="520" y="128" class="svg-mono-xs" fill="var(--primary)">Fine-grained ACK/NACK</text>
+              <text x="520" y="144" class="svg-mono-xs">Prefetch limit = 10</text>
+              <text x="515" y="175" class="svg-sub">Workload distribution</text>
+
+              <!-- Arrow to Worker Fleet -->
+              <path d="M 675 112 L 720 112" stroke="var(--success)" stroke-width="2.5" />
+
+              <!-- Worker Fleet -->
+              <rect x="720" y="45" width="130" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8" />
+              <text x="730" y="68" class="svg-kicker" fill="var(--success)">4. WORKERS</text>
+              <text x="730" y="88" class="svg-title">Payment Pool</text>
+              <rect x="730" y="98" width="110" height="22" rx="3" fill="var(--success-bg)" />
+              <text x="735" y="113" class="svg-mono-xs" fill="var(--success)">Worker Inst 1</text>
+              <rect x="730" y="124" width="110" height="22" rx="3" fill="var(--success-bg)" />
+              <text x="735" y="139" class="svg-mono-xs" fill="var(--success)">Worker Inst 2</text>
+              <rect x="730" y="150" width="110" height="22" rx="3" fill="var(--success-bg)" />
+              <text x="735" y="165" class="svg-mono-xs" fill="var(--success)">Worker Inst 3</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                KAFKA POWERS HIGH-THROUGHPUT REPLAYABLE BROADCASTING &bull; RABBITMQ POWERS TASK ORCHESTRATION
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "66.3",
+          title: "Priority Queue & Dead Letter Queue (DLQ)",
+          content: `
+          <p>Two specialized queue variants protect production operational integrity:</p>
+          <ul>
+            <li><strong>Priority Queue:</strong>
+              <p>Standard queues operate strictly on FIFO. In a Priority Queue, messages carry a numerical priority tag inside their metadata. Higher-priority items (e.g. VIP checkout, password reset SMS, security alert) jump ahead in line to be dequeued and executed before lower-priority batch jobs (e.g. promotional emails).</p>
+            </li>
+            <li><strong>Dead Letter Queue (DLQ):</strong>
+              <p>When a message repeatedly fails processing (due to a malformed payload, parsing bug, or database timeout), continuously retrying it causes a <strong>poison pill</strong> that stalls consumer threads. After a threshold (e.g. 3 failed retries), the broker routes the unprocessable message into a <strong>Dead Letter Queue (DLQ)</strong>. This isolates the faulty record without losing data, allowing developers to inspect logs, debug issues, and replay the message later.</p>
+            </li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Specialized Reliability Patterns: Priority Queue & Dead Letter Queue (DLQ)</span>
+              <span class="badge badge-accent">RELIABILITY PATTERNS</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Priority Queue and Dead Letter Queue architecture">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Left Side: Priority Queue -->
+              <rect x="30" y="40" width="380" height="150" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="45" y="63" class="svg-kicker" fill="var(--primary)">1. PRIORITY QUEUE PATTERN</text>
+              <text x="45" y="85" class="svg-title">Metadata Priority Ordering</text>
+
+              <!-- Queue visual -->
+              <rect x="45" y="95" width="350" height="42" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <rect x="55" y="102" width="110" height="28" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" />
+              <text x="60" y="120" class="svg-mono-xs" fill="var(--danger)" font-weight="700">VIP Order (P=10)</text>
+
+              <rect x="175" y="102" width="105" height="28" rx="4" fill="var(--warning-bg)" stroke="var(--warning)" />
+              <text x="180" y="120" class="svg-mono-xs" fill="var(--warning)">Regular (P=5)</text>
+
+              <rect x="290" y="102" width="95" height="28" rx="4" fill="var(--bg-surface)" stroke="var(--border-strong)" />
+              <text x="295" y="120" class="svg-mono-xs">Batch (P=1)</text>
+
+              <text x="45" y="160" class="svg-sub">&rarr; High-priority messages bypass queue backlog immediately</text>
+              <text x="45" y="176" class="svg-sub">&rarr; Critical SLAs preserved during heavy traffic surges</text>
+
+              <!-- Right Side: Dead Letter Queue -->
+              <rect x="440" y="40" width="410" height="150" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.8" />
+              <text x="455" y="63" class="svg-kicker" fill="var(--danger)">2. DEAD LETTER QUEUE (DLQ) PATTERN</text>
+              <text x="455" y="85" class="svg-title">Poison Pill Quarantine</text>
+
+              <!-- Flow in DLQ -->
+              <rect x="455" y="95" width="170" height="35" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="465" y="117" class="svg-mono-xs" font-weight="600">Consumer: 3x Retries</text>
+
+              <path d="M 625 112 L 675 112" stroke="var(--danger)" stroke-width="2" />
+              <text x="630" y="104" class="svg-mono-xs" fill="var(--danger)">Fails 3x</text>
+
+              <rect x="675" y="95" width="160" height="35" rx="6" fill="var(--danger-bg)" stroke="var(--danger)" />
+              <text x="685" y="117" class="svg-mono-xs" fill="var(--danger)" font-weight="700">DEAD LETTER QUEUE</text>
+
+              <text x="455" y="155" class="svg-sub">• Faulty payload quarantined to prevent consumer thread death</text>
+              <text x="455" y="172" class="svg-sub">• Triggers alert for engineering inspection and root-cause fix</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                PRIORITY QUEUE PROVIDES EXPEDITED SLAs &bull; DLQ PREVENTS POISON-PILL HEAD-OF-LINE BLOCKING
+              </text>
+            </svg>
+          </figure>
+        `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 67: THE PROBLEM WITH STANDARD LOAD BALANCING & SIMPLE MODULO HASHING
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-67-load-balancing-modulo-hashing",
+      number: "67",
+      title: "The Problem With Standard Load Balancing & Simple Modulo Hashing",
+      tag: "Hashing & Routing",
+      readTime: "9 min",
+      difficulty: "Core Architecture",
+      diagramCount: 3,
+      description: "Examines why standard load balancers (Round Robin, Least Connections) fail catastrophically when routing stateful session or cached data. Evaluates Simple Modulo Hashing for request stickiness and proves why adding or removing a single node triggers a destructive storm of cache misses.",
+      sections: [
+        {
+          num: "67.1",
+          title: "Why Standard Load Balancing Algorithms Fail for Cached & Session Data",
+          content: `
+          <p>When horizontally scaling an application across multiple server nodes (<code>Server 0, Server 1, Server 2</code>), traditional load balancing algorithms such as <strong>Round Robin</strong> distribute requests evenly (<code>~33.3%</code> per server).</p>
+          <p><strong>The Core Problem:</strong> Standard load balancers only balance server load—they have zero awareness of <strong>client data or cached state</strong>!</p>
+          <p>Trace 6 users (<code>U1</code> to <code>U6</code>) with a Round Robin load balancer:</p>
+          <ol>
+            <li>Requests are distributed:
+              <ul>
+                <li><code>U1, U4</code> &rarr; <strong>Server 0</strong></li>
+                <li><code>U2, U5</code> &rarr; <strong>Server 1</strong></li>
+                <li><code>U3, U6</code> &rarr; <strong>Server 2</strong></li>
+              </ul>
+            </li>
+            <li>When <code>U1</code> requests their profile, <code>Server 0</code> queries the database, caches <code>U1</code>'s profile in local RAM, and responds.</li>
+            <li>When <code>U1</code> makes a second request, Round Robin routes them to <strong>Server 2</strong>!</li>
+            <li><strong>Server 2's cache does NOT contain <code>U1</code>'s data &rarr; CACHE MISS!</strong></li>
+          </ol>
+          <p>This creates two severe liabilities: <strong>duplicate cached data</strong> consuming precious RAM across multiple servers, and <strong>degraded latency</strong> from repeated fallback queries to the database.</p>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Round Robin Load Balancing Cache Invalidation Vulnerability</span>
+              <span class="badge badge-warning">STATELESS BALANCING FLAW</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Why standard load balancing fails for cached data">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Client U1 -->
+              <rect x="35" y="45" width="180" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--primary)">CLIENT USER 1</text>
+              <text x="50" y="90" class="svg-title">Alice Profile</text>
+              <rect x="50" y="105" width="150" height="28" rx="4" fill="var(--primary-bg)" />
+              <text x="55" y="123" class="svg-mono-xs" fill="var(--primary)">Req 1: Fetches Profile</text>
+              <rect x="50" y="140" width="150" height="28" rx="4" fill="var(--warning-bg)" />
+              <text x="55" y="158" class="svg-mono-xs" fill="var(--warning)">Req 2: Modifies Profile</text>
+
+              <!-- Load Balancer in Middle -->
+              <rect x="275" y="45" width="220" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.8" />
+              <text x="290" y="68" class="svg-kicker">LOAD BALANCER</text>
+              <text x="290" y="90" class="svg-title">Round Robin Algorithm</text>
+              <text x="290" y="112" class="svg-sub">• Distributes without state check</text>
+              <text x="290" y="128" class="svg-sub">• Req 1 sent to Server 0</text>
+              <text x="290" y="144" class="svg-sub" fill="var(--danger)">• Req 2 sent to Server 2</text>
+              <rect x="290" y="152" width="190" height="20" rx="3" fill="var(--bg-subtle)" />
+              <text x="295" y="166" class="svg-mono-xs">Blind server alternation</text>
+
+              <!-- Servers -->
+              <path d="M 495 80 L 580 65" stroke="var(--success)" stroke-width="2" />
+              <path d="M 495 145 L 580 160" stroke="var(--danger)" stroke-width="2" stroke-dasharray="4,2" />
+
+              <rect x="580" y="35" width="265" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5" />
+              <text x="595" y="58" class="svg-node" font-weight="700">Server 0 (Local Cache)</text>
+              <text x="595" y="76" class="svg-sub">• U1 Profile cached in RAM &bull; <b style="color:var(--success)">Cache Hit</b></text>
+              <text x="595" y="92" class="svg-mono-xs" fill="var(--success)">Latency: 1ms</text>
+
+              <rect x="580" y="125" width="265" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.5" />
+              <text x="595" y="148" class="svg-node" font-weight="700" fill="var(--danger)">Server 2 (Different Node)</text>
+              <text x="595" y="166" class="svg-sub">• No U1 cache present &bull; <b style="color:var(--danger)">CACHE MISS!</b></text>
+              <text x="595" y="182" class="svg-mono-xs" fill="var(--danger)">Forces expensive DB query: 45ms</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                STATELESS LOAD BALANCING SHREDDERS LOCAL CACHE HIT RATIOS AND POLLUTES SERVER MEMORY
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "67.2",
+          title: "Achieving Request Stickiness via Simple Modulo Hashing",
+          content: `
+          <p>To eliminate cache misses, systems require <strong>Request Stickiness</strong>: guaranteeing that a given user's requests always route to the identical server holding their session.</p>
+          <p><strong>The Simple Modulo Hashing Formula:</strong></p>
+          <pre><code>Server Index = hash(User_ID) % N</code></pre>
+          <p>Where <code>N</code> is the total number of servers. For <code>N = 3</code> (Servers 0, 1, 2):</p>
+          <ul>
+            <li>User <code>U1</code> has <code>hash(U1) = 34</code> &rarr; <code>34 % 3 = 1</code> &rarr; <strong>Server 1</strong></li>
+            <li>User <code>U2</code> has <code>hash(U2) = 15</code> &rarr; <code>15 % 3 = 0</code> &rarr; <strong>Server 0</strong></li>
+            <li>User <code>U3</code> has <code>hash(U3) = 20</code> &rarr; <code>20 % 3 = 2</code> &rarr; <strong>Server 2</strong></li>
+          </ul>
+          <p>As long as <code>N</code> remains static at 3, every request from <code>U1</code> is guaranteed to hit Server 1, preserving 100% cache hit rates.</p>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Simple Modulo Hashing: Deterministic Request Stickiness</span>
+              <span class="badge badge-accent">HASH ROUTING</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Simple Modulo Hashing Mechanism">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Client Keys -->
+              <rect x="35" y="45" width="200" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--primary)">INCOMING USER KEYS</text>
+              <text x="50" y="90" class="svg-title">Client User IDs</text>
+              <rect x="50" y="100" width="170" height="22" rx="3" fill="var(--bg-subtle)" />
+              <text x="55" y="115" class="svg-mono-xs">User U1 &bull; hash(U1) = 34</text>
+              <rect x="50" y="126" width="170" height="22" rx="3" fill="var(--bg-subtle)" />
+              <text x="55" y="141" class="svg-mono-xs">User U2 &bull; hash(U2) = 15</text>
+              <rect x="50" y="152" width="170" height="22" rx="3" fill="var(--bg-subtle)" />
+              <text x="55" y="167" class="svg-mono-xs">User U3 &bull; hash(U3) = 20</text>
+
+              <!-- Arrow -->
+              <path d="M 235 112 L 315 112" stroke="var(--primary)" stroke-width="2.5" />
+
+              <!-- Hash Function Calculation -->
+              <rect x="315" y="45" width="250" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="2" />
+              <text x="330" y="68" class="svg-kicker" fill="var(--accent)">MODULO HASH FUNCTION</text>
+              <text x="330" y="90" class="svg-title">Server = hash % 3</text>
+              <rect x="330" y="100" width="220" height="22" rx="3" fill="var(--accent-light)" />
+              <text x="335" y="115" class="svg-mono-xs" font-weight="700">34 % 3 = 1 &rarr; Server 1</text>
+              <rect x="330" y="126" width="220" height="22" rx="3" fill="var(--accent-light)" />
+              <text x="335" y="141" class="svg-mono-xs" font-weight="700">15 % 3 = 0 &rarr; Server 0</text>
+              <rect x="330" y="152" width="220" height="22" rx="3" fill="var(--accent-light)" />
+              <text x="335" y="167" class="svg-mono-xs" font-weight="700">20 % 3 = 2 &rarr; Server 2</text>
+
+              <!-- Arrow -->
+              <path d="M 565 112 L 640 112" stroke="var(--success)" stroke-width="2.5" />
+
+              <!-- Servers -->
+              <rect x="640" y="45" width="205" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8" />
+              <text x="655" y="68" class="svg-kicker" fill="var(--success)">DETERMINISTIC NODES</text>
+              <text x="655" y="90" class="svg-title">Consistent Caching</text>
+              <rect x="655" y="100" width="175" height="22" rx="3" fill="var(--success-bg)" />
+              <text x="660" y="115" class="svg-mono-xs">Server 0: Caches U2</text>
+              <rect x="655" y="126" width="175" height="22" rx="3" fill="var(--success-bg)" />
+              <text x="660" y="141" class="svg-mono-xs">Server 1: Caches U1</text>
+              <rect x="655" y="152" width="175" height="22" rx="3" fill="var(--success-bg)" />
+              <text x="660" y="167" class="svg-mono-xs">Server 2: Caches U3</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                DETERMINISTIC ROUTING: SAME USER KEY ALWAYS RESOLVES TO THE EXACT SAME SERVER NODE
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "67.3",
+          title: "Major Drawback of Simple Modulo Hashing (Adding or Removing Servers)",
+          content: `
+          <p>While simple modulo hashing works when the server count is static, it collapses completely when servers scale dynamically:</p>
+          <p>Suppose traffic surges, and you scale out from <strong>N = 3</strong> to <strong>N = 4</strong> servers (adding Server 3). The modulo formula instantly shifts from <code>hash % 3</code> to <code>hash % 4</code>:</p>
+          <ul>
+            <li><strong>User U1 (Hash = 34):</strong> Previously <code>34 % 3 = 1</code> (Server 1). Now <code>34 % 4 = 2</code> (&rarr; <strong>Server 2</strong>)!</li>
+            <li><strong>User U2 (Hash = 15):</strong> Previously <code>15 % 3 = 0</code> (Server 0). Now <code>15 % 4 = 3</code> (&rarr; <strong>Server 3</strong>)!</li>
+            <li><strong>User U3 (Hash = 20):</strong> Previously <code>20 % 3 = 2</code> (Server 2). Now <code>20 % 4 = 0</code> (&rarr; <strong>Server 0</strong>)!</li>
+          </ul>
+          <p><strong>Result — The Storm of Cache Misses:</strong> Almost <strong>all keys (~(N-1)/N &approx; 75–90%)</strong> change destinations! Because Server 2 does not have U1's cached profile, millions of users hit concurrent cache misses, slamming the underlying database and causing a complete site outage.</p>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">The Modulo Rescaling Catastrophe: Adding 1 Server Shuffles All Keys</span>
+              <span class="badge badge-danger">SCALING VULNERABILITY</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Catastrophic cache misses when scaling with modulo hashing">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Before Box: N=3 -->
+              <rect x="35" y="45" width="370" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.5" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--primary)">BEFORE SCALING (N = 3 SERVERS)</text>
+              <text x="50" y="90" class="svg-title">Formula: hash % 3</text>
+              <rect x="50" y="100" width="340" height="22" rx="3" fill="var(--primary-bg)" />
+              <text x="55" y="115" class="svg-mono-xs" fill="var(--primary)">U1 (hash 34) % 3 = 1 &rarr; Server 1 (CACHED)</text>
+              <rect x="50" y="126" width="340" height="22" rx="3" fill="var(--primary-bg)" />
+              <text x="55" y="141" class="svg-mono-xs" fill="var(--primary)">U2 (hash 15) % 3 = 0 &rarr; Server 0 (CACHED)</text>
+              <rect x="50" y="152" width="340" height="22" rx="3" fill="var(--primary-bg)" />
+              <text x="55" y="167" class="svg-mono-xs" fill="var(--primary)">U3 (hash 20) % 3 = 2 &rarr; Server 2 (CACHED)</text>
+
+              <!-- Central Arrow -->
+              <path d="M 405 112 L 475 112" stroke="var(--danger)" stroke-width="3" />
+              <text x="440" y="100" class="svg-mono-xs" text-anchor="middle" fill="var(--danger)" font-weight="700">+1 Server</text>
+
+              <!-- After Box: N=4 -->
+              <rect x="475" y="45" width="370" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="2" />
+              <text x="490" y="68" class="svg-kicker" fill="var(--danger)">AFTER SCALING (N = 4 SERVERS) &bull; TOTAL SHUFFLE</text>
+              <text x="490" y="90" class="svg-title" fill="var(--danger)">Formula: hash % 4</text>
+              <rect x="490" y="100" width="340" height="22" rx="3" fill="var(--danger-bg)" />
+              <text x="495" y="115" class="svg-mono-xs" fill="var(--danger)">34 % 4 = 2 &rarr; Server 2 &bull; CACHE MISS!</text>
+              <rect x="490" y="126" width="340" height="22" rx="3" fill="var(--danger-bg)" />
+              <text x="495" y="141" class="svg-mono-xs" fill="var(--danger)">15 % 4 = 3 &rarr; Server 3 &bull; CACHE MISS!</text>
+              <rect x="490" y="152" width="340" height="22" rx="3" fill="var(--danger-bg)" />
+              <text x="495" y="167" class="svg-mono-xs" fill="var(--danger)">20 % 4 = 0 &rarr; Server 0 &bull; CACHE MISS!</text>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle" fill="var(--danger)">
+                MASSIVE CACHE MISS STORM: 75%+ OF ALL KEYS SHUFFLE DESTINATIONS & SLAM THE DATABASE
+              </text>
+            </svg>
+          </figure>
+        `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 68: CONSISTENT HASHING — HOW IT WORKS & SOLVES SERVER SCALING
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-68-consistent-hashing-scaling",
+      number: "68",
+      title: "Consistent Hashing — How It Works & Solves Server Scaling",
+      tag: "Distributed Algorithms",
+      readTime: "12 min",
+      difficulty: "Advanced Systems",
+      diagramCount: 4,
+      description: "In-depth breakdown of Consistent Hashing using the circular Hash Ring. Explains server and key placement, clockwise key assignment, the mathematical rule for determining affected keys when adding a new node (traversing anti-clockwise to the predecessor), and graceful handling of node failures.",
+      sections: [
+        {
+          num: "68.1",
+          title: "Core Concept: The Hash Ring (x0 to xn)",
+          content: `
+          <p><strong>Consistent Hashing</strong> replaces simple modulo divisions with a continuous hash space mapped onto a circular <strong>Hash Ring</strong>:</p>
+          <ul>
+            <li>Standard hash algorithms (such as MD5 or SHA-1) output integers in a fixed range from <code>0</code> to <code>2<sup>32</sup> - 1</code> (or <code>x0</code> to <code>xn</code>).</li>
+            <li>Imagine taking this linear 0 to <code>2<sup>32</sup> - 1</code> number line and bending it so that the maximum value <code>xn</code> connects back to the starting point <code>x0</code>.</li>
+            <li>This forms a continuous 360-degree circular ring that wraps around indefinitely in a <strong>clockwise direction</strong>.</li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">The Consistent Hash Ring: Continuous [0 to 2^32 - 1] Coordinate Space</span>
+              <span class="badge badge-accent">HASH RING GEOMETRY</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Consistent Hash Ring topology">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Left Column: Geometry Concept -->
+              <rect x="35" y="45" width="280" height="140" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--primary)">CIRCULAR TOPOLOGY</text>
+              <text x="50" y="90" class="svg-title">Fixed Output Range</text>
+              <text x="50" y="112" class="svg-sub">• Range: <code>0</code> to <code>2^32 - 1</code></text>
+              <text x="50" y="128" class="svg-sub">• Wrap-around: x_n connects to x_0</text>
+              <rect x="50" y="138" width="250" height="30" rx="4" fill="var(--primary-bg)" />
+              <text x="55" y="157" class="svg-mono-xs" fill="var(--primary)" font-weight="700">Clockwise Traversal Direction</text>
+
+              <!-- Center/Right: Circular Ring Representation -->
+              <g transform="translate(560, 115)">
+                <!-- Ring circle -->
+                <circle cx="0" cy="0" r="85" fill="none" stroke="var(--border-strong)" stroke-width="4" stroke-dasharray="4,4" />
+                <circle cx="0" cy="0" r="85" fill="none" stroke="var(--accent)" stroke-width="2" />
+
+                <!-- Markers -->
+                <circle cx="0" cy="-85" r="7" fill="var(--primary)" />
+                <text x="0" y="-98" class="svg-mono-xs" text-anchor="middle" font-weight="700">0 / 2^32-1 (x0 / xn)</text>
+
+                <circle cx="85" cy="0" r="7" fill="var(--primary)" />
+                <text x="125" y="4" class="svg-mono-xs" text-anchor="middle">2^30</text>
+
+                <circle cx="0" cy="85" r="7" fill="var(--primary)" />
+                <text x="0" y="105" class="svg-mono-xs" text-anchor="middle">2^31</text>
+
+                <circle cx="-85" cy="0" r="7" fill="var(--primary)" />
+                <text x="-125" y="4" class="svg-mono-xs" text-anchor="middle">3*(2^30)</text>
+
+                <!-- Clockwise arrow in center -->
+                <path d="M -25 -10 A 30 30 0 1 1 25 -10" fill="none" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#arr)" />
+                <text x="0" y="5" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--accent)">Clockwise</text>
+              </g>
+
+              <text x="440" y="212" class="svg-mono-xs" text-anchor="middle">
+                CONTINUOUS CLOSED COORDINATE SPACE: CONNECTING MIN AND MAX POINTS ELIMINATES FIXED BOUNDARY ARTIFACTS
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "68.2",
+          title: "Placing Servers & Keys on the Hash Ring (Clockwise Assignment)",
+          content: `
+          <p>Consistent hashing maps both servers and data keys onto the exact same hash ring:</p>
+          <ol>
+            <li><strong>Hash the Physical Servers:</strong> Hash each server's IP address or host name (e.g. <code>hash("10.0.0.1")</code>) and position servers <code>S0, S1, S2, S3</code> onto their respective points around the ring.</li>
+            <li><strong>Hash the Client Keys:</strong> Hash each user ID or cache key (e.g. <code>hash("user_101")</code>) using the identical hash function, positioning keys <code>k0, k1, k2, k3</code> onto the ring.</li>
+            <li><strong>Assign Keys to Servers (Clockwise Traversal Rule):</strong>
+              <p>To determine which server handles a key, locate the key on the ring and <strong>walk clockwise</strong> until you hit the first physical server:</p>
+              <ul>
+                <li>Key <code>k0</code> &rarr; walks clockwise &rarr; lands on <strong>Server S0</strong></li>
+                <li>Key <code>k1</code> &rarr; walks clockwise &rarr; lands on <strong>Server S1</strong></li>
+                <li>Key <code>k2</code> &rarr; walks clockwise &rarr; lands on <strong>Server S2</strong></li>
+                <li>Key <code>k3</code> &rarr; walks clockwise &rarr; lands on <strong>Server S3</strong></li>
+              </ul>
+            </li>
+          </ol>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Clockwise Key Assignment on the Consistent Hash Ring</span>
+              <span class="badge badge-accent">HASH RING MAPPING</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Placing servers and keys on the hash ring">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Left: Description -->
+              <rect x="35" y="45" width="280" height="140" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--primary)">CLOCKWISE ASSIGNMENT</text>
+              <text x="50" y="90" class="svg-title">Key-to-Server Mapping</text>
+              <text x="50" y="112" class="svg-sub">• hash(Server IP) &rarr; Server node</text>
+              <text x="50" y="128" class="svg-sub">• hash(User ID) &rarr; Key node</text>
+              <rect x="50" y="138" width="250" height="30" rx="4" fill="var(--success-bg)" />
+              <text x="55" y="157" class="svg-mono-xs" fill="var(--success)" font-weight="700">k0 &rarr; S0 &bull; k1 &rarr; S1 &bull; k2 &rarr; S2 &bull; k3 &rarr; S3</text>
+
+              <!-- Center/Right: Ring with Servers and Keys -->
+              <g transform="translate(580, 115)">
+                <circle cx="0" cy="0" r="85" fill="none" stroke="var(--accent)" stroke-width="3" />
+
+                <!-- Server S0 at top right (45 deg) -->
+                <circle cx="60" cy="-60" r="14" fill="var(--primary)" />
+                <text x="60" y="-56" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S0</text>
+
+                <!-- Server S1 at bottom right (135 deg) -->
+                <circle cx="60" cy="60" r="14" fill="var(--primary)" />
+                <text x="60" y="64" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S1</text>
+
+                <!-- Server S2 at bottom left (225 deg) -->
+                <circle cx="-60" cy="60" r="14" fill="var(--primary)" />
+                <text x="-60" y="64" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S2</text>
+
+                <!-- Server S3 at top left (315 deg) -->
+                <circle cx="-60" cy="-60" r="14" fill="var(--primary)" />
+                <text x="-60" y="-56" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S3</text>
+
+                <!-- Keys preceding servers clockwise -->
+                <!-- k0 sits at top (0 deg) -> goes clockwise to S0 -->
+                <rect x="-12" y="-95" width="24" height="16" rx="3" fill="var(--accent-gold)" />
+                <text x="0" y="-83" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">k0</text>
+                <path d="M 16 -88 A 85 85 0 0 1 50 -68" fill="none" stroke="var(--accent-gold)" stroke-width="2" />
+
+                <!-- k1 sits at right (90 deg) -> goes clockwise to S1 -->
+                <rect x="80" y="-8" width="24" height="16" rx="3" fill="var(--accent-gold)" />
+                <text x="92" y="4" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">k1</text>
+                <path d="M 85 10 A 85 85 0 0 1 70 50" fill="none" stroke="var(--accent-gold)" stroke-width="2" />
+
+                <!-- k2 sits at bottom (180 deg) -> goes clockwise to S2 -->
+                <rect x="-12" y="80" width="24" height="16" rx="3" fill="var(--accent-gold)" />
+                <text x="0" y="92" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">k2</text>
+                <path d="M -16 85 A 85 85 0 0 1 -50 70" fill="none" stroke="var(--accent-gold)" stroke-width="2" />
+
+                <!-- k3 sits at left (270 deg) -> goes clockwise to S3 -->
+                <rect x="-105" y="-8" width="24" height="16" rx="3" fill="var(--accent-gold)" />
+                <text x="-93" y="4" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">k3</text>
+                <path d="M -85 -10 A 85 85 0 0 1 -70 -50" fill="none" stroke="var(--accent-gold)" stroke-width="2" />
+              </g>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                EACH KEY MOVES CLOCKWISE ALONG THE RING UNTIL IT ENCOUNTERS THE FIRST PHYSICAL SERVER NODE
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "68.3",
+          title: "Adding a New Server (S4) & Finding Affected Keys",
+          content: `
+          <p>The true power of Consistent Hashing appears when scaling out: adding a new server does <strong>NOT</strong> shuffle all keys across the cluster!</p>
+          <p>Suppose we add a new server <strong>S4</strong> on the ring between <strong>S0</strong> and <strong>S1</strong>:</p>
+          <ul>
+            <li><strong>Before adding S4:</strong> Keys <code>k1, k4, k5</code> located between S0 and S1 moved clockwise and were assigned to <code>S1</code>.</li>
+            <li><strong>After adding S4:</strong> Moving clockwise from <code>k1, k4, k5</code> now hits <strong>S4 first</strong>! Therefore, only <code>k1, k4, k5</code> reassign to S4.</li>
+            <li><strong>What happens to all other keys (k0, k2, k3)?</strong> They remain completely untouched! <code>k0</code> still routes to S0, <code>k2</code> to S2, and <code>k3</code> to S3.</li>
+          </ul>
+          <p><strong>The Golden Rule for Finding Affected Keys:</strong></p>
+          <blockquote>
+            Start at the newly added server (<code>S4</code>) and traverse <strong>anti-clockwise</strong> until you hit the immediately preceding server (<code>S0</code>). <strong>Only the keys situated in that single sector between S0 and S4 are affected</strong> (only <code>K / N</code> keys instead of 100% of keys!).
+          </blockquote>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Adding Server S4: Only Keys in Wedge [S0 &rarr; S4] are Remapped</span>
+              <span class="badge badge-success">GRACEFUL SCALING</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Adding new server S4 to consistent hash ring">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Left side explanation -->
+              <rect x="35" y="45" width="300" height="140" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--success)">GOLDEN RULE FOR AFFECTED KEYS</text>
+              <text x="50" y="90" class="svg-title">Anti-Clockwise Scan</text>
+              <text x="50" y="112" class="svg-sub">1. Start at new node <b>S4</b></text>
+              <text x="50" y="128" class="svg-sub">2. Move anti-clockwise to predecessor <b>S0</b></text>
+              <rect x="50" y="138" width="270" height="30" rx="4" fill="var(--success-bg)" />
+              <text x="55" y="157" class="svg-mono-xs" fill="var(--success)" font-weight="700">ONLY keys between S0 & S4 reassign!</text>
+
+              <!-- Ring representation -->
+              <g transform="translate(600, 115)">
+                <circle cx="0" cy="0" r="85" fill="none" stroke="var(--border-strong)" stroke-width="3" />
+
+                <!-- Sector highlight for S0 -> S4 -->
+                <path d="M 60 -60 A 85 85 0 0 1 85 0 L 0 0 Z" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5" stroke-dasharray="3,3" />
+
+                <!-- Existing Servers -->
+                <circle cx="60" cy="-60" r="12" fill="var(--primary)" />
+                <text x="60" y="-56" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S0</text>
+
+                <!-- NEW Server S4 inserted at 0 deg -->
+                <circle cx="85" cy="0" r="14" fill="var(--success)" />
+                <text x="85" y="4" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S4</text>
+                <text x="120" y="4" class="svg-mono-xs" fill="var(--success)" font-weight="700">NEW!</text>
+
+                <circle cx="60" cy="60" r="12" fill="var(--primary)" />
+                <text x="60" y="64" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S1</text>
+
+                <circle cx="-60" cy="60" r="12" fill="var(--primary)" />
+                <text x="-60" y="64" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S2</text>
+
+                <circle cx="-60" cy="-60" r="12" fill="var(--primary)" />
+                <text x="-60" y="-56" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S3</text>
+
+                <!-- Affected Key in wedge -->
+                <rect x="75" y="-38" width="22" height="15" rx="3" fill="var(--accent-gold)" />
+                <text x="86" y="-27" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">k1</text>
+                <text x="110" y="-27" class="svg-mono-xs" fill="var(--success)">&rarr; moves to S4</text>
+              </g>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                MINIMAL KEY MIGRATION: ON AVERAGE, ONLY K / N KEYS RELOCATE &bull; ZERO MASS-CACHE-MISS SHIFT
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "68.4",
+          title: "Removing a Server (S3 Goes Down)",
+          content: `
+          <p>When a server fails or is decommissioned, Consistent Hashing confines the failure impact strictly to that single server's allocated keys:</p>
+          <ul>
+            <li>Suppose <strong>Server S3 crashes</strong>.</li>
+            <li>Key <code>k3</code> previously routed clockwise to S3. With S3 gone, moving clockwise from <code>k3</code> now continues past S3 until it hits the next live server on the ring: <strong>Server S0</strong>.</li>
+            <li><strong>Impact:</strong> Only the keys belonging to S3 relocate to S0.</li>
+            <li><strong>What about keys k0, k1, k2?</strong> They remain 100% active and untouched on their respective servers! The rest of the cluster suffers <strong>zero cache misses</strong>.</li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Removing Server S3: Only S3 Keys Cascade Clockwise to Next Node</span>
+              <span class="badge badge-warning">GRACEFUL DEGRADATION</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Removing a server from the consistent hash ring">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Left Side: Explanation -->
+              <rect x="35" y="45" width="290" height="140" rx="8" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--warning)">NODE FAILURE RESILIENCY</text>
+              <text x="50" y="90" class="svg-title">S3 Crash Isolation</text>
+              <text x="50" y="112" class="svg-sub">• Server S3 crashes or shuts down</text>
+              <text x="50" y="128" class="svg-sub">• Keys from S3 cascade clockwise to S0</text>
+              <rect x="50" y="138" width="260" height="30" rx="4" fill="var(--warning-bg)" />
+              <text x="55" y="157" class="svg-mono-xs" fill="var(--warning)" font-weight="700">Servers S0, S1, S2 remain 100% intact!</text>
+
+              <!-- Center/Right: Ring with Crashed S3 -->
+              <g transform="translate(590, 115)">
+                <circle cx="0" cy="0" r="85" fill="none" stroke="var(--accent)" stroke-width="3" />
+
+                <!-- Server S0 receiving S3 keys -->
+                <circle cx="60" cy="-60" r="14" fill="var(--primary)" stroke="var(--success)" stroke-width="3" />
+                <text x="60" y="-56" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S0</text>
+                <text x="60" y="-80" class="svg-mono-xs" fill="var(--success)" text-anchor="middle" font-weight="700">Takes S3 Keys</text>
+
+                <!-- Live S1 -->
+                <circle cx="60" cy="60" r="12" fill="var(--primary)" />
+                <text x="60" y="64" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S1</text>
+
+                <!-- Live S2 -->
+                <circle cx="-60" cy="60" r="12" fill="var(--primary)" />
+                <text x="-60" y="64" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S2</text>
+
+                <!-- CRASHED S3 -->
+                <circle cx="-60" cy="-60" r="14" fill="var(--danger)" stroke="var(--danger-bg)" stroke-width="4" />
+                <text x="-60" y="-56" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">&times;</text>
+                <text x="-95" y="-60" class="svg-mono-xs" fill="var(--danger)" font-weight="700">DEAD S3</text>
+
+                <!-- k3 routing around S3 to S0 -->
+                <path d="M -75 -40 A 85 85 0 0 1 45 -60" fill="none" stroke="var(--warning)" stroke-width="2.5" stroke-dasharray="4,2" />
+                <text x="-10" y="-65" class="svg-mono-xs" fill="var(--warning)" font-weight="700">k3 skips S3 &rarr; S0</text>
+              </g>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                NODE CRASHES ARE LOCALLY CONTAINED &bull; REMAINING CLUSTER RETIRES ZERO UNAFFECTED CACHE ENTRIES
+              </text>
+            </svg>
+          </figure>
+        `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 69: NON-UNIFORM DISTRIBUTION PROBLEM & VIRTUAL NODES
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-69-virtual-nodes-non-uniform-distribution",
+      number: "69",
+      title: "Non-Uniform Distribution Problem & Virtual Nodes",
+      tag: "Cluster Optimization",
+      readTime: "8 min",
+      difficulty: "Advanced Systems",
+      diagramCount: 2,
+      description: "Explores the fundamental challenge of hash variance in Consistent Hashing, where randomly hashed servers leave large gaps on the ring, creating catastrophic hotspots. Details the Virtual Nodes solution (vnodes) that distributes multiple virtual replicas per physical server to achieve mathematically uniform load distribution.",
+      sections: [
+        {
+          num: "69.1",
+          title: "The Uneven Load (Skewed Gap) Problem in Consistent Hashing",
+          content: `
+          <p>Although Consistent Hashing provides graceful key migration during scaling, basic implementations suffer from <strong>Non-Uniform Distribution (Hash Skew)</strong>:</p>
+          <ul>
+            <li>Hash functions distribute values uniformly in theory, but when you only hash a small handful of physical nodes (e.g., 3 or 4 servers), <strong>random clustering naturally occurs</strong>.</li>
+            <li>For example, <code>S1, S2, S3</code> might hash close to each other, leaving a massive empty gap between <code>S0</code> and <code>S1</code>.</li>
+            <li>Because keys fall randomly across the entire ring, the vast majority of incoming keys land in that huge gap between S0 and S1 and traverse clockwise into <strong>Server S1</strong>.</li>
+            <li><strong>Result:</strong> <code>S1</code> is flooded with 70–80% of all traffic and crashes under load, while <code>S0, S2, S3</code> sit nearly idle.</li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Non-Uniform Distribution: Clustered Nodes & Giant Gap Hotspot</span>
+              <span class="badge badge-danger">HASH VARIANCE FLAW</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Non-uniform distribution problem in consistent hashing">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Left side explanation -->
+              <rect x="35" y="45" width="290" height="140" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--danger)">THE SKEWED GAP PROBLEM</text>
+              <text x="50" y="90" class="svg-title">Server Clustering Hotspots</text>
+              <text x="50" y="112" class="svg-sub">• Few physical servers = high variance</text>
+              <text x="50" y="128" class="svg-sub">• Giant gap between S0 & S1 (70% ring)</text>
+              <rect x="50" y="138" width="260" height="30" rx="4" fill="var(--danger-bg)" />
+              <text x="55" y="157" class="svg-mono-xs" fill="var(--danger)" font-weight="700">S1 overloaded &bull; S2, S3 underutilized!</text>
+
+              <!-- Ring representation -->
+              <g transform="translate(600, 115)">
+                <circle cx="0" cy="0" r="85" fill="none" stroke="var(--border-strong)" stroke-width="3" />
+
+                <!-- Highlight giant gap (from 0 deg all the way to 180 deg) -->
+                <path d="M 0 -85 A 85 85 0 0 1 85 0 A 85 85 0 0 1 0 85 L 0 0 Z" fill="var(--danger-bg)" opacity="0.6" stroke="var(--danger)" stroke-dasharray="3,3" />
+
+                <!-- Server S0 at top -->
+                <circle cx="0" cy="-85" r="13" fill="var(--primary)" />
+                <text x="0" y="-81" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S0</text>
+
+                <!-- Massive empty gap -->
+                <text x="45" y="0" class="svg-mono-xs" fill="var(--danger)" font-weight="700" text-anchor="middle">GIANT GAP (70%)</text>
+                <text x="45" y="15" class="svg-mono-xs" fill="var(--danger)" text-anchor="middle">All keys hit S1!</text>
+
+                <!-- Clustered S1, S2, S3 on left side -->
+                <circle cx="0" cy="85" r="14" fill="var(--danger)" stroke="var(--danger)" stroke-width="2" />
+                <text x="0" y="89" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S1</text>
+                <text x="0" y="112" class="svg-mono-xs" fill="var(--danger)" text-anchor="middle" font-weight="700">HOTSPOT CRASH</text>
+
+                <circle cx="-55" cy="65" r="12" fill="var(--primary)" />
+                <text x="-55" y="69" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S2</text>
+
+                <circle cx="-80" cy="28" r="12" fill="var(--primary)" />
+                <text x="-80" y="32" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S3</text>
+              </g>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                RANDOM PLACEMENT OF FEW NODES GENERATES SKEWED GAPS THAT DEFEAT UNIFORM LOAD BALANCING
+              </text>
+            </svg>
+          </figure>
+        `
+        },
+        {
+          num: "69.2",
+          title: "How Virtual Nodes Solve Non-Uniform Distribution",
+          content: `
+          <p>To eliminate hash variance and achieve perfectly uniform distribution, modern distributed systems (such as <strong>Amazon DynamoDB</strong>, <strong>Apache Cassandra</strong>, and <strong>Discord</strong>) utilize <strong>Virtual Nodes (vnodes)</strong>:</p>
+          <ul>
+            <li>Instead of placing each physical server at only <em>one</em> spot on the ring, each physical server is mapped to <strong>hundreds of virtual positions</strong> (e.g., <code>100 to 256 vnodes</code> per machine).</li>
+            <li>We hash multiple virtual labels per server:
+              <pre><code>S0_1, S0_2, S0_3 ... S0_256 &rarr; all point back to Physical Server 0
+S1_1, S1_2, S1_3 ... S1_256 &rarr; all point back to Physical Server 1
+S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></pre>
+            </li>
+            <li>These virtual nodes are thoroughly interleaved around the 360-degree ring. The giant gaps are broken into hundreds of tiny alternating slices.</li>
+            <li>When keys fall randomly onto the ring, each physical machine receives an almost identical, mathematically balanced slice of traffic (standard deviation &lt; 5%).</li>
+            <li><strong>Hardware Heterogeneity:</strong> More powerful servers (e.g. 64-core box vs 16-core box) can simply be assigned 4x more virtual nodes, effortlessly absorbing 4x more traffic!</li>
+          </ul>
+
+          <figure class="diagram-frame">
+            <div class="diagram-toolbar">
+              <span class="diagram-toolbar__title">Virtual Nodes (vnodes): Interleaving Slices for Mathematically Uniform Load</span>
+              <span class="badge badge-success">PERFECT LOAD EQUALIZATION</span>
+            </div>
+            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Virtual nodes solving non-uniform distribution">
+              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+
+              <!-- Left Side: Explanation -->
+              <rect x="35" y="45" width="300" height="140" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8" />
+              <text x="50" y="68" class="svg-kicker" fill="var(--success)">VIRTUAL NODES (VNODES)</text>
+              <text x="50" y="90" class="svg-title">Interleaved Replicas</text>
+              <text x="50" y="112" class="svg-sub">• 100–256 virtual points per server</text>
+              <text x="50" y="128" class="svg-sub">• Breaks giant gaps into tiny slices</text>
+              <rect x="50" y="138" width="270" height="30" rx="4" fill="var(--success-bg)" />
+              <text x="55" y="157" class="svg-mono-xs" fill="var(--success)" font-weight="700">Traffic variance drops to &lt; 5%!</text>
+
+              <!-- Center/Right: Ring with interleaved Virtual Nodes -->
+              <g transform="translate(600, 115)">
+                <circle cx="0" cy="0" r="85" fill="none" stroke="var(--accent)" stroke-width="3" />
+
+                <!-- Interleaved Virtual Nodes for S0 (Green), S1 (Gold), S2 (Blue) -->
+                <!-- S0_1 -->
+                <circle cx="0" cy="-85" r="10" fill="var(--primary)" />
+                <text x="0" y="-72" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--primary)">S0_1</text>
+
+                <!-- S1_1 -->
+                <circle cx="43" cy="-73" r="10" fill="var(--accent-gold)" />
+                <text x="43" y="-60" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--accent-gold)">S1_1</text>
+
+                <!-- S2_1 -->
+                <circle cx="73" cy="-43" r="10" fill="var(--info)" />
+                <text x="73" y="-30" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--info)">S2_1</text>
+
+                <!-- S0_2 -->
+                <circle cx="85" cy="0" r="10" fill="var(--primary)" />
+                <text x="68" y="4" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--primary)">S0_2</text>
+
+                <!-- S1_2 -->
+                <circle cx="73" cy="43" r="10" fill="var(--accent-gold)" />
+                <text x="55" y="45" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--accent-gold)">S1_2</text>
+
+                <!-- S2_2 -->
+                <circle cx="43" cy="73" r="10" fill="var(--info)" />
+                <text x="43" y="62" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--info)">S2_2</text>
+
+                <!-- S0_3 -->
+                <circle cx="0" cy="85" r="10" fill="var(--primary)" />
+                <text x="0" y="74" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--primary)">S0_3</text>
+
+                <!-- S1_3 -->
+                <circle cx="-43" cy="73" r="10" fill="var(--accent-gold)" />
+                <text x="-43" y="62" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--accent-gold)">S1_3</text>
+
+                <!-- S2_3 -->
+                <circle cx="-73" cy="43" r="10" fill="var(--info)" />
+                <text x="-55" y="45" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--info)">S2_3</text>
+
+                <!-- S0_4 -->
+                <circle cx="-85" cy="0" r="10" fill="var(--primary)" />
+                <text x="-68" y="4" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--primary)">S0_4</text>
+
+                <!-- S1_4 -->
+                <circle cx="-73" cy="-43" r="10" fill="var(--accent-gold)" />
+                <text x="-73" y="-30" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--accent-gold)">S1_4</text>
+
+                <!-- S2_4 -->
+                <circle cx="-43" cy="-73" r="10" fill="var(--info)" />
+                <text x="-43" y="-60" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--info)">S2_4</text>
+              </g>
+
+              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+                INTERLEAVED VIRTUAL NODES GUARANTEE UNIFORM HASH DISTRIBUTION ACROSS PHYSICAL HARDWARE
+              </text>
+            </svg>
+          </figure>
+        `
+        }
+      ]
+    },
+  ]
   };

@@ -4,41 +4,20 @@
 
 const UI = (() => {
 
-  /* ── 1. THEME SWITCHER (SauceLabs Light & Soft Slate Dark) ── */
+  /* ── 1. THEME LOCK (Permanent Sunlit Warm Cream Theme) ── */
   const Theme = {
-    THEMES: ['light', 'dark'],
-
     init() {
-      const saved = localStorage.getItem('onr-theme') || 'light';
-      this.apply(saved, false);
-
-      const toggleBtn = document.getElementById('theme-toggle');
-      if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => this.cycle());
-      }
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('onr-theme', 'light');
     },
 
     cycle() {
-      const current = document.documentElement.getAttribute('data-theme') || 'light';
-      const next = current === 'light' ? 'dark' : 'light';
-      this.apply(next, true);
+      // Dark mode removed per user request
     },
 
-    apply(theme, showToast) {
-      document.documentElement.setAttribute('data-theme', theme);
-      localStorage.setItem('onr-theme', theme);
-
-      const toggleBtn = document.getElementById('theme-toggle');
-      if (toggleBtn) {
-        toggleBtn.innerHTML = `
-          <span class="theme-icon">${theme === 'light' ? '☀' : '🌙'}</span>
-          <span>${theme === 'light' ? 'Light Mode' : 'Dark Mode'}</span>
-        `;
-      }
-
-      if (showToast) {
-        Toast.show(theme === 'light' ? '☀ Switched to Light Mode' : '🌙 Switched to Soft Dark Mode');
-      }
+    apply(theme) {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('onr-theme', 'light');
     }
   };
 

@@ -118,58 +118,16 @@
   --r-pill: 9999px;
 
   /* Transitions */
-  --t-fast:   0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  --t-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  /* SVG & Diagram Specific Color Tokens (Solid Colors Guaranteed for SVG Rendering) */
+  --primary:         #124531;
+  --primary-bg:      rgba(18, 69, 49, 0.08);
+  --primary-light:   rgba(18, 69, 49, 0.12);
+  --accent-bg:       rgba(18, 69, 49, 0.08);
+  --border-color:    rgba(175, 136, 44, 0.24);
+  --border-subtle:   rgba(160, 125, 42, 0.14);
+  --text-tertiary:   #55675D;
+  --bg-subtle:       rgba(246, 230, 164, 0.35);
+  --bg-card-solid:   #FAF4D8;
+  --bg-frame:        #FDFBF3;
 }
 
-/* ── SOFT DIMMED COZY DARK MODE (Dimmed Gradient, Never Pitch Black) ── */
-[data-theme="dark"] {
-  --bg-root:         #252F27;
-  --bg-gradient:     linear-gradient(180deg, #313D33 0%, #273229 380px, #212B23 100%);
-  --bg-card:         linear-gradient(180deg, rgba(48, 60, 50, 0.88) 0%, rgba(39, 49, 41, 0.82) 100%);
-  --bg-subsection:   rgba(52, 65, 55, 0.65);
-  --bg-surface:      rgba(56, 70, 59, 0.82);
-  --bg-surface-tint: rgba(94, 234, 212, 0.07);
-  --bg-card-raised:  #3A4A3E;
-  --bg-overlay:      rgba(15, 20, 16, 0.65);
-  --nav-bg:          rgba(42, 53, 44, 0.96);
-
-  /* Soft Mint Accent */
-  --accent:          #6EE7D5;
-  --accent-hover:    #A7F3E8;
-  --accent-light:    rgba(110, 231, 213, 0.11);
-  --accent-medium:   rgba(110, 231, 213, 0.18);
-  --accent-strong:   rgba(110, 231, 213, 0.34);
-
-  --btn-dark:        #6EE7D5;
-  --btn-dark-hover:  #A7F3E8;
-  --accent-gold:     #F6D56A;
-  --accent-gold-bg:  rgba(246, 213, 106, 0.14);
-
-  /* Crisp Dark Mode Text */
-  --text-primary:    #F7FAF8;
-  --text-secondary:  #D7E4DC;
-  --text-muted:      #9FB3A7;
-  --text-faint:      #778C7F;
-
-  /* Subtle Dark Mode Borders */
-  --border-faint:    rgba(255, 255, 255, 0.07);
-  --border:          rgba(255, 255, 255, 0.14);
-  --border-strong:   rgba(110, 231, 213, 0.34);
-
-  /* Semantic Alerts */
-  --success:         #5EEAA0;
-  --success-bg:      rgba(94, 234, 160, 0.14);
-  --warning:         #F6C95E;
-  --warning-bg:      rgba(246, 201, 94, 0.14);
-  --danger:          #F49D62;
-  --danger-bg:       rgba(244, 157, 98, 0.14);
-  --info:            #5CC8FA;
-  --info-bg:         rgba(92, 200, 250, 0.15);
-
-  /* Soft Shadows */
-  --shadow-sm:       0 2px 10px rgba(0, 0, 0, 0.16);
-  --shadow-md:       0 10px 32px rgba(0, 0, 0, 0.22);
-  --shadow-lg:       0 18px 48px rgba(0, 0, 0, 0.28);
-  --shadow-glow:     0 0 0 3px rgba(110, 231, 213, 0.22);
-}

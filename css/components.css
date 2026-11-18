@@ -551,33 +551,59 @@
   gap: 1rem;
 }
 
-.diagram-frame-header {
+.diagram-frame-header,
+.diagram-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem;
   padding-bottom: 0.75rem;
   border-bottom: 1px dashed var(--border);
 }
 
-.diagram-frame-title {
+.diagram-frame-title,
+.diagram-toolbar__title {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 500;
+  font-size: 0.8rem;
+  font-weight: 600;
   color: var(--text-primary);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
 }
 
-.diagram-frame-tag {
+.diagram-frame-tag,
+.badge-accent,
+.badge-warning,
+.badge-danger,
+.badge-success {
   font-family: var(--font-mono);
   font-size: 0.68rem;
+  font-weight: 600;
   color: var(--accent);
   background: var(--accent-light);
   border: 1px solid var(--border);
-  padding: 2px 9px;
+  padding: 3px 10px;
   border-radius: var(--r-pill);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badge-danger {
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-color: rgba(179, 74, 21, 0.25);
+}
+
+.badge-warning {
+  color: var(--warning);
+  background: var(--warning-bg);
+  border-color: rgba(180, 105, 25, 0.25);
+}
+
+.badge-success {
+  color: var(--success);
+  background: var(--success-bg);
+  border-color: rgba(15, 102, 77, 0.25);
 }
 
 .diagram-svg-wrap {

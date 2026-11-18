@@ -6,7 +6,7 @@
 const SYSTEM_DESIGN_NOTES = {
   meta: {
     title: "OneNightRevise — System Design Revision Notes",
-    totalTopics: 49
+    totalTopics: 54
   },
 
   navGroups: [
@@ -18,7 +18,8 @@ const SYSTEM_DESIGN_NOTES = {
     { label: "22–32 Scaling", targetId: "topic-22-what-is-scaling" },
     { label: "33–37 Cache", targetId: "topic-33-what-is-caching" },
     { label: "38–43 CAP", targetId: "topic-38-distributed-systems" },
-    { label: "44–49 Rate Limit", targetId: "topic-44-rate-limiting" }
+    { label: "44–49 Rate Limit", targetId: "topic-44-rate-limiting" },
+    { label: "50–54 HTTPS/SSL", targetId: "topic-50-http-symmetric-encryption" }
   ],
 
   topics: [
@@ -6169,6 +6170,627 @@ const SYSTEM_DESIGN_NOTES = {
                   <!-- Combined Bracket -->
                   <rect x="118" y="166" width="494" height="36" rx="10" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.4"/>
                   <text x="365" y="189" text-anchor="middle" class="svg-mono-xs">Active Sliding Window = 80% Prev (2 reqs) + 20% Current (max 1 more req) = Limit 3</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 50: HTTP PLAIN-TEXT PROBLEM & SYMMETRIC ENCRYPTION
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-50-http-symmetric-encryption",
+      number: "50",
+      shortLabel: "Symmetric Crypto",
+      title: "HTTP Plain-Text Problem & Symmetric Encryption",
+      summary: "Why plain-text HTTP exposes banking credentials to Man-in-the-Middle hackers, how encryption locks data in transit, and why pure Symmetric Encryption fails due to the Key Exchange Problem.",
+      subtopicLabels: ["50.1 HTTP Plain-Text Problem", "50.2 Encrypting Data", "50.3 Symmetric Encryption & Failure"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "50.1",
+          title: "How Client-Server Communication Works Over HTTP (The Plain-Text Problem)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li>In a standard web application, a <strong>Client</strong> sends a <strong>Request</strong> to the <strong>Server</strong>, and the Server sends back a <strong>Response</strong> (Request-Response cycle). By default, this happens over the <strong>HTTP Protocol</strong>.</li>
+              <li><strong>The Problem with HTTP:</strong> In HTTP communication, all data transferred between Client and Server goes in <strong>unencrypted form (Plain Text)</strong>.</li>
+              <li><strong>Example (Banking Application):</strong> Suppose a user is logging into a banking app and sends their <strong><code>Email &amp; Password</code></strong> over HTTP. Because it travels as <strong>Plain Text</strong>, a <strong>Hacker (Man-in-the-Middle)</strong> sitting on the network between Client and Server can easily intercept, read, and steal the user's <code>Email &amp; Password</code>.</li>
+            </ul>
+          `
+        },
+        {
+          num: "50.2",
+          title: "How to Solve the Plain-Text Problem: Encrypting Data",
+          content: `
+            <div class="sub-card-grid-3">
+              <div class="sub-box">
+                <div class="sub-box__tag">1. Client Side</div>
+                <div class="sub-box__title">Encrypt (Lock)</div>
+                <div class="sub-box__body">Before sending <code>Email &amp; Password</code> to the Server, the Client <strong>encrypts (locks)</strong> the data.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">2. In Transit</div>
+                <div class="sub-box__title">Unreadable Over Wire</div>
+                <div class="sub-box__body">Even if a <strong>Hacker (MITM)</strong> intercepts the data along the way, they cannot read it because it is in <strong>encrypted (locked) form</strong>.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">3. Server Side</div>
+                <div class="sub-box__title">Decrypt (Unlock)</div>
+                <div class="sub-box__body">Once the encrypted data reaches the Server, the Server <strong>decrypts (unlocks)</strong> it to read the original <code>Email &amp; Password</code>.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "50.3",
+          title: "Approach 1 — Symmetric Encryption & Why It Fails (The Key Exchange Problem)",
+          content: `
+            <p><strong>What is Symmetric Encryption?</strong> Uses a <strong>Single Key (Symmetric Key)</strong> for everything — the <strong>exact same single key</strong> is used to <strong>encrypt (lock)</strong> data on the Client and <strong>decrypt (unlock)</strong> it on the Server.</p>
+            <ol class="notes-ordered-list" style="margin-top: 0.75rem;">
+              <li>The Client uses its <strong>Symmetric Key</strong> to encrypt (lock) <code>Email &amp; Password</code> and sends the locked data to the Server.</li>
+              <li>The <strong>Hacker (Man-in-the-Middle)</strong> intercepts a copy of this locked data, but cannot read it yet.</li>
+              <li>However, once the locked data reaches the Server, <strong>the Server also needs that exact same Symmetric Key</strong> to unlock/decrypt it — without the key, even the Server cannot read it!</li>
+              <li>Therefore, the Client has to <strong>send the Symmetric Key over the network to the Server</strong> as well.</li>
+              <li><strong>How the Hacker Steals the Data:</strong> When the Client sends the <strong>Symmetric Key</strong> across the network, the Hacker sitting in the middle <strong>easily sniffs/steals a copy of the Symmetric Key</strong> too!</li>
+              <li>The Hacker uses the stolen <strong>Symmetric Key</strong> to unlock the <strong>encrypted data</strong> copied earlier and gets full access to the user's <code>Email &amp; Password</code>.</li>
+            </ol>
+
+            <div class="callout-highlight-box" style="margin-top: 1rem; border-left-color: var(--danger);">
+              <div class="callout-highlight-tag" style="color: var(--danger);">WHY PURE SYMMETRIC ENCRYPTION FAILS</div>
+              <p style="margin-top: 0.45rem; color: var(--text-primary);">
+                Sending both the <strong>locked data</strong> and the <strong>single key to unlock it</strong> over the same untrusted network allows a Man-in-the-Middle hacker to sniff both!
+              </p>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 50.1 · Plain-Text HTTP Leak &amp; Symmetric Key Exchange Failure</span>
+                <span class="diagram-frame-tag">MITM HACKER SNIFFS BOTH LOCKED DATA &amp; KEY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 245" class="arch-svg" role="img" aria-label="Diagram showing Symmetric Encryption failing when Client sends both Locked Data and the Symmetric Key over the network, allowing MITM Hacker to sniff both and decrypt Email and Password">
+                  <defs>
+                    <marker id="arrow-50" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Client -->
+                  <rect x="20" y="64" width="166" height="114" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="103" y="96" text-anchor="middle" class="svg-title">Client</text>
+                  <text x="103" y="120" text-anchor="middle" class="svg-mono-xs">Email &amp; Password</text>
+                  <text x="103" y="146" text-anchor="middle" class="svg-sub">Has Symmetric Key</text>
+
+                  <!-- Top Wire: Locked Data -->
+                  <line x1="186" y1="88" x2="682" y2="88" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-50)"/>
+                  <text x="434" y="76" text-anchor="middle" class="svg-mono-xs">1. Locked Data: [Email &amp; Password] (Encrypted)</text>
+
+                  <!-- Bottom Wire: Symmetric Key sent in transit! -->
+                  <line x1="186" y1="154" x2="682" y2="154" stroke="var(--danger)" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#arrow-50)"/>
+                  <text x="434" y="144" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">2. Sends Same Symmetric Key Over Network!</text>
+
+                  <!-- MITM Hacker Sniffing Both -->
+                  <rect x="304" y="176" width="260" height="54" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.6"/>
+                  <text x="434" y="199" text-anchor="middle" class="svg-node" style="fill: var(--danger);">Hacker (Man-in-the-Middle) ✕</text>
+                  <text x="434" y="218" text-anchor="middle" class="svg-mono-xs">Sniffs Locked Data + Key → Unlocked!</text>
+
+                  <!-- Server -->
+                  <rect x="690" y="64" width="168" height="114" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="774" y="96" text-anchor="middle" class="svg-title">Server</text>
+                  <text x="774" y="120" text-anchor="middle" class="svg-sub">Needs same key</text>
+                  <text x="774" y="144" text-anchor="middle" class="svg-sub">to decrypt data</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 51: ASYMMETRIC ENCRYPTION & HYBRID ENCRYPTION APPROACH
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-51-asymmetric-hybrid-encryption",
+      number: "51",
+      shortLabel: "Hybrid Encryption",
+      title: "Asymmetric Encryption & The Hybrid Encryption Approach",
+      summary: "Public Key (lock only) + Private Key (unlock only, 100% secret), and the 5-step Hybrid Encryption flow that safely exchanges the Client Symmetric Key so a passive hacker cannot decrypt it.",
+      subtopicLabels: ["51.1 Asymmetric Encryption", "51.2 5-Step Hybrid Encryption Flow"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "51.1",
+          title: "What is Asymmetric Encryption?",
+          content: `
+            <p>Unlike Symmetric Encryption (single key), <strong>Asymmetric Encryption uses a pair of two mathematically linked keys</strong>:</p>
+            <div class="sub-card-grid-2" style="margin-top: 0.85rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Openly Shared</div>
+                <div class="sub-box__title">1. Public Key (Encrypt / Lock Only)</div>
+                <div class="sub-box__body">Used strictly to <strong>encrypt (lock)</strong> data. It can be shared openly with anyone over the network.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">100% Secret</div>
+                <div class="sub-box__title">2. Private Key (Decrypt / Unlock Only)</div>
+                <div class="sub-box__body">Used strictly to <strong>decrypt (unlock)</strong> data. Kept <strong>100% secret</strong> by its owner and is never sent over the network.</div>
+              </div>
+            </div>
+            <div class="callout-highlight-box" style="margin-top: 1rem;">
+              <div class="callout-highlight-tag">CORE RULE OF ASYMMETRIC ENCRYPTION</div>
+              <p style="margin-top: 0.45rem; color: var(--text-primary);">
+                Any data encrypted using a <strong>Public Key</strong> can <strong>ONLY</strong> be decrypted using its matching <strong>Private Key</strong> (not even the Public Key itself can unlock data it just locked!).
+              </p>
+            </div>
+          `
+        },
+        {
+          num: "51.2",
+          title: "The Hybrid Encryption Approach (Combining Symmetric + Asymmetric)",
+          content: `
+            <p><strong>Initial Key Setup:</strong> Server generates <code>Server Public Key</code> + secret <code>Server Private Key</code>. Client generates <code>Client Symmetric Key</code>.</p>
+
+            <div class="workflow-stack" style="margin-top: 0.85rem;">
+              <div class="workflow-step">
+                <div class="step-circle">1</div>
+                <div>
+                  <div class="workflow-step__title">Step 1: Server Sends Its Public Key to Client</div>
+                  <div class="workflow-step__desc">The Server sends <code>Server Public Key</code> over the network to the Client. Even if the Hacker copies it, that is completely fine — a Public Key can only lock data, never unlock it.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">2</div>
+                <div>
+                  <div class="workflow-step__title">Step 2: Client Encrypts Its Symmetric Key Using Server's Public Key</div>
+                  <div class="workflow-step__desc">Instead of sending <code>Client Symmetric Key</code> in plain text, the Client locks it with <code>Server Public Key</code> and sends <code>[Client Symmetric Key] locked with Server Public Key</code> to the Server.</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">3</div>
+                <div>
+                  <div class="workflow-step__title">Step 3: Hacker Fails to Read the Symmetric Key</div>
+                  <div class="workflow-step__desc">The Hacker intercepts the locked package, but because it was encrypted with <code>Server Public Key</code>, ONLY <code>Server Private Key</code> can unlock it — which the Hacker does NOT have!</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">4</div>
+                <div>
+                  <div class="workflow-step__title">Step 4: Server Decrypts &amp; Obtains the Client's Symmetric Key</div>
+                  <div class="workflow-step__desc">The Server uses its secret <code>Server Private Key</code> to unlock the package and extract <code>Client Symmetric Key</code>. Now both Client and Server safely share the exact same Symmetric Key while the Hacker has nothing!</div>
+                </div>
+              </div>
+              <div class="workflow-step">
+                <div class="step-circle">5</div>
+                <div>
+                  <div class="workflow-step__title">Step 5: Actual Data Transfer Using the Shared Symmetric Key</div>
+                  <div class="workflow-step__desc">The Client encrypts <code>Email &amp; Password</code> using <code>Client Symmetric Key</code> and sends it to the Server. The Hacker cannot read it, and the Server cleanly decrypts it using its copy of <code>Client Symmetric Key</code>.</div>
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 51.1 · 5-Step Hybrid Encryption Flow (Asymmetric Key Exchange + Symmetric Data)</span>
+                <span class="diagram-frame-tag">PASSIVE HACKER CANNOT DECRYPT</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Five-step Hybrid Encryption diagram showing Server sending Public Key, Client locking Symmetric Key with Server Public Key, Server unlocking with Private Key, and encrypted Email and Password transfer">
+                  <defs>
+                    <marker id="arrow-51" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--accent)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Client Box -->
+                  <rect x="20" y="24" width="184" height="202" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="112" y="54" text-anchor="middle" class="svg-title">Client</text>
+                  <text x="112" y="80" text-anchor="middle" class="svg-mono-xs">Generates:</text>
+                  <text x="112" y="100" text-anchor="middle" class="svg-mono-xs" style="fill: var(--accent);">Client Sym Key</text>
+                  <text x="112" y="138" text-anchor="middle" class="svg-sub">Locks Sym Key with</text>
+                  <text x="112" y="156" text-anchor="middle" class="svg-sub">Server Public Key</text>
+                  <text x="112" y="196" text-anchor="middle" class="svg-mono-xs">Email &amp; Password</text>
+
+                  <!-- Server Box -->
+                  <rect x="676" y="24" width="184" height="202" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="768" y="54" text-anchor="middle" class="svg-title">Server</text>
+                  <text x="768" y="80" text-anchor="middle" class="svg-mono-xs">Server Public Key</text>
+                  <text x="768" y="102" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Server Private Key</text>
+                  <text x="768" y="122" text-anchor="middle" class="svg-sub">(100% Secret)</text>
+                  <text x="768" y="164" text-anchor="middle" class="svg-sub">Unlocks Sym Key ✓</text>
+                  <text x="768" y="196" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Reads Email &amp; Pass ✓</text>
+
+                  <!-- Step 1: Server Public Key -> Client -->
+                  <line x1="676" y1="62" x2="212" y2="62" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#arrow-51)"/>
+                  <text x="440" y="50" text-anchor="middle" class="svg-mono-xs">1. Sends Server Public Key (Openly Shared)</text>
+
+                  <!-- Step 2: Locked Symmetric Key -> Server -->
+                  <line x1="204" y1="114" x2="668" y2="114" stroke="var(--accent)" stroke-width="2" marker-end="url(#arrow-51)"/>
+                  <text x="440" y="102" text-anchor="middle" class="svg-mono-xs">2. [Client Sym Key] locked with Server Public Key</text>
+
+                  <!-- Step 3: Hacker Blocked Badge -->
+                  <rect x="304" y="128" width="272" height="34" rx="8" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="440" y="150" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">3. Passive Hacker Fails (No Server Private Key)</text>
+
+                  <!-- Step 5: Encrypted Data -> Server -->
+                  <line x1="204" y1="196" x2="668" y2="196" stroke="var(--success)" stroke-width="2.2" marker-end="url(#arrow-51)"/>
+                  <text x="440" y="184" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">5. [Email &amp; Password] encrypted with Shared Client Sym Key ✓</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 52: HOW A HACKER BREAKS HYBRID ENCRYPTION (MITM REVERSE PROXY)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-52-mitm-reverse-proxy-attack",
+      number: "52",
+      shortLabel: "MITM Key Swap",
+      title: "How a Hacker Breaks Hybrid Encryption (The Reverse Proxy MITM Attack)",
+      summary: "How an active Man-in-the-Middle Hacker acting as a Reverse Proxy swaps in Hacker Public Key, unlocks the Client Symmetric Key with Hacker Private Key, and steals Email & Password — exposing the missing Validation & Trust layer.",
+      subtopicLabels: ["52.1 Reverse Proxy Attack Setup", "52.2 4-Step Attack Flow & Root Cause"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "52.1",
+          title: "The Vulnerability: When the Hacker Acts as a Reverse Proxy",
+          content: `
+            <p>Even though Hybrid Encryption never sends the Symmetric Key or Private Key in plain text, <strong>our data can STILL be hacked if the Man-in-the-Middle Hacker acts as a Reverse Proxy</strong> between Client and Server!</p>
+            <div class="sub-card-grid-3" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Server Keys</div>
+                <div class="sub-box__title">Real Server</div>
+                <div class="sub-box__body"><code>Server Public Key</code> + <code>Server Private Key</code></div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--danger);">
+                <div class="sub-box__tag">Hacker Keys (Reverse Proxy)</div>
+                <div class="sub-box__title">MITM Hacker</div>
+                <div class="sub-box__body">Generates own pair: <strong><code>Hacker Public Key</code></strong> + <strong><code>Hacker Private Key</code></strong></div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Client Key</div>
+                <div class="sub-box__title">Victim Client</div>
+                <div class="sub-box__body"><code>Client Symmetric Key</code></div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "52.2",
+          title: "Step-by-Step Flow of the Reverse Proxy Attack & Root Cause",
+          content: `
+            <ol class="notes-ordered-list">
+              <li><strong>Step 1 (Hacker Swaps Public Key):</strong> Server sends <code>Server Public Key</code> toward Client. The Hacker intercepts it, keeps it, does NOT let it reach Client, and sends <strong><code>Hacker Public Key</code></strong> to Client instead!</li>
+              <li><strong>Step 2 (Client Trusts Hacker's Public Key):</strong> Client assumes <em>"This Public Key came from the genuine Server,"</em> locks its <code>Client Symmetric Key</code> using <strong><code>Hacker Public Key</code></strong>, and sends it toward Server.</li>
+              <li><strong>Step 3 (Hacker Unlocks &amp; Steals Client's Symmetric Key):</strong> Hacker intercepts the package and uses <strong><code>Hacker Private Key</code></strong> to unlock it, gaining full access to <code>Client Symmetric Key</code>! (Hacker can also forward a key to the Server so neither side suspects anything).</li>
+              <li><strong>Step 4 (Client Sends Data &amp; Gets Hacked):</strong> Client encrypts <code>Email &amp; Password</code> with <code>Client Symmetric Key</code>. Hacker intercepts and easily decrypts it using the stolen <code>Client Symmetric Key</code>!</li>
+            </ol>
+
+            <div class="callout-highlight-box" style="margin-top: 1rem; border-left-color: var(--danger);">
+              <div class="callout-highlight-tag" style="color: var(--danger);">ROOT CAUSE — MISSING VALIDATION &amp; TRUST</div>
+              <p style="margin-top: 0.45rem; color: var(--text-primary);">
+                Our encryption math wasn't broken — what failed was <strong>Validation &amp; Trust</strong>! The Client had <strong>no way to verify</strong> whether the Public Key it received actually belonged to the <strong>real Server</strong> or to a <strong>Hacker pretending to be the Server</strong>.
+              </p>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 52.1 · Active Reverse Proxy MITM Public Key Swap Attack</span>
+                <span class="diagram-frame-tag">NO KEY VERIFICATION = COMPROMISED HANDSHAKE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="MITM Reverse Proxy Key Swap attack where Hacker intercepts Server Public Key, sends Hacker Public Key to Client, decrypts Client Symmetric Key with Hacker Private Key, and steals Email and Password">
+                  <defs>
+                    <marker id="arrow-52" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                      <path d="M 0 1 L 10 5 L 0 9 z" fill="var(--danger)"/>
+                    </marker>
+                  </defs>
+
+                  <!-- Client -->
+                  <rect x="20" y="34" width="182" height="184" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="111" y="64" text-anchor="middle" class="svg-title">Client</text>
+                  <text x="111" y="92" text-anchor="middle" class="svg-sub">Thinks Hacker Pub</text>
+                  <text x="111" y="110" text-anchor="middle" class="svg-sub">is Real Server Pub!</text>
+                  <text x="111" y="152" text-anchor="middle" class="svg-mono-xs">Locks SymKey with</text>
+                  <text x="111" y="172" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Hacker Pub Key</text>
+
+                  <!-- Hacker Reverse Proxy in Middle -->
+                  <rect x="320" y="20" width="240" height="212" rx="16" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                  <text x="440" y="48" text-anchor="middle" class="svg-kicker" style="fill: var(--danger);">ACTIVE MITM (REVERSE PROXY)</text>
+                  <text x="440" y="74" text-anchor="middle" class="svg-title" style="fill: var(--danger);">Hacker</text>
+                  <text x="440" y="98" text-anchor="middle" class="svg-mono-xs">Own Hacker Pub + Priv Keys</text>
+                  <text x="440" y="132" text-anchor="middle" class="svg-mono-xs">1. Swaps Server Pub → Hacker Pub</text>
+                  <text x="440" y="156" text-anchor="middle" class="svg-mono-xs">3. Unlocks SymKey w/ Hacker Priv</text>
+                  <text x="440" y="182" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">4. Reads Email &amp; Password ✕</text>
+                  <text x="440" y="212" text-anchor="middle" class="svg-sub">Client cannot verify key owner</text>
+
+                  <!-- Real Server -->
+                  <rect x="678" y="34" width="182" height="184" rx="14" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="1.5"/>
+                  <text x="769" y="64" text-anchor="middle" class="svg-title">Real Server</text>
+                  <text x="769" y="96" text-anchor="middle" class="svg-mono-xs">Sends Server Pub</text>
+                  <text x="769" y="122" text-anchor="middle" class="svg-sub">(Intercepted by</text>
+                  <text x="769" y="140" text-anchor="middle" class="svg-sub">Hacker in middle)</text>
+
+                  <!-- Arrows -->
+                  <line x1="678" y1="74" x2="568" y2="74" stroke="var(--danger)" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#arrow-52)"/>
+                  <text x="622" y="64" text-anchor="middle" class="svg-mono-xs">Server Pub</text>
+
+                  <line x1="320" y1="74" x2="210" y2="74" stroke="var(--danger)" stroke-width="2" marker-end="url(#arrow-52)"/>
+                  <text x="262" y="64" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Hacker Pub</text>
+
+                  <line x1="202" y1="156" x2="312" y2="156" stroke="var(--danger)" stroke-width="2" marker-end="url(#arrow-52)"/>
+                  <text x="258" y="146" text-anchor="middle" class="svg-mono-xs">SymKey + Data</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 53: WHAT IS AN SSL CERTIFICATE & HOW IT WORKS?
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-53-ssl-certificate",
+      number: "53",
+      shortLabel: "SSL Certificate",
+      title: "What is an SSL Certificate & How It Works?",
+      summary: "Trusted Certificate Authorities (GoDaddy, DigiCert, Let's Encrypt), the 3 components inside an SSL Certificate for www.designkarle.com, signature verification blocking Hacker key swaps, and CA-Signed vs. Self-Signed certificates.",
+      subtopicLabels: ["53.1 Trusted CAs", "53.2 3 Components of SSL Cert", "53.3 Verification Flow", "53.4 CA-Signed vs Self-Signed"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "53.1",
+          title: "Why We Need an SSL Certificate (Trusted Certificate Authorities)",
+          content: `
+            <p>To stop a Hacker from swapping in a fake Public Key, the Client needs a way to <strong>validate and verify</strong> that the Public Key genuinely belongs to the exact Server/Domain it is trying to talk to. This validation is provided by <strong>SSL Certificates</strong> issued by globally <strong>Trusted Certificate Authorities (CAs)</strong> such as: <strong>GoDaddy</strong>, <strong>DigiCert</strong>, <strong>Let's Encrypt</strong>, and <strong>GlobalSign / Comodo / Sectigo</strong>.</p>
+          `
+        },
+        {
+          num: "53.2",
+          title: "How a Server Gets an SSL Certificate & Its 3 Core Components",
+          content: `
+            <p>When you build a server (e.g., <code>www.designkarle.com</code>) and request an SSL Certificate from a Trusted CA like <strong>GoDaddy</strong>, GoDaddy asks for (1) <strong>Your Domain Name</strong> and (2) <strong>Your Server's Public Key</strong>, verifies ownership, and digitally signs the certificate:</p>
+
+            <div class="sub-card-grid-3" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Component 01</div>
+                <div class="sub-box__title">Domain Name</div>
+                <div class="sub-box__body">The verified domain name of the application (e.g., <code>www.designkarle.com</code>).</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Component 02</div>
+                <div class="sub-box__title">Public Key of the Server</div>
+                <div class="sub-box__body">The genuine Public Key belonging to that server.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--accent);">
+                <div class="sub-box__tag">Component 03</div>
+                <div class="sub-box__title">Digital Signature of Authority</div>
+                <div class="sub-box__body">Created by GoDaddy hashing <code>[Domain Name + Server Public Key]</code> and encrypting that hash with <strong>GoDaddy's secret Private Key</strong> — verifiable by anyone using <strong>GoDaddy's Public Key</strong>.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "53.3",
+          title: "Step-by-Step Verification Flow (Genuine Server vs. Hacker Swap)",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Scenario A · Verification Succeeds ✓</div>
+                <div class="sub-box__title">Genuine Server Public Key</div>
+                <div class="sub-box__body">
+                  1. Server sends both <code>Server Public Key</code> + complete <code>SSL Certificate</code>.<br>
+                  2. Client retrieves <code>Public Key of GoDaddy</code>.<br>
+                  3. Client checks the signature using <code>GoDaddy's Public Key</code> + <code>Server Public Key</code>.<br>
+                  4. <strong>Match Confirmed!</strong> Client knows the key genuinely belongs to <code>www.designkarle.com</code> and safely sends encrypted <code>Client Symmetric Key</code> &amp; <code>Email &amp; Password</code>.
+                </div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--danger);">
+                <div class="sub-box__tag">Scenario B · Attack Blocked ✕</div>
+                <div class="sub-box__title">Hacker Swaps in Hacker Public Key</div>
+                <div class="sub-box__body">
+                  1. MITM Hacker intercepts and sends <code>Hacker Public Key</code> to Client instead.<br>
+                  2. Client checks <code>Hacker Public Key</code> against the SSL Certificate's Signature using <code>GoDaddy's Public Key</code>.<br>
+                  3. <strong>Signature Mismatch!</strong> Produces a completely different value.<br>
+                  4. Client detects MITM attack, <strong>terminates the connection immediately</strong>, and refuses to send your <code>Email &amp; Password</code>.
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 53.1 · SSL Certificate Anatomy &amp; Cryptographic Verification Check</span>
+                <span class="diagram-frame-tag">MATCH = TRUSTED ✓ · MISMATCH = MITM BLOCKED ✕</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="SSL Certificate verification diagram showing Domain Name, Server Public Key, and GoDaddy Digital Signature checked by browser to confirm genuine key or block Hacker key swap">
+                  <!-- Left: SSL Certificate Box -->
+                  <rect x="20" y="24" width="320" height="202" rx="16" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="180" y="52" text-anchor="middle" class="svg-kicker">SSL CERTIFICATE (SIGNED BY GODADDY)</text>
+                  <rect x="40" y="68" width="280" height="40" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="180" y="93" text-anchor="middle" class="svg-mono-xs">1. Domain: www.designkarle.com</text>
+                  <rect x="40" y="118" width="280" height="40" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                  <text x="180" y="143" text-anchor="middle" class="svg-mono-xs">2. Genuine Server Public Key</text>
+                  <rect x="40" y="168" width="280" height="42" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="180" y="194" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">3. GoDaddy Digital Signature ✓</text>
+
+                  <!-- Right Top: Scenario A -->
+                  <rect x="374" y="24" width="486" height="94" rx="14" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                  <text x="396" y="50" class="svg-kicker" style="fill: var(--success);">SCENARIO A · GENUINE SERVER PUBLIC KEY</text>
+                  <text x="396" y="76" class="svg-node">Verify(Server Pub Key + GoDaddy Pub Key) == Cert Signature ✓</text>
+                  <text x="396" y="100" class="svg-sub">100% Verified → Client encrypts Symmetric Key &amp; sends Email/Password safely</text>
+
+                  <!-- Right Bottom: Scenario B -->
+                  <rect x="374" y="132" width="486" height="94" rx="14" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.6"/>
+                  <text x="396" y="158" class="svg-kicker" style="fill: var(--danger);">SCENARIO B · HACKER SWAPS IN HACKER PUBLIC KEY</text>
+                  <text x="396" y="184" class="svg-node" style="fill: var(--danger);">Verify(Hacker Pub Key + GoDaddy Pub Key) ≠ Cert Signature ✕</text>
+                  <text x="396" y="208" class="svg-sub">MITM Detected! Browser immediately terminates connection &amp; blocks data</text>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "53.4",
+          title: "Paid CA-Signed Certificates vs. Self-Signed Certificates",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box" style="border-left: 3.5px solid var(--success);">
+                <div class="sub-box__tag">Verified by Trusted Authority</div>
+                <div class="sub-box__title">CA-Signed SSL Certificates</div>
+                <div class="sub-box__body">CAs like <strong>GoDaddy</strong> or <strong>DigiCert</strong> charge a fee to verify domain/organization ownership and sign your certificate (free automated CAs like <em>Let's Encrypt</em> also exist). Automatically trusted by all web browsers.</div>
+              </div>
+              <div class="sub-box" style="border-left: 3.5px solid var(--warning);">
+                <div class="sub-box__tag">Unverified · Local Dev Only</div>
+                <div class="sub-box__title">Self-Signed SSL Certificates</div>
+                <div class="sub-box__body">Generated and signed for free on your own machine without a Trusted CA. Browsers mark it as <strong>Unverified / Not Trusted</strong> — useful only for internal testing or localhost development.</div>
+              </div>
+            </div>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 54: DEEP-DIVE SECURITY Q&A (SSL TAMPERING, ROOT STORE & POST-SSL HACKS)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "topic-54-ssl-security-deep-dive",
+      number: "54",
+      shortLabel: "SSL Security Q&A",
+      title: "Deep-Dive Security Q&A — Faking SSL, Root Trust Store & Post-SSL Attacks",
+      summary: "Why hackers fail all 4 SSL forgery tricks (SHA-256 Hash A vs Hash B, Domain Mismatch, HSM Private Key), why GoDaddy's Public Key lives offline in your OS Root Trust Store, and 6 ways data can STILL be hacked even with HTTPS.",
+      subtopicLabels: ["54.1 Why Hackers Can't Fake SSL", "54.2 Offline Root Trust Store", "54.3 6 Post-SSL Attack Vectors"],
+      diagramCount: 1,
+      sections: [
+        {
+          num: "54.1",
+          title: "Question 1: Why Can't a Hacker Steal or Fake the SSL Certificate? (Tricks A–D)",
+          content: `
+            <p>An SSL Certificate is completely public — a Hacker can easily copy it, <strong>but having it does not help the Hacker at all</strong>:</p>
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Trick A · Copy Real Cert Unmodified</div>
+                <div class="sub-box__title">Client Still Uses Real Server Public Key</div>
+                <div class="sub-box__body">The real SSL cert contains the <code>Real Server Public Key</code>. Client encrypts <code>Client Symmetric Key</code> with it → only <code>Real Server Private Key</code> can unlock it (Hacker has nothing).</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Trick B · Edit Cert to Swap Public Key</div>
+                <div class="sub-box__title">SHA-256 Signature Mismatch (Hash A ≠ Hash B)</div>
+                <div class="sub-box__body">GoDaddy hashes <code>[Domain + Server Pub Key]</code> with <strong>SHA-256 (Hash A)</strong> and signs it with <strong>GoDaddy's Secret Private Key</strong> (locked in offline HSMs). Editing the key changes <strong>Hash B</strong> (<code>Hash A ≠ Hash B</code>) and Hacker cannot forge a matching signature!</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Trick C · Buy Real Cert from GoDaddy</div>
+                <div class="sub-box__title">Domain Verification &amp; Common Name Check</div>
+                <div class="sub-box__body">• Requesting cert for <code>www.designkarle.com</code> fails <strong>DNS TXT / Domain Ownership Verification</strong>.<br>• Buying cert for <code>www.hacker.com</code> fails browser URL check with <code>ERR_CERT_COMMON_NAME_INVALID</code> (Domain Mismatch).</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Trick D · Self-Signed Fake Cert</div>
+                <div class="sub-box__title">Browser Untrusted Authority Warning</div>
+                <div class="sub-box__body">Signing with Hacker's own fake authority fails the browser's trusted CA list and triggers a full-screen red block: <strong>"Your connection is not private (<code>ERR_CERT_AUTHORITY_INVALID</code>)"</strong>.</div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "54.2",
+          title: "Question 2: Why Can't a Hacker Intercept GoDaddy's Public Key?",
+          content: `
+            <div class="callout-highlight-box" style="border-left-color: var(--success);">
+              <div class="callout-highlight-tag" style="color: var(--success);">THE OFFLINE ROOT CERTIFICATE STORE (TRUST STORE)</div>
+              <ul class="notes-bullet-list" style="margin-top: 0.55rem;">
+                <li><strong>The Client NEVER Downloads GoDaddy's Public Key Over the Internet!</strong> Your browser does NOT make an internet request to GoDaddy during an HTTPS handshake.</li>
+                <li>Instead, the Public Keys (<strong>Root Certificates</strong>) of all globally trusted CAs (<strong>GoDaddy, DigiCert, Let's Encrypt, GlobalSign, Sectigo, Google Trust Services, Apple, Microsoft</strong>) come <strong>pre-installed (built-in) directly inside your OS (Windows, macOS, Linux, Android, iOS) and Browser (Chrome, Firefox, Safari, Edge)</strong>.</li>
+                <li>Because your browser looks up <code>GoDaddy's Public Key</code> <strong>100% offline/locally from your device's Root Certificate Store</strong>, it never crosses the Wi-Fi or wire — so a MITM Hacker can never intercept or replace it!</li>
+              </ul>
+            </div>
+          `
+        },
+        {
+          num: "54.3",
+          title: "Question 3: Even With a Valid SSL Certificate (HTTPS), Can Your Data Still Be Hacked?",
+          content: `
+            <p><strong>YES!</strong> SSL/TLS <strong>only protects data in transit</strong> (while traveling across the network pipe). Here are <strong>6 real-world ways a hacker can STILL steal your data even with HTTPS active</strong>:</p>
+
+            <div class="sub-card-grid-2" style="margin-top: 1rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Vector 01 · Valid Padlock Scam</div>
+                <div class="sub-box__title">1. Phishing &amp; Lookalike Domains</div>
+                <div class="sub-box__body">A hacker registers <code>www.designkar1e.com</code> or <code>www.hdfcbank-secure-login.com</code> and gets a <strong>genuine CA-signed SSL cert</strong> (showing the HTTPS padlock!). SSL only proves the pipe is encrypted — it delivers your typed password straight into the scammer's hands.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Vector 02 · Before Encryption</div>
+                <div class="sub-box__title">2. Client-Side Compromise</div>
+                <div class="sub-box__body">If your laptop/phone has a <strong>Keylogger</strong>, spyware, or malicious <strong>Chrome Extension</strong>, the hacker reads your <code>Email &amp; Password</code> from your keyboard or browser DOM <em>before SSL even encrypts it</em>.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Vector 03 · Trust Store Hack</div>
+                <div class="sub-box__title">3. Compromised Root Trust Store</div>
+                <div class="sub-box__body">If malware (or a shady free VPN/proxy cert) installs a <strong>Rogue Root CA Public Key</strong> into your OS Trust Store, your device trusts fake certs signed by that hacker. <em>(Corporate laptops also do this via tools like Zscaler).</em></div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Vector 04 · Code Bugs</div>
+                <div class="sub-box__title">4. Web App Vulnerabilities (XSS, SQLi, CSRF)</div>
+                <div class="sub-box__body">• <strong>XSS:</strong> Injected JS steals your logged-in Session Cookie / JWT over HTTPS.<br>• <strong>SQL Injection:</strong> SSL dutifully encrypts the hacker's malicious SQL payload, sends it to the server, and returns the dumped DB over HTTPS!</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Vector 05 · Data at Rest</div>
+                <div class="sub-box__title">5. Server-Side / Database Breach</div>
+                <div class="sub-box__body">Once decrypted at the Server and stored in a DB, a cloud/bucket/DB breach steals millions of records if passwords aren't hashed (<code>bcrypt</code>/<code>Argon2</code>) or encrypted at rest.</div>
+              </div>
+              <div class="sub-box">
+                <div class="sub-box__tag">Vector 06 · Keys &amp; Sessions</div>
+                <div class="sub-box__title">6. Stolen Session Cookie / Private Key (+ PFS)</div>
+                <div class="sub-box__body">Stolen session cookies hijack accounts over HTTPS. A stolen <code>Server Private Key</code> allows impersonation until revoked — modern <strong>TLS 1.3 uses Perfect Forward Secrecy (PFS)</strong> ephemeral session keys so past recorded traffic stays safe!</div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 54.1 · Offline Root Trust Store &amp; What HTTPS Does (and Does Not) Protect</span>
+                <span class="diagram-frame-tag">IN-TRANSIT PIPE PROTECTED ✓ · ENDPOINTS &amp; APP CODE STILL NEED SECURITY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Security boundary diagram showing Offline OS Root Trust Store validating SHA-256 Hash A vs Hash B, and HTTPS encrypting only the network pipe in transit while Client Malware, Phishing, XSS SQLi, and Server DB still require defense">
+                  <!-- Left: Client Endpoint -->
+                  <rect x="16" y="24" width="240" height="202" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="136" y="50" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">CLIENT DEVICE</text>
+                  <rect x="34" y="64" width="204" height="58" rx="10" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="136" y="88" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Offline Root Trust Store ✓</text>
+                  <text x="136" y="108" text-anchor="middle" class="svg-sub">Built-in CA Public Keys</text>
+
+                  <rect x="34" y="136" width="204" height="74" rx="10" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="136" y="158" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Still Vulnerable Here ✕</text>
+                  <text x="136" y="178" text-anchor="middle" class="svg-sub">Keyloggers · Malware</text>
+                  <text x="136" y="196" text-anchor="middle" class="svg-sub">Phishing · Rogue Root CA</text>
+
+                  <!-- Middle: Protected HTTPS Pipe -->
+                  <rect x="284" y="54" width="312" height="142" rx="16" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                  <text x="440" y="84" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">PROTECTED BY SSL / TLS (HTTPS)</text>
+                  <text x="440" y="112" text-anchor="middle" class="svg-title">Data in Transit Encrypted ✓</text>
+                  <text x="440" y="138" text-anchor="middle" class="svg-mono-xs">SHA-256: Hash A == Hash B ✓</text>
+                  <text x="440" y="160" text-anchor="middle" class="svg-sub">Stops Wi-Fi / Router MITM Attacks</text>
+                  <text x="440" y="180" text-anchor="middle" class="svg-mono-xs">TLS 1.3 Perfect Forward Secrecy</text>
+
+                  <!-- Right: Server Endpoint -->
+                  <rect x="624" y="24" width="240" height="202" rx="14" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="744" y="50" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">SERVER &amp; DATABASE</text>
+                  <rect x="642" y="64" width="204" height="58" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="744" y="88" text-anchor="middle" class="svg-node">Decrypts Request</text>
+                  <text x="744" y="108" text-anchor="middle" class="svg-sub">Processes App Logic</text>
+
+                  <rect x="642" y="136" width="204" height="74" rx="10" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="744" y="158" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Still Vulnerable Here ✕</text>
+                  <text x="744" y="178" text-anchor="middle" class="svg-sub">XSS · SQL Injection · CSRF</text>
+                  <text x="744" y="196" text-anchor="middle" class="svg-sub">DB Breach · Stolen Cookies</text>
                 </svg>
               </div>
             </figure>

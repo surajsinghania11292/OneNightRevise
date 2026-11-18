@@ -110,15 +110,18 @@ code {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.05rem;
   list-style: none;
 }
 
 .nav-link {
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 500;
+  white-space: nowrap;
   transition: color var(--t-fast);
 }
 

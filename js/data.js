@@ -35,7 +35,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What is Monolithic Architecture?",
       summary: "Real-world Udemy Clone breakdown, how a single codebase (index.js on Port 4000) and shared database look in actual code, and why the lifecycle is tightly coupled.",
       subtopicLabels: ["1.1 Udemy Clone Example", "1.2 How it Looks in Code"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "1.1",
@@ -69,6 +69,54 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Confirming course bookings.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 1.1 · The Udemy Clone Monolith: Unified Codebase &amp; Shared Database</span>
+                <span class="diagram-frame-tag">TIGHTLY COUPLED SINGLE PROCESS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Monolithic architecture diagram showing User, Course, Video Player, and Payment modules all running within a single server process sharing one database">
+                  <rect x="30" y="25" width="540" height="180" rx="14" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="300" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">SINGLE OPERATING SYSTEM PROCESS</text>
+                  <text x="300" y="76" text-anchor="middle" class="svg-title">Udemy Clone Monolith (Single Server)</text>
+                  
+                  <g transform="translate(50, 95)">
+                    <rect x="0" y="0" width="115" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="57" y="32" text-anchor="middle" class="svg-node">User Module</text>
+                    <text x="57" y="54" text-anchor="middle" class="svg-mono-xs">Auth &amp; Profile</text>
+                    <text x="57" y="72" text-anchor="middle" class="svg-sub">Shared Mem</text>
+
+                    <rect x="130" y="0" width="115" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="187" y="32" text-anchor="middle" class="svg-node">Course Mod</text>
+                    <text x="187" y="54" text-anchor="middle" class="svg-mono-xs">Catalog &amp; Quiz</text>
+                    <text x="187" y="72" text-anchor="middle" class="svg-sub">Shared Mem</text>
+
+                    <rect x="260" y="0" width="115" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.5"/>
+                    <text x="317" y="32" text-anchor="middle" class="svg-node" style="fill: var(--danger);">Video Player</text>
+                    <text x="317" y="54" text-anchor="middle" class="svg-mono-xs">Streaming</text>
+                    <text x="317" y="72" text-anchor="middle" class="svg-sub">High Memory</text>
+
+                    <rect x="390" y="0" width="100" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="440" y="32" text-anchor="middle" class="svg-node">Payment</text>
+                    <text x="440" y="54" text-anchor="middle" class="svg-mono-xs">Checkout</text>
+                    <text x="440" y="72" text-anchor="middle" class="svg-sub">Stripe SDK</text>
+                  </g>
+
+                  <path d="M 570 115 L 650 115" class="svg-arrow" stroke="var(--primary)"/>
+                  <text x="610" y="105" text-anchor="middle" class="svg-mono-xs">Direct SQL</text>
+
+                  <rect x="650" y="25" width="200" height="180" rx="14" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.8"/>
+                  <text x="750" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">SHARED STORAGE</text>
+                  <text x="750" y="76" text-anchor="middle" class="svg-title">Single Database</text>
+                  <rect x="668" y="95" width="164" height="85" rx="8" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                  <text x="750" y="125" text-anchor="middle" class="svg-node">All Tables Shared</text>
+                  <text x="750" y="148" text-anchor="middle" class="svg-mono-xs">users | courses | payments</text>
+                  <text x="750" y="168" text-anchor="middle" class="svg-sub">Single point of contention</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -173,7 +221,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "The 3 Major Problems with Monolith Architecture",
       summary: "Single Point of Failure (SPOF) at 1M users, Deployment Bottlenecks for small Credit Card updates, and expensive full-app scaling under 20M+ Payment traffic.",
       subtopicLabels: ["2.1 Single Point of Failure", "2.2 Deployment Bottleneck", "2.3 Individual Scaling Impossible"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "2.1",
@@ -189,6 +237,53 @@ const SYSTEM_DESIGN_NOTES = {
                 </ul>
               </li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 2.1 · Monolith Single Point of Failure: Video Player Bug Crashing Entire App</span>
+                <span class="diagram-frame-tag">SHARED HEAP / UNCAUGHT EXCEPTION BLAST RADIUS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing a memory leak in the video player module exhausting heap memory and crashing the entire process, making user auth and payment unavailable">
+                  <rect x="30" y="20" width="820" height="190" rx="14" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="2"/>
+                  <text x="440" y="48" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">ENTIRE MONOLITHIC PROCESS DIES TOGETHER</text>
+                  
+                  <g transform="translate(55, 68)">
+                    <rect x="0" y="0" width="175" height="120" rx="10" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="2"/>
+                    <text x="87" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">BUG ROOT CAUSE</text>
+                    <text x="87" y="52" text-anchor="middle" class="svg-node" style="fill: var(--danger);">💥 Video Player Bug</text>
+                    <text x="87" y="74" text-anchor="middle" class="svg-mono-xs">Memory Leak / OOM</text>
+                    <text x="87" y="98" text-anchor="middle" class="svg-sub" style="fill: var(--danger);">Exhausts Node.js Heap</text>
+
+                    <path d="M 180 60 L 225 60" class="svg-arrow" stroke="var(--danger)"/>
+                    <text x="202" y="50" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Crash</text>
+
+                    <rect x="230" y="0" width="165" height="120" rx="10" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="312" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">COLLATERAL CASUALTY</text>
+                    <text x="312" y="52" text-anchor="middle" class="svg-node">✕ Auth Module Dead</text>
+                    <text x="312" y="74" text-anchor="middle" class="svg-mono-xs">Code has 0 bugs</text>
+                    <text x="312" y="98" text-anchor="middle" class="svg-sub">Users cannot log in!</text>
+
+                    <path d="M 400 60 L 445 60" class="svg-arrow" stroke="var(--danger)"/>
+
+                    <rect x="450" y="0" width="165" height="120" rx="10" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="532" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">COLLATERAL CASUALTY</text>
+                    <text x="532" y="52" text-anchor="middle" class="svg-node">✕ Payment Dead</text>
+                    <text x="532" y="74" text-anchor="middle" class="svg-mono-xs">Zero revenue flow</text>
+                    <text x="532" y="98" text-anchor="middle" class="svg-sub">Checkout fails</text>
+
+                    <path d="M 620 60 L 665 60" class="svg-arrow" stroke="var(--danger)"/>
+
+                    <rect x="670" y="0" width="130" height="120" rx="10" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                    <text x="735" y="32" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">TOTAL IMPACT</text>
+                    <text x="735" y="58" text-anchor="middle" class="svg-node" style="fill: var(--danger);">100% Down</text>
+                    <text x="735" y="80" text-anchor="middle" class="svg-mono-xs">502 Gateway</text>
+                    <text x="735" y="100" text-anchor="middle" class="svg-sub">Unhappy Users</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -205,6 +300,51 @@ const SYSTEM_DESIGN_NOTES = {
                 </ul>
               </li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 2.2 · Deployment Bottleneck: 1-Line Bug Fix Requiring Full Monolith Rebuild</span>
+                <span class="diagram-frame-tag">SLOW RELEASE CADENCE &amp; HIGH BLAST RADIUS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram contrasting a 1-line promo code fix with the massive 500k-line monolith build and multi-hour regression testing cycle required to deploy it">
+                  <rect x="30" y="30" width="220" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="140" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">THE TINY CHANGE</text>
+                  <text x="140" y="82" text-anchor="middle" class="svg-title">1-Line Promo Code Fix</text>
+                  <rect x="45" y="100" width="190" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="140" y="125" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">if (code === 'DISCOUNT')</text>
+                  <text x="140" y="145" text-anchor="middle" class="svg-sub">Fixed by Payment Dev</text>
+                  <text x="140" y="168" text-anchor="middle" class="svg-mono-xs">Change size: 10 bytes</text>
+
+                  <path d="M 250 115 L 330 115" class="svg-arrow" stroke="var(--danger)"/>
+                  <text x="290" y="105" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Forces</text>
+
+                  <rect x="330" y="25" width="520" height="180" rx="12" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.8"/>
+                  <text x="590" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--warning); font-weight: 700;">MONOLITHIC DEPLOYMENT PIPELINE</text>
+                  
+                  <g transform="translate(350, 75)">
+                    <rect x="0" y="0" width="150" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="75" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning); font-weight: 700;">FULL REBUILD</text>
+                    <text x="75" y="50" text-anchor="middle" class="svg-node">500,000 Lines</text>
+                    <text x="75" y="70" text-anchor="middle" class="svg-sub">Must recompile all</text>
+                    <text x="75" y="90" text-anchor="middle" class="svg-mono-xs">Build time: 45 min</text>
+
+                    <rect x="165" y="0" width="155" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="242" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">REGRESSION RISK</text>
+                    <text x="242" y="50" text-anchor="middle" class="svg-node">E2E Test Suite</text>
+                    <text x="242" y="70" text-anchor="middle" class="svg-sub">Test Video + Auth</text>
+                    <text x="242" y="90" text-anchor="middle" class="svg-mono-xs">Test time: 2 hours</text>
+
+                    <rect x="335" y="0" width="145" height="105" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                    <text x="407" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">DEPLOY GATE</text>
+                    <text x="407" y="50" text-anchor="middle" class="svg-node" style="fill: var(--danger);">Midnight Deploy</text>
+                    <text x="407" y="70" text-anchor="middle" class="svg-sub">High stress release</text>
+                    <text x="407" y="90" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Slow iteration</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -302,7 +442,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Microservices Architecture & How It Solves Monolith Problems",
       summary: "Loosely coupled services (S1 Auth, S2 Cart, S3 Order, S4 Payment), separate index.js entry points, dedicated databases (PostgreSQL + Prisma vs NoSQL), and solving all 3 bottlenecks.",
       subtopicLabels: ["3.1 Core Concept", "3.2 Code & Dedicated DBs", "3.3 Solving 3 Problems"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "3.1",
@@ -313,6 +453,53 @@ const SYSTEM_DESIGN_NOTES = {
               <li><strong>Loosely Coupled:</strong> Services have <strong>zero direct code dependency</strong> on each other.</li>
               <li><strong>Independent Lifecycle:</strong> Each service is <strong>built individually, run individually, tested individually, and deployed individually</strong>.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 3.1 · Microservices Architecture: Autonomous Services &amp; Dedicated Databases</span>
+                <span class="diagram-frame-tag">POLYGLOT INDEPENDENCE &amp; FAULT BOUNDARIES</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Microservices architecture diagram showing User Service with Postgres, Course Service with Mongo, and Payment Service with MySQL communicating over lightweight REST or gRPC">
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="240" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="120" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">AUTONOMOUS SERVICE 1</text>
+                    <text x="120" y="56" text-anchor="middle" class="svg-title">User Service (Node.js)</text>
+                    <rect x="20" y="72" width="200" height="45" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="120" y="100" text-anchor="middle" class="svg-node">Auth &amp; Profile APIs</text>
+                    <rect x="20" y="125" width="200" height="50" rx="6" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                    <text x="120" y="148" text-anchor="middle" class="svg-node" style="fill: var(--primary);">PostgreSQL DB</text>
+                    <text x="120" y="165" text-anchor="middle" class="svg-mono-xs">users &amp; tokens only</text>
+                  </g>
+
+                  <g transform="translate(320, 25)">
+                    <rect x="0" y="0" width="240" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                    <text x="120" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--accent);">AUTONOMOUS SERVICE 2</text>
+                    <text x="120" y="56" text-anchor="middle" class="svg-title">Course Service (Go)</text>
+                    <rect x="20" y="72" width="200" height="45" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="120" y="100" text-anchor="middle" class="svg-node">Curriculum &amp; Video</text>
+                    <rect x="20" y="125" width="200" height="50" rx="6" fill="var(--accent-bg)" stroke="var(--accent)"/>
+                    <text x="120" y="148" text-anchor="middle" class="svg-node" style="fill: var(--accent);">MongoDB</text>
+                    <text x="120" y="165" text-anchor="middle" class="svg-mono-xs">lessons &amp; streams</text>
+                  </g>
+
+                  <g transform="translate(610, 25)">
+                    <rect x="0" y="0" width="240" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="120" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">AUTONOMOUS SERVICE 3</text>
+                    <text x="120" y="56" text-anchor="middle" class="svg-title">Payment Service (Java)</text>
+                    <rect x="20" y="72" width="200" height="45" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="120" y="100" text-anchor="middle" class="svg-node">Checkout &amp; Invoices</text>
+                    <rect x="20" y="125" width="200" height="50" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="120" y="148" text-anchor="middle" class="svg-node" style="fill: var(--success);">MySQL (ACID)</text>
+                    <text x="120" y="165" text-anchor="middle" class="svg-mono-xs">ledgers &amp; orders</text>
+                  </g>
+
+                  <path d="M 270 115 L 320 115" class="svg-arrow" stroke="var(--primary)"/>
+                  <path d="M 560 115 L 610 115" class="svg-arrow" stroke="var(--accent)"/>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -417,6 +604,49 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">If the <strong>Payment Microservice</strong> hits <strong>20 Million traffic</strong>, you only add more machines/instances for the <strong>Payment Service</strong> instead of scaling the entire system, saving massive hardware costs.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 3.2 · The Microservices Triumvirate: Fault Isolation, Rapid Deploys &amp; Targeted Scaling</span>
+                <span class="diagram-frame-tag">SOLVING THE MONOLITH BOTTLENECK</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing fault isolation where crash in video service leaves auth alive, independent 2-minute deployment, and targeted horizontal scaling of only high-traffic services">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="255" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="127" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">1. FAULT ISOLATION</text>
+                    <rect x="20" y="50" width="215" height="48" rx="6" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                    <text x="127" y="72" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">💥 Video Service Crashes</text>
+                    <text x="127" y="88" text-anchor="middle" class="svg-sub">OOM bug contained</text>
+
+                    <rect x="20" y="110" width="215" height="50" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="127" y="132" text-anchor="middle" class="svg-node" style="fill: var(--success);">Auth &amp; Payment 100% UP ✓</text>
+                    <text x="127" y="150" text-anchor="middle" class="svg-mono-xs">Users can still buy courses!</text>
+                  </g>
+
+                  <g transform="translate(310, 25)">
+                    <rect x="0" y="0" width="255" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="127" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary); font-weight: 700;">2. INDEPENDENT DEPLOY</text>
+                    <rect x="20" y="50" width="215" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="127" y="78" text-anchor="middle" class="svg-node">Deploy Payment in 2 Min</text>
+                    <text x="127" y="100" text-anchor="middle" class="svg-mono-xs">Only 1 Repo Built</text>
+                    <text x="127" y="122" text-anchor="middle" class="svg-sub">Zero downtime · Zero regression risk</text>
+                    <text x="127" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Ship 50x / day ✓</text>
+                  </g>
+
+                  <g transform="translate(595, 25)">
+                    <rect x="0" y="0" width="260" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                    <text x="130" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--accent); font-weight: 700;">3. TARGETED SCALING</text>
+                    <rect x="20" y="50" width="220" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="130" y="78" text-anchor="middle" class="svg-node">Scale Only Heavy Service</text>
+                    <text x="130" y="100" text-anchor="middle" class="svg-mono-xs">Video Service &rarr; 10 Instances</text>
+                    <text x="130" y="122" text-anchor="middle" class="svg-mono-xs">Auth Service &rarr; 2 Instances</text>
+                    <text x="130" y="145" text-anchor="middle" class="svg-sub" style="fill: var(--success);">Huge Cloud Cost Savings ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         }
       ]
@@ -432,7 +662,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Common Misconceptions (Monolith vs. Microservices)",
       summary: "Debunking the two biggest myths: Monoliths CAN run on multiple machines (App Server 1, 2), and Microservices CAN share one machine at low traffic.",
       subtopicLabels: ["4.1 Monolith Single-Machine Myth", "4.2 Microservices Separate-Machine Myth"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "4.1",
@@ -445,6 +675,51 @@ const SYSTEM_DESIGN_NOTES = {
                 <strong>Reality: FALSE.</strong> If a monolith has 20–30 Million users, a single App Server cannot handle the load. You <strong>can</strong> scale a monolith across multiple machines (<code>App Server 1</code>, <code>App Server 2</code>) by cloning the entire app — you just can't scale <em>individual modules</em> separately.
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 4.1 · Debunking Myth 1: Monolith Horizontally Replicated Across Multiple Machines</span>
+                <span class="diagram-frame-tag">MONOLITH = UNIFIED CODEBASE · NOT SINGLE SERVER LIMITATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing client traffic distributed by a Load Balancer across multiple identical instances of the same monolith running on separate servers">
+                  <rect x="25" y="30" width="150" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="100" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">MILLIONS OF USERS</text>
+                  <text x="100" y="82" text-anchor="middle" class="svg-title">Clients</text>
+                  <rect x="40" y="100" width="120" height="80" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="100" y="130" text-anchor="middle" class="svg-node">Web &amp; Mobile</text>
+                  <text x="100" y="152" text-anchor="middle" class="svg-mono-xs">HTTPS Requests</text>
+
+                  <path d="M 175 115 L 245 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="245" y="30" width="160" height="170" rx="10" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="325" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">TRAFFIC ROUTER</text>
+                  <text x="325" y="82" text-anchor="middle" class="svg-title">Load Balancer</text>
+                  <rect x="260" y="100" width="130" height="80" rx="8" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                  <text x="325" y="130" text-anchor="middle" class="svg-node">Distributes</text>
+                  <text x="325" y="152" text-anchor="middle" class="svg-mono-xs">Round Robin</text>
+
+                  <path d="M 405 115 L 485 65" class="svg-arrow" stroke="var(--success)"/>
+                  <path d="M 405 115 L 485 115" class="svg-arrow" stroke="var(--success)"/>
+                  <path d="M 405 115 L 485 165" class="svg-arrow" stroke="var(--success)"/>
+
+                  <g transform="translate(485, 25)">
+                    <rect x="0" y="0" width="365" height="52" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="15" y="32" class="svg-node" style="fill: var(--success); font-weight: 700;">Server 1: Monolith Replica</text>
+                    <text x="230" y="32" class="svg-mono-xs">[Auth | Video | Pay]</text>
+
+                    <rect x="0" y="65" width="365" height="52" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="15" y="97" class="svg-node" style="fill: var(--success); font-weight: 700;">Server 2: Monolith Replica</text>
+                    <text x="230" y="97" class="svg-mono-xs">[Auth | Video | Pay]</text>
+
+                    <rect x="0" y="130" width="365" height="52" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="15" y="162" class="svg-node" style="fill: var(--success); font-weight: 700;">Server 3: Monolith Replica</text>
+                    <text x="230" y="162" class="svg-mono-xs">[Auth | Video | Pay]</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -530,7 +805,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "How to Convert a Monolith to Microservices",
       summary: "3 Golden Precautions, the 6-Step Amazon Migration Process (REST/gRPC, Kafka/RabbitMQ, MySQL, Docker), and the critical difference between Code Migration and Module Migration.",
       subtopicLabels: ["5.1 3 Golden Precautions", "5.2 6-Step Migration Process", "5.3 Code vs Module Migration"],
-      diagramCount: 1,
+      diagramCount: 4,
       sections: [
         {
           num: "5.1",
@@ -553,11 +828,167 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Even after the new Payment Microservice is built and ready, do not shift 100% of live user traffic to it at once.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 5.1 · The 3 Golden Precautions of Microservices Migration</span>
+                <span class="diagram-frame-tag">PRAGMATIC ARCHITECTURAL GOVERNANCE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Visual three-card rulebook showing Don't start day 1 with microservices, migrate gradually via Strangler pattern, and ensure team DevOps readiness">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="255" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                    <text x="127" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--warning); font-weight: 700;">GOLDEN RULE 01</text>
+                    <text x="127" y="56" text-anchor="middle" class="svg-title">Never Start on Day 1</text>
+                    <rect x="18" y="70" width="219" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="127" y="98" text-anchor="middle" class="svg-node">Start with a Monolith</text>
+                    <text x="127" y="120" text-anchor="middle" class="svg-sub">Validate product-market fit first</text>
+                    <text x="127" y="142" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Premature splitting = chaos</text>
+                  </g>
+
+                  <g transform="translate(310, 25)">
+                    <rect x="0" y="0" width="255" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="127" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary); font-weight: 700;">GOLDEN RULE 02</text>
+                    <text x="127" y="56" text-anchor="middle" class="svg-title">Gradual Migration</text>
+                    <rect x="18" y="70" width="219" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="127" y="98" text-anchor="middle" class="svg-node">Strangler Fig Pattern</text>
+                    <text x="127" y="120" text-anchor="middle" class="svg-sub">Carve 1 high-impact module</text>
+                    <text x="127" y="142" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Never rewrite whole app!</text>
+                  </g>
+
+                  <g transform="translate(595, 25)">
+                    <rect x="0" y="0" width="260" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="130" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">GOLDEN RULE 03</text>
+                    <text x="130" y="56" text-anchor="middle" class="svg-title">DevOps Readiness</text>
+                    <rect x="18" y="70" width="224" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="130" y="98" text-anchor="middle" class="svg-node">Tooling &amp; Monitoring</text>
+                    <text x="130" y="120" text-anchor="middle" class="svg-sub">CI/CD, Docker, Prometheus</text>
+                    <text x="130" y="142" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Need distributed tracing</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
           num: "5.2",
           title: "The 6-Step Migration Process (Amazon Example)",
+          content: `
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">6-Step Monolith to Microservices Pipeline</span>
+    <span class="badge badge-accent">ARCHITECTURAL MIGRATION</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="6-Step Monolith to Microservices Migration Process">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 13px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 10px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 9px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Step 1 -->
+    <rect x="25" y="45" width="125" height="135" rx="8" class="svg-bg" />
+    <circle cx="45" cy="65" r="12" fill="var(--primary)" opacity="0.15" />
+    <text x="45" y="69" text-anchor="middle" font-weight="700" font-size="11" fill="var(--primary)">1</text>
+    <text x="65" y="69" class="svg-title">Understand</text>
+    <line x1="35" y1="85" x2="140" y2="85" stroke="var(--border-color)" stroke-width="1" />
+    <text x="35" y="105" class="svg-node" font-weight="600">Audit Monolith</text>
+    <text x="35" y="123" class="svg-sub">• Map dependencies</text>
+    <text x="35" y="139" class="svg-sub">• Auth, Cart, Pay</text>
+    <text x="35" y="155" class="svg-sub">• Order modules</text>
+    <rect x="35" y="162" width="75" height="14" rx="3" fill="var(--bg-subtle)" />
+    <text x="40" y="172" class="svg-mono-xs">Domain Audit</text>
+
+    <!-- Arrow 1->2 -->
+    <path d="M 150 112 L 165 112" stroke="var(--primary)" stroke-width="2" />
+
+    <!-- Step 2 -->
+    <rect x="165" y="45" width="125" height="135" rx="8" class="svg-bg" />
+    <circle cx="185" cy="65" r="12" fill="var(--warning)" opacity="0.15" />
+    <text x="185" y="69" text-anchor="middle" font-weight="700" font-size="11" fill="var(--warning)">2</text>
+    <text x="205" y="69" class="svg-title">Identify</text>
+    <line x1="175" y1="85" x2="280" y2="85" stroke="var(--border-color)" stroke-width="1" />
+    <text x="175" y="105" class="svg-node" font-weight="600">Bottlenecks</text>
+    <text x="175" y="123" class="svg-sub">• High-traffic module</text>
+    <text x="175" y="139" class="svg-sub">• Crash-prone logic</text>
+    <text x="175" y="155" class="svg-sub">• e.g. Payment svc</text>
+    <rect x="175" y="162" width="80" height="14" rx="3" fill="var(--warning)" opacity="0.15" />
+    <text x="180" y="172" class="svg-mono-xs" fill="var(--warning)">High Impact</text>
+
+    <!-- Arrow 2->3 -->
+    <path d="M 290 112 L 305 112" stroke="var(--primary)" stroke-width="2" />
+
+    <!-- Step 3 -->
+    <rect x="305" y="45" width="125" height="135" rx="8" class="svg-bg" />
+    <circle cx="325" cy="65" r="12" fill="var(--primary)" opacity="0.15" />
+    <text x="325" y="69" text-anchor="middle" font-weight="700" font-size="11" fill="var(--primary)">3</text>
+    <text x="345" y="69" class="svg-title">Contracts</text>
+    <line x1="315" y1="85" x2="420" y2="85" stroke="var(--border-color)" stroke-width="1" />
+    <text x="315" y="105" class="svg-node" font-weight="600">API Protocol</text>
+    <text x="315" y="123" class="svg-sub">• REST / gRPC sync</text>
+    <text x="315" y="139" class="svg-sub">• Kafka / RMQ async</text>
+    <text x="315" y="155" class="svg-sub">• Versioned schema</text>
+    <rect x="315" y="162" width="75" height="14" rx="3" fill="var(--bg-subtle)" />
+    <text x="320" y="172" class="svg-mono-xs">Protobuf / JSON</text>
+
+    <!-- Arrow 3->4 -->
+    <path d="M 430 112 L 445 112" stroke="var(--primary)" stroke-width="2" />
+
+    <!-- Step 4 -->
+    <rect x="445" y="45" width="130" height="135" rx="8" class="svg-bg" />
+    <circle cx="465" cy="65" r="12" fill="var(--accent)" opacity="0.15" />
+    <text x="465" y="69" text-anchor="middle" font-weight="700" font-size="11" fill="var(--accent)">4</text>
+    <text x="485" y="69" class="svg-title">Migrate</text>
+    <line x1="455" y1="85" x2="565" y2="85" stroke="var(--border-color)" stroke-width="1" />
+    <text x="455" y="105" class="svg-node" font-weight="600">Extract Code</text>
+    <text x="455" y="123" class="svg-sub">• Dedicated Git repo</text>
+    <text x="455" y="139" class="svg-sub">• Isolated MySQL DB</text>
+    <text x="455" y="155" class="svg-sub">• Docker container</text>
+    <rect x="455" y="162" width="85" height="14" rx="3" fill="var(--accent)" opacity="0.15" />
+    <text x="460" y="172" class="svg-mono-xs" fill="var(--accent)">Decoupled DB</text>
+
+    <!-- Arrow 4->5 -->
+    <path d="M 575 112 L 590 112" stroke="var(--primary)" stroke-width="2" />
+
+    <!-- Step 5 -->
+    <rect x="590" y="45" width="130" height="135" rx="8" class="svg-bg" />
+    <circle cx="610" cy="65" r="12" fill="var(--success)" opacity="0.15" />
+    <text x="610" y="69" text-anchor="middle" font-weight="700" font-size="11" fill="var(--success)">5</text>
+    <text x="630" y="69" class="svg-title">Observe</text>
+    <line x1="600" y1="85" x2="710" y2="85" stroke="var(--border-color)" stroke-width="1" />
+    <text x="600" y="105" class="svg-node" font-weight="600">Observability</text>
+    <text x="600" y="123" class="svg-sub">• Canary 5% traffic</text>
+    <text x="600" y="139" class="svg-sub">• Latency & errors</text>
+    <text x="600" y="155" class="svg-sub">• Grafana & Datadog</text>
+    <rect x="600" y="162" width="80" height="14" rx="3" fill="var(--success)" opacity="0.15" />
+    <text x="605" y="172" class="svg-mono-xs" fill="var(--success)">Canary Deploy</text>
+
+    <!-- Arrow 5->6 -->
+    <path d="M 720 112 L 735 112" stroke="var(--primary)" stroke-width="2" />
+
+    <!-- Step 6 -->
+    <rect x="735" y="45" width="120" height="135" rx="8" class="svg-bg" />
+    <circle cx="755" cy="65" r="12" fill="var(--primary)" opacity="0.15" />
+    <text x="755" y="69" text-anchor="middle" font-weight="700" font-size="11" fill="var(--primary)">6</text>
+    <text x="775" y="69" class="svg-title">Scale</text>
+    <line x1="745" y1="85" x2="845" y2="85" stroke="var(--border-color)" stroke-width="1" />
+    <text x="745" y="105" class="svg-node" font-weight="600">Elastic Scale</text>
+    <text x="745" y="123" class="svg-sub">• Auto-scale pods</text>
+    <text x="745" y="139" class="svg-sub">• Independent SLA</text>
+    <text x="745" y="155" class="svg-sub">• Safe refactors</text>
+    <rect x="745" y="162" width="75" height="14" rx="3" fill="var(--primary)" opacity="0.15" />
+    <text x="750" y="172" class="svg-mono-xs" fill="var(--primary)">HPA Scaling</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">INCREMENTAL STRANGLER FIG MIGRATION PIPELINE • ZERO DOWNTIME TRANSITION</text>
+  </svg>
+</figure>
+          `,
           type: "workflow",
           steps: [
             {
@@ -669,6 +1100,67 @@ const SYSTEM_DESIGN_NOTES = {
                   <rect x="18" y="158" width="844" height="62" rx="12" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.3"/>
                   <text x="440" y="184" text-anchor="middle" class="svg-mono-md">Step 4 = Code Migration Only  |  100% Stable Live Traffic = True Module Migration</text>
                   <text x="440" y="206" text-anchor="middle" class="svg-sub">Decommissioning Rule: Never delete Payment code from Monolith until 100% live traffic runs stably on the Microservice</text>
+                </svg>
+              </div>
+            </figure>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 5.2 · The 6-Step Monolith-to-Microservices Migration Pipeline (Amazon Example)</span>
+                <span class="diagram-frame-tag">STRANGLER PATTERN WORKFLOW</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Step by step pipeline showing Understand Monolith, Identify High Impact, Build API Contracts, Code Migration, Monitoring, and Scaling">
+                  <g transform="translate(15, 30)">
+                    <rect x="0" y="0" width="130" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="65" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">STEP 01</text>
+                    <text x="65" y="48" text-anchor="middle" class="svg-node">Understand</text>
+                    <rect x="10" y="65" width="110" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="65" y="90" text-anchor="middle" class="svg-mono-xs">Map Modules</text>
+                    <text x="65" y="112" text-anchor="middle" class="svg-sub">Auth, Cart,</text>
+                    <text x="65" y="132" text-anchor="middle" class="svg-sub">Payment, Order</text>
+
+                    <rect x="145" y="0" width="130" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.2"/>
+                    <text x="210" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning); font-weight: 700;">STEP 02</text>
+                    <text x="210" y="48" text-anchor="middle" class="svg-node">Identify</text>
+                    <rect x="155" y="65" width="110" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="210" y="90" text-anchor="middle" class="svg-mono-xs">High Impact</text>
+                    <text x="210" y="112" text-anchor="middle" class="svg-sub">Pick Payment</text>
+                    <text x="210" y="132" text-anchor="middle" class="svg-sub">Peak crash risk</text>
+
+                    <rect x="290" y="0" width="130" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.2"/>
+                    <text x="355" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--accent); font-weight: 700;">STEP 03</text>
+                    <text x="355" y="48" text-anchor="middle" class="svg-node">Contracts</text>
+                    <rect x="300" y="65" width="110" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="355" y="90" text-anchor="middle" class="svg-mono-xs">REST / gRPC</text>
+                    <text x="355" y="112" text-anchor="middle" class="svg-sub">Define schemas</text>
+                    <text x="355" y="132" text-anchor="middle" class="svg-sub">Kafka topics</text>
+
+                    <rect x="435" y="0" width="130" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="500" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">STEP 04</text>
+                    <text x="500" y="48" text-anchor="middle" class="svg-node">Extract Code</text>
+                    <rect x="445" y="65" width="110" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="500" y="90" text-anchor="middle" class="svg-mono-xs">New Repo</text>
+                    <text x="500" y="112" text-anchor="middle" class="svg-sub">Own Database</text>
+                    <text x="500" y="132" text-anchor="middle" class="svg-sub">Docker image</text>
+
+                    <rect x="580" y="0" width="130" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="645" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">STEP 05</text>
+                    <text x="645" y="48" text-anchor="middle" class="svg-node">Observe</text>
+                    <rect x="590" y="65" width="110" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="645" y="90" text-anchor="middle" class="svg-mono-xs">Monitoring</text>
+                    <text x="645" y="112" text-anchor="middle" class="svg-sub">Live Canary</text>
+                    <text x="645" y="132" text-anchor="middle" class="svg-sub">Error rates</text>
+
+                    <rect x="725" y="0" width="125" height="170" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="787" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">STEP 06</text>
+                    <text x="787" y="48" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Scale Out</text>
+                    <rect x="735" y="65" width="105" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="787" y="90" text-anchor="middle" class="svg-mono-xs">Autoscale</text>
+                    <text x="787" y="112" text-anchor="middle" class="svg-sub">Optimize CPU</text>
+                    <text x="787" y="132" text-anchor="middle" class="svg-sub">Complete ✓</text>
+                  </g>
                 </svg>
               </div>
             </figure>
@@ -920,7 +1412,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What is an API Gateway?",
       summary: "Amazon profile update example (/api/v1/update-profile), why clients shouldn't know internal microservice locations, and how the API Gateway acts as a single smart entry point.",
       subtopicLabels: ["7.1 Amazon Profile Update", "7.2 Core Role of API Gateway"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "7.1",
@@ -933,6 +1425,48 @@ const SYSTEM_DESIGN_NOTES = {
               <li>Behind the scenes, clicking "Save" triggers an API endpoint like <code>/api/v1/update-profile</code>.</li>
               <li><strong>The Problem:</strong> The client/user has zero knowledge of your backend architecture, which internal microservice handles profile updates, or where that microservice is hosted. Furthermore, exposing internal microservice details directly to the client is bad practice.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 7.1 · Client-Side Encapsulation: Abstracting Microservice Topology</span>
+                <span class="diagram-frame-tag">SINGLE PUBLIC CONTRACT</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing client calling single public endpoint /api/v1/update-profile without knowing internal service topology or IP addresses">
+                  <rect x="30" y="30" width="220" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="140" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CLIENT BROWSER / APP</text>
+                  <text x="140" y="82" text-anchor="middle" class="svg-title">Amazon User Device</text>
+                  <rect x="45" y="100" width="190" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="140" y="125" text-anchor="middle" class="svg-node">Clicks "Save Profile"</text>
+                  <text x="140" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary);">POST /api/v1/profile</text>
+                  <text x="140" y="168" text-anchor="middle" class="svg-sub">Knows ZERO internal IPs</text>
+
+                  <path d="M 250 115 L 340 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="340" y="25" width="220" height="180" rx="12" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="450" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">UNIFIED FRONT DOOR</text>
+                  <text x="450" y="78" text-anchor="middle" class="svg-title">API Gateway</text>
+                  <rect x="355" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="450" y="122" text-anchor="middle" class="svg-node">Hides Topology</text>
+                  <text x="450" y="145" text-anchor="middle" class="svg-mono-xs">Routes to internal:</text>
+                  <text x="450" y="165" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">10.0.4.88:8080</text>
+
+                  <g transform="translate(600, 25)">
+                    <rect x="0" y="0" width="250" height="52" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="125" y="32" text-anchor="middle" class="svg-node">User Service (10.0.4.88)</text>
+
+                    <rect x="0" y="65" width="250" height="52" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="125" y="97" text-anchor="middle" class="svg-node">Payment Service (10.0.2.14)</text>
+
+                    <rect x="0" y="130" width="250" height="52" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="125" y="162" text-anchor="middle" class="svg-node">Order Service (10.0.8.21)</text>
+                  </g>
+                  
+                  <path d="M 560 115 L 600 35" class="svg-arrow" stroke="var(--success)"/>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -1252,7 +1786,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What is a Load Balancer & How Does It Differ from an API Gateway?",
       summary: "Distributing traffic across healthy Payment instances (Payment-1 vs busy Payment-3 & down Payment-2), and the golden difference between Service routing and Instance routing.",
       subtopicLabels: ["9.1 Core Role of Load Balancer", "9.2 API Gateway vs Load Balancer"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "9.1",
@@ -1269,6 +1803,49 @@ const SYSTEM_DESIGN_NOTES = {
               </li>
               <li>The <strong>Load Balancer</strong> checks the traffic load and health status of all instances and routes the user's request specifically to <code>Payment-1</code>.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 9.1 · Load Balancer Core Mechanics: Health Checks &amp; Traffic Distribution</span>
+                <span class="diagram-frame-tag">SERVER REPLICA TRAFFIC DISTRIBUTION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing load balancer distributing traffic among healthy servers and skipping an unhealthy server identified by health probes">
+                  <rect x="25" y="30" width="160" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="105" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CONCURRENT USERS</text>
+                  <text x="105" y="82" text-anchor="middle" class="svg-title">10,000 Req / Sec</text>
+                  <rect x="40" y="100" width="130" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="105" y="130" text-anchor="middle" class="svg-node">Incoming Load</text>
+                  <text x="105" y="152" text-anchor="middle" class="svg-mono-xs">All identical endpoints</text>
+
+                  <path d="M 185 115 L 260 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="260" y="25" width="220" height="180" rx="12" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="370" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">LOAD BALANCER</text>
+                  <text x="370" y="78" text-anchor="middle" class="svg-title">Traffic Distributer</text>
+                  <rect x="275" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="370" y="122" text-anchor="middle" class="svg-node">Continuous Health Check</text>
+                  <text x="370" y="145" text-anchor="middle" class="svg-mono-xs">GET /health &rarr; 200 OK</text>
+                  <text x="370" y="165" text-anchor="middle" class="svg-sub" style="fill: var(--success);">Reroutes around dead nodes</text>
+
+                  <rect x="540" y="25" width="310" height="52" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="555" y="56" class="svg-node" style="fill: var(--success); font-weight: 700;">Server Replica 1: Healthy ✓</text>
+                  <text x="750" y="56" class="svg-mono-xs">Serving 33%</text>
+
+                  <rect x="540" y="89" width="310" height="52" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                  <text x="555" y="120" class="svg-node" style="fill: var(--danger); font-weight: 700;">Server Replica 2: Crashed ✕</text>
+                  <text x="750" y="120" class="svg-mono-xs" style="fill: var(--danger);">Skipped (0%)</text>
+
+                  <rect x="540" y="153" width="310" height="52" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                  <text x="555" y="184" class="svg-node" style="fill: var(--success); font-weight: 700;">Server Replica 3: Healthy ✓</text>
+                  <text x="750" y="184" class="svg-mono-xs">Serving 67%</text>
+
+                  <path d="M 480 100 L 540 50" class="svg-arrow" stroke="var(--success)"/>
+                  <path d="M 480 130 L 540 180" class="svg-arrow" stroke="var(--success)"/>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -1366,7 +1943,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Regions & Availability Zones (High-Scale Infrastructure Basics)",
       summary: "Geographic Regions (Massachusetts, California), isolated city-level Availability Zones (Boston/Cambridge, LA/SF), and automatic AZ-level & Region-level failover.",
       subtopicLabels: ["10.1 Regions vs Availability Zones", "10.2 Failover & High Availability"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "10.1",
@@ -1389,6 +1966,53 @@ const SYSTEM_DESIGN_NOTES = {
                 </div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 10.1 · Regions vs. Availability Zones: Continental Fault Boundaries</span>
+                <span class="diagram-frame-tag">CLOUD GEOGRAPHIC TOPOLOGY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Diagram showing Geographic Region containing isolated Availability Zones separated by kilometers connected by dark fiber">
+                  <rect x="25" y="20" width="830" height="200" rx="14" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="440" y="46" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">GEOGRAPHIC REGION (E.G., AP-SOUTH-1 / MUMBAI)</text>
+                  
+                  <g transform="translate(50, 60)">
+                    <rect x="0" y="0" width="235" height="140" rx="10" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="117" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">AVAILABILITY ZONE 1</text>
+                    <text x="117" y="52" text-anchor="middle" class="svg-node">Data Center A</text>
+                    <rect x="18" y="65" width="200" height="60" rx="6" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                    <text x="117" y="88" text-anchor="middle" class="svg-mono-xs">Isolated Power Grid</text>
+                    <text x="117" y="108" text-anchor="middle" class="svg-sub">Survives local flood</text>
+                  </g>
+
+                  <path d="M 285 130 L 340 130" class="svg-arrow" stroke="var(--accent)"/>
+                  <text x="312" y="120" text-anchor="middle" class="svg-mono-xs" style="fill: var(--accent);">&lt;1ms</text>
+
+                  <g transform="translate(340, 60)">
+                    <rect x="0" y="0" width="235" height="140" rx="10" fill="var(--bg-surface)" stroke="var(--accent)" stroke-width="1.5"/>
+                    <text x="117" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--accent); font-weight: 700;">AVAILABILITY ZONE 2</text>
+                    <text x="117" y="52" text-anchor="middle" class="svg-node">Data Center B</text>
+                    <rect x="18" y="65" width="200" height="60" rx="6" fill="var(--accent-bg)" stroke="var(--accent)"/>
+                    <text x="117" y="88" text-anchor="middle" class="svg-mono-xs">Dedicated Substations</text>
+                    <text x="117" y="108" text-anchor="middle" class="svg-sub">15-30 km away</text>
+                  </g>
+
+                  <path d="M 575 130 L 630 130" class="svg-arrow" stroke="var(--success)"/>
+                  <text x="602" y="120" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">&lt;1ms</text>
+
+                  <g transform="translate(630, 60)">
+                    <rect x="0" y="0" width="205" height="140" rx="10" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="102" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">AVAILABILITY ZONE 3</text>
+                    <text x="102" y="52" text-anchor="middle" class="svg-node">Data Center C</text>
+                    <rect x="15" y="65" width="175" height="60" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="102" y="88" text-anchor="middle" class="svg-mono-xs">Cold Standby</text>
+                    <text x="102" y="108" text-anchor="middle" class="svg-sub">Disaster recovery</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -1467,7 +2091,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Real-World Interview Questions & End-to-End Request Flow",
       summary: "Which comes first (DNS LB → Regional API Gateway → AZ LB), scaling a logical Single Entry Point to millions of requests, and the full 5-step User 5 request journey + failover scenarios.",
       subtopicLabels: ["11.1 Gateway vs LB Order", "11.2 Handling Millions of Requests", "11.3 Complete 5-Step Flow"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "11.1",
@@ -1491,6 +2115,53 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Operates at the <strong>Availability Zone level</strong> (routes traffic to the specific healthy microservice instance).</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 11.1 · Production Ingress Ordering: External LB &rarr; API Gateway Fleet &rarr; Microservices</span>
+                <span class="diagram-frame-tag">TWO-TIER INGRESS PATTERN</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing external load balancer receiving internet traffic and distributing across horizontally scaled API gateways which route to internal microservices">
+                  <rect x="20" y="35" width="140" height="160" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="90" y="62" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">STEP 1: INGRESS</text>
+                  <text x="90" y="86" text-anchor="middle" class="svg-title">Client User</text>
+                  <rect x="32" y="102" width="116" height="80" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="90" y="128" text-anchor="middle" class="svg-node">Browser / App</text>
+                  <text x="90" y="150" text-anchor="middle" class="svg-mono-xs">HTTPS Request</text>
+
+                  <path d="M 160 115 L 220 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="220" y="30" width="180" height="170" rx="10" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="310" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">STEP 2: EXTERNAL LB</text>
+                  <text x="310" y="82" text-anchor="middle" class="svg-title">Public Load Balancer</text>
+                  <rect x="235" y="100" width="150" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="310" y="125" text-anchor="middle" class="svg-node">AWS ALB / Cloudflare</text>
+                  <text x="310" y="145" text-anchor="middle" class="svg-mono-xs">SSL Termination</text>
+                  <text x="310" y="165" text-anchor="middle" class="svg-sub">Distributes across Gateways</text>
+
+                  <path d="M 400 115 L 460 115" class="svg-arrow" stroke="var(--accent)"/>
+
+                  <rect x="460" y="30" width="190" height="170" rx="10" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="555" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--accent);">STEP 3: GATEWAY FLEET</text>
+                  <text x="555" y="82" text-anchor="middle" class="svg-title">API Gateway Cluster</text>
+                  <rect x="475" y="100" width="160" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                  <text x="555" y="125" text-anchor="middle" class="svg-node">Auth &amp; Rate Limiting</text>
+                  <text x="555" y="145" text-anchor="middle" class="svg-mono-xs">Path Routing: /users</text>
+                  <text x="555" y="165" text-anchor="middle" class="svg-sub">Reverse Proxy Logic</text>
+
+                  <path d="M 650 115 L 710 115" class="svg-arrow" stroke="var(--success)"/>
+
+                  <rect x="710" y="35" width="150" height="160" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="785" y="62" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">STEP 4: BACKEND</text>
+                  <text x="785" y="86" text-anchor="middle" class="svg-title">Microservices</text>
+                  <rect x="722" y="102" width="126" height="80" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="785" y="128" text-anchor="middle" class="svg-node">User Service</text>
+                  <text x="785" y="150" text-anchor="middle" class="svg-node">Payment Service</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -1502,6 +2173,51 @@ const SYSTEM_DESIGN_NOTES = {
               <li>We deploy <strong>separate API Gateways per Region</strong> (e.g., <code>API Gateway A</code> in California, <code>API Gateway B</code> in Massachusetts, plus gateways near India/Asia).</li>
               <li>A <strong>DNS Load Balancer</strong> distributes global user traffic to the API Gateway in the Region closest to the user, allowing the architecture to effortlessly handle millions of concurrent requests while reducing network latency.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 11.2 · Horizontally Scaled API Gateway Fleet: Absorbing Millions of Requests</span>
+                <span class="diagram-frame-tag">DNS ANYCAST &amp; STATELESS SCALING</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing millions of requests distributed across horizontally scaled stateless API gateway instances via DNS Anycast and Network Load Balancers">
+                  <rect x="25" y="30" width="180" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="115" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">INGRESS SCALING</text>
+                  <text x="115" y="82" text-anchor="middle" class="svg-title">DNS Anycast / NLB</text>
+                  <rect x="40" y="100" width="150" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="115" y="125" text-anchor="middle" class="svg-node">5,000,000 Req / min</text>
+                  <text x="115" y="148" text-anchor="middle" class="svg-mono-xs">L4 Wire Routing</text>
+                  <text x="115" y="168" text-anchor="middle" class="svg-sub">Zero CPU bottleneck</text>
+
+                  <path d="M 205 115 L 290 60" class="svg-arrow" stroke="var(--accent)"/>
+                  <path d="M 205 115 L 290 115" class="svg-arrow" stroke="var(--accent)"/>
+                  <path d="M 205 115 L 290 170" class="svg-arrow" stroke="var(--accent)"/>
+
+                  <g transform="translate(290, 25)">
+                    <rect x="0" y="0" width="290" height="52" rx="8" fill="var(--accent-bg)" stroke="var(--accent)"/>
+                    <text x="15" y="32" class="svg-node" style="fill: var(--accent); font-weight: 700;">API Gateway Instance 1 (Stateless)</text>
+                    <text x="255" y="32" class="svg-mono-xs">33%</text>
+
+                    <rect x="0" y="65" width="290" height="52" rx="8" fill="var(--accent-bg)" stroke="var(--accent)"/>
+                    <text x="15" y="97" class="svg-node" style="fill: var(--accent); font-weight: 700;">API Gateway Instance 2 (Stateless)</text>
+                    <text x="255" y="97" class="svg-mono-xs">33%</text>
+
+                    <rect x="0" y="130" width="290" height="52" rx="8" fill="var(--accent-bg)" stroke="var(--accent)"/>
+                    <text x="15" y="162" class="svg-node" style="fill: var(--accent); font-weight: 700;">API Gateway Instance 3 (Stateless)</text>
+                    <text x="255" y="162" class="svg-mono-xs">33%</text>
+                  </g>
+
+                  <rect x="630" y="30" width="225" height="170" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                  <text x="742" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">STATELESS SECRET</text>
+                  <text x="742" y="82" text-anchor="middle" class="svg-title">Shared Redis Cache</text>
+                  <rect x="645" y="100" width="195" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="742" y="125" text-anchor="middle" class="svg-node">Shared Token Store</text>
+                  <text x="742" y="145" text-anchor="middle" class="svg-mono-xs">Rate Limit Counters in RAM</text>
+                  <text x="742" y="165" text-anchor="middle" class="svg-sub">Gateways store 0 local state ✓</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -1640,7 +2356,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What is Load Balancing? (Chat Application Example)",
       summary: "Horizontally scaling a Chat Service across multiple servers (Chat-1, Chat-2), WebSocket message delivery (User A → M1 → User B), and Health & Traffic checks.",
       subtopicLabels: ["12.1 Why Load Balancing", "12.2 Chat App WebSocket Flow"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "12.1",
@@ -1651,6 +2367,47 @@ const SYSTEM_DESIGN_NOTES = {
               <li>As user traffic grows rapidly, running the Chat Service on a single server will slow down or crash the system.</li>
               <li>To handle the load, we <strong>horizontally scale</strong> the Chat Service by adding more servers/instances (<code>Chat Service Instance 1</code> on Server 1, <code>Chat Service Instance 2</code> on Server 2).</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 12.1 · Uneven Traffic Crash vs Balanced Distribution</span>
+                <span class="diagram-frame-tag">PREVENTING HOTSPOTS &amp; CRASHES</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram contrasting uneven traffic causing one server to crash while others sit idle with load balanced even distribution">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.5"/>
+                    <text x="197" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">WITHOUT LOAD BALANCER (UNEVEN)</text>
+                    
+                    <rect x="20" y="50" width="165" height="110" rx="6" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                    <text x="102" y="78" text-anchor="middle" class="svg-node" style="fill: var(--danger); font-weight: 700;">💥 Server 1: CRASHED</text>
+                    <text x="102" y="100" text-anchor="middle" class="svg-mono-xs">95% Traffic (10,000 QPS)</text>
+                    <text x="102" y="122" text-anchor="middle" class="svg-sub" style="fill: var(--danger);">100% CPU · OOM Death</text>
+
+                    <rect x="205" y="50" width="170" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="290" y="78" text-anchor="middle" class="svg-node">Server 2: Idle (5%)</text>
+                    <text x="290" y="100" text-anchor="middle" class="svg-mono-xs">Wasted Compute</text>
+                    <text x="290" y="122" text-anchor="middle" class="svg-sub">Resource underutilization</text>
+                  </g>
+
+                  <g transform="translate(455, 25)">
+                    <rect x="0" y="0" width="400" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="200" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">WITH LOAD BALANCER (SMOOTH)</text>
+                    
+                    <rect x="20" y="50" width="170" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="105" y="78" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Server 1: Healthy ✓</text>
+                    <text x="105" y="100" text-anchor="middle" class="svg-mono-xs">50% Traffic (5,000 QPS)</text>
+                    <text x="105" y="122" text-anchor="middle" class="svg-sub">45% CPU load · Fast response</text>
+
+                    <rect x="210" y="50" width="170" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="295" y="78" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Server 2: Healthy ✓</text>
+                    <text x="295" y="100" text-anchor="middle" class="svg-mono-xs">50% Traffic (5,000 QPS)</text>
+                    <text x="295" y="122" text-anchor="middle" class="svg-sub">45% CPU load · Fast response</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -1743,7 +2500,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Types of Load Balancers — L4 vs. L7 Load Balancer",
       summary: "OSI 7-Layer background, L4 Transport Layer (TCP/UDP, 4 IP/Port params, sticky TCP connection, Post Office Clerk analogy) vs. L7 Application Layer (inspects HTTP paths, body, cookies).",
       subtopicLabels: ["13.1 OSI Model", "13.2 L4 Load Balancer", "13.3 L7 Load Balancer"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "13.1",
@@ -1759,6 +2516,35 @@ const SYSTEM_DESIGN_NOTES = {
               <div class="osi-layer-item"><span>Layer 6</span><span>Presentation</span></div>
               <div class="osi-layer-item osi-layer-item--highlight"><span>Layer 7 ★</span><span>Application (L7 LB)</span></div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 13.1 · The 7-Layer OSI Model: Where L4 and L7 Load Balancers Live</span>
+                <span class="diagram-frame-tag">NETWORK ABSTRACTION LAYERS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing the 7 OSI layers highlighting Layer 4 Transport Layer and Layer 7 Application Layer">
+                  <g transform="translate(30, 20)">
+                    <rect x="0" y="140" width="250" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                    <text x="125" y="170" text-anchor="middle" class="svg-mono-xs">Layers 1–3: Physical, Data Link, Network (IP)</text>
+
+                    <rect x="270" y="115" width="270" height="75" rx="8" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="2"/>
+                    <text x="405" y="142" text-anchor="middle" class="svg-kicker" style="fill: var(--primary); font-weight: 700;">LAYER 4: TRANSPORT LAYER</text>
+                    <text x="405" y="165" text-anchor="middle" class="svg-node">TCP &amp; UDP Protocols</text>
+                    <text x="405" y="182" text-anchor="middle" class="svg-mono-xs">IP + Port routing only (Wire speed)</text>
+
+                    <rect x="560" y="140" width="130" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                    <text x="625" y="170" text-anchor="middle" class="svg-mono-xs">Layers 5–6</text>
+
+                    <rect x="270" y="20" width="270" height="75" rx="8" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="2"/>
+                    <text x="405" y="47" text-anchor="middle" class="svg-kicker" style="fill: var(--accent); font-weight: 700;">LAYER 7: APPLICATION LAYER</text>
+                    <text x="405" y="70" text-anchor="middle" class="svg-node">HTTP, HTTPS, WebSockets</text>
+                    <text x="405" y="87" text-anchor="middle" class="svg-mono-xs">URL, Headers, Cookies, JSON body</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -1793,6 +2579,44 @@ const SYSTEM_DESIGN_NOTES = {
                 An L4 Load Balancer is like a <strong>post office clerk who only looks at the envelope's "From Address" and "To Address"</strong> without ever opening the envelope to read the letter inside.
               </p>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 13.2 · Layer 4 (L4) Transport Load Balancing: Blind Wire-Speed Routing</span>
+                <span class="diagram-frame-tag">NO PAYLOAD INSPECTION · MAXIMUM THROUGHPUT</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Layer 4 load balancer routing raw TCP packets based solely on IP and Port without decrypting SSL or inspecting HTTP headers">
+                  <rect x="25" y="30" width="220" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="135" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">RAW PACKET INGRESS</text>
+                  <text x="135" y="82" text-anchor="middle" class="svg-title">TCP SYN / ACK Stream</text>
+                  <rect x="40" y="100" width="190" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="135" y="125" text-anchor="middle" class="svg-mono-xs">Src: 198.51.100.4:52311</text>
+                  <text x="135" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary);">Dst: 203.0.113.10:443</text>
+                  <text x="135" y="168" text-anchor="middle" class="svg-sub">Encrypted raw bytes</text>
+
+                  <path d="M 245 115 L 330 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="330" y="25" width="250" height="180" rx="12" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="455" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">L4 NETWORK LOAD BALANCER</text>
+                  <text x="455" y="78" text-anchor="middle" class="svg-title">AWS NLB / IPVS / HAProxy</text>
+                  <rect x="345" y="95" width="220" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="455" y="122" text-anchor="middle" class="svg-node" style="font-weight: 700;">NAT / Hash Table Lookup</text>
+                  <text x="455" y="144" text-anchor="middle" class="svg-mono-xs">Does NOT inspect HTTP ✕</text>
+                  <text x="455" y="165" text-anchor="middle" class="svg-sub" style="fill: var(--success);">Millions QPS · Microsecond delay</text>
+
+                  <path d="M 580 115 L 660 115" class="svg-arrow" stroke="var(--success)"/>
+
+                  <rect x="660" y="30" width="195" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--border-strong)"/>
+                  <text x="757" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">BACKEND TARGET</text>
+                  <text x="757" y="82" text-anchor="middle" class="svg-title">Target Server</text>
+                  <rect x="675" y="100" width="165" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="757" y="130" text-anchor="middle" class="svg-node">Server 10.0.1.5</text>
+                  <text x="757" y="152" text-anchor="middle" class="svg-mono-xs">Port 443 Handshake</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -1885,7 +2709,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Static Load Balancing Algorithms",
       summary: "Round Robin (equal loop & hardware waste), Weighted Round Robin (Weight 3 vs 1 & 10ms vs 10s execution time drawback), and IP Hash (client IP hashing & Proxy Server bottleneck).",
       subtopicLabels: ["14.1 Round Robin", "14.2 Weighted Round Robin", "14.3 IP Hash"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "14.1",
@@ -1902,6 +2726,50 @@ const SYSTEM_DESIGN_NOTES = {
               </li>
               <li><strong>Major Drawback (Server Capacity Waste):</strong> Suppose <code>Chat-1</code> runs on a <strong>powerful server</strong> (multiple CPUs, high RAM, capable of handling 100 requests) while <code>Chat-2</code> runs on a <strong>weak server</strong> (low CPU/RAM). Because Round Robin distributes traffic 50-50 (e.g., 5 requests to <code>Chat-1</code> and 5 requests to <code>Chat-2</code>), the powerful server's extra capacity goes wasted while the weak server gets stressed.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 14.1 · Static Round Robin: Sequential Cyclic Distribution (1 &rarr; 2 &rarr; 3 &rarr; 1)</span>
+                <span class="diagram-frame-tag">CIRCULAR POINTER DISPATCH</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Round Robin algorithm dispatching Request 1 to Server A, Request 2 to Server B, Request 3 to Server C, then cycling back to Server A">
+                  <rect x="25" y="30" width="200" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="125" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">SEQUENTIAL REQUESTS</text>
+                  <text x="125" y="82" text-anchor="middle" class="svg-title">Incoming Stream</text>
+                  <rect x="40" y="100" width="170" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="125" y="125" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary);">Req 1 &rarr; Req 2 &rarr; Req 3</text>
+                  <text x="125" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--accent);">Req 4 &rarr; Req 5 &rarr; Req 6</text>
+                  <text x="125" y="170" text-anchor="middle" class="svg-sub">Fixed order</text>
+
+                  <path d="M 225 115 L 310 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="310" y="25" width="220" height="180" rx="12" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="420" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">ROUND ROBIN LB</text>
+                  <text x="420" y="78" text-anchor="middle" class="svg-title">Modulo Counter</text>
+                  <rect x="325" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="420" y="122" text-anchor="middle" class="svg-mono-xs" style="font-weight: 700;">target = count % 3</text>
+                  <text x="420" y="145" text-anchor="middle" class="svg-sub">Assumes equal server power</text>
+                  <text x="420" y="165" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">Ignores active load</text>
+
+                  <g transform="translate(570, 25)">
+                    <rect x="0" y="0" width="280" height="52" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="15" y="32" class="svg-node">Server 1 &larr; Req 1, Req 4</text>
+
+                    <rect x="0" y="65" width="280" height="52" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="15" y="97" class="svg-node">Server 2 &larr; Req 2, Req 5</text>
+
+                    <rect x="0" y="130" width="280" height="52" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="15" y="162" class="svg-node">Server 3 &larr; Req 3, Req 6</text>
+                  </g>
+                  
+                  <path d="M 530 100 L 570 50" class="svg-arrow" stroke="var(--primary)"/>
+                  <path d="M 530 115 L 570 115" class="svg-arrow" stroke="var(--primary)"/>
+                  <path d="M 530 130 L 570 180" class="svg-arrow" stroke="var(--primary)"/>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -1921,6 +2789,40 @@ const SYSTEM_DESIGN_NOTES = {
               </li>
               <li><strong>Major Drawback (Heavy Request Execution Time):</strong> It does not account for how long each individual request takes to execute. Suppose <code>Req 1, 2, 3</code> (sent to strong server <code>Chat-1</code>) are lightweight and finish in <strong>10ms each (30ms total)</strong>. Meanwhile, <code>Req 4</code> and <code>Req 8</code> (sent to weak server <code>Chat-2</code>) are heavy operations that take <strong>10 seconds each</strong>. Even with a lower weight, the weak server <code>Chat-2</code> gets overloaded with long-running requests.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 14.2 · Weighted Round Robin: Capacity-Proportional Dispatch (Ratio 3 : 2 : 1)</span>
+                <span class="diagram-frame-tag">HARDWARE SPEC PROPORTIONALITY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Weighted Round Robin allocating 3 requests to a high-spec 32-core server, 2 requests to an intermediate 16-core server, and 1 request to an 8-core server">
+                  <rect x="30" y="25" width="320" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="190" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CONFIGURED WEIGHT RATIOS</text>
+                  <text x="190" y="78" text-anchor="middle" class="svg-title">Weighted Dispatcher</text>
+                  <rect x="50" y="95" width="280" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="70" y="122" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">Server 1 (32 Core, 64GB) &rarr; Weight 3 (50%)</text>
+                  <text x="70" y="145" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">Server 2 (16 Core, 32GB) &rarr; Weight 2 (33%)</text>
+                  <text x="70" y="168" class="svg-mono-xs" style="fill: var(--warning); font-weight: 700;">Server 3 ( 8 Core, 16GB) &rarr; Weight 1 (17%)</text>
+
+                  <path d="M 350 115 L 430 60" class="svg-arrow" stroke="var(--success)"/>
+                  <path d="M 350 115 L 430 115" class="svg-arrow" stroke="var(--primary)"/>
+                  <path d="M 350 115 L 430 170" class="svg-arrow" stroke="var(--warning)"/>
+
+                  <g transform="translate(430, 25)">
+                    <rect x="0" y="0" width="420" height="52" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="15" y="32" class="svg-node" style="fill: var(--success); font-weight: 700;">Server 1: 3 out of every 6 requests (50%)</text>
+
+                    <rect x="0" y="65" width="420" height="52" rx="8" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                    <text x="15" y="97" class="svg-node" style="fill: var(--primary); font-weight: 700;">Server 2: 2 out of every 6 requests (33%)</text>
+
+                    <rect x="0" y="130" width="420" height="52" rx="8" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                    <text x="15" y="162" class="svg-node" style="fill: var(--warning); font-weight: 700;">Server 3: 1 out of every 6 requests (17%)</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2006,7 +2908,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Dynamic Load Balancing Algorithms",
       summary: "Real-time load-aware routing: Least Connection, Weighted Least Connection (Ratio = Active Connections / Weight), and Least Response Time (Score = Active Connections × TTFB + Round Robin tie-breaker).",
       subtopicLabels: ["15.1 Least Connection", "15.2 Weighted Least Connection", "15.3 Least Response Time (TTFB)"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "15.1",
@@ -2024,6 +2926,47 @@ const SYSTEM_DESIGN_NOTES = {
               </li>
               <li><strong>Major Drawback (Idle Connections vs. Active Traffic + Hardware Mismatch):</strong> Having an established TCP connection does <strong>not</strong> mean a user is actively sending requests. Suppose <code>U1</code> and <code>U2</code> (connected to <code>Chat-1</code>, a <strong>weak server</strong>) continuously spam requests (<code>Req 1, 2, 3, 4</code>), while <code>U3</code> and <code>U4</code> (connected to <code>Chat-2</code>, a <strong>powerful server</strong>) sit completely idle sending zero messages. Both servers show "2 active connections", so the weak server gets hammered with traffic while the powerful server processes zero requests.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 15.1 · Dynamic Least Connection: Real-Time Active TCP Connection Sensing</span>
+                <span class="diagram-frame-tag">DYNAMIC REAL-TIME LOAD AWARENESS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Least Connection algorithm checking active connections and routing new request to Server 2 with only 2 connections instead of Server 1 with 15 connections">
+                  <rect x="25" y="30" width="160" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="105" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">NEW INCOMING</text>
+                  <text x="105" y="82" text-anchor="middle" class="svg-title">New Request</text>
+                  <rect x="40" y="100" width="130" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="105" y="130" text-anchor="middle" class="svg-node">Where to send?</text>
+                  <text x="105" y="152" text-anchor="middle" class="svg-mono-xs">Checks active counts</text>
+
+                  <path d="M 185 115 L 260 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="260" y="25" width="220" height="180" rx="12" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="370" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">LEAST CONNECTION LB</text>
+                  <text x="370" y="78" text-anchor="middle" class="svg-title">Active Table</text>
+                  <rect x="275" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="370" y="122" text-anchor="middle" class="svg-mono-xs">Server 1: 15 active</text>
+                  <text x="370" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">Server 2: 2 active (MIN) ✓</text>
+                  <text x="370" y="168" text-anchor="middle" class="svg-mono-xs">Server 3: 8 active</text>
+
+                  <path d="M 480 115 L 560 115" class="svg-arrow" stroke="var(--success)"/>
+
+                  <g transform="translate(560, 25)">
+                    <rect x="0" y="0" width="290" height="52" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="15" y="32" class="svg-node">Server 1 (Busy · 15 Connections)</text>
+
+                    <rect x="0" y="65" width="290" height="52" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="15" y="97" class="svg-node" style="fill: var(--success); font-weight: 700;">Server 2 (Selected · Only 2 Connections) ✓</text>
+
+                    <rect x="0" y="130" width="290" height="52" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="15" y="162" class="svg-node">Server 3 (Moderate · 8 Connections)</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2051,6 +2994,44 @@ const SYSTEM_DESIGN_NOTES = {
                 </ul>
               </li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 15.2 · Weighted Least Connection Formula: Active Connections &divide; Assigned Weight</span>
+                <span class="diagram-frame-tag">DYNAMIC LOAD NORMALIZATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Weighted Least Connection formula active connections divided by weight, selecting the server with lowest relative load score">
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="250" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="125" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">SERVER A</text>
+                    <rect x="15" y="50" width="220" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="125" y="78" text-anchor="middle" class="svg-node">10 Active Connections</text>
+                    <text x="125" y="100" text-anchor="middle" class="svg-mono-xs">Configured Weight = 2</text>
+                    <text x="125" y="132" text-anchor="middle" class="svg-node" style="fill: var(--primary); font-weight: 700;">Ratio: 10 &divide; 2 = 5.0</text>
+                  </g>
+
+                  <g transform="translate(315, 25)">
+                    <rect x="0" y="0" width="250" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="125" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">SERVER B (SELECTED) ✓</text>
+                    <rect x="15" y="50" width="220" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="125" y="78" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">12 Active Connections</text>
+                    <text x="125" y="100" text-anchor="middle" class="svg-mono-xs">Configured Weight = 4 (Big VM)</text>
+                    <text x="125" y="132" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Ratio: 12 &divide; 4 = 3.0 (LOWEST)</text>
+                  </g>
+
+                  <g transform="translate(600, 25)">
+                    <rect x="0" y="0" width="250" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                    <text x="125" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">SERVER C</text>
+                    <rect x="15" y="50" width="220" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="125" y="78" text-anchor="middle" class="svg-node">6 Active Connections</text>
+                    <text x="125" y="100" text-anchor="middle" class="svg-mono-xs">Configured Weight = 1 (Small VM)</text>
+                    <text x="125" y="132" text-anchor="middle" class="svg-node" style="fill: var(--warning); font-weight: 700;">Ratio: 6 &divide; 1 = 6.0</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2146,7 +3127,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What is a Proxy Server (Forward Proxy)?",
       summary: "Child–Parents–Chocolate Shop analogy, how a Forward Proxy sits between Client and Internet to mask IPs, plus its 5 major advantages (Anonymity, Corporate Site Filtering, Request Grouping, Restricted Content, Caching).",
       subtopicLabels: ["16.1 Child & Parents Analogy", "16.2 Technical Request Flow", "16.3 5 Major Advantages"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "16.1",
@@ -2158,6 +3139,45 @@ const SYSTEM_DESIGN_NOTES = {
               <li>The <strong>Parents</strong> go to the <strong>Shopkeeper</strong>, buy the chocolate, come back, and hand it to the child.</li>
               <li><strong>Key Takeaway:</strong> The Parents hid the child from the outer world (the Shopkeeper). The Shopkeeper has no idea who the chocolate is actually for — they only see the Parents. Thus, the Parents maintained <strong>anonymity</strong> for the child.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 16.1 · Forward Proxy Analogy: Child, Parents &amp; Chocolate Shopkeeper</span>
+                <span class="diagram-frame-tag">CLIENT IDENTITY SHIELD</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Analogy diagram showing child (client) telling parents (forward proxy) to buy chocolate, shopkeeper only sees parents while child remains completely anonymous">
+                  <rect x="25" y="30" width="180" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="115" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CLIENT DEVICE</text>
+                  <text x="115" y="82" text-anchor="middle" class="svg-title">Child (Wants Candy)</text>
+                  <rect x="40" y="100" width="150" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="115" y="125" text-anchor="middle" class="svg-node">Hidden at Home</text>
+                  <text x="115" y="145" text-anchor="middle" class="svg-mono-xs">Client IP: Hidden</text>
+                  <text x="115" y="168" text-anchor="middle" class="svg-sub">Shop never sees child</text>
+
+                  <path d="M 205 115 L 310 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="310" y="25" width="260" height="180" rx="12" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="440" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">FORWARD PROXY SERVER</text>
+                  <text x="440" y="78" text-anchor="middle" class="svg-title">Parents (The Intermediary)</text>
+                  <rect x="325" y="95" width="230" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="440" y="122" text-anchor="middle" class="svg-node">Goes to the Shop</text>
+                  <text x="440" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">Proxy IP: Visible to World</text>
+                  <text x="440" y="168" text-anchor="middle" class="svg-sub" style="fill: var(--success);">Protects child anonymity ✓</text>
+
+                  <path d="M 570 115 L 670 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="670" y="30" width="185" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--border-strong)"/>
+                  <text x="762" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--text-tertiary);">TARGET SERVER</text>
+                  <text x="762" y="82" text-anchor="middle" class="svg-title">Shopkeeper</text>
+                  <rect x="685" y="100" width="155" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="762" y="125" text-anchor="middle" class="svg-node">Sells Chocolate</text>
+                  <text x="762" y="145" text-anchor="middle" class="svg-mono-xs">Only sees Parents</text>
+                  <text x="762" y="168" text-anchor="middle" class="svg-sub">Zero knowledge of child</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2191,6 +3211,45 @@ const SYSTEM_DESIGN_NOTES = {
               <li><strong>Server Response:</strong> The Target Server thinks the request came from the Proxy Server's IP (it never knows the actual origin/client). It fulfills the request and sends the response back to the <strong>Proxy Server</strong>, which then forwards the data to the <strong>Client</strong>.</li>
               <li><strong>Security Benefit:</strong> Because the Target Server does not know the actual Client's IP address, <strong>no external server can communicate directly with the Client</strong>, keeping the local client network completely hidden.</li>
             </ol>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 16.2 · Technical Forward Proxy Architecture: Request Rewriting &amp; Client Masking</span>
+                <span class="diagram-frame-tag">EGRESS ANONYMIZATION &amp; ACCESS CONTROL</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Technical diagram showing Client with IP 192.168.1.5 sending request through Forward Proxy with IP 104.28.1.1 which masks client IP when fetching from Web Server">
+                  <rect x="25" y="30" width="200" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="125" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">INTERNAL CLIENT</text>
+                  <text x="125" y="82" text-anchor="middle" class="svg-title">Client Workstation</text>
+                  <rect x="40" y="100" width="170" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="125" y="125" text-anchor="middle" class="svg-mono-xs">IP: 192.168.1.50</text>
+                  <text x="125" y="148" text-anchor="middle" class="svg-sub">Corporate Laptop</text>
+                  <text x="125" y="168" text-anchor="middle" class="svg-mono-xs">Routes via Proxy</text>
+
+                  <path d="M 225 115 L 310 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="310" y="25" width="260" height="180" rx="12" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="440" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">FORWARD PROXY SERVER</text>
+                  <text x="440" y="78" text-anchor="middle" class="svg-title">Squid / Zscaler Gateway</text>
+                  <rect x="325" y="95" width="230" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="440" y="122" text-anchor="middle" class="svg-node">Rewrites Source IP</text>
+                  <text x="440" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">Proxy IP: 198.51.100.22</text>
+                  <text x="440" y="168" text-anchor="middle" class="svg-sub">Content filtering &amp; caching</text>
+
+                  <path d="M 570 115 L 650 115" class="svg-arrow" stroke="var(--success)"/>
+
+                  <rect x="650" y="30" width="205" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="752" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">PUBLIC INTERNET</text>
+                  <text x="752" y="82" text-anchor="middle" class="svg-title">Target Web Server</text>
+                  <rect x="665" y="100" width="175" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="752" y="125" text-anchor="middle" class="svg-node">Server Access Log</text>
+                  <text x="752" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Peer: 198.51.100.22</text>
+                  <text x="752" y="168" text-anchor="middle" class="svg-sub">Client IP never logged ✓</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2306,7 +3365,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What is a Reverse Proxy?",
       summary: "Sitting in front of Backend Servers (S1, S2, S3) for Facebook-scale systems, direction of communication vs Forward Proxy, and 4 major advantages (Server Anonymity, Load Balancing, Caching, DDoS Protection).",
       subtopicLabels: ["17.1 Core Concept & Direction", "17.2 Facebook Example", "17.3 4 Major Advantages"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "17.1",
@@ -2321,6 +3380,46 @@ const SYSTEM_DESIGN_NOTES = {
                 </ul>
               </li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 17.1 · Reverse Proxy Positioning: Standing in Front of Web Servers</span>
+                <span class="diagram-frame-tag">SERVER-SIDE SHIELD</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Reverse Proxy positioned between the public internet and private backend servers to shield internal IPs and infrastructure">
+                  <rect x="25" y="30" width="160" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="105" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">PUBLIC INTERNET</text>
+                  <text x="105" y="82" text-anchor="middle" class="svg-title">Client User</text>
+                  <rect x="40" y="100" width="130" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="105" y="130" text-anchor="middle" class="svg-node">Hits Public URL</text>
+                  <text x="105" y="152" text-anchor="middle" class="svg-mono-xs">www.company.com</text>
+
+                  <path d="M 185 115 L 260 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="260" y="25" width="250" height="180" rx="12" fill="var(--accent-bg)" stroke="var(--accent)" stroke-width="1.8"/>
+                  <text x="385" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--accent);">SERVER INTERMEDIARY</text>
+                  <text x="385" y="78" text-anchor="middle" class="svg-title">Reverse Proxy (NGINX)</text>
+                  <rect x="275" y="95" width="220" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                  <text x="385" y="122" text-anchor="middle" class="svg-node" style="fill: var(--accent); font-weight: 700;">Hides Backend Servers</text>
+                  <text x="385" y="145" text-anchor="middle" class="svg-mono-xs">SSL Termination &amp; Cache</text>
+                  <text x="385" y="168" text-anchor="middle" class="svg-sub">DDoS Buffer &amp; Compression</text>
+
+                  <path d="M 510 115 L 590 115" class="svg-arrow" stroke="var(--success)"/>
+
+                  <rect x="590" y="25" width="265" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--border-strong)"/>
+                  <text x="722" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--text-tertiary);">PRIVATE NETWORK (VPC)</text>
+                  <g transform="translate(605, 75)">
+                    <rect x="0" y="0" width="235" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="117" y="30" text-anchor="middle" class="svg-mono-xs">Private Server 1: 10.0.1.20</text>
+
+                    <rect x="0" y="60" width="235" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="117" y="90" text-anchor="middle" class="svg-mono-xs">Private Server 2: 10.0.1.21</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2332,6 +3431,47 @@ const SYSTEM_DESIGN_NOTES = {
               <li>When a user on the Internet requests <code>facebook.com</code>, the request <strong>never hits <code>Server 1</code>, <code>Server 2</code>, or <code>Server 3</code> directly</strong>.</li>
               <li>It first hits the <strong>Reverse Proxy</strong>, and the Reverse Proxy forwards the request to one of the backend servers.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 17.2 · Real-World Facebook Example: Reverse Proxy Fronting Thousands of Web Servers</span>
+                <span class="diagram-frame-tag">SCALE &amp; SECURITY ABSTRACTION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Facebook user connecting to reverse proxy at 157.240.22.35 which forwards to internal Facebook servers like 10.0.8.44">
+                  <rect x="25" y="30" width="180" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="115" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">FACEBOOK USER</text>
+                  <text x="115" y="82" text-anchor="middle" class="svg-title">Client Browser</text>
+                  <rect x="40" y="100" width="150" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="115" y="125" text-anchor="middle" class="svg-node">DNS: facebook.com</text>
+                  <text x="115" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary);">Resolves to: 157.240.x.x</text>
+                  <text x="115" y="168" text-anchor="middle" class="svg-sub">Knows only public IP</text>
+
+                  <path d="M 205 115 L 290 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="290" y="25" width="260" height="180" rx="12" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="420" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">FACEBOOK EDGE GATEWAY</text>
+                  <text x="420" y="78" text-anchor="middle" class="svg-title">Reverse Proxy (Proxygen)</text>
+                  <rect x="305" y="95" width="230" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="420" y="122" text-anchor="middle" class="svg-node">IP: 157.240.22.35</text>
+                  <text x="420" y="145" text-anchor="middle" class="svg-mono-xs">Terminates TLS Handshake</text>
+                  <text x="420" y="168" text-anchor="middle" class="svg-sub" style="fill: var(--success);">Internal fleet completely hidden ✓</text>
+
+                  <path d="M 550 115 L 630 115" class="svg-arrow" stroke="var(--success)"/>
+
+                  <rect x="630" y="25" width="225" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--border-strong)"/>
+                  <text x="742" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--text-tertiary);">INTERNAL FLEET</text>
+                  <g transform="translate(645, 75)">
+                    <rect x="0" y="0" width="195" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="97" y="30" text-anchor="middle" class="svg-mono-xs">FB Web: 10.200.4.12</text>
+
+                    <rect x="0" y="60" width="195" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="97" y="90" text-anchor="middle" class="svg-mono-xs">FB Web: 10.200.4.13</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2441,7 +3581,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Important System Design Interview Questions (Proxy, VPN & Load Balancer)",
       summary: "4 high-frequency interview questions: Proxy vs VPN (IP Masking vs Encrypted VPN Tunnel), Reverse Proxy vs Load Balancer (single server S1), when proxies aren't needed, and using BOTH at global scale.",
       subtopicLabels: ["18.1 Proxy vs VPN", "18.2 Reverse Proxy vs LB", "18.3 Do We Need Proxies Everywhere?", "18.4 Using Both Together"],
-      diagramCount: 1,
+      diagramCount: 4,
       sections: [
         {
           num: "18.1",
@@ -2471,6 +3611,37 @@ const SYSTEM_DESIGN_NOTES = {
                 A Proxy Server only masks the IP address (data is <strong>not encrypted</strong>), whereas a VPN creates a secure <strong>VPN Tunnel</strong> and transfers all traffic as <strong>encrypted data</strong>.
               </p>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 18.1 · Proxy Server (App Level) vs. Virtual Private Network (OS / Device Level)</span>
+                <span class="diagram-frame-tag">SCOPE &amp; ENCRYPTION COMPARISON</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Comparison diagram showing Proxy operating at application layer for specific apps versus VPN encrypting all OS network traffic at the system level">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="390" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="195" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">PROXIES: APPLICATION LEVEL</text>
+                    <rect x="18" y="50" width="354" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="195" y="78" text-anchor="middle" class="svg-node">Configured Inside Browser / App Only</text>
+                    <text x="195" y="100" text-anchor="middle" class="svg-sub">Chrome uses Proxy, but Spotify &amp; Steam bypass it</text>
+                    <text x="195" y="125" text-anchor="middle" class="svg-mono-xs">Often unencrypted on internal hops</text>
+                    <text x="195" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary);">Lightweight HTTP / SOCKS5</text>
+                  </g>
+
+                  <g transform="translate(465, 25)">
+                    <rect x="0" y="0" width="390" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <text x="195" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--accent);">VPN: OS / DEVICE-WIDE TUNNEL</text>
+                    <rect x="18" y="50" width="354" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="195" y="78" text-anchor="middle" class="svg-node" style="fill: var(--accent); font-weight: 700;">Intercepts ALL Device Traffic (Virtual Adapter)</text>
+                    <text x="195" y="100" text-anchor="middle" class="svg-sub">Browser, Games, Background OS Updates, DNS</text>
+                    <text x="195" y="125" text-anchor="middle" class="svg-mono-xs">100% Encrypted WireGuard / IPsec Tunnel</text>
+                    <text x="195" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Zero IP leaks at OS level ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2491,6 +3662,37 @@ const SYSTEM_DESIGN_NOTES = {
                 </ul>
               </li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 18.2 · Reverse Proxy vs. Load Balancer: Functional Separation</span>
+                <span class="diagram-frame-tag">SECURITY &amp; CACHING VS TRAFFIC EQUALIZATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram contrasting Reverse Proxy features like SSL termination and caching with Load Balancer algorithms like Weighted Least Connections">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="400" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="200" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">REVERSE PROXY PRIMARY FOCUS</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title">Security &amp; Intermediary Logic</text>
+                    <rect x="20" y="70" width="360" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="35" y="95" class="svg-node">• Hides backend server IPs &amp; network</text>
+                    <text x="35" y="118" class="svg-node">• SSL/TLS Termination &amp; Compression (Gzip)</text>
+                    <text x="35" y="142" class="svg-node">• HTTP Static Page Caching</text>
+                  </g>
+
+                  <g transform="translate(455, 25)">
+                    <rect x="0" y="0" width="400" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="200" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">LOAD BALANCER PRIMARY FOCUS</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title">Traffic Equalization Across Replicas</text>
+                    <rect x="20" y="70" width="360" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="35" y="95" class="svg-node">• Even traffic distribution (Round Robin)</text>
+                    <text x="35" y="118" class="svg-node">• Active Server Health Probing (Removes dead)</text>
+                    <text x="35" y="142" class="svg-node">• Autoscaling integration &amp; Connection draining</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2509,6 +3711,37 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">For global platforms with high traffic and strict security requirements, proxy servers are essential.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 18.3 · When Do You Actually Need a Proxy Server?</span>
+                <span class="diagram-frame-tag">SYSTEM COMPLEXITY TRADE-OFF</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing simple small app directly serving client without proxy versus large scale production system with reverse proxy layers">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="390" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border-strong)"/>
+                    <text x="195" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--text-tertiary);">SMALL APP / HOBBY PROJECT</text>
+                    <text x="195" y="56" text-anchor="middle" class="svg-title">No Proxy Needed (Keep It Simple)</text>
+                    <rect x="20" y="70" width="350" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                    <text x="195" y="98" text-anchor="middle" class="svg-node">Client &rarr; Single Server directly</text>
+                    <text x="195" y="120" text-anchor="middle" class="svg-sub">Low traffic, single team, minimal attack surface</text>
+                    <text x="195" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Avoid premature complexity ✓</text>
+                  </g>
+
+                  <g transform="translate(465, 25)">
+                    <rect x="0" y="0" width="390" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="195" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">PRODUCTION AT SCALE</text>
+                    <text x="195" y="56" text-anchor="middle" class="svg-title">Proxy Layer Mandatory</text>
+                    <rect x="20" y="70" width="350" height="95" rx="6" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                    <text x="195" y="98" text-anchor="middle" class="svg-node">Client &rarr; Reverse Proxy &rarr; Microservices</text>
+                    <text x="195" y="120" text-anchor="middle" class="svg-sub">Shields backend IPs, stops DDoS, terminates SSL</text>
+                    <text x="195" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary);">Essential for security &amp; scale ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2604,7 +3837,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What are Networking Protocols & How Different Layers Work Together?",
       summary: "Definition of networking protocols, the 3 core OSI layers (Network IPv4/IPv6, Transport TCP/UDP, Application HTTP/HTTPS/WebSockets/WebRTC), and a WhatsApp end-to-end message walkthrough.",
       subtopicLabels: ["19.1 Definition", "19.2 3 Core OSI Layers", "19.3 WhatsApp Message Flow"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "19.1",
@@ -2614,6 +3847,45 @@ const SYSTEM_DESIGN_NOTES = {
               <li><strong>Definition:</strong> Networking protocols are the set of rules and conventions that govern how data is transmitted and received across a network.</li>
               <li><strong>In Simple Words:</strong> They define how two devices communicate, transfer data, and receive data with each other over the internet/network.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 19.1 · What is a Networking Protocol? The Universal Language of Network Devices</span>
+                <span class="diagram-frame-tag">COMMUNICATION STANDARDS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing client device and server agreeing on protocol rules for packet formatting, sequencing, error checking, and acknowledgment">
+                  <rect x="30" y="25" width="220" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="140" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">DEVICE A (CLIENT)</text>
+                  <text x="140" y="76" text-anchor="middle" class="svg-title">iPhone / Laptop</text>
+                  <rect x="45" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="140" y="125" text-anchor="middle" class="svg-node">Encodes Data</text>
+                  <text x="140" y="145" text-anchor="middle" class="svg-mono-xs">Follows Protocol RFC</text>
+                  <text x="140" y="168" text-anchor="middle" class="svg-sub">Packet Header + Payload</text>
+
+                  <g transform="translate(290, 45)">
+                    <rect x="0" y="0" width="300" height="140" rx="10" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="150" y="28" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">NETWORKING PROTOCOL</text>
+                    <text x="150" y="52" text-anchor="middle" class="svg-title">Agreed Rules &amp; Formats</text>
+                    <text x="150" y="78" text-anchor="middle" class="svg-mono-xs">• How data is split into packets</text>
+                    <text x="150" y="100" text-anchor="middle" class="svg-mono-xs">• How errors &amp; loss are detected</text>
+                    <text x="150" y="122" text-anchor="middle" class="svg-mono-xs">• How flow control is regulated</text>
+                  </g>
+
+                  <rect x="630" y="25" width="220" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="740" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">DEVICE B (SERVER)</text>
+                  <text x="740" y="76" text-anchor="middle" class="svg-title">Web Server</text>
+                  <rect x="645" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="740" y="125" text-anchor="middle" class="svg-node">Decodes Data</text>
+                  <text x="740" y="145" text-anchor="middle" class="svg-mono-xs">Reads Exact Bytes</text>
+                  <text x="740" y="168" text-anchor="middle" class="svg-sub">Sends ACK response ✓</text>
+
+                  <path d="M 250 115 L 290 115" class="svg-arrow" stroke="var(--primary)"/>
+                  <path d="M 590 115 L 630 115" class="svg-arrow" stroke="var(--success)"/>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2648,6 +3920,47 @@ const SYSTEM_DESIGN_NOTES = {
                 </div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 19.2 · The 3 Core Networking Layers in Web System Design</span>
+                <span class="diagram-frame-tag">NETWORK &rarr; TRANSPORT &rarr; APPLICATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing the 3 core layers: Layer 3 Network (IPv4/IPv6 for routing), Layer 4 Transport (TCP/UDP for reliable transport), and Layer 7 Application (HTTP/WebSocket for app logic)">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="255" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="127" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">LAYER 3: NETWORK</text>
+                    <text x="127" y="56" text-anchor="middle" class="svg-title">IP Addressing &amp; Routing</text>
+                    <rect x="18" y="70" width="219" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="127" y="98" text-anchor="middle" class="svg-node">IPv4 &amp; IPv6</text>
+                    <text x="127" y="120" text-anchor="middle" class="svg-sub">Finds destination host on internet</text>
+                    <text x="127" y="145" text-anchor="middle" class="svg-mono-xs">Packets hopped via Routers</text>
+                  </g>
+
+                  <g transform="translate(310, 25)">
+                    <rect x="0" y="0" width="255" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                    <text x="127" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">LAYER 4: TRANSPORT</text>
+                    <text x="127" y="56" text-anchor="middle" class="svg-title">Data Transmission Path</text>
+                    <rect x="18" y="70" width="219" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="127" y="98" text-anchor="middle" class="svg-node">TCP (Reliable) &amp; UDP (Fast)</text>
+                    <text x="127" y="120" text-anchor="middle" class="svg-sub">Ports, sequencing &amp; retransmission</text>
+                    <text x="127" y="145" text-anchor="middle" class="svg-mono-xs">Byte stream segmenting</text>
+                  </g>
+
+                  <g transform="translate(595, 25)">
+                    <rect x="0" y="0" width="260" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="130" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">LAYER 7: APPLICATION</text>
+                    <text x="130" y="56" text-anchor="middle" class="svg-title">Application Semantics</text>
+                    <rect x="18" y="70" width="224" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="130" y="98" text-anchor="middle" class="svg-node">HTTP, HTTPS, WebSocket</text>
+                    <text x="130" y="120" text-anchor="middle" class="svg-sub">REST APIs, GraphQL, HTML, JSON</text>
+                    <text x="130" y="145" text-anchor="middle" class="svg-mono-xs">Understood by browser &amp; code</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2761,7 +4074,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Transport Layer Protocols — TCP vs. UDP",
       summary: "TCP (Connection-oriented, ACK & retransmission, sequence numbers, 3-Way Handshake SYN/SYN-ACK/ACK) vs. UDP (Connectionless, fire-and-forget ultra-fast speed for video calls & online gaming).",
       subtopicLabels: ["20.1 TCP & 3-Way Handshake", "20.2 UDP & Real-Time Use Cases"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "20.1",
@@ -2800,6 +4113,37 @@ const SYSTEM_DESIGN_NOTES = {
                 </div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 20.1 · The TCP 3-Way Handshake: SYN &rarr; SYN-ACK &rarr; ACK</span>
+                <span class="diagram-frame-tag">GUARANTEED STATE SYNCHRONIZATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Sequence diagram showing TCP 3-Way Handshake: Client sends SYN, Server replies with SYN-ACK, Client completes with ACK">
+                  <rect x="80" y="20" width="160" height="40" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="160" y="45" text-anchor="middle" class="svg-node" style="fill: var(--primary); font-weight: 700;">Client</text>
+                  <line x1="160" y1="60" x2="160" y2="220" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+                  <rect x="640" y="20" width="160" height="40" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="720" y="45" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Server</text>
+                  <line x1="720" y1="60" x2="720" y2="220" stroke="var(--border-strong)" stroke-width="1.5" stroke-dasharray="4 4"/>
+
+                  <path d="M 160 85 L 720 110" class="svg-arrow" stroke="var(--primary)"/>
+                  <rect x="360" y="80" width="160" height="26" rx="4" fill="var(--primary-bg)"/>
+                  <text x="440" y="98" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">1. SYN (seq=x)</text>
+
+                  <path d="M 720 135 L 160 160" class="svg-arrow" stroke="var(--warning)"/>
+                  <rect x="320" y="130" width="240" height="26" rx="4" fill="var(--warning-bg)"/>
+                  <text x="440" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning); font-weight: 700;">2. SYN-ACK (seq=y, ack=x+1)</text>
+
+                  <path d="M 160 185 L 720 210" class="svg-arrow" stroke="var(--success)"/>
+                  <rect x="350" y="180" width="180" height="26" rx="4" fill="var(--success-bg)"/>
+                  <text x="440" y="198" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">3. ACK (ack=y+1) &rarr; ESTABLISHED ✓</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2912,7 +4256,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Application Layer Protocols — Client-Server vs. Peer-to-Peer (P2P)",
       summary: "Unidirectional Client-Server (HTTP, HTTPS with SSL/TLS, FTP, SMTP + why HTTP/HTTPS are TCP-based), Bidirectional WebSockets (WhatsApp/Telegram), and Direct Peer-to-Peer WebRTC.",
       subtopicLabels: ["21.1 Unidirectional (HTTP/HTTPS)", "21.2 Bidirectional (WebSocket)", "21.3 Peer-to-Peer (WebRTC)"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "21.1",
@@ -2954,6 +4298,39 @@ const SYSTEM_DESIGN_NOTES = {
                 <li>Saying <em>"HTTP/HTTPS is TCP-based"</em> means that <strong>before</strong> HTTP/HTTPS can send any web request, the Client and Server first perform a <strong>TCP 3-Way Handshake</strong> to establish a reliable connection, and then HTTP/HTTPS sends the request over that TCP connection.</li>
               </ul>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 21.1 · Unidirectional Request-Response (HTTP / REST): Client Initiated Only</span>
+                <span class="diagram-frame-tag">HALF-DUPLEX CYCLE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing client initiating HTTP request and receiving response, where server cannot push unsolicited messages back">
+                  <rect x="30" y="25" width="220" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="140" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CLIENT (INITIATOR)</text>
+                  <text x="140" y="76" text-anchor="middle" class="svg-title">Browser Client</text>
+                  <rect x="45" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="140" y="125" text-anchor="middle" class="svg-node">Always starts talk</text>
+                  <text x="140" y="145" text-anchor="middle" class="svg-mono-xs">GET /products</text>
+                  <text x="140" y="168" text-anchor="middle" class="svg-sub">Waits for response</text>
+
+                  <path d="M 250 85 L 630 85" class="svg-arrow" stroke="var(--primary)"/>
+                  <text x="440" y="75" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary);">1. Request: Client opens TCP, asks data</text>
+
+                  <path d="M 630 145 L 250 145" class="svg-arrow" stroke="var(--success)"/>
+                  <text x="440" y="135" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">2. Response: Server returns 200 OK &amp; closes</text>
+
+                  <rect x="630" y="25" width="220" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="740" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">SERVER (PASSIVE)</text>
+                  <text x="740" y="76" text-anchor="middle" class="svg-title">HTTP Backend</text>
+                  <rect x="645" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="740" y="125" text-anchor="middle" class="svg-node">Passive Listener</text>
+                  <text x="740" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Cannot push unprompted ✕</text>
+                  <text x="740" y="168" text-anchor="middle" class="svg-sub">Needs polling for updates</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -2966,6 +4343,41 @@ const SYSTEM_DESIGN_NOTES = {
               <li>If the Server has a new message for <code>Client A</code>, the Server does <strong>not</strong> need to wait for <code>Client A</code> to send a request — the Server can push the message directly from its side.</li>
               <li><strong>Real-World Use Case:</strong> Used to build real-time chat applications like <strong>WhatsApp</strong> and <strong>Telegram</strong>, where <code>User A</code> and <code>User B</code> maintain open WebSocket connections with the WhatsApp Server so messages can be pushed instantly in both directions.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 21.2 · Bidirectional Full-Duplex (WebSocket): Persistent Push Pipeline</span>
+                <span class="diagram-frame-tag">REAL-TIME CHAT &amp; LIVE DATA STREAMING</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing persistent WebSocket TCP connection where server can push messages instantly to client without polling">
+                  <rect x="30" y="25" width="220" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="140" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CLIENT AGENT</text>
+                  <text x="140" y="76" text-anchor="middle" class="svg-title">Trading App / Chat</text>
+                  <rect x="45" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="140" y="125" text-anchor="middle" class="svg-node">Single Handshake</text>
+                  <text x="140" y="145" text-anchor="middle" class="svg-mono-xs">Connection stays OPEN</text>
+                  <text x="140" y="168" text-anchor="middle" class="svg-sub">Sends when ready</text>
+
+                  <g transform="translate(250, 70)">
+                    <rect x="0" y="0" width="380" height="90" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="190" y="28" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">PERSISTENT FULL-DUPLEX TCP TUNNEL</text>
+                    <path d="M 30 50 L 350 50" class="svg-arrow" stroke="var(--primary)"/>
+                    <path d="M 350 70 L 30 70" class="svg-arrow" stroke="var(--success)"/>
+                    <text x="190" y="62" text-anchor="middle" class="svg-mono-xs">Simultaneous Bi-Directional Messages (&lt;2ms)</text>
+                  </g>
+
+                  <rect x="630" y="25" width="220" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                  <text x="740" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">SERVER (ACTIVE PUSH)</text>
+                  <text x="740" y="76" text-anchor="middle" class="svg-title">WebSocket Server</text>
+                  <rect x="645" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="740" y="125" text-anchor="middle" class="svg-node">Server Can PUSH ✓</text>
+                  <text x="740" y="145" text-anchor="middle" class="svg-mono-xs">Stock price ticker</text>
+                  <text x="740" y="168" text-anchor="middle" class="svg-sub">Instant notifications</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3076,7 +4488,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What is Scaling & Why Do We Need It?",
       summary: "Pizza Parlor & Chef analogy (1 slow chef vs weekend 10-order spike -> 1 super chef vs 3–4 chefs) and why a single server crashes as users grow from 100 to 1 Million.",
       subtopicLabels: ["22.1 Pizza Parlor Analogy", "22.2 Technical Need for Scaling"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "22.1",
@@ -3105,6 +4517,47 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Instead of relying on just 1 chef, hire <strong>3 to 4 chefs</strong> in the kitchen. Now, even if 15 orders arrive, orders get distributed among Chef 1, Chef 2, Chef 3, and Chef 4, and everyone gets their pizza on time.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 22.1 · The Pizza Parlor Analogy: Vertical vs. Horizontal Scaling</span>
+                <span class="diagram-frame-tag">CAPACITY BOTTLENECK &amp; RESOLUTION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Analogy diagram showing 1 slow chef preparing 2 pizzas per hour overwhelmed by 10 orders, solved either by hiring a super fast chef (vertical) or hiring 5 chefs (horizontal)">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="250" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.5"/>
+                    <text x="125" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">THE OVERLOAD PROBLEM</text>
+                    <rect x="15" y="50" width="220" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="125" y="76" text-anchor="middle" class="svg-node" style="fill: var(--danger); font-weight: 700;">1 Single Slow Chef</text>
+                    <text x="125" y="98" text-anchor="middle" class="svg-mono-xs">Capacity: 2 Pizzas / hr</text>
+                    <text x="125" y="120" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Demand: 10 Orders / hr</text>
+                    <text x="125" y="142" text-anchor="middle" class="svg-sub">Customers wait hours ✕</text>
+                  </g>
+
+                  <g transform="translate(310, 25)">
+                    <rect x="0" y="0" width="260" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                    <text x="130" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--warning); font-weight: 700;">SOLUTION 1: VERTICAL (SCALE UP)</text>
+                    <rect x="15" y="50" width="230" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--warning)"/>
+                    <text x="130" y="76" text-anchor="middle" class="svg-node">Hire 1 Super Chef</text>
+                    <text x="130" y="98" text-anchor="middle" class="svg-mono-xs">Capacity: 10 Pizzas / hr</text>
+                    <text x="130" y="120" text-anchor="middle" class="svg-sub">High cost, hard ceiling</text>
+                    <text x="130" y="142" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Still a single point of failure!</text>
+                  </g>
+
+                  <g transform="translate(605, 25)">
+                    <rect x="0" y="0" width="250" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="125" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">SOLUTION 2: HORIZONTAL (OUT)</text>
+                    <rect x="15" y="50" width="220" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="125" y="76" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Hire 5 Normal Chefs</text>
+                    <text x="125" y="98" text-anchor="middle" class="svg-mono-xs">5 &times; 2 = 10 Pizzas / hr</text>
+                    <text x="125" y="120" text-anchor="middle" class="svg-sub">If Chef 1 is sick, 4 still cook</text>
+                    <text x="125" y="142" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Infinite scaling potential ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3176,7 +4629,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Vertical Scaling vs. Horizontal Scaling",
       summary: "Scale Up (upgrading or replacing a 16GB machine with a 32GB+ powerhouse) vs. Scale Out (hosting across Server 1, Server 2, Server 3 behind a Load Balancer).",
       subtopicLabels: ["23.1 Vertical Scaling (Scale Up)", "23.2 Horizontal Scaling (Scale Out)"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "23.1",
@@ -3191,6 +4644,51 @@ const SYSTEM_DESIGN_NOTES = {
                 </ol>
               </li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 23.1 · Vertical Scaling (Scale Up): Hardware Progression &amp; The Hard Limit</span>
+                <span class="diagram-frame-tag">SINGLE-NODE HARDWARE EXPANSION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing vertical scaling from 4 CPU 8GB RAM to 16 CPU 32GB to 64 CPU 256GB reaching motherboard and financial ceiling">
+                  <g transform="translate(25, 45)">
+                    <rect x="0" y="0" width="180" height="145" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="90" y="28" text-anchor="middle" class="svg-mono-xs" style="font-weight: 700;">TIER 1 (STARTER)</text>
+                    <text x="90" y="52" text-anchor="middle" class="svg-node">t3.medium</text>
+                    <text x="90" y="76" text-anchor="middle" class="svg-mono-xs">2 vCPUs</text>
+                    <text x="90" y="96" text-anchor="middle" class="svg-mono-xs">4 GB RAM</text>
+                    <text x="90" y="122" text-anchor="middle" class="svg-sub">$30 / month</text>
+                  </g>
+
+                  <path d="M 215 115 L 265 115" class="svg-arrow" stroke="var(--primary)"/>
+                  <text x="240" y="105" text-anchor="middle" class="svg-mono-xs">Scale Up</text>
+
+                  <g transform="translate(275, 30)">
+                    <rect x="0" y="0" width="220" height="165" rx="10" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="110" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">TIER 2 (UPGRADED)</text>
+                    <text x="110" y="55" text-anchor="middle" class="svg-title">m5.4xlarge</text>
+                    <text x="110" y="82" text-anchor="middle" class="svg-mono-xs">16 vCPUs</text>
+                    <text x="110" y="104" text-anchor="middle" class="svg-mono-xs">64 GB RAM</text>
+                    <text x="110" y="135" text-anchor="middle" class="svg-sub">Downtime during resize!</text>
+                  </g>
+
+                  <path d="M 505 115 L 555 115" class="svg-arrow" stroke="var(--warning)"/>
+                  <text x="530" y="105" text-anchor="middle" class="svg-mono-xs">Scale Up</text>
+
+                  <g transform="translate(565, 20)">
+                    <rect x="0" y="0" width="285" height="185" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <text x="142" y="28" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">HARDWARE CEILING (THE WALL)</text>
+                    <text x="142" y="55" text-anchor="middle" class="svg-title">x1e.32xlarge</text>
+                    <text x="142" y="82" text-anchor="middle" class="svg-mono-xs">128 vCPUs · 3,904 GB RAM</text>
+                    <text x="142" y="104" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">Cost: $26,000 / month</text>
+                    <text x="142" y="132" text-anchor="middle" class="svg-sub">Cannot buy bigger motherboard!</text>
+                    <text x="142" y="156" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">1 crash = 100% outage ✕</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3273,7 +4771,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Detailed Comparison — Horizontal Scaling vs. Vertical Scaling",
       summary: "Comparing both scaling approaches across 6 core engineering dimensions: Machines, Load Balancer, Fault Tolerance (SPOF), Data Consistency, Scaling Limits, and RPC vs. IPC speed.",
       subtopicLabels: ["24.1 6 Key Dimensions", "24.2 Comparison Table"],
-      diagramCount: 0,
+      diagramCount: 2,
       sections: [
         {
           num: "24.1",
@@ -3311,6 +4809,34 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body"><strong>Horizontal:</strong> Separate servers talk over the network via <strong>RPC (Remote Procedure Calls)</strong> → slower.<br><strong>Vertical:</strong> Modules on one machine talk via <strong>IPC (Inter-Process Communication)</strong> → very fast.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 24.1 · The 6 Core Engineering Dimensions of Scaling</span>
+                <span class="diagram-frame-tag">EVALUATION FRAMEWORK</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing the 6 engineering dimensions: Cost, Downtime, Scaling Limit, SPOF, Network Complexity, and Load Balancer">
+                  <g transform="translate(20, 25)">
+                    <rect x="0" y="0" width="260" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="130" y="28" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">DIMENSION 01 &amp; 02</text>
+                    <text x="130" y="50" text-anchor="middle" class="svg-node">Cost &amp; Downtime</text>
+                    <text x="130" y="70" text-anchor="middle" class="svg-sub">Linear pricing vs Exponential hardware costs</text>
+
+                    <rect x="290" y="0" width="260" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="420" y="28" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">DIMENSION 03 &amp; 04</text>
+                    <text x="420" y="50" text-anchor="middle" class="svg-node">Scaling Limit &amp; SPOF</text>
+                    <text x="420" y="70" text-anchor="middle" class="svg-sub">Motherboard ceiling vs Infinite horizontal scale</text>
+
+                    <rect x="580" y="0" width="260" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="710" y="28" text-anchor="middle" class="svg-kicker" style="fill: var(--accent);">DIMENSION 05 &amp; 06</text>
+                    <text x="710" y="50" text-anchor="middle" class="svg-node">Network &amp; Load Balancing</text>
+                    <text x="710" y="70" text-anchor="middle" class="svg-sub">Zero LB needed vs Stateless LB routing required</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3360,6 +4886,39 @@ const SYSTEM_DESIGN_NOTES = {
                 </tbody>
               </table>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 24.2 · Architectural Matrix: Vertical Scaling vs. Horizontal Scaling</span>
+                <span class="diagram-frame-tag">ENGINEERING TRADE-OFF ANALYSIS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Comparison matrix contrasting Vertical Scale Up against Horizontal Scale Out across cost, fault tolerance, and limits">
+                  <g transform="translate(30, 20)">
+                    <rect x="0" y="0" width="390" height="200" rx="10" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                    <text x="195" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--warning); font-weight: 700;">VERTICAL SCALING (SCALE UP)</text>
+                    <rect x="18" y="50" width="354" height="135" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="35" y="78" class="svg-mono-xs" style="fill: var(--danger);">✕ Requires downtime to resize RAM/CPU</text>
+                    <text x="35" y="102" class="svg-mono-xs" style="fill: var(--danger);">✕ Single Point of Failure (1 crash = 100% down)</text>
+                    <text x="35" y="126" class="svg-mono-xs" style="fill: var(--danger);">✕ Exponential cost curve for enterprise chips</text>
+                    <text x="35" y="150" class="svg-mono-xs" style="fill: var(--success);">✓ Zero network complexity (No LB needed)</text>
+                    <text x="35" y="172" class="svg-mono-xs" style="fill: var(--success);">✓ Perfect for early-stage relational databases</text>
+                  </g>
+
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="390" height="200" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="195" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">HORIZONTAL SCALING (SCALE OUT)</text>
+                    <rect x="18" y="50" width="354" height="135" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="35" y="78" class="svg-mono-xs" style="fill: var(--success);">✓ Zero downtime autoscaling (deploy on the fly)</text>
+                    <text x="35" y="102" class="svg-mono-xs" style="fill: var(--success);">✓ High Fault Tolerance (1 server dies, others serve)</text>
+                    <text x="35" y="126" class="svg-mono-xs" style="fill: var(--success);">✓ Linear cost using cheap commodity cloud VMs</text>
+                    <text x="35" y="150" class="svg-mono-xs" style="fill: var(--warning);">✕ Requires Load Balancer &amp; stateless code</text>
+                    <text x="35" y="172" class="svg-mono-xs" style="fill: var(--success);">✓ Global standard for large-scale web services</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         }
       ]
@@ -3454,7 +5013,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Why Do We Need to Scale? (Movie Ticket Counter Example)",
       summary: "Single vs. Multiple Movie Ticket Counters splitting 1,000 people into 500 + 500, and why systems scale step-by-step from 0 to 1 Million+ users.",
       subtopicLabels: ["26.1 Ticket Counter Analogy", "26.2 Software System Impact"],
-      diagramCount: 0,
+      diagramCount: 2,
       sections: [
         {
           num: "26.1",
@@ -3471,6 +5030,37 @@ const SYSTEM_DESIGN_NOTES = {
               </li>
               <li><strong>The Solution:</strong> Open a <strong>2nd Ticket Counter</strong> with another operator. Now the 1,000 people split into <strong>500 + 500</strong>, reducing the load per operator and serving everyone after the 500th spot twice as fast.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 26.1 · Real-World Analogy: Single vs. Multiple Ticket Counters</span>
+                <span class="diagram-frame-tag">QUEUING THEORY IN EVERYDAY LIFE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Analogy diagram showing a long line of 100 passengers queuing at 1 ticket counter vs distributing passengers smoothly across 5 ticket counters">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="390" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.5"/>
+                    <text x="195" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">1 TICKET COUNTER (CONGESTION)</text>
+                    <rect x="18" y="50" width="354" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="195" y="78" text-anchor="middle" class="svg-node" style="fill: var(--danger);">100 Passengers in a Single Line</text>
+                    <text x="195" y="100" text-anchor="middle" class="svg-mono-xs">1 Clerk processing tickets</text>
+                    <text x="195" y="122" text-anchor="middle" class="svg-sub">Wait time: 45 minutes · Frustrated commuters</text>
+                    <text x="195" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">If clerk takes break &rarr; 100% STOP ✕</text>
+                  </g>
+
+                  <g transform="translate(465, 25)">
+                    <rect x="0" y="0" width="390" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="195" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">5 TICKET COUNTERS (PARALLEL FLOW)</text>
+                    <rect x="18" y="50" width="354" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="195" y="78" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">20 Passengers per line</text>
+                    <text x="195" y="100" text-anchor="middle" class="svg-mono-xs">5 Clerks processing simultaneously</text>
+                    <text x="195" y="122" text-anchor="middle" class="svg-sub">Wait time: &lt; 5 minutes · Fast transit</text>
+                    <text x="195" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">If 1 clerk leaves, 4 keep working ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3486,6 +5076,50 @@ const SYSTEM_DESIGN_NOTES = {
               </li>
               <li>To prevent slowdowns and crashes as user traffic grows, we scale our system step-by-step from <strong>0 to 1 Million+ users</strong> (covered across Stages 1 to 9 in the following topics).</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 26.2 · Translating Ticket Counters to System Architecture: Distributed Process Workers</span>
+                <span class="diagram-frame-tag">CONCURRENT REQUEST MULTIPLEXING</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Load Balancer acting as station manager distributing incoming HTTP requests across 4 backend process workers">
+                  <rect x="25" y="30" width="180" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="115" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CONCURRENT USERS</text>
+                  <text x="115" y="82" text-anchor="middle" class="svg-title">1,000 HTTP Requests</text>
+                  <rect x="40" y="100" width="150" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="115" y="130" text-anchor="middle" class="svg-node">Queued in Buffer</text>
+                  <text x="115" y="152" text-anchor="middle" class="svg-mono-xs">Needs Fast Processing</text>
+
+                  <path d="M 205 115 L 290 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="290" y="25" width="220" height="180" rx="12" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="400" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">STATION MANAGER</text>
+                  <text x="400" y="78" text-anchor="middle" class="svg-title">Load Balancer</text>
+                  <rect x="305" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="400" y="125" text-anchor="middle" class="svg-node">Directs to shortest line</text>
+                  <text x="400" y="148" text-anchor="middle" class="svg-mono-xs">Round Robin / Least Conn</text>
+                  <text x="400" y="168" text-anchor="middle" class="svg-sub">No single worker choked</text>
+
+                  <path d="M 510 115 L 590 115" class="svg-arrow" stroke="var(--success)"/>
+
+                  <g transform="translate(590, 25)">
+                    <rect x="0" y="0" width="265" height="42" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="15" y="26" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">Worker Node 1: Processing 250 req</text>
+
+                    <rect x="0" y="48" width="265" height="42" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="15" y="74" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">Worker Node 2: Processing 250 req</text>
+
+                    <rect x="0" y="96" width="265" height="42" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="15" y="122" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">Worker Node 3: Processing 250 req</text>
+
+                    <rect x="0" y="144" width="265" height="42" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="15" y="170" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">Worker Node 4: Processing 250 req</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         }
       ]
@@ -3501,7 +5135,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Stage 1 to Stage 3 — Scaling the Application Tier",
       summary: "Evolution from Stage 1 (Single College-Level Server with App + DB) → Stage 2 (Separate App & DB Servers) → Stage 3 (Multiple App Servers 1, 2, 3 behind a Load Balancer).",
       subtopicLabels: ["27.1 Stage 1: Single Server", "27.2 Stage 2: Split App & DB", "27.3 Stage 3: Multiple App Servers + LB"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "27.1",
@@ -3512,6 +5146,49 @@ const SYSTEM_DESIGN_NOTES = {
               <li>The Client communicates directly with this single server.</li>
               <li><strong>Problem:</strong> Works fine for a college project or a handful of users, but both application logic and database queries compete for the same server's CPU and RAM.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 27.1 · Stage 1: The All-in-One Single Server Setup (College Project Architecture)</span>
+                <span class="diagram-frame-tag">DAY 1 ARCHITECTURE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing client directly hitting a single server containing Node.js app, MySQL database, and static file uploads on one machine">
+                  <rect x="30" y="30" width="180" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="120" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">END USER</text>
+                  <text x="120" y="82" text-anchor="middle" class="svg-title">Single Client</text>
+                  <rect x="45" y="100" width="150" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="120" y="130" text-anchor="middle" class="svg-node">Direct Request</text>
+                  <text x="120" y="152" text-anchor="middle" class="svg-mono-xs">GET /index.html</text>
+
+                  <path d="M 210 115 L 320 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="320" y="25" width="530" height="180" rx="14" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                  <text x="585" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">SINGLE HOST MACHINE (E.G., $5 DIGITALOCEAN DROPLET)</text>
+                  
+                  <g transform="translate(345, 75)">
+                    <rect x="0" y="0" width="150" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="75" y="28" text-anchor="middle" class="svg-mono-xs" style="font-weight: 700;">WEB APP</text>
+                    <text x="75" y="52" text-anchor="middle" class="svg-node">Node.js Express</text>
+                    <text x="75" y="74" text-anchor="middle" class="svg-mono-xs">Port 3000</text>
+                    <text x="75" y="94" text-anchor="middle" class="svg-sub">Competes for RAM</text>
+
+                    <rect x="165" y="0" width="150" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="240" y="28" text-anchor="middle" class="svg-mono-xs" style="font-weight: 700;">DATABASE</text>
+                    <text x="240" y="52" text-anchor="middle" class="svg-node">MySQL Server</text>
+                    <text x="240" y="74" text-anchor="middle" class="svg-mono-xs">Port 3306</text>
+                    <text x="240" y="94" text-anchor="middle" class="svg-sub">Competes for Disk I/O</text>
+
+                    <rect x="330" y="0" width="150" height="105" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                    <text x="405" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">SPOF HAZARD</text>
+                    <text x="405" y="52" text-anchor="middle" class="svg-node" style="fill: var(--danger);">1 Crash = ALL Down</text>
+                    <text x="405" y="74" text-anchor="middle" class="svg-mono-xs">No redundancy</text>
+                    <text x="405" y="94" text-anchor="middle" class="svg-sub">Cannot scale beyond 1 VM</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3528,6 +5205,40 @@ const SYSTEM_DESIGN_NOTES = {
               <li><strong>Request Flow:</strong> <code>Client</code> → sends request to <code>Application Server</code> → queries <code>Database Server</code> (if DB operation is needed).</li>
               <li><strong>Benefit:</strong> Distributes the load — the App Server only handles business logic load, and the DB Server only handles database load.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 27.2 · Stage 2: Decoupling Compute (App Server) from Storage (Database Server)</span>
+                <span class="diagram-frame-tag">RESOURCE SPECIALIZATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing compute app server separated from database server over internal network call">
+                  <g transform="translate(40, 25)">
+                    <rect x="0" y="0" width="360" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="180" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">COMPUTE MACHINE (APP SERVER)</text>
+                    <rect x="20" y="50" width="320" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="180" y="78" text-anchor="middle" class="svg-node" style="fill: var(--primary); font-weight: 700;">Optimized for CPU &amp; Threads</text>
+                    <text x="180" y="100" text-anchor="middle" class="svg-sub">Node.js / Java / Go handles HTTP &amp; business logic</text>
+                    <text x="180" y="122" text-anchor="middle" class="svg-mono-xs">Stateless logic · Easy to replicate</text>
+                    <text x="180" y="145" text-anchor="middle" class="svg-sub" style="fill: var(--success);">Zero disk contention with DB ✓</text>
+                  </g>
+
+                  <path d="M 400 115 L 480 115" class="svg-arrow" stroke="var(--warning)"/>
+                  <text x="440" y="105" text-anchor="middle" class="svg-mono-xs">TCP 3306</text>
+
+                  <g transform="translate(480, 25)">
+                    <rect x="0" y="0" width="360" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.8"/>
+                    <text x="180" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">STORAGE MACHINE (DATABASE SERVER)</text>
+                    <rect x="20" y="50" width="320" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--warning)"/>
+                    <text x="180" y="78" text-anchor="middle" class="svg-node" style="fill: var(--warning); font-weight: 700;">Optimized for Fast NVMe &amp; RAM Cache</text>
+                    <text x="180" y="100" text-anchor="middle" class="svg-sub">PostgreSQL / MySQL InnoDB Buffer Pool</text>
+                    <text x="180" y="122" text-anchor="middle" class="svg-mono-xs">High IOPS SSD &amp; dedicated memory</text>
+                    <text x="180" y="145" text-anchor="middle" class="svg-sub" style="fill: var(--success);">App crashes will NOT corrupt DB disk ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3614,7 +5325,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Stage 4 — Database Replication (Master-Slave Architecture)",
       summary: "Eliminating the Single Database SPOF: Write operations (POST/PUT/DELETE) go to Master, Master replicates to Slave 1/2/3, Read operations (GET) hit Slaves, and Slave promotes on Master crash.",
       subtopicLabels: ["28.1 Single DB SPOF", "28.2 Master-Slave Replication", "28.3 Fault Tolerance & Failover"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "28.1",
@@ -3624,6 +5335,55 @@ const SYSTEM_DESIGN_NOTES = {
               <li>Even though we scaled the Application Tier to 3 servers in Stage 3, all 3 App Servers still talk to <strong>only 1 single Database Server</strong>.</li>
               <li>If that single Database crashes or goes down, <strong>zero user requests can be fulfilled</strong> — making the single Database a <strong>Single Point of Failure (SPOF)</strong>.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 28.1 · Single Database Server Bottleneck: Read/Write Contention &amp; Disk Saturation</span>
+                <span class="diagram-frame-tag">IOPS EXHAUSTION &amp; SINGLE SPOF</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing single database server bombarded simultaneously by writes and millions of reads causing query queue backlog">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="220" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="110" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">SCALED APP SERVERS</text>
+                    <rect x="15" y="50" width="190" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="110" y="75" text-anchor="middle" class="svg-mono-xs">10,000 Reads / sec (Browse)</text>
+
+                    <rect x="15" y="110" width="190" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="110" y="135" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">1,000 Writes / sec (Orders)</text>
+                  </g>
+
+                  <path d="M 245 75 L 340 100" class="svg-arrow" stroke="var(--danger)"/>
+                  <path d="M 245 135 L 340 120" class="svg-arrow" stroke="var(--danger)"/>
+
+                  <g transform="translate(340, 25)">
+                    <rect x="0" y="0" width="510" height="180" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="2"/>
+                    <text x="255" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">SINGLE DATABASE BOTTLE NECK</text>
+                    
+                    <g transform="translate(20, 50)">
+                      <rect x="0" y="0" width="145" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                      <text x="72" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">TABLE LOCKS</text>
+                      <text x="72" y="52" text-anchor="middle" class="svg-node">Write Locks</text>
+                      <text x="72" y="74" text-anchor="middle" class="svg-mono-xs">Blocks Reads</text>
+                      <text x="72" y="96" text-anchor="middle" class="svg-sub">Query queue spikes</text>
+
+                      <rect x="160" y="0" width="145" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                      <text x="232" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">DISK IOPS 100%</text>
+                      <text x="232" y="52" text-anchor="middle" class="svg-node">Disk Throttled</text>
+                      <text x="232" y="74" text-anchor="middle" class="svg-mono-xs">Slow queries</text>
+                      <text x="232" y="96" text-anchor="middle" class="svg-sub">Timeouts trigger</text>
+
+                      <rect x="320" y="0" width="150" height="110" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                      <text x="395" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">FATAL SPOF</text>
+                      <text x="395" y="52" text-anchor="middle" class="svg-node" style="fill: var(--danger);">Disk Crash = DIE</text>
+                      <text x="395" y="74" text-anchor="middle" class="svg-mono-xs">100% Data Outage</text>
+                      <text x="395" y="96" text-anchor="middle" class="svg-sub">System collapses</text>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3648,6 +5408,56 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Whenever a user wants to fetch/view their personal details (a <strong>Read Request</strong>), the App Server queries one of the <strong>Slave Nodes</strong> (<code>Slave 1</code>, <code>Slave 2</code>, or <code>Slave 3</code>), keeping heavy read traffic off the Master.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 28.2 · Stage 4: Master-Slave Database Replication (Writes to Master &rarr; Reads from Slaves)</span>
+                <span class="diagram-frame-tag">READ/WRITE DECOUPLING &amp; REDUNDANCY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Diagram showing Master DB handling writes and replicating to Slave Read Replicas serving 90% of user queries">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="200" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="100" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">APPLICATION SERVERS</text>
+                    <rect x="15" y="50" width="170" height="55" rx="6" fill="var(--warning-bg)" stroke="var(--warning)"/>
+                    <text x="100" y="74" text-anchor="middle" class="svg-node" style="fill: var(--warning); font-weight: 700;">Writes (10%)</text>
+                    <text x="100" y="94" text-anchor="middle" class="svg-mono-xs">INSERT, UPDATE, DELETE</text>
+
+                    <rect x="15" y="115" width="170" height="55" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="100" y="139" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Reads (90%)</text>
+                    <text x="100" y="159" text-anchor="middle" class="svg-mono-xs">SELECT Queries</text>
+                  </g>
+
+                  <path d="M 225 78 L 320 78" class="svg-arrow" stroke="var(--warning)"/>
+
+                  <g transform="translate(320, 25)">
+                    <rect x="0" y="0" width="220" height="190" rx="10" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.8"/>
+                    <text x="110" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--warning); font-weight: 700;">MASTER (PRIMARY)</text>
+                    <rect x="15" y="50" width="190" height="125" rx="8" fill="var(--bg-surface)" stroke="var(--warning)"/>
+                    <text x="110" y="78" text-anchor="middle" class="svg-node" style="fill: var(--warning); font-weight: 700;">Dedicated to Writes</text>
+                    <text x="110" y="100" text-anchor="middle" class="svg-mono-xs">Transaction logging (WAL)</text>
+                    <text x="110" y="125" text-anchor="middle" class="svg-sub">Replicates binary log</text>
+                    <text x="110" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Async / Sync Replication</text>
+                  </g>
+
+                  <path d="M 540 120 L 620 78" class="svg-arrow-dashed" stroke="var(--accent)"/>
+                  <path d="M 540 120 L 620 155" class="svg-arrow-dashed" stroke="var(--accent)"/>
+
+                  <g transform="translate(620, 25)">
+                    <rect x="0" y="0" width="235" height="90" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="117" y="28" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Slave 1 (Read Replica)</text>
+                    <text x="117" y="50" text-anchor="middle" class="svg-mono-xs">Serves SELECTs · Zero Write locks</text>
+                    <text x="117" y="70" text-anchor="middle" class="svg-sub">Promoted if Master fails</text>
+
+                    <rect x="0" y="100" width="235" height="90" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="117" y="128" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Slave 2 (Read Replica)</text>
+                    <text x="117" y="150" text-anchor="middle" class="svg-mono-xs">Horizontally scale reads to infinity</text>
+                    <text x="117" y="170" text-anchor="middle" class="svg-sub">Exact cloned data ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3727,7 +5537,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Stage 5 — Adding Cache Memory for Better Performance",
       summary: "Why database disk queries take 12 ms (2+4+4+2), how in-memory Distributed Cache cuts latency by 50% to 6 ms (2+1+1+2), and step-by-step Cache Hit vs. Cache Miss flows.",
       subtopicLabels: ["29.1 Latency Without Cache (12ms)", "29.2 Cache Hit (6ms) & Cache Miss"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "29.1",
@@ -3741,6 +5551,37 @@ const SYSTEM_DESIGN_NOTES = {
               <li><code>App Server 1</code> → returns response to <code>Client</code>: <strong>2 ms</strong></li>
             </ul>
             <div class="formula-box">Total Response Time (Without Cache) = 2 + 4 + 4 + 2 = 12 ms</div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 29.1 · Memory vs Disk Access Latency: The Physical Reason DBs Choke</span>
+                <span class="diagram-frame-tag">HARDWARE PERFORMANCE COMPARISON</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram comparing RAM cache latency measured in nanoseconds against disk database latency measured in milliseconds">
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="380" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="190" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">RAM MEMORY (REDIS / MEMCACHED)</text>
+                    <rect x="18" y="50" width="344" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="190" y="78" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">100 Nanoseconds (0.0001 ms)</text>
+                    <text x="190" y="100" text-anchor="middle" class="svg-sub">Direct electrical bus lookup in RAM chips</text>
+                    <text x="190" y="125" text-anchor="middle" class="svg-mono-xs">Zero mechanical seek · Zero filesystem overhead</text>
+                    <text x="190" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">100,000+ QPS per core ✓</text>
+                  </g>
+
+                  <g transform="translate(470, 25)">
+                    <rect x="0" y="0" width="380" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.5"/>
+                    <text x="190" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">DISK STORAGE (HDD / SSD DATABASE)</text>
+                    <rect x="18" y="50" width="344" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="190" y="78" text-anchor="middle" class="svg-node" style="fill: var(--danger); font-weight: 700;">2 to 10 Milliseconds (2,000,000+ ns)</text>
+                    <text x="190" y="100" text-anchor="middle" class="svg-sub">Flash memory page seek, parsing SQL, index traversal</text>
+                    <text x="190" y="125" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">10,000x Slower than RAM!</text>
+                    <text x="190" y="145" text-anchor="middle" class="svg-sub">Chokes under concurrent spikes ✕</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3847,7 +5688,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Stage 6 & Stage 7 — CDN (Content Delivery Network) & Multiple Data Centers",
       summary: "Serving static content (HTML, Videos, Images, Audio) via Local UK CDN with 3-step fallback hierarchy, plus Multi-DC India/USA Intra-Region and Cross-Region failover.",
       subtopicLabels: ["30.1 Stage 6: Global CDN", "30.2 Stage 7: Multiple Data Centers"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "30.1",
@@ -3865,6 +5706,46 @@ const SYSTEM_DESIGN_NOTES = {
                 </ol>
               </li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 30.1 · Stage 6: CDN Edge Caching for Static Assets (Images, JS, Videos)</span>
+                <span class="diagram-frame-tag">GLOBAL EDGE OFFLOADING</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing CDN edge servers caching images, CSS, and video files near users while only dynamic API calls reach origin backend servers">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="160" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="80" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">GLOBAL CLIENT</text>
+                    <text x="80" y="56" text-anchor="middle" class="svg-title">Visitor</text>
+                    <rect x="15" y="70" width="130" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="80" y="98" text-anchor="middle" class="svg-node">Page Load</text>
+                    <text x="80" y="120" text-anchor="middle" class="svg-mono-xs">HTML, JS, Images</text>
+                    <text x="80" y="142" text-anchor="middle" class="svg-sub">Needs fast render</text>
+                  </g>
+
+                  <path d="M 185 85 L 290 60" class="svg-arrow" stroke="var(--success)"/>
+                  <text x="235" y="65" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Static Assets</text>
+
+                  <path d="M 185 145 L 290 170" class="svg-arrow" stroke="var(--primary)"/>
+                  <text x="235" y="165" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary);">Dynamic API</text>
+
+                  <g transform="translate(290, 25)">
+                    <rect x="0" y="0" width="260" height="85" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="130" y="26" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">CDN EDGE SERVER (MUMBAI)</text>
+                    <text x="130" y="48" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Cached Images &amp; JS Bundle</text>
+                    <text x="130" y="68" text-anchor="middle" class="svg-mono-xs">&lt; 10ms Latency · Zero Origin Load ✓</text>
+                  </g>
+
+                  <g transform="translate(290, 130)">
+                    <rect x="0" y="0" width="560" height="75" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="280" y="28" text-anchor="middle" class="svg-node" style="fill: var(--primary); font-weight: 700;">Origin App Servers &amp; S3 Storage (USA)</text>
+                    <text x="280" y="52" text-anchor="middle" class="svg-sub">Serves only dynamic JSON APIs and cold cache misses (90% traffic offloaded by CDN!)</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3958,7 +5839,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Stage 8 — Database Sharding (Horizontal Database Scaling)",
       summary: "Splitting a slow 1 Million-row Users Table into independent horizontal Shards (Shard 1: 1–1,000, Shard 2: 1,001–2,000) routed via Shard Keys (Name, Age, Geo, Gender).",
       subtopicLabels: ["31.1 Massive Table Problem", "31.2 How Sharding Works", "31.3 Sharding Strategies"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "31.1",
@@ -3968,6 +5849,42 @@ const SYSTEM_DESIGN_NOTES = {
               <li>Suppose your <code>Users Table</code> grows to <strong>1 Million rows</strong>.</li>
               <li>Database queries are already expensive, and running a search operation across all 1 Million entries becomes very slow (while <strong>Database Indexing</strong> helps, indexing alone has its own drawbacks and storage overhead at massive scale).</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 31.1 · The 100-Million Row Single Table Problem: B-Tree Index Bloat &amp; Lock Latency</span>
+                <span class="diagram-frame-tag">MASSIVE DATA SCALE CHALLENGE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing a 100-million row single database table causing massive B-tree depth, slow disk seek, and query timeouts">
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="820" height="180" rx="14" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <text x="410" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">UN-SHARDED 100,000,000 ROW MONOLITH TABLE</text>
+                    
+                    <g transform="translate(30, 50)">
+                      <rect x="0" y="0" width="230" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                      <text x="115" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">B-TREE DEPTH 6+</text>
+                      <text x="115" y="52" text-anchor="middle" class="svg-node">Index Blowup</text>
+                      <text x="115" y="74" text-anchor="middle" class="svg-mono-xs">Index cannot fit in RAM</text>
+                      <text x="115" y="96" text-anchor="middle" class="svg-sub">Forces 6 disk reads per query</text>
+
+                      <rect x="260" y="0" width="230" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                      <text x="375" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">WRITE LOCK CONTEND</text>
+                      <text x="375" y="52" text-anchor="middle" class="svg-node">Lock Degradation</text>
+                      <text x="375" y="74" text-anchor="middle" class="svg-mono-xs">New inserts block reads</text>
+                      <text x="375" y="96" text-anchor="middle" class="svg-sub">Auto-increment collisions</text>
+
+                      <rect x="520" y="0" width="240" height="110" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                      <text x="640" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">TIMEOUT CRASH</text>
+                      <text x="640" y="52" text-anchor="middle" class="svg-node" style="fill: var(--danger);">504 Gateway Timeout</text>
+                      <text x="640" y="74" text-anchor="middle" class="svg-mono-xs">Queries take 15+ seconds</text>
+                      <text x="640" y="96" text-anchor="middle" class="svg-sub">Must shard horizontally!</text>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -3984,6 +5901,43 @@ const SYSTEM_DESIGN_NOTES = {
               </li>
               <li><strong>Why Sharding Makes Queries Fast:</strong> Instead of iterating through all 1,000,000 rows to find a record, the system uses a <strong>Shard Key</strong> to identify the exact relevant shard and searches only within that small shard (e.g., searching 1,000 rows instead of 1,000,000 rows).</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 31.2 · Database Sharding Architecture: Hash Partitioning by User ID</span>
+                <span class="diagram-frame-tag">HORIZONTAL DATABASE PARTITIONING</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing database sharding router hashing User ID to route to Shard 1, Shard 2, or Shard 3">
+                  <rect x="25" y="30" width="240" height="170" rx="10" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="145" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">SHARDING ROUTER</text>
+                  <text x="145" y="82" text-anchor="middle" class="svg-title">Consistent Hash Key</text>
+                  <rect x="40" y="100" width="210" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="145" y="125" text-anchor="middle" class="svg-mono-xs" style="font-weight: 700;">shard = hash(user_id) % 3</text>
+                  <text x="145" y="148" text-anchor="middle" class="svg-sub">Evenly distributes rows</text>
+                  <text x="145" y="168" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Sub-millisecond lookup</text>
+
+                  <path d="M 265 85 L 340 55" class="svg-arrow" stroke="var(--primary)"/>
+                  <path d="M 265 115 L 340 115" class="svg-arrow" stroke="var(--accent)"/>
+                  <path d="M 265 145 L 340 175" class="svg-arrow" stroke="var(--success)"/>
+
+                  <g transform="translate(340, 25)">
+                    <rect x="0" y="0" width="510" height="52" rx="8" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                    <text x="20" y="32" class="svg-node" style="fill: var(--primary); font-weight: 700;">Shard 1 Database: Users 1 to 33,000,000</text>
+                    <text x="440" y="32" class="svg-mono-xs">Lean &amp; Fast</text>
+
+                    <rect x="0" y="65" width="510" height="52" rx="8" fill="var(--accent-bg)" stroke="var(--accent)"/>
+                    <text x="20" y="97" class="svg-node" style="fill: var(--accent); font-weight: 700;">Shard 2 Database: Users 33,000,001 to 66,000,000</text>
+                    <text x="440" y="97" class="svg-mono-xs">Lean &amp; Fast</text>
+
+                    <rect x="0" y="130" width="510" height="52" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="20" y="162" class="svg-node" style="fill: var(--success); font-weight: 700;">Shard 3 Database: Users 66,000,001 to 100,000,000</text>
+                    <text x="440" y="162" class="svg-mono-xs">Lean &amp; Fast</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4076,7 +6030,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Stage 9 — Messaging Queues (Kafka, RabbitMQ, AWS SQS)",
       summary: "Why 10 Million festive-sale orders crash a synchronous Payment Service (100 req/s cap), and how Producer → Kafka Queue → Consumer rate-smoothing decouples downstream services.",
       subtopicLabels: ["32.1 Synchronous Crash (10M Sale)", "32.2 Asynchronous Queue Buffering"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "32.1",
@@ -4100,6 +6054,51 @@ const SYSTEM_DESIGN_NOTES = {
                 </ul>
               </li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 32.1 · Synchronous Cascading Failure: Without Asynchronous Message Queues</span>
+                <span class="diagram-frame-tag">SYNCHRONOUS COUPLING DISASTER</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing order placement hanging because third party email server is slow, exhausting server worker threads and crashing entire checkout">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="90" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CUSTOMER</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Places Order</text>
+                    <rect x="15" y="70" width="150" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="90" y="98" text-anchor="middle" class="svg-node">POST /order</text>
+                    <text x="90" y="120" text-anchor="middle" class="svg-mono-xs">Hangs for 8 sec!</text>
+                    <text x="90" y="145" text-anchor="middle" class="svg-sub" style="fill: var(--danger);">Browser spinning...</text>
+                  </g>
+
+                  <path d="M 205 115 L 280 115" class="svg-arrow" stroke="var(--danger)"/>
+
+                  <g transform="translate(280, 25)">
+                    <rect x="0" y="0" width="260" height="180" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <text x="130" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">APP SERVER (THREAD EXHAUSTION)</text>
+                    <rect x="15" y="50" width="230" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="130" y="78" text-anchor="middle" class="svg-node" style="fill: var(--danger); font-weight: 700;">Synchronous Thread Blocking</text>
+                    <text x="130" y="100" text-anchor="middle" class="svg-sub">Order created, but thread waits for:</text>
+                    <text x="130" y="122" text-anchor="middle" class="svg-mono-xs">• Email Notification Service</text>
+                    <text x="130" y="142" text-anchor="middle" class="svg-mono-xs">• Analytics &amp; Invoice PDF</text>
+                  </g>
+
+                  <path d="M 540 115 L 610 115" class="svg-arrow" stroke="var(--danger)"/>
+
+                  <g transform="translate(610, 25)">
+                    <rect x="0" y="0" width="245" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="2"/>
+                    <text x="122" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">THIRD PARTY EMAIL SERVICE</text>
+                    <rect x="15" y="50" width="215" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="122" y="78" text-anchor="middle" class="svg-node" style="fill: var(--danger); font-weight: 700;">💥 8-Second Lag / Down</text>
+                    <text x="122" y="100" text-anchor="middle" class="svg-mono-xs">Slow SMTP Handshake</text>
+                    <text x="122" y="122" text-anchor="middle" class="svg-sub" style="fill: var(--danger);">Brings down whole checkout!</text>
+                    <text x="122" y="145" text-anchor="middle" class="svg-mono-xs">Solution: Async Kafka Queue</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4197,13 +6196,49 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What is Caching & Why Do We Need It?",
       summary: "Amazon/Flipkart frequently accessed data, latency comparison without cache (2+2+2+2 = 8 ms) vs. with in-memory Cache (2+1+1+2 = 6 ms), and the 4 key benefits of caching.",
       subtopicLabels: ["33.1 E-Commerce Example", "33.2 Latency Without Cache (8ms)", "33.3 Latency With Cache (6ms)"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "33.1",
           title: "Real-World Example (E-Commerce Frequently Asked Data)",
           content: `
             <p>In an e-commerce application like <strong>Amazon</strong> or <strong>Flipkart</strong>, certain data is accessed repeatedly (<strong>Commonly / Frequently Asked Data</strong>) — such as a <strong>User's Profile</strong> or repeatedly checking the price of a specific item.</p>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 33.1 · E-Commerce Frequently Asked Data: The 80/20 Paretro Principle</span>
+                <span class="diagram-frame-tag">READ SKEW &amp; CACHE OPPORTUNITY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing 80 percent of user traffic requesting the same 20 percent of data like user profiles and trending products">
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="820" height="180" rx="14" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="410" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">FREQUENTLY ASKED DATA (HIGH READ ACCESS)</text>
+                    
+                    <g transform="translate(30, 50)">
+                      <rect x="0" y="0" width="230" height="110" rx="8" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                      <text x="115" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">USER PROFILE DATA</text>
+                      <text x="115" y="52" text-anchor="middle" class="svg-node">Logged-In Profile</text>
+                      <text x="115" y="74" text-anchor="middle" class="svg-mono-xs">Fetched on every page</text>
+                      <text x="115" y="96" text-anchor="middle" class="svg-sub">Name, avatar, membership</text>
+
+                      <rect x="260" y="0" width="230" height="110" rx="8" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                      <text x="375" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">TRENDING PRODUCTS</text>
+                      <text x="375" y="52" text-anchor="middle" class="svg-node">Catalog &amp; Price</text>
+                      <text x="375" y="74" text-anchor="middle" class="svg-mono-xs">10,000 views / second</text>
+                      <text x="375" y="96" text-anchor="middle" class="svg-sub">Identical JSON response</text>
+
+                      <rect x="520" y="0" width="240" height="110" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                      <text x="640" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">CACHE OPPORTUNITY</text>
+                      <text x="640" y="52" text-anchor="middle" class="svg-node" style="fill: var(--success);">Store in RAM Cache ✓</text>
+                      <text x="640" y="74" text-anchor="middle" class="svg-mono-xs">Serve from RAM in 1ms</text>
+                      <text x="640" y="96" text-anchor="middle" class="svg-sub">Eliminates 95% DB load</text>
+                    </g>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4236,6 +6271,51 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Database disk operations are very costly. Hitting the database repeatedly overloads the database and slows down the entire request-response cycle.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 33.2 · Request Flow &amp; Latency WITHOUT Caching: 8 ms Round Trip</span>
+                <span class="diagram-frame-tag">UNCACHED DISK LATENCY HOPS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing 8ms latency breakdown without caching across 4 hops: Client to Server (2ms), Server to DB (2ms), DB to Server (2ms), Server to Client (2ms)">
+                  <rect x="20" y="25" width="840" height="180" rx="14" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                  <text x="440" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">TOTAL TIME: 2 + 2 + 2 + 2 = 8 MS FOR A SINGLE QUERY</text>
+                  
+                  <g transform="translate(40, 75)">
+                    <rect x="0" y="0" width="120" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="60" y="32" text-anchor="middle" class="svg-node">Client</text>
+                    <text x="60" y="54" text-anchor="middle" class="svg-mono-xs">Hop 1: Send</text>
+                    <text x="60" y="74" text-anchor="middle" class="svg-sub">User clicks link</text>
+
+                    <path d="M 120 48 L 220 48" class="svg-arrow" stroke="var(--danger)"/>
+                    <text x="170" y="38" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">2 ms</text>
+
+                    <rect x="220" y="0" width="140" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="290" y="32" text-anchor="middle" class="svg-node">App Server</text>
+                    <text x="290" y="54" text-anchor="middle" class="svg-mono-xs">Hop 2: Query DB</text>
+                    <text x="290" y="74" text-anchor="middle" class="svg-sub">Dispatches SQL</text>
+
+                    <path d="M 360 48 L 470 48" class="svg-arrow" stroke="var(--danger)"/>
+                    <text x="415" y="38" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">2 ms</text>
+
+                    <rect x="470" y="0" width="150" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="545" y="32" text-anchor="middle" class="svg-node" style="fill: var(--danger);">Database Disk</text>
+                    <text x="545" y="54" text-anchor="middle" class="svg-mono-xs">Hop 3: Seek &amp; Read</text>
+                    <text x="545" y="74" text-anchor="middle" class="svg-sub">Disk I/O Latency</text>
+
+                    <path d="M 620 48 L 710 48" class="svg-arrow" stroke="var(--danger)"/>
+                    <text x="665" y="38" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">2 ms + 2 ms</text>
+
+                    <rect x="710" y="0" width="130" height="95" rx="8" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                    <text x="775" y="32" text-anchor="middle" class="svg-node" style="fill: var(--danger); font-weight: 700;">8 ms Total</text>
+                    <text x="775" y="54" text-anchor="middle" class="svg-mono-xs">Slow at Scale</text>
+                    <text x="775" y="74" text-anchor="middle" class="svg-sub">Overloads DB ✕</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4324,7 +6404,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Caching Flow (Cache Hit vs. Cache Miss) & Why Not Store Everything in Cache?",
       summary: "Step-by-step Cache Hit (DB untouched) vs. Cache Miss (DB lookup + write-back to Cache) flows, plus why we cannot replace Databases with Cache Memory.",
       subtopicLabels: ["34.1 Cache Hit vs Cache Miss", "34.2 Why Not Store Everything in Cache?"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "34.1",
@@ -4413,6 +6493,47 @@ const SYSTEM_DESIGN_NOTES = {
                 Store infinite/permanent data in the <strong>Database</strong>, and store only <strong>relevant, frequently accessed data</strong> in the <strong>Cache Memory</strong>.
               </p>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 34.2 · Why Can't We Store EVERYTHING in Cache? (RAM vs. Disk Realities)</span>
+                <span class="diagram-frame-tag">COST, VOLATILITY &amp; CAPACITY TRIAD</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram contrasting RAM and Disk across Volatility, Cost, and Capacity proving why databases are still mandatory">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="255" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.5"/>
+                    <text x="127" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">1. VOLATILITY</text>
+                    <text x="127" y="56" text-anchor="middle" class="svg-title">RAM Wipes on Power Loss</text>
+                    <rect x="18" y="70" width="219" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="127" y="98" text-anchor="middle" class="svg-node">Power cut / Restart</text>
+                    <text x="127" y="120" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">100% RAM data vanishes</text>
+                    <text x="127" y="142" text-anchor="middle" class="svg-sub">DB writes to durable NVMe disk ✓</text>
+                  </g>
+
+                  <g transform="translate(310, 25)">
+                    <rect x="0" y="0" width="255" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                    <text x="127" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--warning); font-weight: 700;">2. EXTREME COST</text>
+                    <text x="127" y="56" text-anchor="middle" class="svg-title">RAM is 10x More Expensive</text>
+                    <rect x="18" y="70" width="219" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="127" y="98" text-anchor="middle" class="svg-node">1 TB RAM = $1,500/mo</text>
+                    <text x="127" y="120" text-anchor="middle" class="svg-mono-xs">1 TB SSD = $80/mo</text>
+                    <text x="127" y="142" text-anchor="middle" class="svg-sub">Financial ruin at petabyte scale</text>
+                  </g>
+
+                  <g transform="translate(595, 25)">
+                    <rect x="0" y="0" width="260" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="130" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">3. THE PERFECT PAIR</text>
+                    <text x="130" y="56" text-anchor="middle" class="svg-title">Cache + DB Symbiosis</text>
+                    <rect x="18" y="70" width="224" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="130" y="98" text-anchor="middle" class="svg-node">Cache: Hot 20% Data</text>
+                    <text x="130" y="120" text-anchor="middle" class="svg-node">DB: Permanent 100% Truth</text>
+                    <text x="130" y="142" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Best of speed &amp; safety ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         }
       ]
@@ -4428,7 +6549,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Local Caching vs. Distributed Caching (Solving Data Inconsistency)",
       summary: "Why in-server Local Caching causes redundant misses and stale-data bugs across App Servers 1–3, and how a Global Distributed Cache (Redis Cluster) solves inconsistency.",
       subtopicLabels: ["35.1 Local Caching", "35.2 2 Problems in Multi-Server", "35.3 Distributed Cache (Redis)"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "35.1",
@@ -4438,6 +6559,37 @@ const SYSTEM_DESIGN_NOTES = {
               <li><strong>How it Works:</strong> The Cache Memory is placed <strong>inside the Application Server's own memory</strong> (In-Server Memory).</li>
               <li><strong>When it Works Well:</strong> When you only have <strong>1 single Application Server</strong>. The client sends a request to the App Server, and the App Server fulfills it directly from its internal local cache.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 35.1 · In-Process Local Caching: In-Memory Heap HashMaps</span>
+                <span class="diagram-frame-tag">ZERO NETWORK HOP IN-PROCESS RAM</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Local Cache living directly inside application process heap memory offering nanosecond access without network calls">
+                  <rect x="30" y="25" width="820" height="180" rx="14" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="440" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">APPLICATION SERVER INSTANCE (SINGLE JVM / NODE PROCESS)</text>
+                  
+                  <g transform="translate(60, 75)">
+                    <rect x="0" y="0" width="320" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="160" y="28" text-anchor="middle" class="svg-mono-xs" style="font-weight: 700;">BUSINESS LOGIC THREAD</text>
+                    <text x="160" y="52" text-anchor="middle" class="svg-node">Express / Spring Route</text>
+                    <text x="160" y="74" text-anchor="middle" class="svg-mono-xs">const data = localCache.get(id)</text>
+                    <text x="160" y="94" text-anchor="middle" class="svg-sub">Direct memory pointer reference</text>
+
+                    <path d="M 320 52 L 420 52" class="svg-arrow" stroke="var(--success)"/>
+                    <text x="370" y="42" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">&lt; 100 ns</text>
+
+                    <rect x="420" y="0" width="340" height="105" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="590" y="28" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">LOCAL CACHE (IN-PROCESS HEAP)</text>
+                    <text x="590" y="52" text-anchor="middle" class="svg-node" style="fill: var(--success);">Java Guava / Node-Cache / Caffeine</text>
+                    <text x="590" y="74" text-anchor="middle" class="svg-mono-xs">Zero network TCP socket overhead ✓</text>
+                    <text x="590" y="94" text-anchor="middle" class="svg-sub">Fastest possible read latency on Earth</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4468,6 +6620,42 @@ const SYSTEM_DESIGN_NOTES = {
                 </div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 35.2 · The 2 Fatal Flaws of Local Caching in Multi-Server Systems</span>
+                <span class="diagram-frame-tag">DATA DESYNCHRONIZATION &amp; MEMORY DUPLICATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Server 1 having updated price 100 dollars while Server 2 has stale cached price 80 dollars, causing user inconsistency">
+                  <!-- Server 1 -->
+                  <g transform="translate(40, 25)">
+                    <rect x="0" y="0" width="360" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="180" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success);">SERVER 1 (RECEIVED UPDATE)</text>
+                    <rect x="20" y="50" width="320" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="180" y="78" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Local Cache: Price = $100 ✓</text>
+                    <text x="180" y="100" text-anchor="middle" class="svg-sub">User A updated product price here</text>
+                    <text x="180" y="125" text-anchor="middle" class="svg-mono-xs">Cache updated in Server 1 RAM</text>
+                    <text x="180" y="145" text-anchor="middle" class="svg-sub">Accurate &amp; fresh state</text>
+                  </g>
+
+                  <!-- Desync Clash -->
+                  <text x="440" y="120" text-anchor="middle" class="svg-node" style="fill: var(--danger); font-weight: 700;">DESYNC! ✕</text>
+
+                  <!-- Server 2 -->
+                  <g transform="translate(480, 25)">
+                    <rect x="0" y="0" width="360" height="180" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <text x="180" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">SERVER 2 (STALE DATA!)</text>
+                    <rect x="20" y="50" width="320" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="180" y="78" text-anchor="middle" class="svg-node" style="fill: var(--danger); font-weight: 700;">Local Cache: Price = $80 (STALE)</text>
+                    <text x="180" y="100" text-anchor="middle" class="svg-sub">User B hits Server 2 via Load Balancer</text>
+                    <text x="180" y="125" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Sees old price &amp; checkout errors!</text>
+                    <text x="180" y="145" text-anchor="middle" class="svg-sub">Fix: Use Central Distributed Redis Cache</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4563,7 +6751,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Cache Policies — Cache Eviction Policies (FIFO, LRU, LFU)",
       summary: "How caches decide what to evict when full: FIFO (First In First Out & hourly-hot-key pitfall), LRU (Least Recently Used stack), and LFU (Least Frequently Used access counters).",
       subtopicLabels: ["36.1 What are Cache Policies?", "36.2 FIFO", "36.3 LRU", "36.4 LFU"],
-      diagramCount: 1,
+      diagramCount: 4,
       sections: [
         {
           num: "36.1",
@@ -4574,6 +6762,51 @@ const SYSTEM_DESIGN_NOTES = {
               <li><strong>Cache Eviction Policy</strong> (Which data to remove when cache is full)</li>
               <li><strong>Cache Write Policy</strong> (How and when to update data in Cache vs. Database)</li>
             </ol>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 36.1 · Cache Eviction Trigger: Cache Full &rarr; Eviction Algorithm</span>
+                <span class="diagram-frame-tag">BOUNDED MEMORY MANAGEMENT</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing cache full of entries rejecting or evicting older entry to make room for new write">
+                  <rect x="30" y="25" width="220" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="140" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">NEW DATA INSERTION</text>
+                  <text x="140" y="76" text-anchor="middle" class="svg-title">New Item: Key D</text>
+                  <rect x="45" y="95" width="190" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="140" y="125" text-anchor="middle" class="svg-node">Needs Storage</text>
+                  <text x="140" y="148" text-anchor="middle" class="svg-mono-xs">SET key_D value_D</text>
+                  <text x="140" y="168" text-anchor="middle" class="svg-sub">RAM limit reached!</text>
+
+                  <path d="M 250 115 L 330 115" class="svg-arrow" stroke="var(--danger)"/>
+                  <text x="290" y="105" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">100% Full</text>
+
+                  <rect x="330" y="25" width="520" height="180" rx="12" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.8"/>
+                  <text x="590" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--warning); font-weight: 700;">CACHE EVICTION POLICIES</text>
+                  
+                  <g transform="translate(350, 75)">
+                    <rect x="0" y="0" width="150" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="75" y="26" text-anchor="middle" class="svg-mono-xs" style="font-weight: 700;">FIFO</text>
+                    <text x="75" y="50" text-anchor="middle" class="svg-node">First In, First Out</text>
+                    <text x="75" y="70" text-anchor="middle" class="svg-sub">Evicts oldest arrived</text>
+                    <text x="75" y="90" text-anchor="middle" class="svg-mono-xs">Simple queue</text>
+
+                    <rect x="165" y="0" width="155" height="105" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="242" y="26" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success); font-weight: 700;">LRU (POPULAR)</text>
+                    <text x="242" y="50" text-anchor="middle" class="svg-node" style="fill: var(--success);">Least Recently Used</text>
+                    <text x="242" y="70" text-anchor="middle" class="svg-sub">Evicts idle key</text>
+                    <text x="242" y="90" text-anchor="middle" class="svg-mono-xs">Best hit ratio ✓</text>
+
+                    <rect x="335" y="0" width="145" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="407" y="26" text-anchor="middle" class="svg-mono-xs" style="font-weight: 700;">LFU</text>
+                    <text x="407" y="50" text-anchor="middle" class="svg-node">Least Frequently</text>
+                    <text x="407" y="70" text-anchor="middle" class="svg-sub">Evicts lowest hit count</text>
+                    <text x="407" y="90" text-anchor="middle" class="svg-mono-xs">Frequency counter</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4585,6 +6818,49 @@ const SYSTEM_DESIGN_NOTES = {
               <li><strong>Example:</strong> Suppose data entries arrive in the order <code>1: A</code>, <code>2: B</code>, <code>3: C</code>. Since <strong><code>A</code></strong> entered the cache first, when a new entry <strong><code>D</code></strong> arrives, FIFO evicts <strong><code>A</code></strong>.</li>
               <li><strong>Major Drawback:</strong> FIFO completely ignores <strong>how frequently or recently</strong> an item is accessed. Suppose <strong><code>A</code></strong> is accessed <strong>every single hour</strong>, whereas <strong><code>B</code></strong> and <strong><code>C</code></strong> are accessed only <strong>once every 5 days</strong>. Even though <code>A</code> is heavily used every hour, FIFO still blindly deletes <code>A</code> just because it arrived first.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 36.2 · FIFO (First In, First Out) Eviction Queue Mechanics</span>
+                <span class="diagram-frame-tag">ARRIVAL TIME ORDERING</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing FIFO queue evicting oldest item A when new item D arrives regardless of how frequently A is accessed">
+                  <g transform="translate(30, 25)">
+                    <!-- Evicted Item A -->
+                    <rect x="0" y="45" width="170" height="90" rx="8" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <text x="85" y="28" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">1. EVICTED ITEM</text>
+                    <text x="85" y="75" text-anchor="middle" class="svg-node" style="fill: var(--danger);">Key A (Oldest)</text>
+                    <text x="85" y="95" text-anchor="middle" class="svg-mono-xs">Arrived 10:00 AM</text>
+                    <text x="85" y="115" text-anchor="middle" class="svg-sub">Purged from RAM ✕</text>
+
+                    <path d="M 180 90 L 250 90" class="svg-arrow" stroke="var(--border-strong)"/>
+
+                    <!-- Remaining Queue -->
+                    <rect x="250" y="45" width="180" height="90" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="340" y="75" text-anchor="middle" class="svg-node">Key B</text>
+                    <text x="340" y="95" text-anchor="middle" class="svg-mono-xs">Arrived 10:05 AM</text>
+                    <text x="340" y="115" text-anchor="middle" class="svg-sub">Moves to Head</text>
+
+                    <path d="M 440 90 L 510 90" class="svg-arrow" stroke="var(--border-strong)"/>
+
+                    <rect x="510" y="45" width="180" height="90" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="600" y="75" text-anchor="middle" class="svg-node">Key C</text>
+                    <text x="600" y="95" text-anchor="middle" class="svg-mono-xs">Arrived 10:10 AM</text>
+                    <text x="600" y="115" text-anchor="middle" class="svg-sub">Recent</text>
+
+                    <path d="M 700 90 L 760 90" class="svg-arrow" stroke="var(--success)"/>
+
+                    <!-- New Item D -->
+                    <rect x="760" y="45" width="100" height="90" rx="8" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="810" y="75" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Key D</text>
+                    <text x="810" y="95" text-anchor="middle" class="svg-mono-xs">10:15 AM</text>
+                    <text x="810" y="115" text-anchor="middle" class="svg-sub">Added ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4606,6 +6882,55 @@ const SYSTEM_DESIGN_NOTES = {
               </li>
               <li>When space is needed, LRU evicts the bottom-most entries (<strong><code>B</code> and <code>E</code></strong>) that haven't been used recently.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 36.3 · LRU (Least Recently Used): Doubly Linked List + HashMap Mechanics</span>
+                <span class="diagram-frame-tag">O(1) ACCESS &amp; EVICTION REORDERING</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing LRU doubly linked list where accessing key moves it to Head while Least Recently Used item at Tail gets evicted">
+                  <!-- Tail (Eviction Candidate) -->
+                  <g transform="translate(30, 35)">
+                    <rect x="0" y="0" width="180" height="140" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <text x="90" y="30" text-anchor="middle" class="svg-kicker" style="fill: var(--danger); font-weight: 700;">TAIL: LEAST RECENT (EVICT)</text>
+                    <rect x="15" y="45" width="150" height="75" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="90" y="72" text-anchor="middle" class="svg-node" style="fill: var(--danger);">Key: user_12</text>
+                    <text x="90" y="92" text-anchor="middle" class="svg-mono-xs">Last Read: 2 hrs ago</text>
+                    <text x="90" y="110" text-anchor="middle" class="svg-sub">First to be deleted</text>
+                  </g>
+
+                  <!-- Node 2 -->
+                  <g transform="translate(250, 35)">
+                    <rect x="0" y="0" width="170" height="140" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="85" y="30" text-anchor="middle" class="svg-kicker" style="fill: var(--text-tertiary);">INTERMEDIATE NODE</text>
+                    <rect x="15" y="45" width="140" height="75" rx="6" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                    <text x="85" y="72" text-anchor="middle" class="svg-node">Key: product_88</text>
+                    <text x="85" y="92" text-anchor="middle" class="svg-mono-xs">Last Read: 15 min ago</text>
+                  </g>
+
+                  <!-- Node 3 -->
+                  <g transform="translate(460, 35)">
+                    <rect x="0" y="0" width="170" height="140" rx="10" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="85" y="30" text-anchor="middle" class="svg-kicker" style="fill: var(--text-tertiary);">JUST ACCESSED</text>
+                    <rect x="15" y="45" width="140" height="75" rx="6" fill="var(--bg-surface)" stroke="var(--border-subtle)"/>
+                    <text x="85" y="72" text-anchor="middle" class="svg-node">Key: banner_01</text>
+                    <text x="85" y="92" text-anchor="middle" class="svg-mono-xs">Last Read: 1 min ago</text>
+                  </g>
+
+                  <!-- Head -->
+                  <g transform="translate(670, 35)">
+                    <rect x="0" y="0" width="180" height="140" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="90" y="30" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">HEAD: MOST RECENT (SAFE)</text>
+                    <rect x="15" y="45" width="150" height="75" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="90" y="72" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Key: cart_99</text>
+                    <text x="90" y="92" text-anchor="middle" class="svg-mono-xs">Last Read: 1 sec ago</text>
+                    <text x="90" y="110" text-anchor="middle" class="svg-sub">Safe from eviction ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4685,7 +7010,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Cache Write Policies — Write-Through vs. Write-Back",
       summary: "Updating user age (17 → 18): Write-Through (synchronous Cache + DB update, strong consistency, slower writes) vs. Write-Back (fast Cache-only write + async background DB sync).",
       subtopicLabels: ["37.1 Write-Through Policy", "37.2 Write-Back Policy", "37.3 Comparison Table"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "37.1",
@@ -4710,6 +7035,49 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Because every write operation must wait for a network call and disk write to the <strong>Database</strong> before completing, write operations are <strong>slow</strong>.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 37.1 · Write-Through Cache Policy: Synchronous Dual-Write Consistency</span>
+                <span class="diagram-frame-tag">ZERO DATA LOSS · HIGHER WRITE LATENCY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Write-Through cache policy synchronously writing to Cache and Database before acknowledging success to client">
+                  <!-- App -->
+                  <rect x="25" y="30" width="180" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="115" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CLIENT WRITE</text>
+                  <text x="115" y="82" text-anchor="middle" class="svg-title">App Server</text>
+                  <rect x="40" y="100" width="150" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="115" y="125" text-anchor="middle" class="svg-node">Write Request</text>
+                  <text x="115" y="148" text-anchor="middle" class="svg-mono-xs">updateBalance($50)</text>
+                  <text x="115" y="168" text-anchor="middle" class="svg-sub">Waits for both</text>
+
+                  <path d="M 205 115 L 290 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <!-- Cache (Sync 1) -->
+                  <rect x="290" y="25" width="240" height="180" rx="12" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="410" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">STEP 1: SYNC CACHE WRITE</text>
+                  <text x="410" y="78" text-anchor="middle" class="svg-title">Redis Cache</text>
+                  <rect x="305" y="95" width="210" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="410" y="122" text-anchor="middle" class="svg-node">Writes to RAM</text>
+                  <text x="410" y="145" text-anchor="middle" class="svg-mono-xs">Latency: 1 ms</text>
+                  <text x="410" y="168" text-anchor="middle" class="svg-sub">Holds until DB confirmed</text>
+
+                  <path d="M 530 115 L 610 115" class="svg-arrow" stroke="var(--success)"/>
+                  <text x="570" y="105" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Sync Write</text>
+
+                  <!-- DB (Sync 2) -->
+                  <rect x="610" y="25" width="245" height="180" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                  <text x="732" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">STEP 2: SYNC DISK WRITE</text>
+                  <text x="732" y="78" text-anchor="middle" class="svg-title">PostgreSQL DB</text>
+                  <rect x="625" y="95" width="215" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="732" y="122" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Fsync to NVMe Disk</text>
+                  <text x="732" y="145" text-anchor="middle" class="svg-mono-xs">Latency: 4 ms</text>
+                  <text x="732" y="168" text-anchor="middle" class="svg-sub">Guaranteed persistence ✓</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4734,6 +7102,47 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">During the time window between the immediate Cache update (<code>Age = 18</code>) and the delayed background Database write (where DB still holds <code>Age = 17</code>), the Cache and Database are temporarily <strong>inconsistent</strong>.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 37.2 · Write-Back (Write-Behind) Policy: Sub-Millisecond Async Storage</span>
+                <span class="diagram-frame-tag">ULTRA-FAST WRITES &amp; ASYNC QUEUE FLUSH</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Write-Back policy immediately acknowledging client after RAM write while asynchronously syncing to disk database in background">
+                  <rect x="25" y="30" width="180" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="115" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">CLIENT WRITE</text>
+                  <text x="115" y="82" text-anchor="middle" class="svg-title">App Server</text>
+                  <rect x="40" y="100" width="150" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="115" y="125" text-anchor="middle" class="svg-node">Likes / Views</text>
+                  <text x="115" y="148" text-anchor="middle" class="svg-mono-xs">High throughput</text>
+                  <text x="115" y="168" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Ack in &lt; 1 ms ✓</text>
+
+                  <path d="M 205 105 L 290 105" class="svg-arrow" stroke="var(--success)"/>
+                  <path d="M 290 135 L 205 135" class="svg-arrow" stroke="var(--success)"/>
+
+                  <rect x="290" y="25" width="250" height="180" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                  <text x="415" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">WRITE TO RAM (INSTANT ACK)</text>
+                  <text x="415" y="78" text-anchor="middle" class="svg-title">Redis Cache</text>
+                  <rect x="305" y="95" width="220" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="415" y="122" text-anchor="middle" class="svg-node">Marks Key as "Dirty"</text>
+                  <text x="415" y="145" text-anchor="middle" class="svg-mono-xs">Immediate 200 OK to Client</text>
+                  <text x="415" y="168" text-anchor="middle" class="svg-sub">Batches writes in memory</text>
+
+                  <path d="M 540 115 L 620 115" class="svg-arrow-dashed" stroke="var(--warning)"/>
+                  <text x="580" y="105" text-anchor="middle" class="svg-mono-xs" style="fill: var(--warning);">Async Batch</text>
+
+                  <rect x="620" y="25" width="235" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                  <text x="737" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">BACKGROUND ASYNC SYNC</text>
+                  <text x="737" y="78" text-anchor="middle" class="svg-title">Database Storage</text>
+                  <rect x="635" y="95" width="205" height="95" rx="8" fill="var(--bg-surface)" stroke="var(--warning)"/>
+                  <text x="737" y="122" text-anchor="middle" class="svg-node">Flushed Every 10 sec</text>
+                  <text x="737" y="145" text-anchor="middle" class="svg-mono-xs">Bulk INSERT operations</text>
+                  <text x="737" y="168" text-anchor="middle" class="svg-sub" style="fill: var(--warning);">Risk: RAM crash = lost likes</text>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4839,7 +7248,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What are Distributed Systems?",
       summary: "Multiple independent computers (Computer 1, 2, 3) working together to solve a large problem while appearing as ONE single computer to the end user — powered by Horizontal Scaling, Load Balancers, and Networking Protocols.",
       subtopicLabels: ["38.1 Core Definition & Single-System Illusion", "38.2 Scaling, LB & Protocols Fit In"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "38.1",
@@ -4861,6 +7270,49 @@ const SYSTEM_DESIGN_NOTES = {
                 A <strong>Distributed System</strong> is a system of <strong>multiple independent computers working together to solve a large problem</strong>, while <strong>appearing as a single computer to the user</strong>.
               </p>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 38.1 · The Single-System Illusion of Distributed Systems</span>
+                <span class="diagram-frame-tag">MULTIPLE INDEPENDENT NODES · ONE COHESIVE SYSTEM</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing user perceiving a single computer while behind the scenes a distributed cluster of independent servers coordinates to fulfill the request">
+                  <rect x="25" y="30" width="180" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                  <text x="115" y="58" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">END USER PERSPECTIVE</text>
+                  <text x="115" y="82" text-anchor="middle" class="svg-title">Single Illusion</text>
+                  <rect x="40" y="100" width="150" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                  <text x="115" y="128" text-anchor="middle" class="svg-node">"Only 1 Fast Computer"</text>
+                  <text x="115" y="152" text-anchor="middle" class="svg-sub">Zero knowledge of cluster</text>
+
+                  <path d="M 205 115 L 290 115" class="svg-arrow" stroke="var(--primary)"/>
+
+                  <rect x="290" y="25" width="560" height="180" rx="14" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                  <text x="570" y="52" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">DISTRIBUTED REALITY BEHIND THE SCENES</text>
+                  
+                  <g transform="translate(310, 75)">
+                    <rect x="0" y="0" width="160" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="80" y="28" text-anchor="middle" class="svg-mono-xs" style="font-weight: 700;">NODE 1 (MUMBAI)</text>
+                    <text x="80" y="52" text-anchor="middle" class="svg-node">Server 10.0.1.1</text>
+                    <text x="80" y="74" text-anchor="middle" class="svg-sub">Handles 33% traffic</text>
+                    <text x="80" y="94" text-anchor="middle" class="svg-mono-xs">Raft Consensus</text>
+
+                    <rect x="180" y="0" width="160" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="260" y="28" text-anchor="middle" class="svg-mono-xs" style="font-weight: 700;">NODE 2 (DELHI)</text>
+                    <text x="260" y="52" text-anchor="middle" class="svg-node">Server 10.0.2.1</text>
+                    <text x="260" y="74" text-anchor="middle" class="svg-sub">Handles 33% traffic</text>
+                    <text x="260" y="94" text-anchor="middle" class="svg-mono-xs">Raft Consensus</text>
+
+                    <rect x="360" y="0" width="160" height="105" rx="8" fill="var(--bg-surface)" stroke="var(--border-strong)"/>
+                    <text x="440" y="28" text-anchor="middle" class="svg-mono-xs" style="font-weight: 700;">NODE 3 (CHENNAI)</text>
+                    <text x="440" y="52" text-anchor="middle" class="svg-node">Server 10.0.3.1</text>
+                    <text x="440" y="74" text-anchor="middle" class="svg-sub">Handles 33% traffic</text>
+                    <text x="440" y="94" text-anchor="middle" class="svg-mono-xs">Raft Consensus</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -4956,7 +7408,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Why Do We Need Distributed Systems? (3 Major Advantages)",
       summary: "Scalability across multiple nodes, Fault Tolerance eliminating Single Point of Failure, and Low Latency via geographic distribution (India vs. USA google.com example).",
       subtopicLabels: ["39.1 Scalability & Fault Tolerance", "39.2 Low Latency (India vs USA)"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "39.1",
@@ -4974,6 +7426,37 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">In a single-server system, if that one server crashes, no user requests can be fulfilled (Single Point of Failure). In a distributed system with multiple servers, if one server crashes, user traffic is automatically routed to another healthy server, keeping the app online.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 39.1 · Core Advantages: Elastic Horizontal Scaling &amp; Fault Resilience</span>
+                <span class="diagram-frame-tag">DISTRIBUTED ADVANTAGES</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing elastic scaling by adding nodes and fault tolerance where 2 node crashes don't bring down the 5 node cluster">
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="380" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="190" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">1. ELASTIC SCALABILITY</text>
+                    <rect x="18" y="50" width="344" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="190" y="78" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Add Nodes Without Limits</text>
+                    <text x="190" y="100" text-anchor="middle" class="svg-sub">Traffic surges 10x? Spin up 50 commodity VMs</text>
+                    <text x="190" y="125" text-anchor="middle" class="svg-mono-xs">No expensive mainframe required</text>
+                    <text x="190" y="145" text-anchor="middle" class="svg-sub">Scale down automatically at night ✓</text>
+                  </g>
+
+                  <g transform="translate(470, 25)">
+                    <rect x="0" y="0" width="380" height="180" rx="10" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="190" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary); font-weight: 700;">2. FAULT TOLERANCE</text>
+                    <rect x="18" y="50" width="344" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="190" y="78" text-anchor="middle" class="svg-node" style="fill: var(--primary); font-weight: 700;">Cluster Survives Node Crashes</text>
+                    <text x="190" y="100" text-anchor="middle" class="svg-sub">Node 3 suffers hardware failure &amp; catches fire</text>
+                    <text x="190" y="125" text-anchor="middle" class="svg-mono-xs">Leader election promotes Node 4 in 200ms</text>
+                    <text x="190" y="145" text-anchor="middle" class="svg-sub" style="fill: var(--success);">Zero user downtime recorded ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -5041,7 +7524,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Key Challenges & Concepts in Distributed Systems (Agreement & CAP Theorem)",
       summary: "Millisecond Agreement (Consensus) when User A on Server 2 and User B on Server 3 simultaneously buy the last 1 iPhone in stock, plus introduction to the CAP Theorem.",
       subtopicLabels: ["40.1 Agreement (Consensus)", "40.2 CAP Theorem Intro"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "40.1",
@@ -5144,6 +7627,47 @@ const SYSTEM_DESIGN_NOTES = {
                 In any distributed system, <strong>you cannot achieve all three (Consistency, Availability, and Partition Tolerance) at the exact same time</strong>.
               </p>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 40.2 · The CAP Theorem Venn Diagram: Consistency, Availability &amp; Partition Tolerance</span>
+                <span class="diagram-frame-tag">FUNDAMENTAL DISTRIBUTED LAW</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="CAP Theorem diagram illustrating Consistency, Availability, and Partition Tolerance showing that in a distributed network with partitions you must choose between CP and AP">
+                  <g transform="translate(40, 25)">
+                    <rect x="0" y="0" width="240" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="120" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary); font-weight: 700;">C: CONSISTENCY</text>
+                    <rect x="15" y="50" width="210" height="120" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="120" y="78" text-anchor="middle" class="svg-node">Same Data Everywhere</text>
+                    <text x="120" y="100" text-anchor="middle" class="svg-sub">Every read receives the most recent write</text>
+                    <text x="120" y="125" text-anchor="middle" class="svg-mono-xs">Or returns an error</text>
+                    <text x="120" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary);">Banking &amp; FinTech</text>
+                  </g>
+
+                  <g transform="translate(320, 25)">
+                    <rect x="0" y="0" width="240" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="120" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">A: AVAILABILITY</text>
+                    <rect x="15" y="50" width="210" height="120" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="120" y="78" text-anchor="middle" class="svg-node">Always Responds</text>
+                    <text x="120" y="100" text-anchor="middle" class="svg-sub">Every non-failing node returns a response</text>
+                    <text x="120" y="125" text-anchor="middle" class="svg-mono-xs">Even if data is slightly stale</text>
+                    <text x="120" y="148" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">Social Media &amp; Feeds</text>
+                  </g>
+
+                  <g transform="translate(600, 25)">
+                    <rect x="0" y="0" width="240" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.8"/>
+                    <text x="120" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--warning); font-weight: 700;">P: PARTITION TOLERANCE</text>
+                    <rect x="15" y="50" width="210" height="120" rx="6" fill="var(--bg-surface)" stroke="var(--warning)"/>
+                    <text x="120" y="78" text-anchor="middle" class="svg-node">Survives Cable Cuts</text>
+                    <text x="120" y="100" text-anchor="middle" class="svg-sub">System operates despite dropped messages</text>
+                    <text x="120" y="125" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">MANDATORY ON INTERNET!</text>
+                    <text x="120" y="148" text-anchor="middle" class="svg-sub">Must pick CP or AP</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         }
       ]
@@ -5159,7 +7683,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What is the CAP Theorem & Its 3 Core Properties?",
       summary: "Deep dive into Consistency (C), Availability (A), and Partition Tolerance (P) using App Server A and Database Nodes B & C (updating variable a from 10 to 5).",
       subtopicLabels: ["41.1 Distributed Master-Slave Context", "41.2 C, A, and P with Example"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "41.1",
@@ -5170,6 +7694,44 @@ const SYSTEM_DESIGN_NOTES = {
               <li>Similarly, to scale the Database, we use a <strong>Master-Slave Architecture</strong> (1 Master Node for <strong>Write operations</strong> and multiple Slave Nodes for <strong>Read operations</strong>), where data written to the Master is replicated across all Slave Nodes so every DB node holds the same data.</li>
               <li><strong>What is CAP?</strong> <code>C</code> (Consistency), <code>A</code> (Availability), and <code>P</code> (Partition Tolerance) are the three desirable properties of any Distributed System.</li>
             </ul>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 41.1 · The Network Partition Reality in Master-Slave Architecture</span>
+                <span class="diagram-frame-tag">NETWORK PARTITION HAZARD</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing physical fiber severed between Data Center 1 Master node and Data Center 2 Slave node causing a network partition">
+                  <!-- DC 1 -->
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="350" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="175" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary);">DATA CENTER 1 (MUMBAI)</text>
+                    <rect x="20" y="50" width="310" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="175" y="78" text-anchor="middle" class="svg-node" style="fill: var(--primary); font-weight: 700;">DB Master Node</text>
+                    <text x="175" y="100" text-anchor="middle" class="svg-mono-xs">Accepts Write: balance = $100</text>
+                    <text x="175" y="125" text-anchor="middle" class="svg-sub">Cannot replicate across fiber cut!</text>
+                  </g>
+
+                  <!-- Network Partition Wall -->
+                  <g transform="translate(395, 35)">
+                    <line x1="45" y1="20" x2="45" y2="160" stroke="var(--danger)" stroke-width="3" stroke-dasharray="6 4"/>
+                    <rect x="0" y="75" width="90" height="30" rx="6" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                    <text x="45" y="95" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger); font-weight: 700;">PARTITION ✕</text>
+                  </g>
+
+                  <!-- DC 2 -->
+                  <g transform="translate(500, 25)">
+                    <rect x="0" y="0" width="350" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.5"/>
+                    <text x="175" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--warning);">DATA CENTER 2 (DELHI)</text>
+                    <rect x="20" y="50" width="310" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--warning)"/>
+                    <text x="175" y="78" text-anchor="middle" class="svg-node" style="fill: var(--warning); font-weight: 700;">DB Slave Node</text>
+                    <text x="175" y="100" text-anchor="middle" class="svg-mono-xs">Isolated from Master!</text>
+                    <text x="175" y="125" text-anchor="middle" class="svg-sub">Should it return stale $50 or throw Error?</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -5278,7 +7840,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Why We Cannot Have All Three (C, A, and P) Together & The 3 Combinations",
       summary: "Proof of why C+A+P fails during a network partition (B has a=5 while C has a=10), breakdown of AP vs. CP vs. CA, and why real distributed systems NEVER drop Partition Tolerance (P).",
       subtopicLabels: ["42.1 Proof C+A+P is Impossible", "42.2 AP, CP, and CA Explained"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "42.1",
@@ -5297,6 +7859,37 @@ const SYSTEM_DESIGN_NOTES = {
                 </ul>
               </li>
             </ol>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 42.1 · Proof: Why You Cannot Have Consistency AND Availability During a Partition</span>
+                <span class="diagram-frame-tag">THE INESCAPABLE CAP DILEMMA</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram proving that during a network partition, choosing Availability returns stale data sacrificing Consistency, while choosing Consistency returns error sacrificing Availability">
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="390" height="180" rx="10" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="195" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary); font-weight: 700;">CHOICE A: CP (CONSISTENCY + PARTITION)</text>
+                    <rect x="18" y="50" width="354" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="195" y="78" text-anchor="middle" class="svg-node" style="fill: var(--primary); font-weight: 700;">Block the Read &rarr; Return 500 Error</text>
+                    <text x="195" y="100" text-anchor="middle" class="svg-sub">Guarantees no stale or dirty read ever escapes</text>
+                    <text x="195" y="122" text-anchor="middle" class="svg-mono-xs">System stays 100% Consistent</text>
+                    <text x="195" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Availability is sacrificed! ✕</text>
+                  </g>
+
+                  <g transform="translate(460, 25)">
+                    <rect x="0" y="0" width="390" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="195" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">CHOICE B: AP (AVAILABILITY + PARTITION)</text>
+                    <rect x="18" y="50" width="354" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="195" y="78" text-anchor="middle" class="svg-node" style="fill: var(--success); font-weight: 700;">Return Stale Data &rarr; Return 200 OK</text>
+                    <text x="195" y="100" text-anchor="middle" class="svg-sub">User receives a fast response without errors</text>
+                    <text x="195" y="122" text-anchor="middle" class="svg-mono-xs">System stays 100% Available</text>
+                    <text x="195" y="145" text-anchor="middle" class="svg-mono-xs" style="fill: var(--danger);">Consistency is sacrificed (stale data)! ✕</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -5403,7 +7996,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Real-World Application of CAP Theorem (BookMyShow Example)",
       summary: "Choosing CP vs. AP microservice-by-microservice in BookMyShow: Booking Service strictly uses CP (no double seat bookings), while Search & Recommendation Services use AP for high availability.",
       subtopicLabels: ["43.1 BookMyShow Microservices", "43.2 Choosing CP vs AP Per Service"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "43.1",
@@ -5427,6 +8020,47 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Recommends movies on the user's home page.</div>
               </div>
             </div>
+          
+
+            <figure class="diagram-frame" style="margin-top: 1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 43.1 · BookMyShow 3 Core Services: Why Ticket Booking MUST Choose CP (Consistency)</span>
+                <span class="diagram-frame-tag">PREVENTING DOUBLE BOOKING DISASTERS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing BookMyShow Catalog Service choosing AP for fast browsing while Booking and Payment Services choose CP to guarantee seat locking without double booking">
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="250" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="125" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--success); font-weight: 700;">1. CATALOG SERVICE (AP)</text>
+                    <rect x="15" y="50" width="220" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="125" y="76" text-anchor="middle" class="svg-node">Movie Descriptions</text>
+                    <text x="125" y="98" text-anchor="middle" class="svg-mono-xs">Posters, actors, trailers</text>
+                    <text x="125" y="120" text-anchor="middle" class="svg-sub">High Availability matters most</text>
+                    <text x="125" y="142" text-anchor="middle" class="svg-mono-xs" style="fill: var(--success);">AP Model: Never blocks ✓</text>
+                  </g>
+
+                  <g transform="translate(310, 25)">
+                    <rect x="0" y="0" width="260" height="180" rx="10" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="130" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary); font-weight: 700;">2. BOOKING SERVICE (CP)</text>
+                    <rect x="15" y="50" width="230" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="130" y="76" text-anchor="middle" class="svg-node" style="fill: var(--primary); font-weight: 700;">Seat Locking (Seat A1)</text>
+                    <text x="130" y="98" text-anchor="middle" class="svg-mono-xs">Strict Distributed Lock</text>
+                    <text x="130" y="120" text-anchor="middle" class="svg-sub">Cannot double-book seat!</text>
+                    <text x="130" y="142" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">CP Model: Consistency first ✓</text>
+                  </g>
+
+                  <g transform="translate(605, 25)">
+                    <rect x="0" y="0" width="250" height="180" rx="10" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="125" y="32" text-anchor="middle" class="svg-kicker" style="fill: var(--primary); font-weight: 700;">3. PAYMENT SERVICE (CP)</text>
+                    <rect x="15" y="50" width="220" height="110" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="125" y="76" text-anchor="middle" class="svg-node" style="fill: var(--primary); font-weight: 700;">Payment Deductions</text>
+                    <text x="125" y="98" text-anchor="middle" class="svg-mono-xs">Atomic ACID Debits</text>
+                    <text x="125" y="120" text-anchor="middle" class="svg-sub">Zero money lost mid-air</text>
+                    <text x="125" y="142" text-anchor="middle" class="svg-mono-xs" style="fill: var(--primary); font-weight: 700;">CP Model: Strict ledger ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         },
         {
@@ -5506,7 +8140,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What is Rate Limiting & Why Do We Need It?",
       summary: "Stopping spam requests (refreshing YouTube 50 times in a row) that exploit server resources and delay genuine users, enforcing IP/user limits (3 req/min), and HTTP 429 Too Many Requests.",
       subtopicLabels: ["44.1 Spam Request Problem", "44.2 Rate Limiter & HTTP 429"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "44.1",
@@ -5531,6 +8165,71 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Genuine users' requests cannot be fulfilled on time and get delayed/forced to wait while User A hogs resources.</div>
               </div>
             </div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Spam Request Flooding & Server Resource Exhaustion</span>
+    <span class="badge badge-danger">SECURITY / DOS VULNERABILITY</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Spam Request Problem">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Spammer Client A -->
+    <rect x="30" y="35" width="200" height="85" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="2" />
+    <text x="45" y="58" class="svg-kicker" fill="var(--danger)">MALICIOUS / SPAM CLIENT A</text>
+    <text x="45" y="78" class="svg-title" fill="var(--danger)">Aggressive Refresh / Bot</text>
+    <text x="45" y="98" class="svg-sub">50 spam requests / sec (F5 burst)</text>
+
+    <!-- Legitimate Client B -->
+    <rect x="30" y="135" width="200" height="70" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="2" />
+    <text x="45" y="156" class="svg-kicker" fill="var(--success)">LEGITIMATE CLIENT B</text>
+    <text x="45" y="176" class="svg-title">Genuine User</text>
+    <text x="45" y="193" class="svg-sub">1 standard browse request</text>
+
+    <!-- Spam Arrows (Red dense stream) -->
+    <line x1="230" y1="65" x2="380" y2="80" stroke="var(--danger)" stroke-width="3" stroke-dasharray="4,2" />
+    <line x1="230" y1="75" x2="380" y2="90" stroke="var(--danger)" stroke-width="2" />
+    <line x1="230" y1="85" x2="380" y2="100" stroke="var(--danger)" stroke-width="3" stroke-dasharray="4,2" />
+    <text x="300" y="60" class="svg-mono-xs" fill="var(--danger)" font-weight="700">Req 1, 2, 3.. 50</text>
+
+    <!-- Genuine Arrow (Green) -->
+    <line x1="230" y1="170" x2="380" y2="140" stroke="var(--success)" stroke-width="2" />
+    <text x="290" y="175" class="svg-mono-xs" fill="var(--success)">Valid Req</text>
+
+    <!-- Overloaded Server -->
+    <rect x="380" y="40" width="240" height="150" rx="8" class="svg-bg" stroke="var(--warning)" stroke-width="2" />
+    <rect x="390" y="50" width="100" height="18" rx="4" fill="var(--danger)" opacity="0.2" />
+    <text x="395" y="63" class="svg-mono-xs" fill="var(--danger)" font-weight="700">ALERT: 99% LOAD</text>
+    <text x="395" y="88" class="svg-title">Origin Backend Server</text>
+    <text x="395" y="110" class="svg-node">• CPU: 99% Exhaustion</text>
+    <text x="395" y="128" class="svg-node">• Thread Pool: Depleted</text>
+    <text x="395" y="146" class="svg-node">• Memory / DB: Blocked</text>
+    <text x="395" y="170" class="svg-sub" fill="var(--danger)">Cannot fulfill new requests</text>
+
+    <!-- Impact on Right -->
+    <rect x="660" y="40" width="190" height="70" rx="8" class="svg-bg" />
+    <text x="675" y="60" class="svg-kicker" fill="var(--danger)">IMPACT ON SERVER</text>
+    <text x="675" y="80" class="svg-node" font-weight="600">Cascading Slowdown</text>
+    <text x="675" y="98" class="svg-sub">High Latency & Crash Risk</text>
+
+    <rect x="660" y="125" width="190" height="80" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="1.5" />
+    <text x="675" y="145" class="svg-kicker" fill="var(--danger)">IMPACT ON GENUINE USER</text>
+    <text x="675" y="165" class="svg-node" font-weight="700" fill="var(--danger)">HTTP 504 Gateway Timeout</text>
+    <text x="675" y="185" class="svg-sub">Genuine user suffers delay</text>
+
+    <line x1="620" y1="115" x2="660" y2="75" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3,3" />
+    <line x1="620" y1="140" x2="660" y2="165" stroke="var(--danger)" stroke-width="1.5" stroke-dasharray="3,3" />
+  </svg>
+</figure>
           `
         },
         {
@@ -5618,7 +8317,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Rate Limiting Strategy 1 — Token Bucket Algorithm",
       summary: "Bucket capacity (5 tokens), fixed-rate Refiller Service (3 tokens/sec), Scenarios A–C (multi-user, single-user burst, idle overflow cap), and burst starvation latency drawback.",
       subtopicLabels: ["45.1 Core Components", "45.2 Working Scenarios (A–C)", "45.3 Major Drawbacks"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "45.1",
@@ -5641,6 +8340,75 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">A user <strong>must grab 1 Token</strong> from the bucket to reach the Server. If a Token exists → processed. If the bucket is empty (<code>0 Tokens</code>) → rejected/blocked.</div>
               </div>
             </div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Token Bucket Algorithm: Refiller & Bucket Primitives</span>
+    <span class="badge badge-accent">RATE LIMITING PATTERN</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Token Bucket Algorithm Mechanics">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Refill Engine -->
+    <rect x="40" y="50" width="190" height="120" rx="8" class="svg-bg" />
+    <text x="55" y="73" class="svg-kicker" fill="var(--accent)">1. REFILL ENGINE</text>
+    <text x="55" y="93" class="svg-title">Token Generator</text>
+    <text x="55" y="113" class="svg-node">• Rate: <b>R</b> tokens/sec</text>
+    <text x="55" y="131" class="svg-sub">• Timer or Lazy refill</text>
+    <rect x="55" y="140" width="120" height="18" rx="4" fill="var(--accent)" opacity="0.15" />
+    <text x="60" y="153" class="svg-mono-xs" fill="var(--accent)">+10 tokens / sec</text>
+
+    <!-- Arrow Refiller to Bucket -->
+    <path d="M 230 110 L 290 110" stroke="var(--accent)" stroke-width="2.5" />
+    <text x="240" y="100" class="svg-mono-xs" fill="var(--accent)">Tokens</text>
+
+    <!-- Bucket -->
+    <rect x="290" y="40" width="220" height="150" rx="10" class="svg-bg" stroke="var(--primary)" stroke-width="2" />
+    <text x="310" y="65" class="svg-kicker" fill="var(--primary)">2. TOKEN BUCKET (CAPACITY C)</text>
+    <text x="310" y="85" class="svg-title">Fixed Capacity Bucket</text>
+    <!-- Visual Tokens inside bucket -->
+    <rect x="310" y="95" width="180" height="40" rx="6" fill="var(--bg-subtle)" stroke="var(--border-color)" />
+    <circle cx="330" cy="115" r="10" fill="var(--accent)" />
+    <circle cx="355" cy="115" r="10" fill="var(--accent)" />
+    <circle cx="380" cy="115" r="10" fill="var(--accent)" />
+    <circle cx="405" cy="115" r="10" fill="var(--accent)" />
+    <text x="430" y="120" class="svg-mono-xs" font-weight="700">.. [Cap C=100]</text>
+    <text x="310" y="155" class="svg-sub">• Tokens in bucket: <b>4</b></text>
+    <text x="310" y="173" class="svg-sub">• Excess tokens overflow & drop</text>
+
+    <!-- Request Decision Gate -->
+    <rect x="550" y="45" width="140" height="140" rx="8" class="svg-bg" />
+    <text x="565" y="68" class="svg-kicker">3. GATE CHECK</text>
+    <text x="565" y="88" class="svg-title">Has Token?</text>
+    <text x="565" y="108" class="svg-sub">Incoming Request</text>
+    <line x1="560" y1="118" x2="680" y2="118" stroke="var(--border-color)" />
+    <text x="565" y="138" class="svg-node" fill="var(--success)">Tokens &ge; 1 ?</text>
+    <text x="565" y="156" class="svg-sub">Consume 1 token</text>
+    <text x="565" y="174" class="svg-node" fill="var(--danger)">Tokens = 0 ?</text>
+
+    <!-- Paths Out -->
+    <!-- Allow -->
+    <path d="M 690 90 L 730 75" stroke="var(--success)" stroke-width="2" />
+    <rect x="730" y="50" width="125" height="50" rx="6" class="svg-bg" stroke="var(--success)" stroke-width="1.5" />
+    <text x="740" y="70" class="svg-node" font-weight="700" fill="var(--success)">FORWARD (200)</text>
+    <text x="740" y="88" class="svg-sub">Backend API call</text>
+
+    <!-- Drop -->
+    <path d="M 690 150 L 730 165" stroke="var(--danger)" stroke-width="2" />
+    <rect x="730" y="140" width="125" height="50" rx="6" class="svg-bg" stroke="var(--danger)" stroke-width="1.5" />
+    <text x="740" y="160" class="svg-node" font-weight="700" fill="var(--danger)">REJECT (429)</text>
+    <text x="740" y="178" class="svg-sub">Too Many Requests</text>
+  </svg>
+</figure>
           `
         },
         {
@@ -5741,6 +8509,57 @@ const SYSTEM_DESIGN_NOTES = {
                 <li><strong>Impact:</strong> <code>User B</code> is forced to <strong>wait for 4 full seconds</strong>, causing a massive delay in response time and <strong>increasing system latency</strong>.</li>
               </ul>
             </div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Token Bucket Bottlenecks: Burst Burdens, Distributed Keys & Lock Races</span>
+    <span class="badge badge-warning">ALGORITHM TRADE-OFFS</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Token Bucket Algorithm Drawbacks">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Drawback 1: Burst Dump -->
+    <rect x="30" y="45" width="250" height="145" rx="8" class="svg-bg" stroke="var(--warning)" stroke-width="1.5" />
+    <text x="45" y="68" class="svg-kicker" fill="var(--warning)">DRAWBACK 1: BURST SPIKES</text>
+    <text x="45" y="90" class="svg-title">Sudden Backend Floods</text>
+    <text x="45" y="112" class="svg-sub">• If bucket stays full (e.g. 100 tokens),</text>
+    <text x="45" y="128" class="svg-sub">• A client can fire 100 reqs in 10ms.</text>
+    <text x="45" y="144" class="svg-sub">• All 100 consume tokens & pass!</text>
+    <rect x="45" y="154" width="180" height="22" rx="4" fill="var(--warning)" opacity="0.15" />
+    <text x="50" y="169" class="svg-mono-xs" fill="var(--warning)">Downstream service overwhelmed</text>
+
+    <!-- Drawback 2: Distributed Memory Overhead -->
+    <rect x="310" y="45" width="260" height="145" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="1.5" />
+    <text x="325" y="68" class="svg-kicker" fill="var(--primary)">DRAWBACK 2: MEMORY CONSUMPTION</text>
+    <text x="325" y="90" class="svg-title">Redis State per User</text>
+    <text x="325" y="112" class="svg-sub">• For 10M active users, Redis stores:</text>
+    <text x="325" y="128" class="svg-sub">• Key: <code>user_id:tokens</code> (count)</text>
+    <text x="325" y="144" class="svg-sub">• Key: <code>user_id:last_refill</code> (timestamp)</text>
+    <rect x="325" y="154" width="210" height="22" rx="4" fill="var(--bg-subtle)" />
+    <text x="330" y="169" class="svg-mono-xs">10M users = ~20M Redis keys</text>
+
+    <!-- Drawback 3: Concurrency Race Condition -->
+    <rect x="600" y="45" width="250" height="145" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="1.5" />
+    <text x="615" y="68" class="svg-kicker" fill="var(--danger)">DRAWBACK 3: RACE CONDITIONS</text>
+    <text x="615" y="90" class="svg-title">Concurrent Token Depletion</text>
+    <text x="615" y="112" class="svg-sub">• Two parallel requests read token=1</text>
+    <text x="615" y="128" class="svg-sub">• Both decrement & both pass!</text>
+    <text x="615" y="144" class="svg-sub">• Requires Lua Scripting in Redis</text>
+    <rect x="615" y="154" width="200" height="22" rx="4" fill="var(--danger)" opacity="0.15" />
+    <text x="620" y="169" class="svg-mono-xs" fill="var(--danger)">Atomic Lua script or Locks needed</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">TOKEN BUCKET ALLOWS BURSTS BUT REQUIRES DISTRIBUTED LOCKS & CACHE CAPACITY</text>
+  </svg>
+</figure>
           `
         }
       ]
@@ -5756,7 +8575,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Rate Limiting Strategy 2 — Leaky Bucket Algorithm",
       summary: "Water bucket with a small bottom hole smoothing 1,000 req/s bursts into a constant 100 req/s drip, plus step-by-step numerical queue overflow example (900 → 1,800 → ~800 dropped).",
       subtopicLabels: ["46.1 Core Concept & Analogy", "46.2 Queue Delay & Overflow Math"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "46.1",
@@ -5768,6 +8587,74 @@ const SYSTEM_DESIGN_NOTES = {
               <li><strong>Leaking Requests (Hole at Bottom of Bucket):</strong> The hole at the bottom leaks requests out to the <strong>Server</strong> at a strict, constant rate matching the <strong>Server's exact processing capacity</strong> (e.g., <strong>2 requests per second</strong> or <strong>100 requests per second</strong>).</li>
               <li><strong>Key Benefit:</strong> Even if a sudden burst of 1,000 requests/second hits the bucket, the Server only receives requests at its comfortable capacity (e.g., 2 requests/second), preventing the server from ever getting overwhelmed or exploited.</li>
             </ul>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Leaky Bucket Analogy: Burst Inflow vs. Smooth Outflow</span>
+    <span class="badge badge-accent">TRAFFIC SHAPING</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Leaky Bucket Rate Limiting Analogy">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Left: Bursty Tap -->
+    <rect x="30" y="45" width="190" height="135" rx="8" class="svg-bg" />
+    <text x="45" y="68" class="svg-kicker" fill="var(--warning)">BURSTY WATER TAP</text>
+    <text x="45" y="90" class="svg-title">Unpredictable Input</text>
+    <text x="45" y="112" class="svg-sub">• Sudden spikes: 30 drops</text>
+    <text x="45" y="128" class="svg-sub">• Quiet pauses: 0 drops</text>
+    <rect x="45" y="140" width="150" height="22" rx="4" fill="var(--warning)" opacity="0.15" />
+    <text x="50" y="155" class="svg-mono-xs" fill="var(--warning)">Burst: 50 requests/sec</text>
+
+    <!-- Arrow Inflow -->
+    <path d="M 220 110 L 290 110" stroke="var(--warning)" stroke-width="3" stroke-dasharray="5,3" />
+    <text x="230" y="100" class="svg-mono-xs" fill="var(--warning)">Bursty Inflow</text>
+
+    <!-- Center: The Bucket (FIFO Queue) -->
+    <rect x="290" y="40" width="280" height="150" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="2" />
+    <text x="310" y="63" class="svg-kicker" fill="var(--primary)">LEAKY BUCKET (FIFO QUEUE)</text>
+    <text x="310" y="83" class="svg-title">Buffer Capacity = N</text>
+
+    <!-- Visual Queue Buffer -->
+    <rect x="310" y="95" width="240" height="35" rx="6" fill="var(--bg-subtle)" stroke="var(--border-color)" />
+    <rect x="315" y="100" width="45" height="25" rx="4" fill="var(--accent)" opacity="0.4" />
+    <text x="325" y="117" class="svg-mono-xs" font-weight="700">Req 1</text>
+    <rect x="365" y="100" width="45" height="25" rx="4" fill="var(--accent)" opacity="0.4" />
+    <text x="375" y="117" class="svg-mono-xs" font-weight="700">Req 2</text>
+    <rect x="415" y="100" width="45" height="25" rx="4" fill="var(--accent)" opacity="0.4" />
+    <text x="425" y="117" class="svg-mono-xs" font-weight="700">Req 3</text>
+    <text x="470" y="117" class="svg-mono-xs">... Queue [N]</text>
+
+    <!-- Overflow -->
+    <path d="M 430 40 L 430 20 L 520 20" stroke="var(--danger)" stroke-width="1.5" stroke-dasharray="3,2" />
+    <text x="530" y="25" class="svg-mono-xs" fill="var(--danger)" font-weight="700">Overflow Spills: Dropped (HTTP 429)</text>
+
+    <text x="310" y="152" class="svg-sub">• Requests wait in FIFO queue buffer</text>
+    <text x="310" y="170" class="svg-sub">• If queue full, incoming requests dropped</text>
+
+    <!-- Right: Steady Leak Outflow -->
+    <path d="M 570 110 L 640 110" stroke="var(--success)" stroke-width="3" />
+    <text x="580" y="100" class="svg-mono-xs" fill="var(--success)">Fixed Leak</text>
+
+    <rect x="640" y="45" width="210" height="135" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="1.5" />
+    <text x="655" y="68" class="svg-kicker" fill="var(--success)">SMOOTH CONSTANT OUTFLOW</text>
+    <text x="655" y="90" class="svg-title">Stable Server Flow</text>
+    <text x="655" y="112" class="svg-node">• Constant rate: <b>3 req/sec</b></text>
+    <text x="655" y="128" class="svg-sub">• Backend never experiences spikes</text>
+    <rect x="655" y="140" width="180" height="22" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="660" y="155" class="svg-mono-xs" fill="var(--success)">Guaranteed predictable load</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">BURST INFLOW ABSORPTION -> SMOOTH CONSTANT DISPATCH RATE (TRAFFIC SHAPING)</text>
+  </svg>
+</figure>
           `
         },
         {
@@ -5855,7 +8742,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Rate Limiting Strategy 3 — Fixed Window Counter Algorithm",
       summary: "Fixed 1-second windows with Counter reset to 0 (Threshold: 3 req/sec), walkthrough across Windows 1–3, and the Boundary Traffic Spike drawback (0.5s to 1.5s processing 4 requests).",
       subtopicLabels: ["47.1 Core Setup", "47.2 Windows 1–3 Walkthrough", "47.3 Boundary Spike Problem"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "47.1",
@@ -5877,6 +8764,65 @@ const SYSTEM_DESIGN_NOTES = {
                 </ul>
               </li>
             </ul>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Fixed Window Counter Mechanics</span>
+    <span class="badge badge-accent">DISCRETE TIME WINDOWS</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Fixed Window Counter Architecture">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Timeline header -->
+    <line x1="40" y1="50" x2="840" y2="50" stroke="var(--border-color)" stroke-width="2" />
+    <circle cx="50" cy="50" r="4" fill="var(--primary)" />
+    <text x="50" y="38" class="svg-mono-xs">1:00:00</text>
+    <circle cx="310" cy="50" r="4" fill="var(--primary)" />
+    <text x="310" y="38" class="svg-mono-xs">1:01:00 (Reset)</text>
+    <circle cx="580" cy="50" r="4" fill="var(--primary)" />
+    <text x="580" y="38" class="svg-mono-xs">1:02:00 (Reset)</text>
+    <circle cx="830" cy="50" r="4" fill="var(--primary)" />
+    <text x="810" y="38" class="svg-mono-xs">1:03:00</text>
+
+    <!-- Window 1: Allowed -->
+    <rect x="50" y="70" width="240" height="120" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="1.5" />
+    <text x="65" y="93" class="svg-kicker" fill="var(--success)">WINDOW 1: 1:00 - 1:01</text>
+    <text x="65" y="113" class="svg-title">Requests Allowed</text>
+    <text x="65" y="133" class="svg-node">Counter: <b>3 / 5</b> (Under limit)</text>
+    <text x="65" y="150" class="svg-sub">• 3 requests arrive</text>
+    <rect x="65" y="158" width="120" height="20" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="70" y="172" class="svg-mono-xs" fill="var(--success)">Status: ALL 200 OK</text>
+
+    <!-- Window 2: Reached Limit -->
+    <rect x="320" y="70" width="240" height="120" rx="8" class="svg-bg" stroke="var(--warning)" stroke-width="1.5" />
+    <text x="335" y="93" class="svg-kicker" fill="var(--warning)">WINDOW 2: 1:01 - 1:02</text>
+    <text x="335" y="113" class="svg-title">Limit Reached & Dropped</text>
+    <text x="335" y="133" class="svg-node">Counter: <b>5 / 5</b> (Cap reached)</text>
+    <text x="335" y="150" class="svg-sub">• 6th request arrives</text>
+    <rect x="335" y="158" width="140" height="20" rx="4" fill="var(--danger)" opacity="0.15" />
+    <text x="340" y="172" class="svg-mono-xs" fill="var(--danger)">6th Req -> HTTP 429</text>
+
+    <!-- Window 3: Fresh Reset -->
+    <rect x="590" y="70" width="240" height="120" rx="8" class="svg-bg" stroke="var(--accent)" stroke-width="1.5" />
+    <text x="605" y="93" class="svg-kicker" fill="var(--accent)">WINDOW 3: 1:02 - 1:03</text>
+    <text x="605" y="113" class="svg-title">Window Resets to 0</text>
+    <text x="605" y="133" class="svg-node">Counter: <b>0 / 5</b> (Fresh state)</text>
+    <text x="605" y="150" class="svg-sub">• Redis key TTL expires</text>
+    <rect x="605" y="158" width="140" height="20" rx="4" fill="var(--accent)" opacity="0.15" />
+    <text x="610" y="172" class="svg-mono-xs" fill="var(--accent)">Counter reset to 0</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">SIMPLE COUNTER WITH EXPIRATION TTL • LOW MEMORY OVERHEAD</text>
+  </svg>
+</figure>
           `
         },
         {
@@ -5909,6 +8855,54 @@ const SYSTEM_DESIGN_NOTES = {
                 </div>
               </div>
             </div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">The Boundary Burst Vulnerability: 2x Traffic Spike Flaw</span>
+    <span class="badge badge-danger">WINDOW BOUNDARY VULNERABILITY</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Fixed Window Boundary Spike Problem">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Window 1 Box -->
+    <rect x="40" y="50" width="370" height="110" rx="8" class="svg-bg" />
+    <text x="55" y="72" class="svg-kicker">WINDOW 1 [12:00:00 — 12:01:00]</text>
+    <text x="55" y="92" class="svg-title">Allowed Limit: 5 Requests / Min</text>
+    <!-- 5 reqs clustered at end -->
+    <rect x="230" y="105" width="160" height="40" rx="6" fill="var(--warning)" opacity="0.2" stroke="var(--warning)" />
+    <text x="240" y="125" class="svg-mono-xs" font-weight="700" fill="var(--warning)">5 Reqs at 12:00:50 - 12:01:00</text>
+    <text x="55" y="130" class="svg-sub">Quiet until :50</text>
+
+    <!-- Window 2 Box -->
+    <rect x="440" y="50" width="400" height="110" rx="8" class="svg-bg" />
+    <text x="455" y="72" class="svg-kicker">WINDOW 2 [12:01:00 — 12:02:00]</text>
+    <text x="455" y="92" class="svg-title">Counter Resets to 0 at 12:01:00</text>
+    <!-- 5 reqs clustered at start -->
+    <rect x="455" y="105" width="160" height="40" rx="6" fill="var(--warning)" opacity="0.2" stroke="var(--warning)" />
+    <text x="465" y="125" class="svg-mono-xs" font-weight="700" fill="var(--warning)">5 Reqs at 12:01:00 - 12:01:10</text>
+    <text x="630" y="130" class="svg-sub">Quiet after :10</text>
+
+    <!-- The 20-second rolling interval span bracket -->
+    <path d="M 230 170 L 230 185 L 615 185 L 615 170" fill="none" stroke="var(--danger)" stroke-width="2.5" />
+    <rect x="330" y="173" width="230" height="24" rx="4" fill="var(--danger)" />
+    <text x="445" y="189" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="#ffffff">
+      20s INTERVAL: 10 REQUESTS (2x LIMIT!)
+    </text>
+
+    <text x="440" y="215" class="svg-mono-xs" text-anchor="middle" fill="var(--danger)">
+      VULNERABILITY: 10 REQUESTS HIT SERVER SIMULTANEOUSLY ACROSS THE BOUNDARY
+    </text>
+  </svg>
+</figure>
           `
         },
         {
@@ -5981,7 +8975,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Rate Limiting Strategy 4 — Sliding Window Log Algorithm",
       summary: "Eliminating boundary spikes using a Request Log of exact timestamps (3 req / 5 sec window), evicting expired timestamps as the window slides (0–5s → 1–6s → 2–7s → 3–8s).",
       subtopicLabels: ["48.1 Core Concept & Request Log", "48.2 Sliding Scenarios (A–D)"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "48.1",
@@ -5992,6 +8986,62 @@ const SYSTEM_DESIGN_NOTES = {
               <li><strong>Threshold &amp; Window Setup:</strong> Suppose we set a threshold of <strong>3 requests per 5 seconds</strong> (<strong>Window Size = 5 seconds</strong>).</li>
               <li><strong>Maintaining a Request Log:</strong> Instead of a simple counter, we maintain a <strong>Request Log</strong> recording the <strong>exact timestamp</strong> of each incoming request. Whenever a new request arrives later, we <strong>slide our 5-second window forward</strong>, and any old timestamp falling <strong>outside the sliding 5-second window</strong> is treated as an <strong>expired log</strong> and <strong>removed from the Request Log</strong>.</li>
             </ul>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Sliding Window Log: Timestamp Set & Eviction</span>
+    <span class="badge badge-accent">EXACT ROLLING PRECISION</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Sliding Window Log Algorithm">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Current Sliding Window Banner -->
+    <rect x="30" y="30" width="820" height="35" rx="6" fill="var(--bg-subtle)" stroke="var(--border-color)" />
+    <text x="45" y="52" class="svg-mono-xs" font-weight="700">ROLLING WINDOW: [ t - 60s &nbsp;&rarr;&nbsp; Current Request Time t = 12:01:10 ]</text>
+    <text x="650" y="52" class="svg-mono-xs" fill="var(--primary)" font-weight="700">Max Limit: 4 Reqs / 60s</text>
+
+    <!-- Step 1: Redis ZSET -->
+    <rect x="30" y="80" width="270" height="115" rx="8" class="svg-bg" />
+    <text x="45" y="103" class="svg-kicker" fill="var(--danger)">1. PURGE OUTDATED ENTRIES</text>
+    <text x="45" y="123" class="svg-title">ZREMRANGEBYSCORE</text>
+    <text x="45" y="143" class="svg-sub">• Purge all timestamps &lt; 12:00:10</text>
+    <rect x="45" y="152" width="200" height="22" rx="4" fill="var(--danger)" opacity="0.15" />
+    <text x="50" y="167" class="svg-mono-xs" fill="var(--danger)">Removed: [12:00:05] (expired)</text>
+
+    <!-- Arrow 1->2 -->
+    <path d="M 300 137 L 330 137" stroke="var(--primary)" stroke-width="2" />
+
+    <!-- Step 2: Count Cardinality -->
+    <rect x="330" y="80" width="250" height="115" rx="8" class="svg-bg" />
+    <text x="345" y="103" class="svg-kicker" fill="var(--accent)">2. COUNT CURRENT LOGS</text>
+    <text x="345" y="123" class="svg-title">ZCARD user_id</text>
+    <text x="345" y="143" class="svg-sub">• Valid remaining timestamps: 3</text>
+    <rect x="345" y="152" width="210" height="22" rx="4" fill="var(--bg-subtle)" />
+    <text x="350" y="167" class="svg-mono-xs">[12:00:30, 12:00:50, 12:01:05]</text>
+
+    <!-- Arrow 2->3 -->
+    <path d="M 580 137 L 610 137" stroke="var(--primary)" stroke-width="2" />
+
+    <!-- Step 3: Check & Insert -->
+    <rect x="610" y="80" width="240" height="115" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="1.5" />
+    <text x="625" y="103" class="svg-kicker" fill="var(--success)">3. CHECK THRESHOLD</text>
+    <text x="625" y="123" class="svg-title">Count (3) &lt; Limit (4)</text>
+    <text x="625" y="143" class="svg-sub">• Add 12:01:10 via ZADD</text>
+    <rect x="625" y="152" width="190" height="22" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="630" y="167" class="svg-mono-xs" fill="var(--success)">ACCEPTED &bull; NO BOUNDARY FLAW</text>
+
+    <text x="440" y="215" class="svg-mono-xs" text-anchor="middle">PERFECT ACCURACY • DOWNSIDE: HIGH REDIS MEMORY USAGE FROM STORING EVERY TIMESTAMP</text>
+  </svg>
+</figure>
           `
         },
         {
@@ -6090,7 +9140,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Rate Limiting Strategy 5 — Sliding Window Counter Algorithm",
       summary: "Hybrid approach combining Fixed Window Counter + Sliding Window Log: weighted overlap taking X% from Current Window + (100−X)% from Previous Window (10% & 20% examples).",
       subtopicLabels: ["49.1 Hybrid Core Concept", "49.2 Numerical Examples (10% & 20%)"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "49.1",
@@ -6106,6 +9156,62 @@ const SYSTEM_DESIGN_NOTES = {
               <li>When a request arrives partway into the <strong>Current Window</strong> (after <strong><code>X%</code></strong> has elapsed), we dynamically form a sliding window by combining:</li>
             </ul>
             <div class="formula-box">Sliding Window (100%) = X% of Current Window + (100 − X)% of Previous Window</div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Sliding Window Counter: Weighted Overlap Approximation</span>
+    <span class="badge badge-accent">HYBRID HIGH PERFORMANCE</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Sliding Window Counter Hybrid Approach">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Previous Window Block -->
+    <rect x="40" y="45" width="220" height="125" rx="8" class="svg-bg" />
+    <text x="55" y="68" class="svg-kicker">PREVIOUS WINDOW (10:00 - 10:01)</text>
+    <text x="55" y="88" class="svg-title">Total Count: 84</text>
+    <text x="55" y="108" class="svg-sub">Window Elapsed %: 70%</text>
+    <text x="55" y="125" class="svg-sub">Overlap Remaining: <b>30%</b></text>
+    <rect x="55" y="135" width="160" height="20" rx="4" fill="var(--bg-subtle)" />
+    <text x="60" y="149" class="svg-mono-xs">Weight = 1 - 0.70 = 0.30</text>
+
+    <!-- Plus Sign -->
+    <text x="280" y="115" font-size="24" font-weight="700" fill="var(--primary)" text-anchor="middle">+</text>
+
+    <!-- Current Window Block -->
+    <rect x="300" y="45" width="220" height="125" rx="8" class="svg-bg" />
+    <text x="315" y="68" class="svg-kicker">CURRENT WINDOW (10:01 - 10:02)</text>
+    <text x="315" y="88" class="svg-title">Current Count: 36</text>
+    <text x="315" y="108" class="svg-sub">Progress: 70% (at :42 sec)</text>
+    <text x="315" y="125" class="svg-sub">Incoming Request arrives</text>
+    <rect x="315" y="135" width="160" height="20" rx="4" fill="var(--accent)" opacity="0.15" />
+    <text x="320" y="149" class="svg-mono-xs" fill="var(--accent)">Raw Current = 36</text>
+
+    <!-- Arrow Equals -->
+    <text x="540" y="115" font-size="24" font-weight="700" fill="var(--primary)" text-anchor="middle">=</text>
+
+    <!-- Weighted Formula Calculation Box -->
+    <rect x="560" y="45" width="280" height="125" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="2" />
+    <text x="575" y="68" class="svg-kicker" fill="var(--primary)">WEIGHTED ESTIMATION FORMULA</text>
+    <text x="575" y="88" class="svg-title">Rate Estimation</text>
+    <text x="575" y="108" class="svg-node font-mono">Count = (84 &times; 30%) + 36</text>
+    <text x="575" y="126" class="svg-node font-mono">Count = 25.2 + 36 = <b>61.2</b></text>
+    <rect x="575" y="135" width="240" height="20" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="580" y="149" class="svg-mono-xs" fill="var(--success)">Limit = 100 &rarr; 61.2 &le; 100 &rarr; ALLOWED</text>
+
+    <text x="440" y="205" class="svg-mono-xs" text-anchor="middle">
+      BEST OF BOTH WORLDS: SMOOTHS BOUNDARY SPIKES WHILE USING ONLY 2 COUNTERS PER USER (NEGLIGIBLE RAM)
+    </text>
+  </svg>
+</figure>
           `
         },
         {
@@ -6190,7 +9296,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "HTTP Plain-Text Problem & Symmetric Encryption",
       summary: "Why plain-text HTTP exposes banking credentials to Man-in-the-Middle hackers, how encryption locks data in transit, and why pure Symmetric Encryption fails due to the Key Exchange Problem.",
       subtopicLabels: ["50.1 HTTP Plain-Text Problem", "50.2 Encrypting Data", "50.3 Symmetric Encryption & Failure"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "50.1",
@@ -6201,6 +9307,63 @@ const SYSTEM_DESIGN_NOTES = {
               <li><strong>The Problem with HTTP:</strong> In HTTP communication, all data transferred between Client and Server goes in <strong>unencrypted form (Plain Text)</strong>.</li>
               <li><strong>Example (Banking Application):</strong> Suppose a user is logging into a banking app and sends their <strong><code>Email &amp; Password</code></strong> over HTTP. Because it travels as <strong>Plain Text</strong>, a <strong>Hacker (Man-in-the-Middle)</strong> sitting on the network between Client and Server can easily intercept, read, and steal the user's <code>Email &amp; Password</code>.</li>
             </ul>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Unencrypted HTTP & Packet Sniffing Eavesdropping</span>
+    <span class="badge badge-danger">CLEARTEXT EXPOSURE</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="HTTP Plain Text Vulnerability">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Client Box -->
+    <rect x="40" y="50" width="200" height="125" rx="8" class="svg-bg" />
+    <text x="55" y="73" class="svg-kicker">CLIENT BROWSER</text>
+    <text x="55" y="93" class="svg-title">User Alice</text>
+    <text x="55" y="113" class="svg-sub">Submits Login Form:</text>
+    <rect x="55" y="122" width="170" height="40" rx="4" fill="var(--bg-subtle)" />
+    <text x="60" y="137" class="svg-mono-xs">email: alice@bank.com</text>
+    <text x="60" y="152" class="svg-mono-xs">pass: SuperSecret123!</text>
+
+    <!-- Plain-text Network Cable -->
+    <path d="M 240 110 L 370 110" stroke="var(--danger)" stroke-width="3" stroke-dasharray="4,2" />
+    <text x="260" y="100" class="svg-mono-xs" fill="var(--danger)" font-weight="700">Plain Text HTTP</text>
+
+    <!-- Hacker / MITM Box in Middle -->
+    <rect x="370" y="40" width="220" height="145" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="2" />
+    <text x="385" y="63" class="svg-kicker" fill="var(--danger)">MAN-IN-THE-MIDDLE / HACKER</text>
+    <text x="385" y="83" class="svg-title">Wireshark Packet Sniffer</text>
+    <text x="385" y="103" class="svg-sub">Public Wi-Fi / ISP tap</text>
+    <rect x="385" y="112" width="190" height="42" rx="4" fill="var(--danger)" opacity="0.15" />
+    <text x="390" y="127" class="svg-mono-xs" fill="var(--danger)" font-weight="700">STOLEN CREDENTIALS:</text>
+    <text x="390" y="143" class="svg-mono-xs" fill="var(--danger)">pass: SuperSecret123!</text>
+    <text x="385" y="172" class="svg-sub" fill="var(--danger)">Zero encryption = Zero privacy</text>
+
+    <!-- Cable to Server -->
+    <path d="M 590 110 L 640 110" stroke="var(--danger)" stroke-width="3" stroke-dasharray="4,2" />
+
+    <!-- Origin Server -->
+    <rect x="640" y="50" width="200" height="125" rx="8" class="svg-bg" />
+    <text x="655" y="73" class="svg-kicker">ORIGIN SERVER</text>
+    <text x="655" y="93" class="svg-title">Bank Backend</text>
+    <text x="655" y="113" class="svg-sub">Receives request normally</text>
+    <rect x="655" y="125" width="170" height="35" rx="4" fill="var(--bg-subtle)" />
+    <text x="660" y="145" class="svg-mono-xs">Session Created (200 OK)</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle" fill="var(--danger)">
+      HTTP DATA TRANSFERS IN CLEARTEXT • ANY NODE ON THE ROUTE CAN READ CREDENTIALS & SENSITIVE DATA
+    </text>
+  </svg>
+</figure>
           `
         },
         {
@@ -6224,6 +9387,64 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Once the encrypted data reaches the Server, the Server <strong>decrypts (unlocks)</strong> it to read the original <code>Email &amp; Password</code>.</div>
               </div>
             </div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Symmetric Encryption & The Shared Secret Distribution Dilemma</span>
+    <span class="badge badge-warning">CRYPTOGRAPHIC DILEMMA</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Symmetric Key Encryption Paradox">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Client Encryption -->
+    <rect x="40" y="45" width="220" height="135" rx="8" class="svg-bg" />
+    <text x="55" y="68" class="svg-kicker" fill="var(--success)">1. CLIENT ENCRYPTION</text>
+    <text x="55" y="88" class="svg-title">Locks with Secret Key K</text>
+    <text x="55" y="108" class="svg-sub">Plaintext: "password123"</text>
+    <rect x="55" y="118" width="180" height="25" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="60" y="134" class="svg-mono-xs" fill="var(--success)">Encrypted: 7a#f9!k$8x</text>
+    <text x="55" y="165" class="svg-sub">Using Shared Secret Key <b>K</b></text>
+
+    <!-- Network Wire with Ciphertext -->
+    <path d="M 260 110 L 370 110" stroke="var(--primary)" stroke-width="2.5" />
+    <text x="270" y="98" class="svg-mono-xs" fill="var(--primary)">Ciphertext</text>
+
+    <!-- Hacker Blocked from reading payload -->
+    <rect x="370" y="45" width="220" height="135" rx="8" class="svg-bg" stroke="var(--warning)" stroke-width="1.5" />
+    <text x="385" y="68" class="svg-kicker" fill="var(--warning)">HACKER ON NETWORK</text>
+    <text x="385" y="88" class="svg-title">Sees Encrypted Gibberish</text>
+    <text x="385" y="108" class="svg-sub">Intercepts: <code>7a#f9!k$8x</code></text>
+    <line x1="380" y1="120" x2="570" y2="120" stroke="var(--border-color)" />
+    <text x="385" y="138" class="svg-node" fill="var(--danger)" font-weight="700">THE DILEMMA:</text>
+    <text x="385" y="154" class="svg-sub" fill="var(--danger)">How did Client send Key K</text>
+    <text x="385" y="168" class="svg-sub" fill="var(--danger)">to Server without interception?</text>
+
+    <!-- Network Wire to Server -->
+    <path d="M 590 110 L 640 110" stroke="var(--primary)" stroke-width="2.5" />
+
+    <!-- Server Decryption -->
+    <rect x="640" y="45" width="200" height="135" rx="8" class="svg-bg" />
+    <text x="655" y="68" class="svg-kicker" fill="var(--success)">2. SERVER DECRYPTION</text>
+    <text x="655" y="88" class="svg-title">Unlocks with Secret Key K</text>
+    <text x="655" y="108" class="svg-sub">Decrypts: 7a#f9!k$8x</text>
+    <rect x="655" y="118" width="170" height="25" rx="4" fill="var(--bg-subtle)" />
+    <text x="660" y="134" class="svg-mono-xs">Plaintext: "password123"</text>
+    <text x="655" y="165" class="svg-sub">Using Identical Secret Key <b>K</b></text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+      SYMMETRIC ENCRYPTION IS FAST BUT CANNOT SECURELY DISTRIBUTE ITS OWN SECRET KEY ACROSS UNTRUSTED NETWORKS
+    </text>
+  </svg>
+</figure>
           `
         },
         {
@@ -6302,7 +9523,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Asymmetric Encryption & The Hybrid Encryption Approach",
       summary: "Public Key (lock only) + Private Key (unlock only, 100% secret), and the 5-step Hybrid Encryption flow that safely exchanges the Client Symmetric Key so a passive hacker cannot decrypt it.",
       subtopicLabels: ["51.1 Asymmetric Encryption", "51.2 5-Step Hybrid Encryption Flow"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "51.1",
@@ -6327,6 +9548,65 @@ const SYSTEM_DESIGN_NOTES = {
                 Any data encrypted using a <strong>Public Key</strong> can <strong>ONLY</strong> be decrypted using its matching <strong>Private Key</strong> (not even the Public Key itself can unlock data it just locked!).
               </p>
             </div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Asymmetric Encryption: Public Key & Private Key Mathematics</span>
+    <span class="badge badge-accent">ASYMMETRIC CRYPTOGRAPHY</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Asymmetric Keypair Cryptography">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Server Keypair Generation -->
+    <rect x="40" y="45" width="240" height="140" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="1.5" />
+    <text x="55" y="68" class="svg-kicker" fill="var(--primary)">SERVER KEYPAIR CREATION</text>
+    <text x="55" y="88" class="svg-title">Mathematical Key Pair</text>
+    <!-- Public Key -->
+    <rect x="55" y="98" width="200" height="32" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="65" y="118" class="svg-node" font-weight="700" fill="var(--success)">Public Key (Shared with world)</text>
+    <!-- Private Key -->
+    <rect x="55" y="138" width="200" height="32" rx="4" fill="var(--danger)" opacity="0.15" />
+    <text x="65" y="158" class="svg-node" font-weight="700" fill="var(--danger)">Private Key (Secret on Server)</text>
+
+    <!-- Public Key Broadcast -->
+    <path d="M 280 114 L 350 114" stroke="var(--success)" stroke-width="2" />
+    <text x="285" y="105" class="svg-mono-xs" fill="var(--success)">Share PubKey</text>
+
+    <!-- Client Encryption -->
+    <rect x="350" y="45" width="240" height="140" rx="8" class="svg-bg" />
+    <text x="365" y="68" class="svg-kicker" fill="var(--success)">CLIENT ENCRYPTION</text>
+    <text x="365" y="88" class="svg-title">Encrypts with Public Key</text>
+    <text x="365" y="108" class="svg-sub">• Takes Server's Public Key</text>
+    <text x="365" y="126" class="svg-sub">• Encrypts Plaintext Session Key</text>
+    <rect x="365" y="136" width="210" height="26" rx="4" fill="var(--bg-subtle)" />
+    <text x="375" y="153" class="svg-mono-xs">Ciphertext = Encrypt(Msg, PubKey)</text>
+
+    <!-- Ciphertext Transmission -->
+    <path d="M 590 114 L 640 114" stroke="var(--primary)" stroke-width="2" />
+
+    <!-- Server Decryption -->
+    <rect x="640" y="45" width="200" height="140" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="1.5" />
+    <text x="655" y="68" class="svg-kicker" fill="var(--danger)">SERVER DECRYPTION</text>
+    <text x="655" y="88" class="svg-title">Only Private Key Can Unlock</text>
+    <text x="655" y="108" class="svg-sub">• Hacker with Public Key</text>
+    <text x="655" y="126" class="svg-sub" fill="var(--danger)">CANNOT decrypt the message!</text>
+    <rect x="655" y="136" width="170" height="26" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="660" y="153" class="svg-mono-xs" fill="var(--success)">Decrypted safely!</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+      DATA ENCRYPTED WITH PUBLIC KEY CAN ONLY BE DECRYPTED BY THE CORRESPONDING PRIVATE KEY
+    </text>
+  </svg>
+</figure>
           `
         },
         {
@@ -6437,7 +9717,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "How a Hacker Breaks Hybrid Encryption (The Reverse Proxy MITM Attack)",
       summary: "How an active Man-in-the-Middle Hacker acting as a Reverse Proxy swaps in Hacker Public Key, unlocks the Client Symmetric Key with Hacker Private Key, and steals Email & Password — exposing the missing Validation & Trust layer.",
       subtopicLabels: ["52.1 Reverse Proxy Attack Setup", "52.2 4-Step Attack Flow & Root Cause"],
-      diagramCount: 1,
+      diagramCount: 2,
       sections: [
         {
           num: "52.1",
@@ -6461,6 +9741,65 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body"><code>Client Symmetric Key</code></div>
               </div>
             </div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Man-in-the-Middle Reverse Proxy Attack: The Fake Key Swap</span>
+    <span class="badge badge-danger">EXPLOITATION VECTOR</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="MITM Reverse Proxy Key Swap Exploit">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Client Box -->
+    <rect x="30" y="45" width="200" height="140" rx="8" class="svg-bg" />
+    <text x="45" y="68" class="svg-kicker">CLIENT</text>
+    <text x="45" y="88" class="svg-title">Alice (Browser)</text>
+    <text x="45" y="108" class="svg-sub">Thinks talking to Bank</text>
+    <text x="45" y="126" class="svg-sub">Receives Fake PubKey</text>
+    <rect x="45" y="136" width="170" height="32" rx="4" fill="var(--danger)" opacity="0.15" />
+    <text x="50" y="156" class="svg-mono-xs" fill="var(--danger)">Encrypts with Hacker PubKey</text>
+
+    <!-- Fake Connection 1 -->
+    <path d="M 230 115 L 330 115" stroke="var(--danger)" stroke-width="2.5" />
+    <text x="240" y="105" class="svg-mono-xs" fill="var(--danger)">Leg A: Fake Key 1</text>
+
+    <!-- Hacker Reverse Proxy -->
+    <rect x="330" y="40" width="240" height="150" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="2" />
+    <text x="345" y="63" class="svg-kicker" fill="var(--danger)">HACKER REVERSE PROXY</text>
+    <text x="345" y="83" class="svg-title">Full Interception & Decryption</text>
+    <text x="345" y="103" class="svg-node">• 1. Decrypts Alice's data with</text>
+    <text x="355" y="119" class="svg-sub">Hacker's Private Key</text>
+    <text x="345" y="135" class="svg-node">• 2. Reads & steals bank PIN</text>
+    <text x="345" y="151" class="svg-node">• 3. Re-encrypts with Bank PubKey</text>
+    <text x="345" y="172" class="svg-sub" fill="var(--danger)">Neither party detects interception!</text>
+
+    <!-- Leg B Connection -->
+    <path d="M 570 115 L 670 115" stroke="var(--warning)" stroke-width="2.5" />
+    <text x="580" y="105" class="svg-mono-xs" fill="var(--warning)">Leg B: Real Key 2</text>
+
+    <!-- Real Bank Server -->
+    <rect x="670" y="45" width="180" height="140" rx="8" class="svg-bg" />
+    <text x="685" y="68" class="svg-kicker">REAL SERVER</text>
+    <text x="685" y="88" class="svg-title">bank.com</text>
+    <text x="685" y="108" class="svg-sub">Receives valid request</text>
+    <text x="685" y="126" class="svg-sub">encrypted with Bank PubKey</text>
+    <rect x="685" y="136" width="150" height="32" rx="4" fill="var(--bg-subtle)" />
+    <text x="690" y="156" class="svg-mono-xs">Assumes direct client</text>
+
+    <text x="440" y="212" class="svg-mono-xs" text-anchor="middle" fill="var(--danger)">
+      WITHOUT CERTIFICATES, CLIENT CANNOT VERIFY IF A PUBLIC KEY BELONGS TO BANK.COM OR A ROGUE PROXY
+    </text>
+  </svg>
+</figure>
           `
         },
         {
@@ -6546,13 +9885,72 @@ const SYSTEM_DESIGN_NOTES = {
       title: "What is an SSL Certificate & How It Works?",
       summary: "Trusted Certificate Authorities (GoDaddy, DigiCert, Let's Encrypt), the 3 components inside an SSL Certificate for www.designkarle.com, signature verification blocking Hacker key swaps, and CA-Signed vs. Self-Signed certificates.",
       subtopicLabels: ["53.1 Trusted CAs", "53.2 3 Components of SSL Cert", "53.3 Verification Flow", "53.4 CA-Signed vs Self-Signed"],
-      diagramCount: 1,
+      diagramCount: 4,
       sections: [
         {
           num: "53.1",
           title: "Why We Need an SSL Certificate (Trusted Certificate Authorities)",
           content: `
             <p>To stop a Hacker from swapping in a fake Public Key, the Client needs a way to <strong>validate and verify</strong> that the Public Key genuinely belongs to the exact Server/Domain it is trying to talk to. This validation is provided by <strong>SSL Certificates</strong> issued by globally <strong>Trusted Certificate Authorities (CAs)</strong> such as: <strong>GoDaddy</strong>, <strong>DigiCert</strong>, <strong>Let's Encrypt</strong>, and <strong>GlobalSign / Comodo / Sectigo</strong>.</p>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Certificate Authority (CA) Identity Certification</span>
+    <span class="badge badge-accent">PKI TRUST CHAIN</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Why SSL Certificates are needed">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Left: CA Authority -->
+    <rect x="40" y="45" width="230" height="140" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="1.5" />
+    <text x="55" y="68" class="svg-kicker" fill="var(--primary)">TRUSTED CERTIFICATE AUTHORITY</text>
+    <text x="55" y="88" class="svg-title">DigiCert / Let's Encrypt</text>
+    <text x="55" y="108" class="svg-sub">• Pre-trusted by all OS & Browsers</text>
+    <text x="55" y="126" class="svg-sub">• Verifies Domain Ownership</text>
+    <rect x="55" y="136" width="200" height="28" rx="4" fill="var(--primary)" opacity="0.15" />
+    <text x="65" y="154" class="svg-mono-xs" fill="var(--primary)">Signs Server Identity with CA Key</text>
+
+    <!-- Arrow CA to Server Cert -->
+    <path d="M 270 115 L 340 115" stroke="var(--primary)" stroke-width="2" />
+    <text x="280" y="105" class="svg-mono-xs">Signs Cert</text>
+
+    <!-- Center: SSL Certificate -->
+    <rect x="340" y="40" width="240" height="150" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="2" />
+    <text x="355" y="63" class="svg-kicker" fill="var(--success)">OFFICIAL SSL CERTIFICATE</text>
+    <text x="355" y="83" class="svg-title">bank.com Passport</text>
+    <text x="355" y="103" class="svg-node">1. Domain: <b>bank.com</b></text>
+    <text x="355" y="121" class="svg-node">2. Server Public Key: <b>K_bank</b></text>
+    <text x="355" y="139" class="svg-node">3. Digital Signature: <b>Sign_CA</b></text>
+    <rect x="355" y="148" width="210" height="24" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="365" y="164" class="svg-mono-xs" fill="var(--success)">Guarantees Identity Integrity</text>
+
+    <!-- Arrow Cert to Client -->
+    <path d="M 580 115 L 650 115" stroke="var(--success)" stroke-width="2" />
+    <text x="590" y="105" class="svg-mono-xs">Presented</text>
+
+    <!-- Right: Client Verification -->
+    <rect x="650" y="45" width="190" height="140" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="1.5" />
+    <text x="665" y="68" class="svg-kicker" fill="var(--success)">CLIENT VERIFICATION</text>
+    <text x="665" y="88" class="svg-title">Cryptographic Proof</text>
+    <text x="665" y="108" class="svg-sub">• Verifies CA Signature</text>
+    <text x="665" y="126" class="svg-sub">• Matches Domain Name</text>
+    <rect x="665" y="136" width="160" height="28" rx="4" fill="var(--success)" opacity="0.2" />
+    <text x="675" y="154" class="svg-node" font-weight="700" fill="var(--success)">&check; Identity Confirmed</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+      TRUSTED CAS BIND A SPECIFIC PUBLIC KEY TO A SPECIFIC DOMAIN NAME VIA DIGITAL SIGNATURES
+    </text>
+  </svg>
+</figure>
           `
         },
         {
@@ -6578,6 +9976,66 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Created by GoDaddy hashing <code>[Domain Name + Server Public Key]</code> and encrypting that hash with <strong>GoDaddy's secret Private Key</strong> — verifiable by anyone using <strong>GoDaddy's Public Key</strong>.</div>
               </div>
             </div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">CSR Generation & The 3 Core Certificate Components</span>
+    <span class="badge badge-accent">CERTIFICATE LIFECYCLE</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="SSL Certificate Components and CSR Generation">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Step 1: CSR -->
+    <rect x="40" y="45" width="220" height="140" rx="8" class="svg-bg" />
+    <text x="55" y="68" class="svg-kicker" fill="var(--accent)">STEP 1: CSR CREATION</text>
+    <text x="55" y="88" class="svg-title">Cert Signing Request</text>
+    <text x="55" y="108" class="svg-sub">Server creates Keypair & CSR:</text>
+    <rect x="55" y="118" width="190" height="40" rx="4" fill="var(--bg-subtle)" />
+    <text x="65" y="134" class="svg-mono-xs">• Domain: bank.com</text>
+    <text x="65" y="149" class="svg-mono-xs">• Server Public Key</text>
+    <text x="55" y="175" class="svg-sub">Private Key stays on server</text>
+
+    <!-- Arrow 1->2 -->
+    <path d="M 260 115 L 320 115" stroke="var(--primary)" stroke-width="2" />
+    <text x="270" y="105" class="svg-mono-xs">Sends CSR</text>
+
+    <!-- Step 2: CA Signing -->
+    <rect x="320" y="45" width="220" height="140" rx="8" class="svg-bg" />
+    <text x="335" y="68" class="svg-kicker" fill="var(--primary)">STEP 2: CA VERIFICATION</text>
+    <text x="335" y="88" class="svg-title">Validation & Signing</text>
+    <text x="335" y="108" class="svg-sub">• Verifies DNS / HTTP record</text>
+    <text x="335" y="126" class="svg-sub">• Hashes the CSR contents</text>
+    <rect x="335" y="136" width="190" height="32" rx="4" fill="var(--primary)" opacity="0.15" />
+    <text x="345" y="156" class="svg-mono-xs" fill="var(--primary)">Encrypts hash with CA Private Key</text>
+
+    <!-- Arrow 2->3 -->
+    <path d="M 540 115 L 600 115" stroke="var(--success)" stroke-width="2" />
+    <text x="550" y="105" class="svg-mono-xs">Issues Cert</text>
+
+    <!-- Step 3: 3 Core Components of SSL Cert -->
+    <rect x="600" y="40" width="240" height="150" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="2" />
+    <text x="615" y="63" class="svg-kicker" fill="var(--success)">THE 3 CORE COMPONENTS</text>
+    <text x="615" y="83" class="svg-title">Issued SSL Certificate</text>
+    <text x="615" y="103" class="svg-node">1. <b>Domain Name</b> (e.g. bank.com)</text>
+    <text x="615" y="121" class="svg-node">2. <b>Server Public Key</b></text>
+    <text x="615" y="139" class="svg-node">3. <b>CA Digital Signature</b></text>
+    <rect x="615" y="148" width="210" height="24" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="625" y="164" class="svg-mono-xs" fill="var(--success)">Proof that Domain owns PubKey</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+      CSR TRANSMITS DOMAIN & PUBLIC KEY -> CA SIGNS HASH WITH CA PRIVATE KEY -> ISSUES CERTIFICATE
+    </text>
+  </svg>
+</figure>
           `
         },
         {
@@ -6656,6 +10114,51 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Generated and signed for free on your own machine without a Trusted CA. Browsers mark it as <strong>Unverified / Not Trusted</strong> — useful only for internal testing or localhost development.</div>
               </div>
             </div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Paid CA-Signed Certificate vs. Self-Signed Certificate Comparison</span>
+    <span class="badge badge-accent">SECURITY TRUST MODEL</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Paid CA vs Self-Signed Certificate Comparison">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Left: Paid CA-Signed -->
+    <rect x="40" y="40" width="370" height="150" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="2" />
+    <text x="55" y="65" class="svg-kicker" fill="var(--success)">PAID CA-SIGNED CERTIFICATE (PRODUCTION)</text>
+    <text x="55" y="85" class="svg-title">Pre-Installed Root CA Trust Chain</text>
+    <text x="55" y="105" class="svg-sub">• Issued by DigiCert, GoDaddy, Let's Encrypt</text>
+    <text x="55" y="123" class="svg-sub">• CA Public Key already in OS / Browser store</text>
+    <rect x="55" y="135" width="340" height="35" rx="6" fill="var(--success)" opacity="0.15" />
+    <text x="70" y="157" class="svg-node" font-weight="700" fill="var(--success)">
+      &check; Green Padlock &bull; Seamless Production User Experience
+    </text>
+
+    <!-- Right: Self-Signed -->
+    <rect x="470" y="40" width="370" height="150" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="2" />
+    <text x="485" y="65" class="svg-kicker" fill="var(--danger)">SELF-SIGNED CERTIFICATE (DEV / STAGING)</text>
+    <text x="485" y="85" class="svg-title">Locally Generated via OpenSSL</text>
+    <text x="485" y="105" class="svg-sub">• Signed by developer's own local private key</text>
+    <text x="485" y="123" class="svg-sub">• Unknown issuer not in OS Trust Store</text>
+    <rect x="485" y="135" width="340" height="35" rx="6" fill="var(--danger)" opacity="0.15" />
+    <text x="500" y="157" class="svg-node" font-weight="700" fill="var(--danger)">
+      &times; "Your Connection is Not Private" &bull; Dev Only
+    </text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+      BOTH ENCRYPT TRAFFIC EQUALLY • ONLY CA-SIGNED PROVES IDENTITY TO PREVENT MITM SPOOFING
+    </text>
+  </svg>
+</figure>
           `
         }
       ]
@@ -6671,7 +10174,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Deep-Dive Security Q&A — Faking SSL, Root Trust Store & Post-SSL Attacks",
       summary: "Why hackers fail all 4 SSL forgery tricks (SHA-256 Hash A vs Hash B, Domain Mismatch, HSM Private Key), why GoDaddy's Public Key lives offline in your OS Root Trust Store, and 6 ways data can STILL be hacked even with HTTPS.",
       subtopicLabels: ["54.1 Why Hackers Can't Fake SSL", "54.2 Offline Root Trust Store", "54.3 6 Post-SSL Attack Vectors"],
-      diagramCount: 1,
+      diagramCount: 3,
       sections: [
         {
           num: "54.1",
@@ -6700,6 +10203,69 @@ const SYSTEM_DESIGN_NOTES = {
                 <div class="sub-box__body">Signing with Hacker's own fake authority fails the browser's trusted CA list and triggers a full-screen red block: <strong>"Your connection is not private (<code>ERR_CERT_AUTHORITY_INVALID</code>)"</strong>.</div>
               </div>
             </div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">4 Attack Vectors Defeated by PKI & TLS Validation</span>
+    <span class="badge badge-success">CRYPTOGRAPHIC IMMUNITY</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Why Hacker Cannot Fake SSL Certificate">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 13px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 10px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 9px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Trick A: Tampering Content -->
+    <rect x="25" y="45" width="190" height="135" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="1.5" />
+    <text x="35" y="65" class="svg-kicker" fill="var(--danger)">TRICK A: TAMPER KEY</text>
+    <text x="35" y="83" class="svg-title">Swap Public Key in Cert</text>
+    <text x="35" y="103" class="svg-sub">• Hacker replaces bank pubkey</text>
+    <text x="35" y="119" class="svg-sub">• with hacker's pubkey</text>
+    <text x="35" y="135" class="svg-sub">• CA Digital Signature fails</text>
+    <rect x="35" y="145" width="170" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
+    <text x="40" y="161" class="svg-mono-xs" fill="var(--danger)" font-weight="700">RESULT: SIGNATURE MISMATCH</text>
+
+    <!-- Trick B: Legitimate Hacker Cert -->
+    <rect x="235" y="45" width="195" height="135" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="1.5" />
+    <text x="245" y="65" class="svg-kicker" fill="var(--danger)">TRICK B: OWN VALID CERT</text>
+    <text x="245" y="83" class="svg-title">Buys Cert for hacker.com</text>
+    <text x="245" y="103" class="svg-sub">• Valid CA signature present</text>
+    <text x="245" y="119" class="svg-sub">• But browser URL = bank.com</text>
+    <text x="245" y="135" class="svg-sub">• Domain matching check fails</text>
+    <rect x="245" y="145" width="175" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
+    <text x="250" y="161" class="svg-mono-xs" fill="var(--danger)" font-weight="700">RESULT: DOMAIN MISMATCH</text>
+
+    <!-- Trick C: Replay Bank Cert -->
+    <rect x="450" y="45" width="195" height="135" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="1.5" />
+    <text x="460" y="65" class="svg-kicker" fill="var(--danger)">TRICK C: REPLAY CERT</text>
+    <text x="460" y="83" class="svg-title">Steals Real Bank Cert</text>
+    <text x="460" y="103" class="svg-sub">• Serves bank.com cert to user</text>
+    <text x="460" y="119" class="svg-sub">• User encrypts session key</text>
+    <text x="460" y="135" class="svg-sub">• Hacker lacks Bank Private Key</text>
+    <rect x="460" y="145" width="175" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
+    <text x="465" y="161" class="svg-mono-xs" fill="var(--danger)" font-weight="700">RESULT: CANNOT DECRYPT KEY</text>
+
+    <!-- Trick D: MITM Replay Attack -->
+    <rect x="665" y="45" width="190" height="135" rx="8" class="svg-bg" stroke="var(--danger)" stroke-width="1.5" />
+    <text x="675" y="65" class="svg-kicker" fill="var(--danger)">TRICK D: SNIFFED REPLAY</text>
+    <text x="675" y="83" class="svg-title">Replay Handshake</text>
+    <text x="675" y="103" class="svg-sub">• Captured previous packets</text>
+    <text x="675" y="119" class="svg-sub">• TLS ClientRandom nonces</text>
+    <text x="675" y="135" class="svg-sub">• Unique per connection</text>
+    <rect x="675" y="145" width="170" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
+    <text x="680" y="161" class="svg-mono-xs" fill="var(--danger)" font-weight="700">RESULT: REPLAY BLOCKED</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+      ALL 4 ATTACK VECTORS MATHEMATICALLY & PROTOCOL-LEVEL NEUTRALIZED BY TLS/PKI
+    </text>
+  </svg>
+</figure>
           `
         },
         {
@@ -6714,6 +10280,56 @@ const SYSTEM_DESIGN_NOTES = {
                 <li>Because your browser looks up <code>GoDaddy's Public Key</code> <strong>100% offline/locally from your device's Root Certificate Store</strong>, it never crosses the Wi-Fi or wire — so a MITM Hacker can never intercept or replace it!</li>
               </ul>
             </div>
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Pre-Installed Root CA Trust Store (Zero-Transit Offline Security)</span>
+    <span class="badge badge-accent">HARDWARE / OS EMBEDDED TRUST</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Why CA Public Keys cannot be intercepted">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Offline OS Installation -->
+    <rect x="40" y="45" width="250" height="135" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="1.5" />
+    <text x="55" y="68" class="svg-kicker" fill="var(--primary)">FACTORY OS / BROWSER BUILD</text>
+    <text x="55" y="88" class="svg-title">Pre-Baked Trust Store</text>
+    <text x="55" y="108" class="svg-sub">• Windows, macOS, Android, iOS, Chrome</text>
+    <text x="55" y="126" class="svg-sub">• Ships with pre-installed Root CA certs</text>
+    <rect x="55" y="138" width="220" height="26" rx="4" fill="var(--bg-subtle)" />
+    <text x="65" y="155" class="svg-mono-xs">DigiCert, GoDaddy, GlobalSign PubKeys</text>
+
+    <!-- Network Wire with zero transit callout -->
+    <rect x="330" y="55" width="220" height="115" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="2" />
+    <text x="345" y="78" class="svg-kicker" fill="var(--success)">ZERO INTERNET TRANSIT</text>
+    <text x="345" y="98" class="svg-title">Never Sent Over Wire!</text>
+    <text x="345" y="118" class="svg-sub">• CA Public Keys do NOT travel</text>
+    <text x="345" y="134" class="svg-sub">across the internet during browsing.</text>
+    <rect x="345" y="142" width="190" height="20" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="350" y="156" class="svg-mono-xs" fill="var(--success)">No packets to intercept or sniff</text>
+
+    <!-- Local Offline Verification -->
+    <rect x="590" y="45" width="250" height="135" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="1.5" />
+    <text x="605" y="68" class="svg-kicker" fill="var(--success)">LOCAL CRYPTOGRAPHIC CHECK</text>
+    <text x="605" y="88" class="svg-title">100% Offline Validation</text>
+    <text x="605" y="108" class="svg-sub">• Browser reads CA key from local disk</text>
+    <text x="605" y="126" class="svg-sub">• Decrypts CA signature locally</text>
+    <rect x="605" y="138" width="220" height="26" rx="4" fill="var(--success)" opacity="0.2" />
+    <text x="615" y="155" class="svg-node" font-weight="700" fill="var(--success)">&check; Unforgeable Root of Trust</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+      TRUST STORES ARE PRE-LOADED INTO OPERATING SYSTEMS • CA PUBLIC KEYS ARE IMMUNE TO NETWORK INTERCEPTION
+    </text>
+  </svg>
+</figure>
           `
         },
         {
@@ -6983,7 +10599,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Caching Solutions (Redis & In-Memory Data Stores)",
       summary: "Slashing Frequently Asked Data latency from 8ms down to 6ms, eliminating inter-service network hops between microservices (User Service to Inventory Service), and Redis Key-Value RAM store mechanics.",
       subtopicLabels: ["56.1 Latency Optimization (8ms vs 6ms)","56.2 Caching Remote Service Calls","56.3 Redis Key-Value Architecture"],
-      diagramCount: 2,
+      diagramCount: 3,
       sections: [
         {
           num: "56.1",
@@ -7106,6 +10722,66 @@ const SYSTEM_DESIGN_NOTES = {
             </li>
           </ul>
         
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Inter-Service Call Caching with Distributed Redis</span>
+    <span class="badge badge-accent">MICROSERVICE LATENCY OPTIMIZATION</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Microservice Inter-Service Remote Call Caching">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Upstream Caller: Order Service -->
+    <rect x="40" y="45" width="200" height="135" rx="8" class="svg-bg" />
+    <text x="55" y="68" class="svg-kicker">UPSTREAM CALLER</text>
+    <text x="55" y="88" class="svg-title">Order Service</text>
+    <text x="55" y="108" class="svg-sub">Needs User Profile / Address</text>
+    <text x="55" y="126" class="svg-sub">Checks Cache first</text>
+    <rect x="55" y="136" width="170" height="26" rx="4" fill="var(--bg-subtle)" />
+    <text x="60" y="153" class="svg-mono-xs">GET /user:101 profile</text>
+
+    <!-- Cache Hit Path (Green) -->
+    <path d="M 240 90 L 340 75" stroke="var(--success)" stroke-width="2.5" />
+    <text x="250" y="70" class="svg-mono-xs" fill="var(--success)" font-weight="700">1. Fast Cache Hit (1 ms)</text>
+
+    <!-- Redis Cluster in Middle -->
+    <rect x="340" y="40" width="220" height="150" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="2" />
+    <text x="355" y="63" class="svg-kicker" fill="var(--primary)">SHARED DISTRIBUTED CACHE</text>
+    <text x="355" y="83" class="svg-title">Redis Cache Cluster</text>
+    <rect x="355" y="93" width="190" height="30" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="365" y="112" class="svg-node" font-weight="700" fill="var(--success)">HIT: Return in 1ms</text>
+    <text x="355" y="142" class="svg-sub">• Eliminates cross-service RPC</text>
+    <text x="355" y="158" class="svg-sub">• Protects User Service from spikes</text>
+    <rect x="355" y="166" width="100" height="16" rx="3" fill="var(--bg-subtle)" />
+    <text x="360" y="178" class="svg-mono-xs">TTL: 15 mins</text>
+
+    <!-- Cache Miss Path (Amber) -->
+    <path d="M 240 140 L 640 140" stroke="var(--warning)" stroke-width="2" stroke-dasharray="4,2" />
+    <text x="250" y="132" class="svg-mono-xs" fill="var(--warning)">2. Fallback on Cache Miss (35 ms RPC)</text>
+
+    <!-- Downstream Service: User Service -->
+    <rect x="640" y="45" width="200" height="135" rx="8" class="svg-bg" />
+    <text x="655" y="68" class="svg-kicker">DOWNSTREAM SERVICE</text>
+    <text x="655" y="88" class="svg-title">User Service + DB</text>
+    <text x="655" y="108" class="svg-sub">Remote REST / gRPC call</text>
+    <text x="655" y="126" class="svg-sub">Queries User Database</text>
+    <rect x="655" y="136" width="170" height="26" rx="4" fill="var(--warning)" opacity="0.15" />
+    <text x="660" y="153" class="svg-mono-xs" fill="var(--warning)">Writes back to Redis</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+      95%+ CACHE HIT RATIO REDUCES INTER-SERVICE NETWORK LATENCY FROM 35MS TO 1MS
+    </text>
+  </svg>
+</figure>
           `
         },
         {
@@ -7347,7 +11023,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Text Search Engines (Elasticsearch) & Data Warehouses",
       summary: "Empowering fast e-commerce search with Apache Lucene Inverted Indexes, Fuzzy Searching (typo tolerance for 'Protein'), and prefix Autocomplete, why Elasticsearch is NOT a source of truth for live stock availability, and OLAP Data Warehouses for company-wide analytics.",
       subtopicLabels: ["58.1 Fuzzy Search & Autocomplete","58.2 ES vs Live Database (Source of Truth)","58.3 OLAP Data Warehouses"],
-      diagramCount: 2,
+      diagramCount: 3,
       sections: [
         {
           num: "58.1",
@@ -7500,6 +11176,67 @@ const SYSTEM_DESIGN_NOTES = {
             </ul>
           </div>
         
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">OLTP Operational Database vs. OLAP Data Warehouse Pipeline</span>
+    <span class="badge badge-accent">DATA ARCHITECTURE</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="OLTP vs OLAP Data Warehouse Architecture">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- OLTP Section -->
+    <rect x="30" y="45" width="200" height="135" rx="8" class="svg-bg" />
+    <text x="45" y="68" class="svg-kicker" fill="var(--primary)">OPERATIONAL DATABASES</text>
+    <text x="45" y="88" class="svg-title">OLTP Systems</text>
+    <text x="45" y="108" class="svg-sub">• PostgreSQL / MySQL</text>
+    <text x="45" y="124" class="svg-sub">• Row-oriented, ACID</text>
+    <text x="45" y="140" class="svg-sub">• Fast CRUD transactions</text>
+    <rect x="45" y="148" width="170" height="22" rx="4" fill="var(--bg-subtle)" />
+    <text x="50" y="163" class="svg-mono-xs">Live User Checkout</text>
+
+    <!-- ETL Stream -->
+    <path d="M 230 112 L 310 112" stroke="var(--primary)" stroke-width="2.5" />
+    <text x="240" y="102" class="svg-mono-xs">CDC Stream</text>
+
+    <!-- ETL Pipeline -->
+    <rect x="310" y="45" width="230" height="135" rx="8" class="svg-bg" stroke="var(--accent)" stroke-width="1.5" />
+    <text x="325" y="68" class="svg-kicker" fill="var(--accent)">DATA PIPELINE (ETL / ELT)</text>
+    <text x="325" y="88" class="svg-title">Debezium &bull; Kafka &bull; Spark</text>
+    <text x="325" y="108" class="svg-sub">• Extracts transaction logs</text>
+    <text x="325" y="124" class="svg-sub">• Cleanses, enriches & transforms</text>
+    <text x="325" y="140" class="svg-sub">• Batches into columnar format</text>
+    <rect x="325" y="148" width="200" height="22" rx="4" fill="var(--accent)" opacity="0.15" />
+    <text x="330" y="163" class="svg-mono-xs" fill="var(--accent)">Zero impact on live OLTP</text>
+
+    <!-- Stream to DWH -->
+    <path d="M 540 112 L 620 112" stroke="var(--success)" stroke-width="2.5" />
+    <text x="550" y="102" class="svg-mono-xs">Bulk Load</text>
+
+    <!-- OLAP Data Warehouse -->
+    <rect x="620" y="40" width="230" height="145" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="2" />
+    <text x="635" y="63" class="svg-kicker" fill="var(--success)">ANALYTICAL WAREHOUSE</text>
+    <text x="635" y="83" class="svg-title">OLAP Data Warehouse</text>
+    <text x="635" y="103" class="svg-sub">• Snowflake, BigQuery, Redshift</text>
+    <text x="635" y="119" class="svg-sub">• Columnar storage (Parquet)</text>
+    <text x="635" y="135" class="svg-sub">• Multi-billion row aggregations</text>
+    <rect x="635" y="145" width="200" height="26" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="645" y="162" class="svg-mono-xs" fill="var(--success)">BI Dashboards & ML Models</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+      DECOUPLED ANALYTICAL WAREHOUSE ENSURES COMPLEX REPORTING NEVER SLOWS DOWN TRANSACTIONAL PRODUCTION DBS
+    </text>
+  </svg>
+</figure>
           `
         }
       ]
@@ -7911,7 +11648,7 @@ const SYSTEM_DESIGN_NOTES = {
       title: "Layer-by-Layer Elimination of Single Points of Failure",
       summary: "A step-by-step 6-layer blueprint to systematically eradicate SPOFs from the smallest VM to entire continents: Horizontal App Servers &rarr; Redundant Load Balancers &rarr; Database Master-Slave Replication &rarr; Multi-Data Center &rarr; Multi-AZ &rarr; Multi-Region Geo Routing.",
       subtopicLabels: ["61.1 Layers 1 & 2: App Servers & Load Balancers","61.2 Layer 3: Database Master-Slave","61.3 Layers 4–6: Data Center, AZ & Region"],
-      diagramCount: 2,
+      diagramCount: 3,
       sections: [
         {
           num: "61.1",
@@ -7938,6 +11675,76 @@ const SYSTEM_DESIGN_NOTES = {
             </div>
           </div>
         
+          
+
+<figure class="diagram-frame">
+  <div class="diagram-toolbar">
+    <span class="diagram-toolbar__title">Compute & Ingress Redundancy: VRRP VIP & App Server Cluster</span>
+    <span class="badge badge-accent">HIGH AVAILABILITY TOPOLOGY</span>
+  </div>
+  <svg viewBox="0 0 880 230" width="100%" height="auto" class="diagram-svg" role="img" aria-label="Layers 1 and 2 SPOF Elimination Architecture">
+    <style>
+      .svg-bg { fill: var(--bg-surface); stroke: var(--border-color); stroke-width: 1.5; }
+      .svg-kicker { font-family: var(--font-mono, monospace); font-size: 10px; font-weight: 700; text-transform: uppercase; fill: var(--text-muted); }
+      .svg-title { font-family: var(--font-heading, Georgia, serif); font-size: 14px; font-weight: 700; fill: var(--text-primary); }
+      .svg-node { font-family: var(--font-body, system-ui, sans-serif); font-size: 12px; fill: var(--text-primary); }
+      .svg-sub { font-family: var(--font-body, system-ui, sans-serif); font-size: 11px; fill: var(--text-secondary); }
+      .svg-mono-xs { font-family: var(--font-mono, monospace); font-size: 10px; fill: var(--text-muted); }
+    </style>
+    <rect width="880" height="230" fill="var(--bg-card)" rx="8" />
+
+    <!-- Layer 2: Dual Load Balancer with VIP -->
+    <rect x="30" y="40" width="370" height="150" rx="8" class="svg-bg" stroke="var(--primary)" stroke-width="2" />
+    <text x="45" y="63" class="svg-kicker" fill="var(--primary)">LAYER 2: INGRESS REDUNDANCY (ELIMINATING LB SPOF)</text>
+    <text x="45" y="83" class="svg-title">Floating Virtual IP (VIP) + Keepalived VRRP</text>
+
+    <!-- Active LB -->
+    <rect x="45" y="95" width="160" height="50" rx="6" class="svg-bg" stroke="var(--success)" stroke-width="1.5" />
+    <text x="55" y="115" class="svg-node" font-weight="700" fill="var(--success)">Active LB (Holds VIP)</text>
+    <text x="55" y="132" class="svg-sub">Routes live client traffic</text>
+
+    <!-- Standby LB -->
+    <rect x="235" y="95" width="150" height="50" rx="6" class="svg-bg" stroke="var(--warning)" stroke-width="1.5" />
+    <text x="245" y="115" class="svg-node" font-weight="700" fill="var(--warning)">Standby LB</text>
+    <text x="245" y="132" class="svg-sub">VRRP Heartbeat sync</text>
+
+    <!-- Heartbeat sync line -->
+    <line x1="205" y1="120" x2="235" y2="120" stroke="var(--primary)" stroke-width="2" stroke-dasharray="3,2" />
+    <rect x="45" y="152" width="340" height="24" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="55" y="168" class="svg-mono-xs" fill="var(--success)">Zero-Downtime Failover: Standby grabs VIP in &lt;1 second</text>
+
+    <!-- Arrow Layer 2 -> Layer 1 -->
+    <path d="M 400 115 L 480 115" stroke="var(--primary)" stroke-width="3" />
+    <text x="410" y="105" class="svg-mono-xs">Load Balances</text>
+
+    <!-- Layer 1: App Server Cluster -->
+    <rect x="480" y="40" width="370" height="150" rx="8" class="svg-bg" stroke="var(--accent)" stroke-width="2" />
+    <text x="495" y="63" class="svg-kicker" fill="var(--accent)">LAYER 1: COMPUTE REDUNDANCY (ELIMINATING APP SPOF)</text>
+    <text x="495" y="83" class="svg-title">Horizontal Auto-Scaling Application Fleet</text>
+
+    <!-- Server 1 -->
+    <rect x="495" y="95" width="105" height="50" rx="6" class="svg-bg" stroke="var(--success)" stroke-width="1" />
+    <text x="505" y="115" class="svg-node" font-weight="700">App Node 1</text>
+    <text x="505" y="132" class="svg-sub" fill="var(--success)">&check; Healthy</text>
+
+    <!-- Server 2 -->
+    <rect x="612" y="95" width="105" height="50" rx="6" class="svg-bg" stroke="var(--success)" stroke-width="1" />
+    <text x="622" y="115" class="svg-node" font-weight="700">App Node 2</text>
+    <text x="622" y="132" class="svg-sub" fill="var(--success)">&check; Healthy</text>
+
+    <!-- Server 3 -->
+    <rect x="730" y="95" width="105" height="50" rx="6" class="svg-bg" stroke="var(--danger)" stroke-width="1" />
+    <text x="740" y="115" class="svg-node" font-weight="700">App Node 3</text>
+    <text x="740" y="132" class="svg-sub" fill="var(--danger)">&times; Crashed</text>
+
+    <rect x="495" y="152" width="340" height="24" rx="4" fill="var(--bg-subtle)" />
+    <text x="505" y="168" class="svg-mono-xs">Health Checks auto-reroute traffic away from Node 3</text>
+
+    <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+      END-TO-END ZERO SINGLE POINT OF FAILURE: REDUNDANT INGRESS + ELASTIC COMPUTE NODES
+    </text>
+  </svg>
+</figure>
           `
         },
         {

@@ -3334,6 +3334,759 @@ function App() {
           `
         }
       ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 16: STYLING IN REACT — GLOBAL CSS VS. SEPARATE CSS FILES
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-16-styling-global-vs-separate-css",
+      number: "16",
+      shortLabel: "Global CSS vs Separate CSS",
+      title: "Styling in React — Global CSS vs. Separate CSS Files",
+      summary: "Global index.css scalability bottlenecks, component-scoped CSS files in styles/, runtime global stylesheet injection, and the CSS class name clash bug.",
+      subtopicLabels: ["16.1 Global CSS & Limitations", "16.2 Separate Component CSS", "16.3 The Class Name Clash Bug"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "16.1",
+          title: "Method 1: Global CSS (index.css) & Its Limitations",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Project Architecture Setup (<code>05-css</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>In a fresh project setup, reset <code>App.jsx</code> and <code>index.css</code> to start with a clean baseline.</li>
+                  <li>In basic React tutorials, all styles are dumped into a single global stylesheet: <code>src/index.css</code> (which is imported into <code>src/main.jsx</code>).</li>
+                </ul>
+              </li>
+              <li><strong>How Global CSS Operates:</strong>
+                <ul class="notes-sub-list">
+                  <li>Every CSS selector declared inside <code>index.css</code> applies universally to every component rendered anywhere in the DOM.</li>
+                </ul>
+              </li>
+              <li><strong>The Production Scalability Bottleneck:</strong>
+                <ul class="notes-sub-list">
+                  <li>Writing all CSS in one file is viable only for small demos (like a simple Calculator or To-Do app).</li>
+                  <li>In enterprise applications with dozens or hundreds of components, dumping all styles into <code>index.css</code> creates an unmaintainable "hodgepodge"—dead styles accumulate, selector specificity wars break layouts, and refactoring becomes dangerous.</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "16.2",
+          title: "Method 2: Separate Component CSS Files (styles/ Folder)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Splitting CSS into Component-Dedicated Files:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Step 1:</strong> Create your components inside <code>src/components/</code> (e.g. <code>Button.jsx</code> and <code>Header.jsx</code> using the <code>rafce</code> shortcut).</li>
+                  <li><strong>Step 2:</strong> Create a dedicated <code>src/styles/</code> directory containing matching CSS files:
+                    <ul class="notes-sub-list">
+                      <li><code>Button.css</code> → Declares button styling (e.g. <code>.btn { padding: 10px 20px; border-radius: 8px; }</code>).</li>
+                      <li><code>Header.css</code> → Declares header layout rules (e.g. <code>.header { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; margin: 5px; }</code>).</li>
+                    </ul>
+                  </li>
+                  <li><strong>Step 3:</strong> Keep <code>index.css</code> strictly for universal resets (box-sizing, body font-family).</li>
+                  <li><strong>Step 4:</strong> Import each stylesheet directly inside its respective component:
+                    <pre class="notes-code-block"><code>// src/components/Button.jsx
+import '../styles/Button.css';
+
+// src/components/Header.jsx
+import '../styles/Header.css';</code></pre>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 16.1 · React Styling Architecture: Monolithic Global CSS vs. Component-Linked Files</span>
+                <span class="diagram-frame-tag">CODEBASE ORGANIZATION PATTERNS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram contrasting monolithic global CSS with component-linked CSS files">
+                  <!-- Global Monolith -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--danger)"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">MONOLITHIC GLOBAL CSS</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Single Massive index.css</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--danger);">src/index.css (2,000+ Lines)</text>
+                    <text x="35" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">/* Mixed Button, Card, Modal, Nav styles */</text>
+                    <text x="35" y="134" class="svg-mono-xs" style="fill:var(--danger);">Zero encapsulation · High regression risk</text>
+                    <text x="35" y="152" class="svg-mono-xs" style="fill:var(--text-muted);">Dead styles linger forever after components delete</text>
+                  </g>
+
+                  <!-- Separate Files -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary)"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">COMPONENT-LINKED CSS</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Split Styles Directory</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--primary);">src/styles/</text>
+                    <text x="35" y="116" class="svg-mono-xs" style="fill:var(--text);">├── Button.css ↔ Button.jsx</text>
+                    <text x="35" y="134" class="svg-mono-xs" style="fill:var(--text);">└── Header.css ↔ Header.jsx</text>
+                    <text x="35" y="152" class="svg-mono-xs" style="fill:var(--accent);">Clean on disk · But lacks runtime scoping!</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "16.3",
+          title: "The Class Name Clash Problem (Why Plain Separate CSS Fails at Scale)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>What Actually Happens in the Browser at Runtime:</strong>
+                <ul class="notes-sub-list">
+                  <li>When you write <code>import '../styles/Button.css'</code> and <code>import '../styles/Header.css'</code>, Vite bundles both files together and injects their raw CSS text into the <strong>same global <code>&lt;head&gt;</code> stylesheet</strong>.</li>
+                  <li><strong>Plain CSS imports have ZERO lexical scoping in JavaScript!</strong></li>
+                </ul>
+              </li>
+              <li><strong>The Style Leakage Bug:</strong>
+                <ul class="notes-sub-list">
+                  <li>Suppose <code>Button.css</code> defines a solid rounded action button:
+                    <pre class="notes-code-block"><code>/* Button.css */
+.btn {
+  background-color: royalblue;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+}</code></pre>
+                  </li>
+                  <li>Inside <code>Header.jsx</code>, you also use <code>className="btn"</code> for a simple, minimalist login link in the navbar.</li>
+                  <li><strong>The Critical Failure:</strong> The styles from <code>Button.css</code> bleed directly into <code>Header.jsx</code>, unintentionally overwriting the header link with heavy blue padding!</li>
+                </ul>
+              </li>
+              <li><strong>Staff Engineer Key Takeaway:</strong>
+                <ul class="notes-sub-list">
+                  <li>Physical file separation on your hard drive organizes files in VS Code, but does <strong>not</strong> isolate styles in the browser. That is why plain separate CSS files are an anti-pattern for large-scale React applications.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 16.2 · The Global Scope CSS Leak: How Plain CSS Imports Collide at Runtime</span>
+                <span class="diagram-frame-tag">RUNTIME SCOPING PITFALL</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Button.css and Header.css both defining .btn colliding in the global DOM stylesheet">
+                  <!-- Button.css -->
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="230" height="175" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="115" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">SOURCE FILE 1</text>
+                    <text x="115" y="52" text-anchor="middle" class="svg-title">Button.css</text>
+                    <rect x="15" y="66" width="200" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="90" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">.btn {</text>
+                    <text x="35" y="110" class="svg-mono-xs">background: royalblue;</text>
+                    <text x="35" y="128" class="svg-mono-xs">padding: 12px 24px;</text>
+                    <text x="25" y="148" class="svg-mono-xs">}</text>
+                  </g>
+
+                  <!-- Header.css -->
+                  <g transform="translate(285, 25)">
+                    <rect x="0" y="0" width="230" height="175" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="115" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">SOURCE FILE 2</text>
+                    <text x="115" y="52" text-anchor="middle" class="svg-title">Header.css</text>
+                    <rect x="15" y="66" width="200" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="90" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">.btn {</text>
+                    <text x="35" y="110" class="svg-mono-xs">background: transparent;</text>
+                    <text x="35" y="128" class="svg-mono-xs">padding: 4px 8px;</text>
+                    <text x="25" y="148" class="svg-mono-xs">}</text>
+                  </g>
+
+                  <!-- Bundling Arrow -->
+                  <g transform="translate(525, 100)">
+                    <line x1="0" y1="10" x2="45" y2="10" stroke="var(--danger)" stroke-width="2.5"/>
+                    <polygon points="45,5 55,10 45,15" fill="var(--danger)"/>
+                    <text x="22" y="-2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--danger);">Vite Bundle</text>
+                  </g>
+
+                  <!-- Global DOM Collision -->
+                  <g transform="translate(595, 25)">
+                    <rect x="0" y="0" width="260" height="175" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="2"/>
+                    <text x="130" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">GLOBAL DOM &lt;HEAD&gt;</text>
+                    <text x="130" y="52" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Naming Collision 💥</text>
+
+                    <rect x="15" y="66" width="230" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="88" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">Both .btn rules collide!</text>
+                    <text x="25" y="108" class="svg-mono-xs" style="fill:var(--text-muted);">Last imported rule overrides first.</text>
+                    <text x="25" y="128" class="svg-mono-xs" style="fill:var(--danger);">Navbar link turns blue & heavy!</text>
+                    <text x="25" y="146" class="svg-mono-xs" style="fill:var(--text-muted);">Zero style isolation.</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 17: MODULE CSS (.MODULE.CSS) — SCOPED COMPONENT STYLING
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-17-module-css-scoped-styling",
+      number: "17",
+      shortLabel: "Module CSS & Scoped Styles",
+      title: "Module CSS (.module.css) — Scoped Component Styling",
+      summary: "Component co-location architecture, .module.css naming convention, importing styles objects, hashed class names, and eliminating CSS collisions.",
+      subtopicLabels: ["17.1 Co-location & Naming", "17.2 Importing & Applying styles", "17.3 How Modules Stop Collisions"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "17.1",
+          title: "Component-Based Folder Structure & Naming Convention",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>What Is Module CSS?</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Module CSS</strong> is a built-in bundler mechanism (supported natively by Vite, Webpack, and Next.js) that scopes CSS class names strictly to the component that imports them.</li>
+                </ul>
+              </li>
+              <li><strong>The Co-location Folder Structure Pattern:</strong>
+                <ul class="notes-sub-list">
+                  <li>Instead of a distant, separated <code>src/styles/</code> directory, senior engineers co-locate the component's JavaScript and stylesheet in their own dedicated component directory:
+                    <pre class="notes-code-block"><code>src/
+└── components/
+    ├── button/
+    │   ├── Button.jsx
+    │   └── Button.module.css
+    └── header/
+        ├── Header.jsx
+        └── Header.module.css</code></pre>
+                  </li>
+                  <li><strong>The Strict Naming Rule:</strong> Module stylesheets <strong>MUST</strong> use the <strong><code>.module.css</code></strong> file extension (e.g. <code>Button.module.css</code>). Vite relies specifically on this extension to trigger its automated class-hashing transform.</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "17.2",
+          title: "Importing & Applying Module CSS (className={styles.className})",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Step 1 · Import as a JavaScript Object:</strong>
+                <ul class="notes-sub-list">
+                  <li>Import the CSS module as a named JavaScript object (conventionally named <code>styles</code>):
+                    <pre class="notes-code-block"><code>// src/components/button/Button.jsx
+import styles from './Button.module.css';
+
+// src/components/header/Header.jsx
+import styles from './Header.module.css';</code></pre>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>Step 2 · Apply via <code>className</code> (Not <code>style</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>Bind the hashed class property using JSX dot notation:
+                    <pre class="notes-code-block"><code>// In Button.jsx
+const Button = () => {
+  return &lt;button className={styles.btn}&gt;Click Me&lt;/button&gt;;
+};
+
+// In Header.jsx
+const Header = () => {
+  return &lt;header className={styles.header}&gt;Header UI&lt;/header&gt;;
+};</code></pre>
+                  </li>
+                  <li><strong>Common Beginner Pitfall:</strong> Never write <code>style={styles.btn}</code>! The HTML <code>style</code> prop expects an inline JavaScript style object (e.g. <code>{ color: 'red' }</code>), whereas <code>styles.btn</code> is a string containing the compiled class name. Always use <code>className={styles.btn}</code>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 17.1 · CSS Module Compilation & Class Name Hashing Pipeline</span>
+                <span class="diagram-frame-tag">POSTCSS COMPILATION & HASH GENERATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Button.module.css .btn getting transformed into a unique hash _btn_1a4f9_12 by Vite">
+                  <!-- Author Code -->
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="240" height="175" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="120" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">1 · AUTHOR CSS</text>
+                    <text x="120" y="52" text-anchor="middle" class="svg-title">Button.module.css</text>
+                    <rect x="15" y="66" width="210" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="90" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">.btn {</text>
+                    <text x="35" y="110" class="svg-mono-xs">background: royalblue;</text>
+                    <text x="35" y="128" class="svg-mono-xs">padding: 10px 20px;</text>
+                    <text x="25" y="148" class="svg-mono-xs">}</text>
+                  </g>
+
+                  <!-- Compiler Arrow -->
+                  <g transform="translate(275, 105)">
+                    <line x1="0" y1="10" x2="45" y2="10" stroke="var(--primary)" stroke-width="2"/>
+                    <polygon points="45,6 53,10 45,14" fill="var(--primary)"/>
+                    <text x="22" y="2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--primary);">Vite Transform</text>
+                  </g>
+
+                  <!-- Hashed Styles Object -->
+                  <g transform="translate(340, 25)">
+                    <rect x="0" y="0" width="250" height="175" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <text x="125" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">2 · JS STYLES OBJECT</text>
+                    <text x="125" y="52" text-anchor="middle" class="svg-title">Hashed Key-Value Map</text>
+                    <rect x="15" y="66" width="220" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="25" y="90" class="svg-mono-xs">styles = {</text>
+                    <text x="35" y="114" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">btn: "_btn_a91b_1"</text>
+                    <text x="25" y="136" class="svg-mono-xs">}</text>
+                    <text x="25" y="152" class="svg-sub">Unique deterministic hash</text>
+                  </g>
+
+                  <!-- DOM Injection Arrow -->
+                  <g transform="translate(600, 105)">
+                    <line x1="0" y1="10" x2="45" y2="10" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="45,6 53,10 45,14" fill="var(--success)"/>
+                    <text x="22" y="2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--success);">Injects</text>
+                  </g>
+
+                  <!-- Final Rendered DOM -->
+                  <g transform="translate(655, 25)">
+                    <rect x="0" y="0" width="200" height="175" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="100" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">3 · BROWSER DOM</text>
+                    <text x="100" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Scoped Node</text>
+                    <rect x="15" y="66" width="170" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--text);">&lt;button</text>
+                    <text x="30" y="118" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">class="_btn_a91b_1"</text>
+                    <text x="25" y="138" class="svg-mono-xs">&gt;Click&lt;/button&gt;</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "17.3",
+          title: "How Module CSS Eliminates Class Collisions",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Collision Immunity via Lexical Scoping:</strong>
+                <ul class="notes-sub-list">
+                  <li>Even if ten different components declare a class called <code>.btn</code>:
+                    <ul class="notes-sub-list">
+                      <li><code>Button.module.css</code> compiles to: <code>._btn_button_8x1</code></li>
+                      <li><code>Header.module.css</code> compiles to: <code>._btn_header_9q2</code></li>
+                      <li><code>Modal.module.css</code> compiles to: <code>._btn_modal_4f7</code></li>
+                    </ul>
+                  </li>
+                  <li>When <code>Header.jsx</code> binds <code>className={styles.btn}</code>, it is impossible for styles from <code>Button.module.css</code> to leak in because the DOM element receives the unique hash <code>_btn_header_9q2</code>.</li>
+                </ul>
+              </li>
+              <li><strong>Industry Perspective (Why Teams Transition to Tailwind CSS):</strong>
+                <ul class="notes-sub-list">
+                  <li>While CSS Modules completely solve collision problems, developers still experience <strong>context-switching fatigue</strong> (jumping between <code>.jsx</code> and <code>.module.css</code>) and <strong>naming fatigue</strong> (thinking up names for every single wrapper and container).</li>
+                  <li>Modern production React teams largely prefer <strong>Tailwind CSS</strong> (utility-first) or component primitives for higher developer velocity and design-system consistency.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 17.2 · CSS Collision Immunity: Isolated Hashed Identifiers Across Components</span>
+                <span class="diagram-frame-tag">LEXICAL SCOPING & ENCAPSULATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Button and Header using identical .btn class name compiling to two distinct unique hashes without collision">
+                  <!-- Button Component Scope -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="170" height="22" rx="4" fill="var(--primary)"/>
+                    <text x="100" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">BUTTON SCOPE</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Button.module.css (.btn)</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="25" y="96" class="svg-mono-xs">CSS rule: .btn { background: royalblue; }</text>
+                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">Compiled Hash: ._btn_btnScope_a1</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--success);">✓ Applies ONLY to &lt;Button /&gt; elements</text>
+                    <text x="25" y="154" class="svg-sub">Cannot affect any other component in the tree</text>
+                  </g>
+
+                  <!-- Header Component Scope -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="170" height="22" rx="4" fill="var(--accent)"/>
+                    <text x="100" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">HEADER SCOPE</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Header.module.css (.btn)</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="25" y="96" class="svg-mono-xs">CSS rule: .btn { background: transparent; }</text>
+                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">Compiled Hash: ._btn_hdrScope_x9</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--success);">✓ Applies ONLY to &lt;Header /&gt; elements</text>
+                    <text x="25" y="154" class="svg-sub">Zero namespace pollution · 100% collision proof</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 18: WHAT IS TAILWIND CSS? (UTILITY-FIRST VS. BOOTSTRAP)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-18-what-is-tailwind-css",
+      number: "18",
+      shortLabel: "Tailwind CSS Fundamentals",
+      title: "What Is Tailwind CSS? (Utility-First Library vs. Bootstrap)",
+      summary: "Utility-first design paradigm, utility classes vs component libraries, the Bootstrap comparison, and Tailwind v3 vs v4 architecture differences.",
+      subtopicLabels: ["18.1 Utility-First vs Component Library", "18.2 Tailwind vs Bootstrap", "18.3 Tailwind v3 vs v4 Architecture"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "18.1",
+          title: "Utility-First Library vs. Component Library",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>What Is Tailwind CSS?</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Tailwind CSS</strong> is a <strong>Utility-First CSS framework</strong>. Rather than providing pre-packaged UI widgets, it provides thousands of single-responsibility, low-level utility classes directly inside your JSX:
+                    <pre class="notes-code-block"><code>&lt;div className="h-screen w-full bg-gray-900 flex items-center justify-center"&gt;
+  &lt;h1 className="text-3xl font-bold text-white tracking-wide"&gt;OneNightRevise&lt;/h1&gt;
+&lt;/div&gt;</code></pre>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>Utility-First Library vs. Component Library:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Utility-First Library (Tailwind CSS):</strong> Provides primitive styling classes (<code>p-4</code>, <code>bg-red-600</code>, <code>rounded-xl</code>). You retain complete freedom to architect bespoke designs rapidly without ever writing a custom CSS file or inventing class names like <code>.card-container-wrapper</code>.</li>
+                  <li><strong>Component Library (MUI, Bootstrap, Chakra):</strong> Ships pre-built, opinions-included components (like a complete <code>&lt;Button /&gt;</code>, <code>&lt;Modal /&gt;</code>, or <code>&lt;Navbar /&gt;</code>). Customizing them often requires fighting high-specificity overrides. <strong>Tailwind CSS is NOT a component library.</strong></li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "18.2",
+          title: "Why Tailwind Over Bootstrap",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Paradigm Shift (Moving Beyond Bootstrap):</strong>
+                <ul class="notes-sub-list">
+                  <li>Bootstrap was built in 2011 for an earlier generation of the web. Sites built with default Bootstrap classes look rigid, identical, and unmistakably dated.</li>
+                  <li>Overriding Bootstrap components requires aggressive specificity hacks and <code>!important</code> tags.</li>
+                  <li><strong>Tailwind CSS</strong> has become the modern industry standard for React frontends because it allows engineering teams to construct pixel-perfect, custom design systems directly inside component markup with zero dead CSS in production.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 18.1 · Frontend Styling Evolution: Traditional CSS vs. Bootstrap vs. Tailwind CSS</span>
+                <span class="diagram-frame-tag">PARADIGM EVOLUTION & DEVELOPER VELOCITY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing evolution from Vanilla CSS to Bootstrap to Tailwind utility-first CSS">
+                  <!-- Vanilla CSS -->
+                  <g transform="translate(20, 20)">
+                    <rect x="0" y="0" width="260" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="130" y="28" text-anchor="middle" class="svg-kicker">2010s · MANUAL</text>
+                    <text x="130" y="52" text-anchor="middle" class="svg-title">Vanilla / Separate CSS</text>
+                    <rect x="15" y="66" width="230" height="105" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="88" class="svg-mono-xs">• Heavy context switching</text>
+                    <text x="25" y="106" class="svg-mono-xs">• Class naming exhaustion</text>
+                    <text x="25" y="124" class="svg-mono-xs">• Unused CSS deadweight</text>
+                    <text x="25" y="146" class="svg-mono-xs" style="fill:var(--danger);">Velocity: Low</text>
+                  </g>
+
+                  <!-- Bootstrap -->
+                  <g transform="translate(310, 20)">
+                    <rect x="0" y="0" width="260" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                    <text x="130" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">2014s · OPINIONATED</text>
+                    <text x="130" y="52" text-anchor="middle" class="svg-title">Bootstrap Components</text>
+                    <rect x="15" y="66" width="230" height="105" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="25" y="88" class="svg-mono-xs">• Pre-built UI widgets</text>
+                    <text x="25" y="106" class="svg-mono-xs">• Identical generic aesthetics</text>
+                    <text x="25" y="124" class="svg-mono-xs">• Painful custom overrides</text>
+                    <text x="25" y="146" class="svg-mono-xs" style="fill:var(--accent);">Flexibility: Rigid</text>
+                  </g>
+
+                  <!-- Tailwind CSS -->
+                  <g transform="translate(600, 20)">
+                    <rect x="0" y="0" width="260" height="190" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="130" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">MODERN STANDARD ✓</text>
+                    <text x="130" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Tailwind Utility-First</text>
+                    <rect x="15" y="66" width="230" height="105" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="88" class="svg-mono-xs">• Co-located atomic classes</text>
+                    <text x="25" y="106" class="svg-mono-xs">• 100% custom design freedom</text>
+                    <text x="25" y="124" class="svg-mono-xs">• Zero dead CSS (Purged)</text>
+                    <text x="25" y="146" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Velocity: Lightning Fast</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "18.3",
+          title: "Tailwind Version Architecture (v3 vs. v4)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Tailwind v3 vs. Tailwind v4 Architectural Changes:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Tailwind v3:</strong> Depended on PostCSS, requiring multiple config files (<code>tailwind.config.js</code>, <code>postcss.config.js</code>) and explicit <code>content: [...]</code> glob arrays to scan templates.</li>
+                  <li><strong>Tailwind v4 (Modern Standard):</strong> Completely rewritten from scratch using a high-performance Rust engine (**Lightning CSS**). It features a dedicated Vite plugin (<code>@tailwindcss/vite</code>), requires zero configuration files by default, and starts up to 10× faster.</li>
+                </ul>
+              </li>
+              <li><strong>Senior Developer Note:</strong> When reading older tutorials online, be aware that setup instructions differ between v3 and v4. Always refer to the official <code>tailwindcss.com</code> v4 documentation for modern Vite projects.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 18.2 · Build Engine Evolution: Tailwind v3 (PostCSS) vs. Tailwind v4 (Lightning CSS)</span>
+                <span class="diagram-frame-tag">COMPILATION ENGINE BENCHMARK</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram contrasting Tailwind v3 PostCSS setup with modern Tailwind v4 Lightning CSS engine">
+                  <!-- Tailwind v3 -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="200" y="28" text-anchor="middle" class="svg-kicker">LEGACY ENGINE</text>
+                    <text x="200" y="52" text-anchor="middle" class="svg-title">Tailwind CSS v3 (JavaScript/PostCSS)</text>
+
+                    <rect x="15" y="66" width="365" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="88" class="svg-mono-xs">• Required tailwind.config.js + postcss.config.js</text>
+                    <text x="25" y="106" class="svg-mono-xs">• Manual content glob paths: ['./src/**/*.{jsx,js}']</text>
+                    <text x="25" y="124" class="svg-mono-xs">• JavaScript-based regex template scanner</text>
+                    <text x="25" y="144" class="svg-mono-xs" style="fill:var(--text-muted);">Build Speed: Standard (~300ms HMR)</text>
+                  </g>
+
+                  <!-- Tailwind v4 -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="200" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">MODERN RUST ENGINE ✓</text>
+                    <text x="200" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Tailwind CSS v4 (Lightning CSS)</text>
+
+                    <rect x="15" y="66" width="365" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="88" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">• Zero config files needed by default</text>
+                    <text x="25" y="106" class="svg-mono-xs">• Native Vite plugin: @tailwindcss/vite</text>
+                    <text x="25" y="124" class="svg-mono-xs">• Lightning CSS (Rust compiler) built-in</text>
+                    <text x="25" y="144" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Build Speed: Sub-millisecond (10x Faster)</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 19: INSTALLING & CONFIGURING TAILWIND CSS (V4) WITH REACT + VITE
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-19-install-configure-tailwind-v4",
+      number: "19",
+      shortLabel: "Tailwind v4 Setup with Vite",
+      title: "Installing & Configuring Tailwind CSS (v4) With React + Vite",
+      summary: "4-step modern Vite setup (@tailwindcss/vite), preventing the fatal vite.config.js overwrite trap, Tailwind IntelliSense, and h-screen viewport sizing.",
+      subtopicLabels: ["19.1 Four-Step Setup Guide", "19.2 Fatal vite.config.js Mistake", "19.3 Tooling & Production Tips"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "19.1",
+          title: "Four-Step Setup Guide (Using Vite)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The 4-Step Production Setup for React + Vite:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Step 1 · Install Packages:</strong> Run the modern v4 installer in your project directory:
+                    <pre class="notes-code-block"><code>npm install tailwindcss @tailwindcss/vite</code></pre>
+                  </li>
+                  <li><strong>Step 2 · Configure <code>vite.config.js</code>:</strong> Import the Vite plugin and include it in your <code>plugins</code> array:
+                    <pre class="notes-code-block"><code>// vite.config.js
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+})</code></pre>
+                  </li>
+                  <li><strong>Step 3 · Import Tailwind in <code>src/index.css</code>:</strong> Clear out starter styles and place this single line at the very top:
+                    <pre class="notes-code-block"><code>@import "tailwindcss";</code></pre>
+                  </li>
+                  <li><strong>Step 4 · Run the Dev Server:</strong> Start your development server:
+                    <pre class="notes-code-block"><code>npm run dev</code></pre>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "19.2",
+          title: "Critical Mistake to Avoid in vite.config.js",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Fatal Overwrite Pitfall:</strong>
+                <ul class="notes-sub-list">
+                  <li>When developers consult the official Tailwind "Using Vite" guide, they often blindly copy the entire <code>vite.config.js</code> code block and replace their existing configuration file.</li>
+                  <li><strong>Why This Crashes React:</strong> The generic snippet on the documentation website is tailored for vanilla JavaScript Vite projects—it <strong>does NOT contain <code>@vitejs/plugin-react</code></strong>! Overwriting your file completely removes the React compiler plugin, causing JSX compilation to fail with fatal syntax errors.</li>
+                </ul>
+              </li>
+              <li><strong>The Senior Engineer Rule:</strong>
+                <ul class="notes-sub-list">
+                  <li>Never replace existing config files blindly. <strong>Merge plugins additively</strong>: preserve <code>react()</code> and append <code>tailwindcss()</code> into the array:
+                    <pre class="notes-code-block"><code>plugins: [react(), tailwindcss()]</code></pre>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 19.1 · The Fatal vite.config.js Overwrite Trap vs. Additive Plugin Chaining</span>
+                <span class="diagram-frame-tag">BUILD CONFIGURATION SAFETY GUARDRAIL</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram contrasting overwriting vite.config.js removing react with proper additive plugin chaining">
+                  <!-- Bad: Overwrite -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--danger)"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">FATAL TRAP ❌</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Overwriting vite.config.js</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--danger);">plugins: [tailwindcss()]</text>
+                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--danger);">⚠ Removed: react() plugin deleted!</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--text-muted);">Result: Vite fails to parse JSX files.</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">Browser Error: Unexpected token &lt; in App.jsx</text>
+                  </g>
+
+                  <!-- Good: Additive -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--success)"/>
+                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">CORRECT PATTERN ✓</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">Additive Plugin Chaining</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">plugins: [react(), tailwindcss()]</text>
+                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--primary);">✓ react(): Transpiles JSX to Virtual DOM</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--accent);">✓ tailwindcss(): Scans classes & injects CSS</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Result: Sub-millisecond HMR with live styles</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "19.3",
+          title: "VS Code Tooling & Production Layout Tips",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Install Tailwind CSS IntelliSense:</strong>
+                <ul class="notes-sub-list">
+                  <li>In VS Code, search for the official extension: <strong>Tailwind CSS IntelliSense</strong>.</li>
+                  <li>Provides real-time autocomplete suggestions, CSS color previews, and hover tooltips showing the underlying CSS rule (e.g. hovering over <code>p-4</code> displays <code>padding: 1rem;</code>).</li>
+                </ul>
+              </li>
+              <li><strong>Viewport Layout Tip: <code>h-screen</code> vs. <code>h-full</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li><code>h-full</code> resolves to <code>height: 100%</code>. In CSS, percentage heights only expand if every ancestor up to <code>&lt;html&gt;</code> has an explicitly declared height.</li>
+                  <li>Use <strong><code>h-screen</code></strong> (which maps to <code>height: 100vh</code> or <code>100dvh</code>) on your root container to reliably fill the entire browser viewport:
+                    <pre class="notes-code-block"><code>&lt;div className="h-screen w-full bg-neutral-950 text-white flex flex-col"&gt;
+  &lt;Navbar /&gt;
+  &lt;MainFeed /&gt;
+&lt;/div&gt;</code></pre>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>The Senior Path to Frontend Mastery:</strong>
+                <ul class="notes-sub-list">
+                  <li>To bridge the gap between learner and job-ready frontend engineer, stop writing static HTML/CSS mockups. Build production-grade interfaces by synthesizing <strong>Component Architecture + Props Data Flow + Tailwind Utility Design</strong>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 19.2 · Full-Stack React + Tailwind v4 Dev Execution Loop</span>
+                <span class="diagram-frame-tag">DEVELOPER WORKFLOW & PIPELINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing the developer workflow from writing Tailwind classes in JSX to Lightning CSS compile to instant browser HMR">
+                  <!-- Step 1: JSX with Tailwind -->
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="90" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">1 · JSX MARKUP</text>
+                    <text x="90" y="52" text-anchor="middle" class="svg-title">App.jsx</text>
+                    <rect x="15" y="66" width="150" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="88" class="svg-mono-xs">&lt;div</text>
+                    <text x="30" y="106" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">className=</text>
+                    <text x="30" y="124" class="svg-mono-xs" style="fill:var(--accent);">"h-screen p-4"</text>
+                  </g>
+
+                  <!-- Arrow 1 -> 2 -->
+                  <g transform="translate(210, 90)">
+                    <line x1="0" y1="10" x2="30" y2="10" stroke="var(--primary)" stroke-width="2"/>
+                    <polygon points="30,6 38,10 30,14" fill="var(--primary)"/>
+                    <text x="18" y="2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--primary);">Scan</text>
+                  </g>
+
+                  <!-- Step 2: Lightning CSS Compiler -->
+                  <g transform="translate(255, 25)">
+                    <rect x="0" y="0" width="190" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <text x="95" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">2 · LIGHTNING CSS</text>
+                    <text x="95" y="52" text-anchor="middle" class="svg-title">Rust Engine</text>
+                    <rect x="15" y="66" width="160" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="25" y="92" class="svg-mono-xs">On-Demand JIT</text>
+                    <text x="25" y="112" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">Generates CSS in 2ms</text>
+                    <text x="25" y="128" class="svg-sub">Purges unused rules</text>
+                  </g>
+
+                  <!-- Arrow 2 -> 3 -->
+                  <g transform="translate(450, 90)">
+                    <line x1="0" y1="10" x2="30" y2="10" stroke="var(--accent)" stroke-width="2"/>
+                    <polygon points="30,6 38,10 30,14" fill="var(--accent)"/>
+                    <text x="18" y="2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--accent);">Vite HMR</text>
+                  </g>
+
+                  <!-- Step 3: Vite Dev Server -->
+                  <g transform="translate(485, 25)">
+                    <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="90" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">3 · DEV SERVER</text>
+                    <text x="90" y="52" text-anchor="middle" class="svg-title">localhost:5173</text>
+                    <rect x="15" y="66" width="150" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">WebSocket Push</text>
+                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--primary);">Hot Replacement</text>
+                    <text x="25" y="128" class="svg-sub">Zero page reload</text>
+                  </g>
+
+                  <!-- Arrow 3 -> 4 -->
+                  <g transform="translate(670, 90)">
+                    <line x1="0" y1="10" x2="30" y2="10" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="30,6 38,10 30,14" fill="var(--success)"/>
+                    <text x="18" y="2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--success);">DOM</text>
+                  </g>
+
+                  <!-- Step 4: Rendered Browser -->
+                  <g transform="translate(705, 25)">
+                    <rect x="0" y="0" width="150" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="75" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">4 · LIVE UI</text>
+                    <text x="75" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Targeted Render</text>
+                    <rect x="12" y="66" width="126" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="75" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Pixel-Perfect</text>
+                    <text x="75" y="116" text-anchor="middle" class="svg-mono-xs">Full Viewport</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
     }
   ]
 };

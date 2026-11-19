@@ -79,13 +79,13 @@ const StudyApp = (() => {
     const statsEl = document.getElementById('active-track-stats');
 
     if (trackName === 'reactjs') {
-      const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 15;
+      const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 19;
       let diagCount = 0;
       if (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) {
         REACT_NOTES.topics.forEach(t => { diagCount += t.diagramCount || 0; });
       }
       if (titleEl) titleEl.textContent = 'ReactJS Revision Notes';
-      if (statsEl) statsEl.textContent = `${count} Topics · ${diagCount || 30} Visual Architecture Diagrams`;
+      if (statsEl) statsEl.textContent = `${count} Topics · ${diagCount || 38} Visual Architecture Diagrams`;
       if (pushState) {
         try { history.replaceState(null, '', '#reactjs'); } catch (e) { }
       }

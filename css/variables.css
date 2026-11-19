@@ -131,3 +131,71 @@
   --bg-frame:        #FDFBF3;
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   DARK MODE — Midnight Forest & Aged Warm Obsidian
+   Atmospheric vertical gradient, eye-friendly, consistent palette
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  /* Warm atmospheric midnight-forest background gradient */
+  --bg-root:         #131915;
+  --bg-gradient:     linear-gradient(180deg, #121814 0%, #17211b 380px, #1c2720 100%);
+  --bg-card:         linear-gradient(180deg, rgba(29, 39, 33, 0.88) 0%, rgba(23, 31, 26, 0.92) 100%);
+  --bg-subsection:   rgba(25, 34, 29, 0.82);
+  --bg-surface:      rgba(31, 42, 35, 0.90);
+  --bg-surface-tint: rgba(41, 56, 47, 0.45);
+  --bg-card-raised:  #233027;
+  --bg-card-solid:   #1d2821;
+  --bg-frame:        #18221b;
+  --bg-overlay:      rgba(6, 11, 8, 0.75);
+  --nav-bg:          rgba(23, 32, 27, 0.94);
+
+  /* Primary Brand (Luminous Radiant Emerald Pine) */
+  --accent:          #34d399;
+  --accent-hover:    #6ee7b7;
+  --accent-light:    rgba(52, 211, 153, 0.12);
+  --accent-medium:   rgba(52, 211, 153, 0.22);
+  --accent-strong:   rgba(52, 211, 153, 0.38);
+
+  /* Secondary & Pill Buttons */
+  --btn-dark:        #25332a;
+  --btn-dark-hover:  #2f4136;
+  --accent-gold:     #f6c860;
+  --accent-gold-bg:  rgba(246, 200, 96, 0.15);
+
+  /* High-Definition Text Hierarchy (Crisp Warm Off-White, Soft on Eyes) */
+  --text-primary:    #F4F1E8;
+  --text-secondary:  #C7D2C8;
+  --text-muted:      #8D9C90;
+  --text-faint:      #617165;
+  --text-tertiary:   #8D9C90;
+
+  /* Subtle Warm Antique Gold Borders & Dividers */
+  --border-faint:    rgba(214, 178, 92, 0.12);
+  --border:          rgba(214, 178, 92, 0.22);
+  --border-strong:   rgba(52, 211, 153, 0.36);
+  --border-color:    rgba(214, 178, 92, 0.22);
+  --border-subtle:   rgba(214, 178, 92, 0.12);
+
+  /* Semantic Alerts */
+  --success:         #34d399;
+  --success-bg:      rgba(52, 211, 153, 0.14);
+  --warning:         #fbbf24;
+  --warning-bg:      rgba(251, 191, 36, 0.14);
+  --danger:          #f87171;
+  --danger-bg:       rgba(248, 113, 113, 0.14);
+  --info:            #38bdf8;
+  --info-bg:         rgba(56, 189, 248, 0.14);
+
+  /* Soft Ambient Shadows */
+  --shadow-sm:       0 2px 10px rgba(0, 0, 0, 0.3);
+  --shadow-md:       0 10px 32px rgba(0, 0, 0, 0.45);
+  --shadow-lg:       0 18px 48px rgba(0, 0, 0, 0.6);
+  --shadow-glow:     0 0 0 3px rgba(52, 211, 153, 0.25);
+
+  /* SVG & Diagram Specific Color Tokens */
+  --primary:         #34d399;
+  --primary-bg:      rgba(52, 211, 153, 0.12);
+  --primary-light:   rgba(52, 211, 153, 0.2);
+  --bg-subtle:       rgba(36, 48, 40, 0.45);
+}
+

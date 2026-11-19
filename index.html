@@ -12,13 +12,18 @@
   <link rel="apple-touch-icon" href="assets/favicon.svg">
   <meta name="theme-color" content="#0A3424">
 
-  <!-- ── EARLY THEME INITIALIZER (Forces sunlit radiant light theme) ── -->
+  <!-- ── EARLY THEME INITIALIZER (Instant dark/light/system, zero FOUC) ── -->
   <script>
     (function () {
       try {
-        localStorage.setItem('onr-theme', 'light');
+        var saved = localStorage.getItem('onr-theme-preference') || 'system';
+        var isDark = saved === 'dark' || (saved === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        var theme = isDark ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.setAttribute('data-theme-preference', saved);
+      } catch (e) {
         document.documentElement.setAttribute('data-theme', 'light');
-      } catch (e) { }
+      }
     })();
   </script>
 
@@ -37,6 +42,29 @@
         <span class="active-topbar-badge" id="active-topbar-num">TOPIC 01</span>
         <span class="active-topbar-title" id="active-topbar-title">What is Monolithic Architecture?</span>
       </div>
+      <div class="active-topbar-right">
+        <!-- Segmented Theme Mode Toggle Pill -->
+        <div class="theme-mode-pill" role="radiogroup" aria-label="Color theme selection">
+          <button type="button" class="theme-mode-btn" data-theme-mode="light" aria-label="Light mode" title="Light mode">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+          </button>
+          <button type="button" class="theme-mode-btn" data-theme-mode="dark" aria-label="Dark mode" title="Dark mode">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </button>
+          <button type="button" class="theme-mode-btn" data-theme-mode="system" aria-label="System mode" title="System mode">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+              <line x1="8" x2="16" y1="21" y2="21"></line>
+              <line x1="12" x2="12" y1="17" y2="21"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -44,11 +72,33 @@
   <header id="main-nav">
     <div class="nav-capsule">
       <a href="#" class="nav-brand" id="brand-home-link" aria-label="OneNightRevise Home (Click to return to subject selection)">
-        <img src="assets/favicon.svg" alt="OneNightRevise Logo" class="brand-logo-img" width="34" height="34">
+        <img src="assets/favicon.svg" alt="OneNightRevise Logo" class="brand-logo-img" width="32" height="32">
         <span class="brand-title">OneNightRevise</span>
       </a>
 
-      <div class="nav-actions"></div>
+      <div class="nav-actions">
+        <!-- Segmented Theme Mode Toggle Pill -->
+        <div class="theme-mode-pill" role="radiogroup" aria-label="Color theme selection">
+          <button type="button" class="theme-mode-btn" data-theme-mode="light" aria-label="Light mode" title="Light mode">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+            </svg>
+          </button>
+          <button type="button" class="theme-mode-btn" data-theme-mode="dark" aria-label="Dark mode" title="Dark mode">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+            </svg>
+          </button>
+          <button type="button" class="theme-mode-btn" data-theme-mode="system" aria-label="System mode" title="System mode">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+              <line x1="8" x2="16" y1="21" y2="21"></line>
+              <line x1="12" x2="12" y1="17" y2="21"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 

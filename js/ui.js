@@ -4,20 +4,83 @@
 
 const UI = (() => {
 
-  /* ── 1. THEME LOCK (Permanent Sunlit Warm Cream Theme) ── */
+  /* ── 1. THEME MANAGER (Light / Dark / System Segmented Control) ── */
   const Theme = {
+    preferenceKey: 'onr-theme-preference',
+
+    getSavedPreference() {
+      try {
+        return localStorage.getItem(this.preferenceKey) || 'system';
+      } catch (e) {
+        return 'system';
+      }
+    },
+
+    resolveTheme(preference) {
+      if (preference === 'dark') return 'dark';
+      if (preference === 'light') return 'light';
+      // System mode: inspect OS color scheme
+      return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    },
+
+    apply(preference, showToast = false) {
+      const theme = this.resolveTheme(preference);
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.setAttribute('data-theme-preference', preference);
+
+      try {
+        localStorage.setItem(this.preferenceKey, preference);
+      } catch (e) { }
+
+      this.updateButtonUI(preference);
+
+      if (showToast) {
+        const labels = {
+          light: 'Switched to Light mode',
+          dark: 'Switched to Dark mode',
+          system: 'Using System default theme'
+        };
+        Toast.show(labels[preference] || 'Theme updated');
+      }
+    },
+
+    updateButtonUI(activePreference) {
+      const buttons = document.querySelectorAll('.theme-mode-btn');
+      buttons.forEach(btn => {
+        const mode = btn.getAttribute('data-theme-mode');
+        const isActive = mode === activePreference;
+        btn.classList.toggle('is-active', isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    },
+
     init() {
-      document.documentElement.setAttribute('data-theme', 'light');
-      localStorage.setItem('onr-theme', 'light');
-    },
+      const preference = this.getSavedPreference();
+      this.apply(preference, false);
 
-    cycle() {
-      // Dark mode removed per user request
-    },
+      // Delegated click handler for theme segmented buttons (both nav & sticky topbar)
+      document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.theme-mode-btn');
+        if (!btn) return;
+        e.preventDefault();
+        const mode = btn.getAttribute('data-theme-mode');
+        if (mode) {
+          this.apply(mode, true);
+        }
+      });
 
-    apply(theme) {
-      document.documentElement.setAttribute('data-theme', 'light');
-      localStorage.setItem('onr-theme', 'light');
+      // Dynamic OS system dark/light change listener
+      if (window.matchMedia) {
+        try {
+          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            const currentPref = this.getSavedPreference();
+            if (currentPref === 'system') {
+              const newTheme = e.matches ? 'dark' : 'light';
+              document.documentElement.setAttribute('data-theme', newTheme);
+            }
+          });
+        } catch (e) { }
+      }
     }
   };
 

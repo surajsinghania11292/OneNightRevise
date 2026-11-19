@@ -4087,6 +4087,709 @@ export default defineConfig({
           `
         }
       ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 20: COMPONENT ARCHITECTURE: FEATURE-BASED VS. ATOMIC DESIGN
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-20-component-architecture-feature-vs-atomic",
+      number: "20",
+      shortLabel: "Feature-Based vs Atomic Design",
+      title: "Component-Based Architecture (Feature-Based vs. Atomic Design)",
+      summary: "Modern banking UI case study (07-ui-project), clean App.jsx orchestration, Feature-Based vs. Atomic Design methodologies, and decomposing complex component trees.",
+      subtopicLabels: ["20.1 Digital Banking UI Setup", "20.2 Feature vs Atomic Structure", "20.3 Component Tree Decomposition"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "20.1",
+          title: "Project Setup & Goal (07-ui-project — Digital Banking UI)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Project Bootstrap & Tech Stack:</strong>
+                <ul class="notes-sub-list">
+                  <li>Initialize a clean Vite + React application (<code>07-ui-project</code>), install Tailwind CSS v4 (<code>tailwindcss</code> + <code>@tailwindcss/vite</code>), configure <code>vite.config.js</code>, and add <code>@import "tailwindcss";</code> in <code>src/index.css</code>.</li>
+                  <li><strong>What We Are Building:</strong> A production-grade <strong>Digital Banking & Customer Segmentation Platform</strong> featuring a responsive top navbar, left-aligned hero callouts with action arrows, and a right-aligned horizontally scrollable card carousel (<em>"Satisfied"</em>, <em>"Underserved"</em>, <em>"Underbanked"</em>).</li>
+                </ul>
+              </li>
+              <li><strong>The Golden Rule for <code>App.jsx</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li>Never dump hundreds of lines of UI markup directly into <code>App.jsx</code>.</li>
+                  <li><code>App.jsx</code> serves solely as a <strong>top-level layout coordinator</strong> that imports and organizes dedicated section components.</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "20.2",
+          title: "Feature-Based Structure vs. Atomic Structure",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>1. Feature-Based Architecture:</strong>
+                <ul class="notes-sub-list">
+                  <li>Decomposes your codebase into components aligned with <strong>domain features or UI sections</strong>.</li>
+                  <li><strong>Examples:</strong> The <code>Navbar</code> is one self-contained feature, <code>HeroSection</code> is a feature, <code>CustomerCarousel</code> is a feature, and <code>Footer</code> is a feature. Sub-components live within their respective feature folders.</li>
+                  <li><strong>Best For:</strong> Complex web apps, dashboards, and multi-team codebases where engineers own specific functional domains.</li>
+                </ul>
+              </li>
+              <li><strong>2. Atomic Design Methodology:</strong>
+                <ul class="notes-sub-list">
+                  <li>Decomposes UI into a hierarchy of granular physical units:
+                    <ul class="notes-sub-list">
+                      <li><strong>Atoms:</strong> Basic building blocks (<code>Button</code>, <code>Input</code>, <code>Icon</code>, <code>Badge</code>).</li>
+                      <li><strong>Molecules:</strong> Combinations of atoms (<code>SearchBar</code> = Input + Button).</li>
+                      <li><strong>Organisms:</strong> Distinct UI sections assembled from molecules (<code>Navbar</code>).</li>
+                      <li><strong>Templates & Pages:</strong> Full-page layouts binding data to organisms.</li>
+                    </ul>
+                  </li>
+                  <li><strong>Best For:</strong> Centralized design systems and shared cross-company UI component libraries.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 20.1 · UI Architecture Patterns: Feature-Based Structure vs. Atomic Design</span>
+                <span class="diagram-frame-tag">DESIGN PATTERN COMPARISON</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram contrasting Feature-Based Structure with Atomic Design">
+                  <!-- Feature-Based Box -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary)"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">FEATURE-BASED ARCH</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Domain Section Decomposition</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="25" y="96" class="svg-mono-xs">• Navbar Feature (Logo, Links, Auth)</text>
+                    <text x="25" y="116" class="svg-mono-xs">• Hero Feature (Text, Action Arrows)</text>
+                    <text x="25" y="136" class="svg-mono-xs">• Customer Carousel (Cards, Details)</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">Best for: High-velocity domain teams</text>
+                  </g>
+
+                  <!-- Atomic Structure Box -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="150" height="22" rx="4" fill="var(--accent)"/>
+                    <text x="90" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">ATOMIC DESIGN</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Hierarchical Building Blocks</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="25" y="96" class="svg-mono-xs">• Atoms: &lt;Button&gt;, &lt;Heading&gt;, &lt;Icon&gt;</text>
+                    <text x="25" y="116" class="svg-mono-xs">• Molecules: SearchBar (Input + Button)</text>
+                    <text x="25" y="136" class="svg-mono-xs">• Organisms: Navbar (Assembled UI)</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">Best for: Design systems & UI kits</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "20.3",
+          title: "Breaking Down the Component Tree (07-ui-project)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Hierarchical Component Decomposition:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong><code>App.jsx</code>:</strong> Renders top-level structural sections: <code>&lt;Section1 /&gt;</code> and <code>&lt;Section2 /&gt;</code>.</li>
+                  <li><strong><code>Section1.jsx</code>:</strong> Combines <code>&lt;Navbar /&gt;</code> and <code>&lt;Page1Content /&gt;</code>.</li>
+                  <li><strong><code>Page1Content.jsx</code>:</strong> Horizontally partitions the viewport into <code>&lt;LeftContent /&gt;</code> and <code>&lt;RightContent /&gt;</code>.</li>
+                  <li><strong><code>LeftContent.jsx</code>:</strong> Contains <code>&lt;HeroText /&gt;</code> and <code>&lt;Arrow /&gt;</code>.</li>
+                  <li><strong><code>RightContent.jsx</code>:</strong> Loops over the customer data array and mounts multiple <code>&lt;RightCard /&gt;</code> instances.</li>
+                  <li><strong><code>RightCard.jsx</code>:</strong> Handles card background imagery and renders <code>&lt;RightCardContent /&gt;</code> text overlays.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 20.2 · Production Component Tree Decomposition: Digital Banking UI</span>
+                <span class="diagram-frame-tag">COMPONENT HIERARCHY TREE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Hierarchical component tree from App down to Section1, Page1Content, LeftContent, RightContent, RightCard">
+                  <!-- Root: App -->
+                  <g transform="translate(370, 15)">
+                    <rect x="0" y="0" width="140" height="38" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="70" y="24" text-anchor="middle" class="svg-title">&lt;App /&gt;</text>
+                  </g>
+
+                  <!-- Down line to Section1 -->
+                  <line x1="440" y1="53" x2="440" y2="75" stroke="var(--border)" stroke-width="1.8"/>
+
+                  <!-- Section1 -->
+                  <g transform="translate(360, 75)">
+                    <rect x="0" y="0" width="160" height="38" rx="8" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <text x="80" y="24" text-anchor="middle" class="svg-title">&lt;Section1 /&gt;</text>
+                  </g>
+
+                  <!-- Branches to Navbar and Page1Content -->
+                  <path d="M 440 113 L 440 130 L 220 130 L 220 145" fill="none" stroke="var(--border)" stroke-width="1.6"/>
+                  <path d="M 440 113 L 440 130 L 640 130 L 640 145" fill="none" stroke="var(--border)" stroke-width="1.6"/>
+
+                  <!-- Navbar -->
+                  <g transform="translate(140, 145)">
+                    <rect x="0" y="0" width="160" height="38" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="80" y="24" text-anchor="middle" class="svg-mono-xs">&lt;Navbar /&gt;</text>
+                  </g>
+
+                  <!-- Page1Content -->
+                  <g transform="translate(550, 145)">
+                    <rect x="0" y="0" width="180" height="38" rx="8" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="90" y="24" text-anchor="middle" class="svg-title">&lt;Page1Content /&gt;</text>
+                  </g>
+
+                  <!-- Sub-branches under Page1Content -->
+                  <path d="M 640 183 L 640 200 L 510 200 L 510 210" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+                  <path d="M 640 183 L 640 200 L 760 200 L 760 210" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+
+                  <!-- LeftContent -->
+                  <g transform="translate(425, 210)">
+                    <rect x="0" y="0" width="170" height="24" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="85" y="16" text-anchor="middle" class="svg-mono-xs">&lt;LeftContent /&gt;</text>
+                  </g>
+
+                  <!-- RightContent -->
+                  <g transform="translate(675, 210)">
+                    <rect x="0" y="0" width="170" height="24" rx="4" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="85" y="16" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;RightContent /&gt; (Cards)</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 21: HORIZONTAL SCROLLABLE CARDS, MULTI-LEVEL PROPS & STYLING
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-21-horizontal-scroll-props-dynamic-styles",
+      number: "21",
+      shortLabel: "Horizontal Scroll & Multi-Level Props",
+      title: "Horizontal Scrollable Cards, Multi-Level Props & Dynamic Styling",
+      summary: "Tailwind horizontal scroll layout (flex-nowrap, shrink-0, overflow-x-auto), multi-tier prop drilling, and dynamic inline styling with debugging workflows.",
+      subtopicLabels: ["21.1 Horizontal Scroll Layout", "21.2 Multi-Level Prop Drilling", "21.3 Dynamic Styles & Debugging"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "21.1",
+          title: "Building a Horizontally Scrollable Carousel With Tailwind",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Three Essential Flexbox Utility Rules:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>1. Prevent Row Wrapping (<code>flex-nowrap</code>):</strong> Standard Flexbox wraps overflow items onto a second line. Use <code>flex flex-nowrap gap-10</code> on the parent to lock all cards into a single horizontal strip.</li>
+                  <li><strong>2. Prevent Card Squishing (<code>shrink-0</code>):</strong> By default, Flexbox shrinks children (<code>flex-shrink: 1</code>) to prevent overflow. Adding <strong><code>shrink-0</code></strong> to each card ensures each card retains its full designated width (e.g. <code>w-80</code>).</li>
+                  <li><strong>3. Enable Horizontal Scroll (<code>overflow-x-auto</code>):</strong> Add <code>overflow-x-auto</code> to the container so users can swipe horizontally across cards on touch devices or scroll with trackpads.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 21.1 · Flexbox Horizontal Scroll Architecture: flex-nowrap + shrink-0</span>
+                <span class="diagram-frame-tag">CSS FLEXBOX CAROUSEL MECHANICS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing Flexbox horizontal scroll container using flex-nowrap, overflow-x-auto, and shrink-0 cards">
+                  <!-- Outer Container -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="830" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="220" height="22" rx="4" fill="var(--primary)"/>
+                    <text x="125" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">overflow-x-auto flex flex-nowrap</text>
+
+                    <!-- Card 1 -->
+                    <g transform="translate(20, 50)">
+                      <rect x="0" y="0" width="230" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.5"/>
+                      <text x="115" y="32" text-anchor="middle" class="svg-title">Card 1: Satisfied</text>
+                      <rect x="15" y="48" width="200" height="26" rx="4" fill="var(--bg-canvas)" stroke="var(--border)"/>
+                      <text x="115" y="65" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success);">shrink-0 (Fixed Width)</text>
+                      <text x="115" y="94" text-anchor="middle" class="svg-sub">Full width preserved ✓</text>
+                    </g>
+
+                    <!-- Card 2 -->
+                    <g transform="translate(270, 50)">
+                      <rect x="0" y="0" width="230" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.5"/>
+                      <text x="115" y="32" text-anchor="middle" class="svg-title">Card 2: Underserved</text>
+                      <rect x="15" y="48" width="200" height="26" rx="4" fill="var(--bg-canvas)" stroke="var(--border)"/>
+                      <text x="115" y="65" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success);">shrink-0 (Fixed Width)</text>
+                      <text x="115" y="94" text-anchor="middle" class="svg-sub">Full width preserved ✓</text>
+                    </g>
+
+                    <!-- Card 3 -->
+                    <g transform="translate(520, 50)">
+                      <rect x="0" y="0" width="230" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.5"/>
+                      <text x="115" y="32" text-anchor="middle" class="svg-title">Card 3: Underbanked</text>
+                      <rect x="15" y="48" width="200" height="26" rx="4" fill="var(--bg-canvas)" stroke="var(--border)"/>
+                      <text x="115" y="65" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success);">shrink-0 (Fixed Width)</text>
+                      <text x="115" y="94" text-anchor="middle" class="svg-sub">Full width preserved ✓</text>
+                    </g>
+
+                    <!-- Peek Arrow -->
+                    <text x="795" y="110" text-anchor="middle" class="svg-title" style="fill:var(--accent);">➔</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "21.2",
+          title: "Passing Props Down Multiple Component Levels (Prop Drilling)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Prop Forwarding Pipeline:</strong>
+                <ul class="notes-sub-list">
+                  <li>In real projects, data often lives at the application root (<code>App.jsx</code>) and must travel down multiple component layers:
+                    <ul class="notes-sub-list">
+                      <li><strong>Level 1 (<code>App</code>):</strong> Holds <code>users</code> array → passes to <code>&lt;Section1 users={users} /&gt;</code>.</li>
+                      <li><strong>Level 2 (<code>Section1</code>):</strong> Forwards <code>props.users</code> → <code>&lt;Page1Content users={props.users} /&gt;</code>.</li>
+                      <li><strong>Level 3 (<code>Page1Content</code>):</strong> Forwards <code>props.users</code> → <code>&lt;RightContent users={props.users} /&gt;</code>.</li>
+                      <li><strong>Level 4 (<code>RightContent</code>):</strong> Maps over array → passes individual fields to <code>&lt;RightCard color={elem.color} ... /&gt;</code>.</li>
+                      <li><strong>Level 5 (<code>RightCard</code>):</strong> Forwards props to <code>&lt;RightCardContent color={props.color} /&gt;</code>.</li>
+                    </ul>
+                  </li>
+                  <li><strong>The Architectural Friction:</strong> Passing props through intermediary components that do not need the data themselves is known as <strong>Prop Drilling</strong>—this pattern motivates the use of the React Context API in advanced applications.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 21.2 · Multi-Tier Prop Drilling Pipeline Across Component Generations</span>
+                <span class="diagram-frame-tag">UNIDIRECTIONAL PROP CHAIN</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 210" class="arch-svg" role="img" aria-label="Diagram illustrating prop drilling from App down through Section1, Page1Content, RightContent to RightCard">
+                  <!-- Flow from left to right -->
+                  <!-- Step 1 -->
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="140" height="150" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="70" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">TIER 1</text>
+                    <text x="70" y="52" text-anchor="middle" class="svg-title">App.jsx</text>
+                    <rect x="10" y="66" width="120" height="70" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="70" y="98" text-anchor="middle" class="svg-mono-xs">users data</text>
+                    <text x="70" y="118" text-anchor="middle" class="svg-sub">Origin Source</text>
+                  </g>
+
+                  <line x1="170" y1="100" x2="195" y2="100" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="195,96 203,100 195,104" fill="var(--primary)"/>
+
+                  <!-- Step 2 -->
+                  <g transform="translate(208, 25)">
+                    <rect x="0" y="0" width="140" height="150" rx="8" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="70" y="28" text-anchor="middle" class="svg-kicker">TIER 2</text>
+                    <text x="70" y="52" text-anchor="middle" class="svg-title">Section1</text>
+                    <rect x="10" y="66" width="120" height="70" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="70" y="98" text-anchor="middle" class="svg-mono-xs">props.users</text>
+                    <text x="70" y="118" text-anchor="middle" class="svg-sub">Intermediary</text>
+                  </g>
+
+                  <line x1="353" y1="100" x2="378" y2="100" stroke="var(--border)" stroke-width="2"/>
+                  <polygon points="378,96 386,100 378,104" fill="var(--border)"/>
+
+                  <!-- Step 3 -->
+                  <g transform="translate(391, 25)">
+                    <rect x="0" y="0" width="140" height="150" rx="8" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="70" y="28" text-anchor="middle" class="svg-kicker">TIER 3</text>
+                    <text x="70" y="52" text-anchor="middle" class="svg-title">Page1Content</text>
+                    <rect x="10" y="66" width="120" height="70" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="70" y="98" text-anchor="middle" class="svg-mono-xs">props.users</text>
+                    <text x="70" y="118" text-anchor="middle" class="svg-sub">Pass-through</text>
+                  </g>
+
+                  <line x1="536" y1="100" x2="561" y2="100" stroke="var(--accent)" stroke-width="2"/>
+                  <polygon points="561,96 569,100 561,104" fill="var(--accent)"/>
+
+                  <!-- Step 4 -->
+                  <g transform="translate(574, 25)">
+                    <rect x="0" y="0" width="140" height="150" rx="8" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="70" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">TIER 4</text>
+                    <text x="70" y="52" text-anchor="middle" class="svg-title">RightContent</text>
+                    <rect x="10" y="66" width="120" height="70" rx="4" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="70" y="98" text-anchor="middle" class="svg-mono-xs">.map(elem)</text>
+                    <text x="70" y="118" text-anchor="middle" class="svg-sub">Extracts Fields</text>
+                  </g>
+
+                  <line x1="719" y1="100" x2="744" y2="100" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="744,96 752,100 744,104" fill="var(--success)"/>
+
+                  <!-- Step 5 -->
+                  <g transform="translate(757, 25)">
+                    <rect x="0" y="0" width="100" height="150" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="50" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">LEAF</text>
+                    <text x="50" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Card</text>
+                    <rect x="8" y="66" width="84" height="70" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="50" y="98" text-anchor="middle" class="svg-mono-xs">UI Node</text>
+                    <text x="50" y="118" text-anchor="middle" class="svg-sub">Renders</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "21.3",
+          title: "Dynamic Inline Styles & Debugging undefined Props",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Dynamic Color Binding with the <code>style</code> Attribute:</strong>
+                <ul class="notes-sub-list">
+                  <li>When CSS values (like custom brand hex codes or theme colors) arrive dynamically via props, apply them using React's inline style object:
+                    <pre class="notes-code-block"><code>&lt;button style={{ backgroundColor: props.color }} className="px-4 py-2 rounded-full text-white"&gt;
+  Learn More
+&lt;/button&gt;</code></pre>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>How to Debug <code>undefined</code> Props:</strong>
+                <ul class="notes-sub-list">
+                  <li>If a deeply nested child receives <code>undefined</code>, do not panic. Place a <code>console.log(props.color)</code> at each level of the hierarchy:
+                    <ul class="notes-sub-list">
+                      <li><code>RightCardContent</code> (shows undefined) → check <code>RightCard</code></li>
+                      <li><code>RightCard</code> (shows undefined) → check <code>RightContent</code></li>
+                      <li><code>RightContent</code> (shows undefined) → check <code>Page1Content</code></li>
+                    </ul>
+                  </li>
+                  <li>The exact link where the log changes from defined to <code>undefined</code> reveals the missing prop assignment!</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 22: HANDLING EVENTS & CALLING FUNCTIONS IN REACT
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-22-handling-events-functions",
+      number: "22",
+      shortLabel: "Event Handling & Functions",
+      title: "Handling Events & Calling Functions in React",
+      summary: "Vanilla JS addEventListener vs. React synthetic event props, function reference vs. immediate function execution, and passing arguments via wrapper arrow functions.",
+      subtopicLabels: ["22.1 Vanilla JS vs React Events", "22.2 Reference vs Immediate Call", "22.3 Passing Arguments via Arrow Functions"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "22.1",
+          title: "Vanilla JS addEventListener vs. React Event Props (onClick)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Imperative Vanilla JS Way:</strong>
+                <ul class="notes-sub-list">
+                  <li>In traditional JavaScript, you first find the DOM node with <code>document.querySelector('button')</code>, then manually register a listener with <code>btn.addEventListener('click', handler)</code>.</li>
+                  <li>This imperative approach creates detached listener management and memory leak risks when elements unmount.</li>
+                </ul>
+              </li>
+              <li><strong>The Declarative React Way:</strong>
+                <ul class="notes-sub-list">
+                  <li>React eliminates <code>document.querySelector</code> completely. You attach event listeners directly onto the JSX element using camelCase attributes:
+                    <pre class="notes-code-block"><code>function App() {
+  function btnClicked() {
+    console.log('Button was clicked!');
+  }
+
+  return &lt;button onClick={btnClicked}&gt;Click Here&lt;/button&gt;;
+}</code></pre>
+                  </li>
+                  <li>Under the hood, React uses a centralized <strong>SyntheticEvent</strong> delegator attached to the root container for maximum performance.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 22.1 · Event Delegation: Imperative DOM Listeners vs. React Synthetic Events</span>
+                <span class="diagram-frame-tag">EVENT DISPATCHING ARCHITECTURE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram contrasting manual addEventListener on individual DOM nodes with React declarative onClick synthetic event">
+                  <!-- Vanilla JS -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="200" y="28" text-anchor="middle" class="svg-kicker">IMPERATIVE JAVASCRIPT</text>
+                    <text x="200" y="52" text-anchor="middle" class="svg-title">document.addEventListener()</text>
+
+                    <rect x="15" y="66" width="365" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="88" class="svg-mono-xs">const btn = document.querySelector('button');</text>
+                    <text x="25" y="108" class="svg-mono-xs">btn.addEventListener('click', handleClick);</text>
+                    <text x="25" y="130" class="svg-mono-xs" style="fill:var(--danger);">• Direct node attachment</text>
+                    <text x="25" y="148" class="svg-mono-xs" style="fill:var(--text-muted);">• Manual cleanup needed on unmount</text>
+                  </g>
+
+                  <!-- React JSX -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="200" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">DECLARATIVE REACT ✓</text>
+                    <text x="200" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">SyntheticEvent Props (onClick)</text>
+
+                    <rect x="15" y="66" width="365" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="88" class="svg-mono-xs">&lt;button onClick={handleClick}&gt;Click&lt;/button&gt;</text>
+                    <text x="25" y="110" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">• Declarative & co-located in JSX</text>
+                    <text x="25" y="130" class="svg-mono-xs" style="fill:var(--primary);">• Root event delegation (Fast)</text>
+                    <text x="25" y="148" class="svg-mono-xs" style="fill:var(--success);">• Automatic memory garbage collection</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "22.2",
+          title: "Function Reference vs. Function Call (Critical Rule)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Number One Beginner React Mistake:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Correct (Passing Reference):</strong> <code>&lt;button onClick={btnClicked}&gt;</code></li>
+                  <li><strong>Fatal Bug (Immediate Invocation):</strong> <code>&lt;button onClick={btnClicked()}&gt;</code></li>
+                </ul>
+              </li>
+              <li><strong>Why <code>onClick={btnClicked()}</code> Breaks:</strong>
+                <ul class="notes-sub-list">
+                  <li>Adding parentheses <code>()</code> executes the JavaScript function <strong>immediately during component render</strong> before the user touches anything!</li>
+                  <li>Whatever value the function returns (usually <code>undefined</code>) is assigned to <code>onClick</code>. When the user later clicks the button, nothing happens because <code>onClick={undefined}</code>!</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 22.2 · Execution Timing: Function Reference vs. Immediate Execution</span>
+                <span class="diagram-frame-tag">EXECUTION TIMING GUARDRAIL</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram contrasting incorrect immediate execution onClick={fn()} with correct reference passing onClick={fn}">
+                  <!-- Bad: Immediate Call -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="130" height="20" rx="4" fill="var(--danger)"/>
+                    <text x="80" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">FATAL MISTAKE ❌</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">onClick={btnClicked()}</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="94" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">Executes immediately on initial render!</text>
+                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--text-muted);">Runs before user ever clicks</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--danger);">Leaves onClick bound to undefined</text>
+                  </g>
+
+                  <!-- Good: Function Reference -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="130" height="20" rx="4" fill="var(--success)"/>
+                    <text x="80" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">CORRECT PATTERN ✓</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">onClick={btnClicked}</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="94" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Passes function reference (idle)</text>
+                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--text);">Waits completely idle until click occurs</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--success);">Runs on-demand when clicked ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "22.3",
+          title: "Passing Arguments Using an Inline Wrapper Arrow Function",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Dilemma:</strong> How do you pass arguments to your event handler (like <code>deleteUser(user.id)</code>) without invoking it immediately?</li>
+              <li><strong>The Solution — Wrap with an Anonymous Arrow Function:</strong>
+                <pre class="notes-code-block"><code>// WRONG: Fires immediately on render
+&lt;button onClick={deleteUser(user.id)}&gt;Delete&lt;/button&gt;
+
+// CORRECT: Wrapped in an arrow function
+&lt;button onClick={() => deleteUser(user.id)}&gt;Delete&lt;/button&gt;</code></pre>
+              </li>
+              <li>Because <code>deleteUser(user.id)</code> sits inside the arrow function's body, JavaScript does not execute it during render. It executes strictly when the user clicks the button!</li>
+            </ul>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 23: WORKING WITH INPUT EVENTS (ONCHANGE) & SCROLL WHEEL (ONWHEEL)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-23-input-change-wheel-events",
+      number: "23",
+      shortLabel: "Input & Wheel Events",
+      title: "Working With Input Events (onChange) & Scroll Wheel Events (onWheel)",
+      summary: "Capturing user typing with onChange and SyntheticEvent e.target.value, detecting scroll direction and velocity with onWheel and deltaY.",
+      subtopicLabels: ["23.1 Reading Input with onChange", "23.2 Scroll Direction with onWheel", "23.3 Interactive Event Patterns"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "23.1",
+          title: "Reading Live Input Values With onChange & elem.target.value",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Listening to Keystrokes in Real Time:</strong>
+                <ul class="notes-sub-list">
+                  <li>Attach <code>onChange</code> to an <code>&lt;input&gt;</code> element to run a handler function on every single character typed or deleted:
+                    <pre class="notes-code-block"><code>function App() {
+  function inputChanging(val) {
+    console.log('User typed:', val);
+  }
+
+  return (
+    &lt;input
+      type="text"
+      placeholder="Type something..."
+      onChange={(elem) => inputChanging(elem.target.value)}
+      className="border p-2 rounded bg-neutral-900 text-white"
+    /&gt;
+  );
+}</code></pre>
+                  </li>
+                  <li><strong>The Event Target Object:</strong> React passes a <code>SyntheticEvent</code> object into your callback. The <code>elem.target.value</code> property provides the exact real-time string inside the input field (e.g. typing <em>"sarthak"</em> logs <em>s</em>, <em>sa</em>, <em>sar</em>, <em>sart</em>, <em>sarth</em>, <em>sartha</em>, <em>sarthak</em>).</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 23.1 · Live Input Stream: Keystroke to SyntheticEvent Pipeline</span>
+                <span class="diagram-frame-tag">REAL-TIME INPUT DISPATCH</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 210" class="arch-svg" role="img" aria-label="Diagram showing user keystrokes firing onChange and extracting e.target.value into handler">
+                  <!-- Step 1: User Types -->
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="220" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="110" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">1 · USER KEYSTROKE</text>
+                    <text x="110" y="52" text-anchor="middle" class="svg-title">Keyboard Input</text>
+                    <rect x="15" y="66" width="190" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="110" y="95" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">Types: "sarthak"</text>
+                    <text x="110" y="115" text-anchor="middle" class="svg-sub">Triggers raw DOM input</text>
+                  </g>
+
+                  <!-- Arrow 1 -> 2 -->
+                  <g transform="translate(260, 90)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--primary)" stroke-width="2"/>
+                    <polygon points="35,6 43,10 35,14" fill="var(--primary)"/>
+                    <text x="20" y="2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--primary);">onChange</text>
+                  </g>
+
+                  <!-- Step 2: SyntheticEvent -->
+                  <g transform="translate(315, 25)">
+                    <rect x="0" y="0" width="250" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <text x="125" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">2 · REACT SYNTHETIC EVENT</text>
+                    <text x="125" y="52" text-anchor="middle" class="svg-title">Event Object Interception</text>
+                    <rect x="15" y="66" width="220" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="125" y="94" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">e.target.value</text>
+                    <text x="125" y="114" text-anchor="middle" class="svg-sub">Extracts live string value</text>
+                  </g>
+
+                  <!-- Arrow 2 -> 3 -->
+                  <g transform="translate(575, 90)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="35,6 43,10 35,14" fill="var(--success)"/>
+                    <text x="20" y="2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--success);">Passes val</text>
+                  </g>
+
+                  <!-- Step 3: Function Handler -->
+                  <g transform="translate(620, 25)">
+                    <rect x="0" y="0" width="230" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="115" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">3 · HANDLER EXECUTION</text>
+                    <text x="115" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">inputChanging(val)</text>
+                    <rect x="15" y="66" width="200" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="115" y="95" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">console.log(val)</text>
+                    <text x="115" y="115" text-anchor="middle" class="svg-sub">Logs each keystroke ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "23.2",
+          title: "Detecting Scroll Direction & Speed With onWheel & elem.deltaY",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Tracking Mouse Wheel Movements:</strong>
+                <ul class="notes-sub-list">
+                  <li>React provides the <strong><code>onWheel</code></strong> listener for containers to capture trackpad and mouse-wheel events:
+                    <pre class="notes-code-block"><code>&lt;div onWheel={(e) => pageScrolling(e.deltaY)} className="h-screen w-full"&gt;
+  Scroll over this canvas
+&lt;/div&gt;</code></pre>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>Decoding <code>elem.deltaY</code> (Direction & Velocity):</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Positive (<code>deltaY &gt; 0</code>):</strong> User is scrolling <strong>downwards / forward</strong> (<em>seedha</em> scroll).</li>
+                  <li><strong>Negative (<code>deltaY &lt; 0</code>):</strong> User is scrolling <strong>upwards / backward</strong> (<em>ulta</em> scroll).</li>
+                  <li><strong>Magnitude (Speed):</strong> Gentle scrolling produces small numbers near <code>0</code>, while rapid gestures produce large values (e.g. <code>+100</code> or <code>-100</code>).</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 23.2 · Mouse Wheel Vector Analysis: onWheel & deltaY Polarity</span>
+                <span class="diagram-frame-tag">WHEEL GESTURE TELEMETRY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing onWheel deltaY polarity: deltaY greater than 0 means downward scrolling, deltaY less than 0 means upward scrolling">
+                  <!-- Downward Scroll -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--primary)"/>
+                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">SCROLL DOWNWARD</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title">deltaY &gt; 0 (Positive Value)</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="25" y="94" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">Direction: Forward / Down</text>
+                    <text x="25" y="114" class="svg-mono-xs">Example values: +15, +50, +120</text>
+                    <text x="25" y="134" class="svg-sub">Reveal next section, shrink navbar</text>
+                  </g>
+
+                  <!-- Upward Scroll -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--accent)"/>
+                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">SCROLL UPWARD</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title">deltaY &lt; 0 (Negative Value)</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="25" y="94" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">Direction: Backward / Up</text>
+                    <text x="25" y="114" class="svg-mono-xs">Example values: -15, -50, -120</text>
+                    <text x="25" y="134" class="svg-sub">Reveal floating header, back to top</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "23.3",
+          title: "Interactive Event Patterns Summary",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Three Core React Function Execution Patterns:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Pattern 1 · Direct Function Reference:</strong> <code>onClick={handleClick}</code> — best for zero-argument handlers.</li>
+                  <li><strong>Pattern 2 · Inline Wrapper Arrow Function:</strong> <code>onClick={() => deleteItem(item.id)}</code> — mandatory when passing custom arguments.</li>
+                  <li><strong>Pattern 3 · Event Data Pass-through:</strong> <code>onChange={(e) => updateSearch(e.target.value)}</code> — essential for extracting form inputs and telemetry.</li>
+                </ul>
+              </li>
+              <li><strong>Senior Engineering Foundation:</strong> Master these three core invocation patterns thoroughly before diving into React Hooks, as all interactive state updates in modern React build directly on top of them.</li>
+            </ul>
+          `
+        }
+      ]
     }
   ]
 };

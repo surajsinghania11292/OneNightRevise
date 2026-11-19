@@ -79,13 +79,13 @@ const StudyApp = (() => {
     const statsEl = document.getElementById('active-track-stats');
 
     if (trackName === 'reactjs') {
-      const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 19;
+      const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 23;
       let diagCount = 0;
       if (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) {
         REACT_NOTES.topics.forEach(t => { diagCount += t.diagramCount || 0; });
       }
       if (titleEl) titleEl.textContent = 'ReactJS Revision Notes';
-      if (statsEl) statsEl.textContent = `${count} Topics · ${diagCount || 38} Visual Architecture Diagrams`;
+      if (statsEl) statsEl.textContent = `${count} Topics · ${diagCount || 46} Visual Architecture Diagrams`;
       if (pushState) {
         try { history.replaceState(null, '', '#reactjs'); } catch (e) { }
       }
@@ -162,11 +162,6 @@ const StudyApp = (() => {
           <!-- Compact Clickable Header Summary Box -->
           <div class="topic-card-summary" role="button" tabindex="0" aria-expanded="false" data-toggle-topic="${topic.id}">
             <div class="topic-summary-main">
-              <div class="topic-summary-top-row">
-                <span class="topic-num-pill">TOPIC ${topic.number}</span>
-                <span class="topic-meta-count">${subCount} Subtopics · ${diagText}</span>
-              </div>
-
               <h2 class="topic-title">${topic.number}. ${topic.title}</h2>
               <p class="topic-subtitle">${topic.summary}</p>
 

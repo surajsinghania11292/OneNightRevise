@@ -1,24 +1,101 @@
 /* ═══════════════════════════════════════════════════════════════
-   APP.JS — Expandable Topic Study Engine (OneNightRevise)
+   APP.JS — Expandable Multi-Track Revision Engine (OneNightRevise)
+   Tracks Supported:
+   1. System Design & Distributed Systems (72 Topics · 187 Diagrams)
+   2. ReactJS & Modern Frontend (Topics 01–03 · 6 Diagrams)
+
    Features:
-   • Compact 2-per-row Rectangular Preview Cards
+   • Bento-style Multi-Track Landing Page Switcher (System Design & ReactJS)
+   • Compact 2-per-row Rectangular Preview Cards (Uniform 220px Height)
    • Arrow Down Icon Button / Whole Card Click to Expand & Collapse
    • Multi-Open Topics: Opened topics stay open until closed by user
-   • Smooth Scrolling & Responsive Viewport Fitting
+   • Instant Close Snap: Directly restores view to closed card with zero scroll jitter
+   • Responsive Vector SVG Architecture Diagrams with zero overflow
    • Sticky Active-Topic Topbar showing Current Open Topic in View
    ═══════════════════════════════════════════════════════════════ */
 
 const StudyApp = (() => {
+  // Current active subject track: 'system-design' or 'reactjs'
+  let currentTrack = 'system-design';
+
   // Track all currently open topic IDs (allows multiple topics open simultaneously)
   const openTopicIds = new Set();
   let topbarActiveTopicId = null;
 
-  /* ── 1. RENDER NAVBAR LINKS DYNAMICALLY ────────────────────── */
+  /* ── 1. ACTIVE TRACK DATA RESOLVER ─────────────────────────── */
+  function getActiveData() {
+    if (currentTrack === 'reactjs') {
+      return (typeof REACT_NOTES !== 'undefined') ? REACT_NOTES : { topics: [] };
+    }
+    return (typeof SYSTEM_DESIGN_NOTES !== 'undefined') ? SYSTEM_DESIGN_NOTES : { topics: [] };
+  }
+
+  /* ── 2. SWITCH REVISION TRACK ───────────────────────────────── */
+  function switchTrack(trackName, shouldScroll = false) {
+    if (trackName !== 'system-design' && trackName !== 'reactjs') return;
+
+    currentTrack = trackName;
+    openTopicIds.clear();
+
+    // 1. Update Landing Track Cards UI
+    document.querySelectorAll('[data-track-card]').forEach(card => {
+      const match = card.getAttribute('data-track-card') === trackName;
+      card.classList.toggle('is-active-track', match);
+    });
+
+    // 2. Update Navbar Track Switcher Tabs UI
+    document.querySelectorAll('[data-switch-track]').forEach(tab => {
+      const match = tab.getAttribute('data-switch-track') === trackName;
+      if (tab.classList.contains('nav-track-tab')) {
+        tab.classList.toggle('is-active', match);
+        tab.setAttribute('aria-selected', match ? 'true' : 'false');
+      }
+    });
+
+    // 3. Update Active Track Banner (Title & Stats)
+    const badgeEl = document.getElementById('active-track-badge');
+    const titleEl = document.getElementById('active-track-title');
+    const statsEl = document.getElementById('active-track-stats');
+
+    if (trackName === 'reactjs') {
+      const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 3;
+      if (badgeEl) badgeEl.textContent = 'TRACK 02';
+      if (titleEl) titleEl.textContent = 'ReactJS & Modern Frontend';
+      if (statsEl) statsEl.textContent = `${count} Topics · 6 Visual Architecture Diagrams`;
+      try {
+        history.replaceState(null, '', '#reactjs');
+      } catch (e) {}
+    } else {
+      const count = (typeof SYSTEM_DESIGN_NOTES !== 'undefined' && SYSTEM_DESIGN_NOTES.topics) ? SYSTEM_DESIGN_NOTES.topics.length : 72;
+      if (badgeEl) badgeEl.textContent = 'TRACK 01';
+      if (titleEl) titleEl.textContent = 'System Design & Distributed Systems';
+      if (statsEl) statsEl.textContent = `${count} Topics · 187 Visual Architecture Diagrams`;
+      try {
+        history.replaceState(null, '', '#system-design');
+      } catch (e) {}
+    }
+
+    // 4. Render Active Notes & Sync Topbar
+    renderTopics();
+    updateStickyTopbarOnScroll();
+
+    // 5. Scroll to Topic Section if User Triggered
+    if (shouldScroll) {
+      const banner = document.getElementById('active-track-banner');
+      if (banner) {
+        const y = banner.getBoundingClientRect().top + window.scrollY - 30;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      }
+    }
+  }
+
+  /* ── 3. RENDER NAVBAR LINKS DYNAMICALLY (LEGACY/EXPANDABLE) ── */
   function renderNavbarLinks() {
     const navMount = document.getElementById('nav-links-mount');
     if (!navMount) return;
 
-    const groups = SYSTEM_DESIGN_NOTES.navGroups || [];
+    const activeData = getActiveData();
+    const groups = activeData.navGroups || [];
     if (groups.length > 0) {
       navMount.innerHTML = groups.map(g => `
         <li>
@@ -39,35 +116,20 @@ const StudyApp = (() => {
           }
         });
       });
-      return;
     }
-
-    navMount.innerHTML = SYSTEM_DESIGN_NOTES.topics.map(t => `
-      <li>
-        <a href="#${t.id}" class="nav-link" data-nav-topic="${t.id}">
-          ${t.number}. ${t.shortLabel}
-        </a>
-      </li>
-    `).join('');
-
-    navMount.querySelectorAll('[data-nav-topic]').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const id = link.getAttribute('data-nav-topic');
-        openTopic(id, true);
-      });
-    });
   }
 
-  /* ── 2. RENDER ALL TOPIC CARDS ──────────────────────────────── */
+  /* ── 4. RENDER ALL TOPIC CARDS FOR CURRENT TRACK ───────────── */
   function renderTopics() {
     const mount = document.getElementById('topics-mount');
     if (!mount) return;
 
+    const activeData = getActiveData();
+    const topics = activeData.topics || [];
+
     let html = '';
 
-    SYSTEM_DESIGN_NOTES.topics.forEach((topic, idx) => {
-      const nextTopic = SYSTEM_DESIGN_NOTES.topics[idx + 1] || null;
+    topics.forEach((topic) => {
       const subCount = topic.sections.length;
       const diagText = topic.diagramCount === 1 ? '1 Diagram' : `${topic.diagramCount} Diagrams`;
 
@@ -143,7 +205,7 @@ const StudyApp = (() => {
           <div class="topic-card-body">
             ${sectionsHtml}
 
-            <!-- Bottom Close Button (Clean light pill, Next Topic removed) -->
+            <!-- Bottom Close Button (Clean light pill, instant view restoration) -->
             <div class="topic-footer-bar">
               <button type="button" class="topic-close-btn-bottom" data-footer-close="${topic.id}">
                 ✕ Close Topic
@@ -158,7 +220,7 @@ const StudyApp = (() => {
     bindCardEvents();
   }
 
-  /* ── 3. BIND CARD EVENTS ────────────────────────────────────── */
+  /* ── 5. BIND TOPIC CARD EVENTS ──────────────────────────────── */
   function bindCardEvents() {
     // Expand / Collapse on clicking the header summary
     document.querySelectorAll('[data-toggle-topic]').forEach(header => {
@@ -176,7 +238,7 @@ const StudyApp = (() => {
       });
     });
 
-    // Footer Close Topic buttons
+    // Footer Close Topic buttons (Instant Snap to closed card)
     document.querySelectorAll('[data-footer-close]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -197,7 +259,7 @@ const StudyApp = (() => {
     window.addEventListener('resize', updateStickyTopbarOnScroll, { passive: true });
   }
 
-  /* ── 4. INDEPENDENT TOPIC TOGGLE / OPEN / CLOSE ─────────────── */
+  /* ── 6. INDEPENDENT TOPIC TOGGLE / OPEN / CLOSE ─────────────── */
   function toggleTopic(topicId) {
     if (openTopicIds.has(topicId)) {
       closeTopic(topicId, false);
@@ -227,27 +289,29 @@ const StudyApp = (() => {
     updateStickyTopbarOnScroll();
   }
 
-  function closeTopic(topicId, scrollBackToCard = false) {
+  function closeTopic(topicId, snapToCard = false) {
     openTopicIds.delete(topicId);
 
     const card = document.getElementById(topicId);
     if (!card) return;
 
+    // 1. Collapse the card immediately to its uniform 220px box
     card.classList.remove('is-expanded');
     const summary = card.querySelector('.topic-card-summary');
     if (summary) summary.setAttribute('aria-expanded', 'false');
 
-    if (scrollBackToCard) {
-      requestAnimationFrame(() => {
-        const y = card.getBoundingClientRect().top + window.scrollY - 36;
-        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-      });
+    if (snapToCard) {
+      // 2. Compute collapsed card top offset and jump directly to it with zero scrolling motion
+      const cardTop = card.getBoundingClientRect().top + window.scrollY;
+      const targetY = Math.max(0, cardTop - 70);
+
+      window.scrollTo({ top: targetY, behavior: 'instant' });
     }
 
     updateStickyTopbarOnScroll();
   }
 
-  /* ── 5. STICKY ACTIVE-TOPIC TOPBAR SYNC ──────────────────────── */
+  /* ── 7. STICKY ACTIVE-TOPIC TOPBAR SYNC ──────────────────────── */
   function updateStickyTopbarOnScroll() {
     const topbar = document.getElementById('active-topic-topbar');
     if (!topbar) return;
@@ -279,7 +343,8 @@ const StudyApp = (() => {
 
     if (currentInView) {
       topbarActiveTopicId = currentInView;
-      const topic = SYSTEM_DESIGN_NOTES.topics.find(t => t.id === currentInView);
+      const activeData = getActiveData();
+      const topic = (activeData.topics || []).find(t => t.id === currentInView);
       if (topic) {
         const numEl = document.getElementById('active-topbar-num');
         const titleEl = document.getElementById('active-topbar-title');
@@ -296,12 +361,59 @@ const StudyApp = (() => {
     }
   }
 
-  function init() {
-    renderNavbarLinks();
-    renderTopics();
+  /* ── 8. GLOBAL EVENT BINDINGS (TRACK SWITCHER & HASH ROUTING) ── */
+  function bindGlobalEvents() {
+    // Buttons with data-switch-track (Navbar tabs and Bento CTA buttons)
+    document.querySelectorAll('[data-switch-track]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const track = btn.getAttribute('data-switch-track');
+        switchTrack(track, true);
+      });
+    });
+
+    // Entire Bento Cards clickable
+    document.querySelectorAll('[data-track-card]').forEach(card => {
+      card.addEventListener('click', () => {
+        const track = card.getAttribute('data-track-card');
+        switchTrack(track, true);
+      });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const track = card.getAttribute('data-track-card');
+          switchTrack(track, true);
+        }
+      });
+    });
+
+    // Hash Navigation Check
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.toLowerCase();
+      if (hash.includes('react')) {
+        switchTrack('reactjs', false);
+      } else if (hash.includes('system') || hash.includes('topic')) {
+        switchTrack('system-design', false);
+      }
+    });
   }
 
-  return { init, openTopic, closeTopic, toggleTopic };
+  /* ── 9. INITIALIZE STUDY ENGINE ─────────────────────────────── */
+  function init() {
+    bindGlobalEvents();
+
+    // Check initial hash
+    const initialHash = window.location.hash.toLowerCase();
+    if (initialHash.includes('react')) {
+      currentTrack = 'reactjs';
+    } else {
+      currentTrack = 'system-design';
+    }
+
+    switchTrack(currentTrack, false);
+  }
+
+  return { init, openTopic, closeTopic, toggleTopic, switchTrack };
 })();
 
 document.addEventListener('DOMContentLoaded', () => {

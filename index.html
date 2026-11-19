@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OneNightRevise — System Design Revision Notes</title>
+  <title>OneNightRevise — Technical Revision Notes (System Design & ReactJS)</title>
 
   <!-- ── UNIQUE BRAND FAVICON (SHOWS IN CHROME TAB) ── -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -48,7 +48,14 @@
         <span class="brand-title">OneNightRevise</span>
       </a>
 
-      <ul class="nav-links" id="nav-links-mount"></ul>
+      <div class="nav-track-switcher" role="tablist" aria-label="Select Study Subject">
+        <button type="button" class="nav-track-tab is-active" data-switch-track="system-design" role="tab" aria-selected="true">
+          🏗️ System Design
+        </button>
+        <button type="button" class="nav-track-tab" data-switch-track="reactjs" role="tab" aria-selected="false">
+          ⚛️ ReactJS
+        </button>
+      </div>
 
       <div class="nav-actions"></div>
     </div>
@@ -56,31 +63,86 @@
 
   <!-- ── MAIN READING CANVAS ── -->
   <main class="reading-canvas">
-    <!-- HERO HEADER (SAUCELABS STYLE) -->
+    <!-- HERO HEADER (PREMIER REVISION PLATFORM STYLE) -->
     <section class="hero-banner">
-      <div class="hero-kicker">SYSTEM DESIGN REVISION NOTES</div>
-      <h1 class="hero-headline">Master System Design, One Topic at a Time.</h1>
+      <div class="hero-kicker">ONE NIGHT REVISE · HIGH-YIELD ENGINEERING NOTES</div>
+      <h1 class="hero-headline">Master Technical Concepts, One Topic at a Time.</h1>
       <p class="hero-subtext">
-        Structured revision notes with 180+ visual architecture diagrams. Click any topic card below to expand and revise key distributed system concepts.
+        Structured revision notes with visual architecture diagrams for technical interviews and production mastery. Choose your revision track below.
       </p>
+    </section>
 
-      <div class="hero-pills-row">
-        <a href="#topics-mount" class="pill-btn-primary">Start Studying ↓</a>
+    <!-- LANDING TRACK SELECTION CARDS (BENTO STYLE) -->
+    <section class="landing-tracks-grid" id="tracks-selection" aria-label="Choose Revision Track">
+      <!-- Track 1: System Design -->
+      <div class="landing-track-card is-active-track" data-track-card="system-design" tabindex="0" role="button">
+        <div class="track-card-header">
+          <span class="track-icon">🏗️</span>
+          <span class="track-badge">72 TOPICS · 187 DIAGRAMS</span>
+        </div>
+        <div>
+          <h2 class="track-card-title">System Design & Distributed Systems</h2>
+          <p class="track-card-desc">
+            From Monoliths to Microservices, API Gateways, Load Balancing, Consistent Hashing, Message Queues, Rate Limiting, and Database Sharding.
+          </p>
+        </div>
+        <div class="track-card-meta">
+          <span class="track-meta-chip">Distributed Architecture</span>
+          <span class="track-meta-chip">Scalability & Caching</span>
+          <span class="track-meta-chip">Database Partitioning</span>
+        </div>
+        <button type="button" class="track-card-cta" data-switch-track="system-design">
+          Revise System Design ↓
+        </button>
+      </div>
+
+      <!-- Track 2: ReactJS -->
+      <div class="landing-track-card" data-track-card="reactjs" tabindex="0" role="button">
+        <div class="track-card-header">
+          <span class="track-icon">⚛️</span>
+          <span class="track-badge track-badge--new">NEW TRACK · FRONTEND</span>
+        </div>
+        <div>
+          <h2 class="track-card-title">ReactJS & Modern Frontend</h2>
+          <p class="track-card-desc">
+            Master modern frontend engineering: Library vs. Framework, Virtual DOM Reconciliation, Component Architecture, Hooks, State & Performance.
+          </p>
+        </div>
+        <div class="track-card-meta">
+          <span class="track-meta-chip">Core Fundamentals</span>
+          <span class="track-meta-chip">Virtual DOM & JSX</span>
+          <span class="track-meta-chip">Component Engineering</span>
+        </div>
+        <button type="button" class="track-card-cta" data-switch-track="reactjs">
+          Revise ReactJS ↓
+        </button>
       </div>
     </section>
 
+    <!-- ACTIVE TRACK BANNER -->
+    <div class="active-track-banner" id="active-track-banner">
+      <div class="active-track-banner__left">
+        <span class="active-track-banner__badge" id="active-track-badge">TRACK 01</span>
+        <h2 class="active-track-banner__title" id="active-track-title">System Design & Distributed Systems</h2>
+      </div>
+      <div class="active-track-banner__stats" id="active-track-stats">
+        72 Topics · 187 Visual Architecture Diagrams
+      </div>
+    </div>
+
     <!-- ── EXPANDABLE RECTANGULAR TOPIC CARDS (2-COLUMN GRID) ── -->
-    <div id="topics-mount" class="topics-stack" role="region" aria-label="System Design Revision Topics"></div>
+    <div id="topics-mount" class="topics-stack" role="region" aria-label="Revision Topics Grid"></div>
 
     <!-- ── CLEAN FOOTER ── -->
     <footer style="text-align: center; padding: 2.5rem 0 1.5rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.9rem;">
-      <p><strong>OneNightRevise</strong> · Personal System Design Study Notes</p>
-      <p style="font-size: 0.78rem; font-family: var(--font-mono); margin-top: 0.45rem;">72 Topics & 180+ Architecture Diagrams · Click any topic card to expand</p>
+      <p><strong>OneNightRevise</strong> · Visual Engineering Revision Notes</p>
+      <p style="font-size: 0.78rem; font-family: var(--font-mono); margin-top: 0.45rem;">System Design (72 Topics) · ReactJS (New Track) · Click any card to expand</p>
     </footer>
   </main>
 
   <!-- ── SCRIPTS (Strict Load Order) ── -->
   <script src="js/data.js"></script>
+  <script src="js/react-data.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
 </body>

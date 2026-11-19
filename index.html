@@ -57,10 +57,15 @@
     <!-- ── 1. COMPACT LANDING VIEW (FITS ON SCREEN WITHOUT SCROLLING) ── -->
     <div id="landing-view" class="landing-view">
       <section class="landing-hero">
-        <div class="hero-kicker">ONE NIGHT REVISE · HIGH-YIELD ENGINEERING NOTES</div>
-        <h1 class="hero-headline">Master Technical Concepts, One Topic at a Time.</h1>
+        <div class="hero-kicker">
+          <span class="hero-kicker-dot"></span>
+          HIGH-YIELD ENGINEERING REVISION
+        </div>
+        <h1 class="hero-headline">
+          Master Technical Concepts,<br>One Topic at a Time.
+        </h1>
         <p class="hero-subtext">
-          High-yield, exam-oriented revision notes with visual architecture diagrams. Select a subject below to begin studying.
+          Concise, exam-oriented notes paired with clear architectural diagrams. Select a subject below to begin studying.
         </p>
       </section>
 
@@ -69,7 +74,7 @@
         <!-- Track 1: System Design -->
         <div class="landing-track-card" data-track-card="system-design" tabindex="0" role="button">
           <div class="track-card-header">
-            <span class="track-icon">🏗️</span>
+            <div class="track-icon-wrap">🏗️</div>
             <span class="track-badge">72 TOPICS · 187 DIAGRAMS</span>
           </div>
           <div class="track-card-content">
@@ -91,19 +96,19 @@
         <!-- Track 2: ReactJS -->
         <div class="landing-track-card" data-track-card="reactjs" tabindex="0" role="button">
           <div class="track-card-header">
-            <span class="track-icon">⚛️</span>
-            <span class="track-badge track-badge--new">NEW TRACK · 5 TOPICS · 10 DIAGRAMS</span>
+            <div class="track-icon-wrap">⚛️</div>
+            <span class="track-badge track-badge--new">NEW SUBJECT · 7 TOPICS · 14 DIAGRAMS</span>
           </div>
           <div class="track-card-content">
             <h2 class="track-card-title">ReactJS & Modern Frontend</h2>
             <p class="track-card-desc">
-              Master modern frontend: Library vs. Framework, ES6 Modules & Imports, Virtual DOM Reconciliation, Component Architecture & State.
+              Master modern frontend: Library vs. Framework, ES Modules, Real DOM Bottlenecks, Virtual DOM Reconciliation, Component Architecture & State.
             </p>
           </div>
           <div class="track-card-meta">
-            <span class="track-meta-chip">Core Fundamentals</span>
-            <span class="track-meta-chip">ES6 Modules</span>
             <span class="track-meta-chip">Virtual DOM</span>
+            <span class="track-meta-chip">ES6 Modules</span>
+            <span class="track-meta-chip">Reconciliation</span>
           </div>
           <button type="button" class="track-card-cta" data-switch-track="reactjs">
             Open ReactJS Notes →
@@ -118,7 +123,7 @@
       <div class="active-track-banner" id="active-track-banner">
         <h2 class="active-track-banner__title" id="active-track-title">ReactJS Revision Notes</h2>
         <div class="active-track-banner__stats" id="active-track-stats">
-          5 Topics · 10 Visual Architecture Diagrams
+          7 Topics · 14 Visual Architecture Diagrams
         </div>
       </div>
 

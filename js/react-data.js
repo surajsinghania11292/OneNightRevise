@@ -1197,6 +1197,424 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
           `
         }
       ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 6: REAL DOM & WHY DIRECT DOM UPDATES ARE INEFFICIENT
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-06-real-dom-inefficiency",
+      number: "06",
+      shortLabel: "Real DOM Inefficiencies",
+      title: "Real DOM & Why Direct DOM Updates Are Inefficient",
+      summary: "The browser's live tree structure, why modifying the Real DOM directly triggers expensive reflows and repaints, and the button & heading text mutation problem.",
+      subtopicLabels: ["6.1 What Is Real DOM?", "6.2 Direct Mutation Problem", "6.3 Browser Reflow Cost"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "6.1",
+          title: "What Is the Real DOM?",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Core Definition:</strong> The <strong>Real DOM (Document Object Model)</strong> is the actual live tree structure of your web page constructed and rendered in memory by the browser engine.</li>
+              <li><strong>What It Contains:</strong> Every single HTML element you write—<code>&lt;html&gt;</code>, <code>&lt;body&gt;</code>, <code>&lt;header&gt;</code>, <code>&lt;h1&gt;</code>, <code>&lt;button&gt;</code>, <code>&lt;p&gt;</code>—lives as an active node inside this live hierarchical tree.</li>
+              <li><strong>Traditional Web Architecture:</strong>
+                <ul class="notes-sub-list">
+                  <li>In traditional websites built using plain HTML, CSS, and Vanilla JavaScript, any UI update directly mutates this <strong>Real DOM</strong> (using methods like <code>document.getElementById()</code>, <code>innerHTML</code>, or <code>appendChild()</code>).</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "6.2",
+          title: "The Problem With Updating the Real DOM Directly",
+          content: `
+            <div class="callout-highlight-box">
+              <span class="callout-highlight-tag">The &lt;button&gt; &amp; &lt;h1&gt; Dilemma</span>
+              <p style="margin-top:0.4rem; color:var(--text-secondary);">
+                Imagine a simple webpage with a <strong><code>&lt;button&gt;</code></strong> and an <strong><code>&lt;h1&gt;</code></strong> heading. On clicking the button, your code only needs to change the text of that single <strong><code>&lt;h1&gt;</code></strong>.
+              </p>
+            </div>
+
+            <ul class="notes-bullet-list" style="margin-top:1rem;">
+              <li><strong>What Happens in Traditional Real DOM Updates?</strong>
+                <ul class="notes-sub-list">
+                  <li>When JavaScript directly changes that <code>&lt;h1&gt;</code> element, the browser engine cannot easily isolate that text change without recalculating surrounding geometry.</li>
+                  <li>Directly updating the Real DOM forces heavy overhead: <strong>re-calculating the layout, recalculating styles, and re-rendering branches of the DOM tree</strong> just to change one tiny string of text!</li>
+                </ul>
+              </li>
+              <li><strong>The Performance Cost:</strong>
+                <ul class="notes-sub-list">
+                  <li>For a tiny toy webpage with 10 elements, you won't notice the lag.</li>
+                  <li>However, in modern web applications containing <strong>thousands of nested nodes</strong> (feeds, chats, sidebars, video players, comments), frequent direct DOM mutations choke the browser's main thread.</li>
+                  <li><strong>The Result:</strong> The browser does massive amounts of unnecessary extra work, causing dropped animation frames, stuttering scroll, high battery drain, and sluggish responsiveness.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 6.1 · Direct Real DOM Mutation Bottleneck: Heavy Cascading Reflow</span>
+                <span class="diagram-frame-tag">TRADITIONAL IMPERATIVE WEB PROBLEM</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing direct Real DOM mutation where clicking a button triggers cascading layout reflow and repaint across unchanged DOM nodes">
+                  <!-- Trigger Box -->
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="190" height="175" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">USER INTERACTION</text>
+                    <text x="95" y="54" text-anchor="middle" class="svg-title">Button Click</text>
+                    <rect x="15" y="70" width="160" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="95" y="96" text-anchor="middle" class="svg-mono-xs">&lt;button&gt; Clicked</text>
+                    <text x="95" y="132" text-anchor="middle" class="svg-sub">Target: Update &lt;h1&gt; text</text>
+                    <text x="95" y="152" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-size:10px;">Direct DOM Call</text>
+                  </g>
+
+                  <!-- Pipe 1 -->
+                  <g transform="translate(225, 100)">
+                    <line x1="0" y1="12" x2="35" y2="12" stroke="var(--danger)" stroke-width="2"/>
+                    <polygon points="35,7 45,12 35,17" fill="var(--danger)"/>
+                  </g>
+
+                  <!-- Real DOM Tree -->
+                  <g transform="translate(275, 25)">
+                    <rect x="0" y="0" width="310" height="175" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.6"/>
+                    <text x="155" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">LIVE BROWSER REAL DOM</text>
+                    <text x="155" y="52" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Cascading Tree Mutation</text>
+
+                    <!-- Tree Nodes -->
+                    <rect x="20" y="68" width="80" height="32" rx="4" fill="var(--danger)" stroke="var(--danger)"/>
+                    <text x="60" y="89" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">&lt;h1&gt; *</text>
+
+                    <rect x="115" y="68" width="80" height="32" rx="4" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="155" y="89" text-anchor="middle" class="svg-mono-xs">&lt;button&gt;</text>
+
+                    <rect x="210" y="68" width="80" height="32" rx="4" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="250" y="89" text-anchor="middle" class="svg-mono-xs">&lt;div.card&gt;</text>
+
+                    <rect x="20" y="112" width="270" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--danger)" stroke-dasharray="3 3"/>
+                    <text x="155" y="132" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:600;">💥 Unnecessary Full-Tree Re-render</text>
+                    <text x="155" y="148" text-anchor="middle" class="svg-sub">Unchanged elements forced through style recalculation</text>
+                  </g>
+
+                  <!-- Pipe 2 -->
+                  <g transform="translate(595, 100)">
+                    <line x1="0" y1="12" x2="35" y2="12" stroke="var(--danger)" stroke-width="2"/>
+                    <polygon points="35,7 45,12 35,17" fill="var(--danger)"/>
+                  </g>
+
+                  <!-- Engine Penalty -->
+                  <g transform="translate(640, 25)">
+                    <rect x="0" y="0" width="215" height="175" rx="10" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.5"/>
+                    <text x="107" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">BROWSER ENGINE</text>
+                    <text x="107" y="52" text-anchor="middle" class="svg-title">Reflow & Repaint</text>
+                    <rect x="15" y="68" width="185" height="36" rx="6" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                    <text x="107" y="91" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:600;">Layout Reflow (Heavy)</text>
+                    <rect x="15" y="112" width="185" height="36" rx="6" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                    <text x="107" y="135" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:600;">Full Raster Repaint</text>
+                    <text x="107" y="162" text-anchor="middle" class="svg-sub" style="font-size:10px;">Blocks UI Thread · Slow FPS</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "6.3",
+          title: "The 5-Stage Browser Rendering Engine Pipeline",
+          content: `
+            <p style="color:var(--text-secondary); margin-bottom:1rem;">
+              To understand why direct Real DOM updates are so inefficient, look at what the browser's C++ rendering engine (Blink / WebKit / Gecko) must execute whenever the DOM is touched:
+            </p>
+
+            <div class="sub-card-grid-3">
+              <div class="sub-box">
+                <div class="sub-box__tag">Stage 01 & 02 · Setup</div>
+                <div class="sub-box__title">JavaScript & Styles</div>
+                <div class="sub-box__body">
+                  1. <strong>JS Execution:</strong> Code mutates a node via the DOM API.<br>
+                  2. <strong>Style Recalculation:</strong> Browser re-evaluates all matching CSS selectors across the DOM tree.
+                </div>
+              </div>
+
+              <div class="sub-box">
+                <div class="sub-box__tag">Stage 03 · The Costliest</div>
+                <div class="sub-box__title">Layout / Reflow</div>
+                <div class="sub-box__body">
+                  3. <strong>Layout:</strong> The browser calculates the exact geometry, coordinates, margins, and bounding boxes of every affected element on the page.
+                </div>
+              </div>
+
+              <div class="sub-box">
+                <div class="sub-box__tag">Stage 04 & 05 · Pixels</div>
+                <div class="sub-box__title">Paint & Composite</div>
+                <div class="sub-box__body">
+                  4. <strong>Repaint:</strong> Rasterizes text, colors, and shadows into bitmap pixels.<br>
+                  5. <strong>Compositing:</strong> Sends GPU layers to the physical screen.
+                </div>
+              </div>
+            </div>
+
+            <div class="callout-highlight-box" style="margin-top:1.25rem;">
+              <span class="callout-highlight-tag">Core Takeaway</span>
+              <p style="margin-top:0.4rem; color:var(--text-secondary); font-weight:500;">
+                JavaScript itself is blazingly fast in modern engines (V8). The bottleneck is <strong>touching the Real DOM</strong>, because crossing into the browser's C++ DOM tree triggers heavy Layout and Repaint loops.
+              </p>
+            </div>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 7: VIRTUAL DOM — HOW REACT SOLVES THE PERFORMANCE PROBLEM
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-07-virtual-dom-reconciliation",
+      number: "07",
+      shortLabel: "Virtual DOM & Reconciliation",
+      title: "Virtual DOM — How React Solves the Performance Problem",
+      summary: "React's lightweight in-memory DOM copy, 3-step reconciliation diffing algorithm, targeted surgical DOM patches, and real-world YouTube & Instagram case studies.",
+      subtopicLabels: ["7.1 What Is Virtual DOM?", "7.2 3-Step Reconciliation", "7.3 YouTube & Instagram Cases", "7.4 Key Benefits"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "7.1",
+          title: "What Is the Virtual DOM?",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Simple Definition:</strong> To avoid unnecessary full DOM re-renders, React introduced the <strong>Virtual DOM</strong>—a <strong>lightweight in-memory copy of the Real DOM</strong> maintained entirely inside JavaScript objects.</li>
+              <li><strong>How Many Copies Does React Make?</strong>
+                <ul class="notes-sub-list">
+                  <li>Technically, React maintains <strong>one primary in-memory model</strong> of the DOM structure.</li>
+                  <li>During updates, React keeps the <strong>previous snapshot</strong> and builds a <strong>new updated snapshot</strong> (maintaining 2–3 representations in memory) to compare differences.</li>
+                </ul>
+              </li>
+              <li><strong>Why Is It So Fast?</strong>
+                <ul class="notes-sub-list">
+                  <li>The Virtual DOM is simply a plain JavaScript object tree (e.g., <code>{ type: 'h1', props: { children: 'Hello' } }</code>).</li>
+                  <li>Creating, reading, and comparing JavaScript objects in memory takes microseconds and triggers <strong>zero browser reflows or repaints</strong>!</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "7.2",
+          title: "How Virtual DOM Works Step-by-Step (<button> & <h1> Example)",
+          content: `
+            <div class="callout-highlight-box">
+              <span class="callout-highlight-tag">The 3-Step Reconciliation Pipeline</span>
+              <p style="margin-top:0.4rem; color:var(--text-secondary);">
+                When you click a <strong><code>&lt;button&gt;</code></strong> to update an <strong><code>&lt;h1&gt;</code></strong> in React, the browser does NOT touch the Real DOM immediately. Here is the exact 3-step process:
+              </p>
+            </div>
+
+            <div class="sub-card-grid-3" style="margin-top:1.15rem;">
+              <div class="sub-box">
+                <div class="sub-box__tag">Step 01 · In-Memory Mutation</div>
+                <div class="sub-box__title">1. Change in Copy</div>
+                <div class="sub-box__body">
+                  Instead of touching the live screen, React registers the <code>&lt;h1&gt;</code> text change inside its lightweight <strong>Virtual DOM copy</strong>.
+                </div>
+              </div>
+
+              <div class="sub-box">
+                <div class="sub-box__tag">Step 02 · Diffing Algorithm</div>
+                <div class="sub-box__title">2. Spot the Difference</div>
+                <div class="sub-box__body">
+                  React compares the updated Virtual DOM against the previous snapshot (a fast process called <strong>Diffing</strong>) to pinpoint exactly what changed.
+                </div>
+              </div>
+
+              <div class="sub-box">
+                <div class="sub-box__tag">Step 03 · Surgical Patch</div>
+                <div class="sub-box__title">3. Targeted Update</div>
+                <div class="sub-box__body">
+                  React applies <strong>only the changed part</strong> (updating solely that single <code>&lt;h1&gt;</code>) to the Real DOM—leaving every other element completely untouched!
+                </div>
+              </div>
+            </div>
+
+            <div class="formula-box" style="margin-top:1.25rem;">
+              Golden Rule: Make a Copy → Spot Only What Changed → Surgically Patch Only That Element in Real DOM
+            </div>
+
+            <figure class="diagram-frame" style="margin-top:1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 7.1 · Virtual DOM 3-Step Reconciliation & Surgical DOM Patching</span>
+                <span class="diagram-frame-tag">REACT RECONCILIATION ENGINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Diagram showing Virtual DOM reconciliation: Step 1 in-memory update, Step 2 diffing against previous snapshot, Step 3 surgical targeted patch to the Real DOM">
+                  <!-- Step 1: Virtual DOM -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="250" height="205" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="125" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">STEP 1 · IN-MEMORY COPY</text>
+                    <text x="125" y="52" text-anchor="middle" class="svg-title">Virtual DOM Snapshot</text>
+
+                    <rect x="18" y="70" width="214" height="42" rx="6" fill="var(--accent-light)" stroke="var(--accent)"/>
+                    <text x="125" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">h1: "Updated Text" ✓</text>
+
+                    <rect x="18" y="122" width="214" height="34" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="125" y="144" text-anchor="middle" class="svg-sub">button: "Click Me" (Same)</text>
+
+                    <text x="125" y="185" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-size:10px;">Zero Browser Reflow Yet</text>
+                  </g>
+
+                  <!-- Pipe 1 -->
+                  <g transform="translate(285, 110)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--accent)" stroke-width="2"/>
+                    <polygon points="35,5 45,10 35,15" fill="var(--accent)"/>
+                    <text x="22" y="0" text-anchor="middle" class="svg-mono-xs" style="font-size:10px;">diff</text>
+                  </g>
+
+                  <!-- Step 2: Diffing -->
+                  <g transform="translate(335, 20)">
+                    <rect x="0" y="0" width="245" height="205" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="122" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">STEP 2 · DIFFING ENGINE</text>
+                    <text x="122" y="52" text-anchor="middle" class="svg-title">Spot What Changed</text>
+
+                    <rect x="15" y="70" width="215" height="54" rx="6" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                    <text x="122" y="94" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">Delta Isolated: 1 Node</text>
+                    <text x="122" y="112" text-anchor="middle" class="svg-sub">&lt;h1&gt; text differs · button identical</text>
+
+                    <rect x="15" y="134" width="215" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="122" y="160" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:600;">Computes Minimal Patch</text>
+                  </g>
+
+                  <!-- Pipe 2 -->
+                  <g transform="translate(590, 110)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="35,5 45,10 35,15" fill="var(--success)"/>
+                    <text x="22" y="0" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--success);">patch</text>
+                  </g>
+
+                  <!-- Step 3: Targeted Real DOM -->
+                  <g transform="translate(635, 20)">
+                    <rect x="0" y="0" width="220" height="205" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="110" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">STEP 3 · REAL DOM</text>
+                    <text x="110" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Targeted Surgical Update</text>
+
+                    <rect x="15" y="70" width="190" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="105" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;h1&gt; Patched Only ✓</text>
+
+                    <rect x="15" y="122" width="190" height="34" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="105" y="144" text-anchor="middle" class="svg-sub">button untouched (0 reflow)</text>
+
+                    <text x="110" y="185" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:600;">✨ Fluid 60fps Performance</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "7.3",
+          title: "Real-World Examples of Targeted Updates",
+          content: `
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">Example 01 · State Retention</div>
+                <div class="sub-box__title">📺 YouTube Search Bar Case</div>
+                <div class="sub-box__body">
+                  <ul class="notes-sub-list" style="padding-left:1rem;">
+                    <li>Suppose you type <code>Sheryians Coding School</code> into the YouTube search bar and click different video results.</li>
+                    <li>The video player loads, recommendations change, comments render, and the URL updates dynamically.</li>
+                    <li><strong>Notice:</strong> The text you typed inside the search bar stays completely intact—it does <strong>not reload, flicker, or re-render</strong> because its state never changed!</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="sub-box">
+                <div class="sub-box__tag">Example 02 · Surgical Mutation</div>
+                <div class="sub-box__title">💬 Instagram Chat Badge Case</div>
+                <div class="sub-box__body">
+                  <ul class="notes-sub-list" style="padding-left:1rem;">
+                    <li>Suppose your Instagram chat icon shows an unread notification badge of <strong><code>4</code></strong>.</li>
+                    <li>When a 5th friend messages you, <strong>only that tiny badge number updates from <code>4</code> to <code>5</code></strong>.</li>
+                    <li>The rest of the entire webpage (stories bar, photo feed, reels tab) does <strong>NOT</strong> reload or re-render just to increment one digit.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame" style="margin-top:1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 7.2 · Real-World Targeted UI State Preservation: YouTube & Instagram</span>
+                <span class="diagram-frame-tag">PRODUCTION CASE STUDIES</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing YouTube search bar state preservation while videos load, and Instagram chat notification badge incrementing from 4 to 5 without feed re-renders">
+                  <!-- YouTube Panel -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="200" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">YOUTUBE TARGETED STATE EXAMPLE</text>
+                    <text x="200" y="52" text-anchor="middle" class="svg-title">Search Bar Text Preserved</text>
+
+                    <!-- Search Bar Node (Untouched) -->
+                    <rect x="25" y="70" width="350" height="42" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="200" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">🔍 Search: "Sheryians Coding School" [UNTOUCHED ✓]</text>
+
+                    <!-- Feeds Node (Updated) -->
+                    <rect x="25" y="122" width="350" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="200" y="142" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary);">Video Player & Comments Updated Dynamically</text>
+                    <text x="200" y="158" text-anchor="middle" class="svg-sub">Search input never re-renders or loses typed cursor</text>
+                  </g>
+
+                  <!-- Instagram Panel -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="200" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">INSTAGRAM NOTIFICATION EXAMPLE</text>
+                    <text x="200" y="52" text-anchor="middle" class="svg-title">Granular Badge Increment</text>
+
+                    <!-- Badge Node (Only updated part) -->
+                    <rect x="25" y="70" width="350" height="42" rx="6" fill="var(--accent-light)" stroke="var(--accent)"/>
+                    <text x="200" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">💬 Messages Badge: [ 4 ] → [ 5 ] (Patched in 2ms)</text>
+
+                    <!-- Feed Node (Untouched) -->
+                    <rect x="25" y="122" width="350" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="200" y="142" text-anchor="middle" class="svg-mono-xs">Photo Feed, Stories & Sidebar 100% Intact</text>
+                    <text x="200" y="158" text-anchor="middle" class="svg-sub">Zero page flicker · zero unnecessary network requests</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "7.4",
+          title: "Key Architectural Benefits of the Virtual DOM",
+          content: `
+            <div class="sub-card-grid-3">
+              <div class="sub-box">
+                <div class="sub-box__tag">Benefit 01 · Browser</div>
+                <div class="sub-box__title">Less Browser Load</div>
+                <div class="sub-box__body">
+                  The browser eliminates redundant layout recalculations and repaints. Only the nodes whose state truly mutated get touched in the live DOM.
+                </div>
+              </div>
+
+              <div class="sub-box">
+                <div class="sub-box__tag">Benefit 02 · Device</div>
+                <div class="sub-box__title">Less System & CPU Overhead</div>
+                <div class="sub-box__body">
+                  Computing differences in JavaScript object graphs takes almost zero CPU cycles compared to C++ browser layout tree calculations, saving battery life.
+                </div>
+              </div>
+
+              <div class="sub-box">
+                <div class="sub-box__tag">Benefit 03 · UX</div>
+                <div class="sub-box__title">Faster, Smoother Apps</div>
+                <div class="sub-box__body">
+                  Even as your application grows to hundreds of complex interactive components, UI updates feel snappy, instantaneous, and butter-smooth at 60 frames per second.
+                </div>
+              </div>
+            </div>
+          `
+        }
+      ]
     }
   ]
 };

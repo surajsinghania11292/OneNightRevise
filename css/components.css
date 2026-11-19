@@ -110,35 +110,53 @@
 
 .landing-hero {
   text-align: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .landing-hero .hero-kicker {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   color: var(--accent);
-  margin-bottom: 0.35rem;
+  background: var(--accent-light);
+  border: 1px solid var(--border);
+  padding: 4px 14px;
+  border-radius: var(--r-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+
+.hero-kicker-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: inline-block;
 }
 
 .landing-hero .hero-headline {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-size: clamp(2.1rem, 3.8vw, 3.1rem);
   font-weight: 500;
   color: var(--text-primary);
-  line-height: 1.18;
+  line-height: 1.15;
   letter-spacing: -0.025em;
-  margin: 0 0 0.4rem;
+  text-wrap: balance;
+  max-width: 840px;
+  margin: 0.75rem auto 0.6rem;
 }
 
 .landing-hero .hero-subtext {
   font-family: var(--font-body);
-  font-size: 0.92rem;
+  font-size: 1.02rem;
   color: var(--text-secondary);
-  line-height: 1.5;
-  max-width: 580px;
+  line-height: 1.6;
+  text-wrap: balance;
+  max-width: 620px;
   margin: 0 auto;
 }
 
@@ -146,7 +164,7 @@
 .landing-tracks-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.35rem;
+  gap: 1.5rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -154,21 +172,21 @@
 .landing-track-card {
   background: var(--bg-card);
   border: 1.5px solid var(--border);
-  border-radius: var(--r-lg);
-  padding: 1.35rem 1.5rem;
+  border-radius: var(--r-xl);
+  padding: 1.6rem 1.75rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1.15rem;
   cursor: pointer;
-  transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+  transition: transform var(--t-fast), box-shadow var(--t-normal), border-color var(--t-fast);
   position: relative;
   text-align: left;
   outline: none;
 }
 
 .landing-track-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-md);
   border-color: var(--accent);
 }
@@ -185,17 +203,26 @@
   gap: 0.75rem;
 }
 
-.track-icon {
-  font-size: 1.75rem;
-  line-height: 1;
+.track-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
 }
 
 .track-badge {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.05em;
-  padding: 0.2rem 0.6rem;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--r-pill);
   background: var(--accent-light);
   color: var(--accent);
@@ -210,31 +237,32 @@
 
 .track-card-title {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 500;
   color: var(--text-primary);
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.015em;
   line-height: 1.25;
 }
 
 .track-card-desc {
   font-family: var(--font-body);
-  font-size: 0.88rem;
+  font-size: 0.92rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.55;
   margin: 0;
 }
 
 .track-card-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.4rem;
 }
 
 .track-meta-chip {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  padding: 0.18rem 0.5rem;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
   background: var(--bg-surface);
   color: var(--text-muted);
   border: 1px solid var(--border);
@@ -243,23 +271,27 @@
 
 .track-card-cta {
   align-self: flex-start;
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  border: 1px solid var(--border-strong);
+  background: var(--accent);
+  color: #ffffff;
+  border: 1.5px solid var(--accent);
   border-radius: var(--r-pill);
-  padding: 0.42rem 1rem;
+  padding: 0.48rem 1.15rem;
   font-family: var(--font-body);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--t-fast);
   margin-top: 0.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
-.landing-track-card:hover .track-card-cta {
-  background: var(--accent);
-  color: #ffffff;
-  border-color: var(--accent);
+.track-card-cta:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
 }
 
 /* ── DEDICATED TRACK VIEW & ACTIVE BANNER ────────────────────────── */

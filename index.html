@@ -43,16 +43,12 @@
   <!-- ── FLOATING PILL NAVBAR (NON-STICKY, SCROLLS WITH PAGE) ── -->
   <header id="main-nav">
     <div class="nav-capsule">
-      <a href="#" class="nav-brand" id="brand-home-link" aria-label="OneNightRevise Home">
+      <a href="#" class="nav-brand" id="brand-home-link" aria-label="OneNightRevise Home (Click to return to subject selection)">
         <img src="assets/favicon.svg" alt="OneNightRevise Logo" class="brand-logo-img" width="34" height="34">
         <span class="brand-title">OneNightRevise</span>
       </a>
 
-      <div class="nav-actions">
-        <button type="button" class="nav-back-btn" id="nav-back-to-landing" style="display:none;" aria-label="Return to All Subjects">
-          ← All Subjects
-        </button>
-      </div>
+      <div class="nav-actions"></div>
     </div>
   </header>
 
@@ -118,17 +114,11 @@
 
     <!-- ── 2. DEDICATED TRACK REVISION VIEW ── -->
     <div id="track-view" class="track-view" style="display: none;">
-      <!-- Active Track Banner with Back Button -->
+      <!-- Active Subject Banner (Clean title & stats, no track badges or back pills) -->
       <div class="active-track-banner" id="active-track-banner">
-        <div class="active-track-banner__left">
-          <button type="button" class="track-back-pill" id="track-banner-back" aria-label="Back to Subjects">
-            ← All Subjects
-          </button>
-          <span class="active-track-banner__badge" id="active-track-badge">TRACK 01</span>
-          <h2 class="active-track-banner__title" id="active-track-title">System Design & Distributed Systems</h2>
-        </div>
+        <h2 class="active-track-banner__title" id="active-track-title">ReactJS Revision Notes</h2>
         <div class="active-track-banner__stats" id="active-track-stats">
-          72 Topics · 187 Visual Architecture Diagrams
+          5 Topics · 10 Visual Architecture Diagrams
         </div>
       </div>
 

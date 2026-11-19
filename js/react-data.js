@@ -17,7 +17,7 @@ const REACT_NOTES = {
       shortLabel: "What Is ReactJS?",
       title: "What Is ReactJS & Why Was It Needed?",
       summary: "Definition as a UI library, Jordan Walke's Meta/Facebook origin story (2013), the message reload bottleneck, and buttery smooth granular updates.",
-      subtopicLabels: ["1.1 What Is ReactJS?", "1.2 The Facebook Story", "1.3 Key Benefit of React"],
+      subtopicLabels: ["1.1 What Is React?", "1.2 Facebook Story", "1.3 Key Benefits"],
       diagramCount: 2,
       sections: [
         {
@@ -465,7 +465,7 @@ document.body.appendChild(h1);</pre>
       shortLabel: "Library vs Framework",
       title: "Library vs. Framework",
       summary: "Modular libraries (GSAP, Lenis, React) vs all-in-one frameworks (Next.js, Angular, Remix), and the House Analogy (Ready-Made Flat vs Empty Plot of Land).",
-      subtopicLabels: ["3.1 What Is a Library?", "3.2 What Is a Framework?", "3.3 The House Analogy"],
+      subtopicLabels: ["3.1 Library", "3.2 Framework", "3.3 House Analogy"],
       diagramCount: 2,
       sections: [
         {
@@ -672,8 +672,8 @@ document.body.appendChild(h1);</pre>
       number: "04",
       shortLabel: "Import, Export & Modules",
       title: "Why Import & Export Are Needed & Enabling Modules",
-      summary: "The multi-file isolation bottleneck (app.js vs script.js), sending and receiving data across files, and enabling ES6 modules via <script type='module'>.",
-      subtopicLabels: ["4.1 The Multi-File Problem", "4.2 What Are Import & Export?", "4.3 Enabling type='module'"],
+      summary: "The multi-file isolation bottleneck (app.js vs script.js), sending and receiving data across files, and enabling ES6 modules via type=\"module\".",
+      subtopicLabels: ["4.1 Multi-File Problem", "4.2 Import & Export", "4.3 type=\"module\""],
       diagramCount: 2,
       sections: [
         {
@@ -903,7 +903,7 @@ document.body.appendChild(h1);</pre>
       shortLabel: "Default vs. Named Export",
       title: "Default Export vs. Named Export",
       summary: "Single primary exports with flexible alias naming (export default) vs multiple exact-match exports ({ named }), and combining both in a single module.",
-      subtopicLabels: ["5.1 Two Export Types", "5.2 Default Export", "5.3 Named Export", "5.4 Combining Default & Named", "5.5 Summary & Comparison"],
+      subtopicLabels: ["5.1 Export Types", "5.2 Default Export", "5.3 Named Export", "5.4 Combined Imports", "5.5 Summary"],
       diagramCount: 2,
       sections: [
         {

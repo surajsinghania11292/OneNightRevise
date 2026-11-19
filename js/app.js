@@ -70,29 +70,24 @@ const StudyApp = (() => {
 
     const landingView = document.getElementById('landing-view');
     const trackView = document.getElementById('track-view');
-    const navBackBtn = document.getElementById('nav-back-to-landing');
 
     if (landingView) landingView.style.display = 'none';
     if (trackView) trackView.style.display = 'block';
-    if (navBackBtn) navBackBtn.style.display = 'inline-flex';
 
-    // Update Track Header Banner
-    const badgeEl = document.getElementById('active-track-badge');
+    // Update Track Header Banner (Clean Title & Stats, No Track Badges)
     const titleEl = document.getElementById('active-track-title');
     const statsEl = document.getElementById('active-track-stats');
 
     if (trackName === 'reactjs') {
       const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 5;
-      if (badgeEl) badgeEl.textContent = 'TRACK 02';
-      if (titleEl) titleEl.textContent = 'ReactJS & Modern Frontend';
+      if (titleEl) titleEl.textContent = 'ReactJS Revision Notes';
       if (statsEl) statsEl.textContent = `${count} Topics · 10 Visual Architecture Diagrams`;
       if (pushState) {
         try { history.replaceState(null, '', '#reactjs'); } catch (e) {}
       }
     } else {
       const count = (typeof SYSTEM_DESIGN_NOTES !== 'undefined' && SYSTEM_DESIGN_NOTES.topics) ? SYSTEM_DESIGN_NOTES.topics.length : 72;
-      if (badgeEl) badgeEl.textContent = 'TRACK 01';
-      if (titleEl) titleEl.textContent = 'System Design & Distributed Systems';
+      if (titleEl) titleEl.textContent = 'System Design Revision Notes';
       if (statsEl) statsEl.textContent = `${count} Topics · 187 Visual Architecture Diagrams`;
       if (pushState) {
         try { history.replaceState(null, '', '#system-design'); } catch (e) {}

@@ -368,7 +368,7 @@
 
 /* Identical uniform box height across all closed topics (no big/small mismatch) */
 .topic-card:not(.is-expanded) {
-  height: 220px;
+  height: 235px;
   box-sizing: border-box;
 }
 
@@ -504,15 +504,15 @@
   margin-top: 0.45rem;
 }
 
-/* Single clean row of preview chips when collapsed (no vertical overflow) */
+/* Clean preview chips: wrap onto up to 2 lines so subtopics never get cut off */
 .topic-card:not(.is-expanded) .topic-preview-pills {
   display: flex;
   align-items: center;
-  flex-wrap: nowrap;
-  overflow: hidden;
-  height: 24px;
+  flex-wrap: wrap;
   gap: 0.35rem;
-  margin-top: 0.35rem;
+  margin-top: 0.4rem;
+  max-height: 54px;
+  overflow: hidden;
   flex-shrink: 0;
 }
 
@@ -527,14 +527,19 @@
 
 .preview-chip {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.69rem;
   color: var(--text-muted);
   background: var(--bg-surface);
   border: 1px solid var(--border-faint);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: var(--r-pill);
   white-space: nowrap;
-  flex-shrink: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  display: inline-block;
+  line-height: 1.5;
 }
 
 /* Clean Circular Arrow Down Toggle Button (Soft Accent Color, No Black) */
@@ -1235,7 +1240,8 @@ figure.diagram-frame,
   }
 
   .topic-card:not(.is-expanded) {
-    height: 205px;
+    height: auto;
+    min-height: 220px;
   }
 }
 
@@ -1275,6 +1281,7 @@ figure.diagram-frame,
   }
 
   .topic-card:not(.is-expanded) {
-    height: 195px;
+    height: auto;
+    min-height: 210px;
   }
 }

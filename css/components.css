@@ -68,52 +68,85 @@
   text-overflow: ellipsis;
 }
 
-/* ── NAVBAR TRACK SWITCHER ─────────────────────────────────────────── */
-.nav-track-switcher {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r-pill);
-  padding: 0.25rem;
-}
-
-.nav-track-tab {
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  padding: 0.35rem 0.95rem;
-  border-radius: var(--r-pill);
-  font-family: var(--font-body);
-  font-size: 0.84rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all var(--t-fast);
+/* ── NAVBAR & BANNER NAVIGATION ───────────────────────────────────── */
+.nav-back-btn,
+.track-back-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  user-select: none;
-}
-
-.nav-track-tab:hover {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-pill);
+  padding: 0.38rem 0.95rem;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
   color: var(--text-primary);
-  background: var(--bg-card);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  white-space: nowrap;
 }
 
-.nav-track-tab.is-active {
+.nav-back-btn:hover,
+.track-back-pill:hover {
   background: var(--accent);
   color: #ffffff;
-  font-weight: 600;
-  box-shadow: var(--shadow-sm);
+  border-color: var(--accent);
+  transform: translateY(-1px);
 }
 
-/* ── LANDING TRACK SELECTION CARDS (BENTO STYLE) ─────────────────── */
+/* ── COMPACT SINGLE-SCREEN LANDING VIEW ─────────────────────────── */
+.landing-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 130px);
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0.5rem 0 1.25rem;
+  box-sizing: border-box;
+}
+
+.landing-hero {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.landing-hero .hero-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+  text-transform: uppercase;
+}
+
+.landing-hero .hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+  margin: 0 0 0.4rem;
+}
+
+.landing-hero .hero-subtext {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+/* ── LANDING SUBJECT SELECTION CARDS (BENTO STYLE) ───────────────── */
 .landing-tracks-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.5rem;
-  margin: 1.5rem 0 2rem;
+  gap: 1.35rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -122,33 +155,27 @@
   background: var(--bg-card);
   border: 1.5px solid var(--border);
   border-radius: var(--r-lg);
-  padding: 1.6rem 1.75rem;
+  padding: 1.35rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1.25rem;
+  gap: 1rem;
   cursor: pointer;
-  transition: transform var(--t-normal), box-shadow var(--t-normal), border-color var(--t-normal);
+  transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
   position: relative;
   text-align: left;
   outline: none;
 }
 
 .landing-track-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-  border-color: var(--border-strong);
+  border-color: var(--accent);
 }
 
 .landing-track-card:focus-visible {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px var(--accent-light);
-}
-
-.landing-track-card.is-active-track {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent), var(--shadow-sm);
-  background: linear-gradient(180deg, var(--bg-card) 0%, rgba(45, 90, 61, 0.035) 100%);
 }
 
 .track-card-header {
@@ -159,16 +186,16 @@
 }
 
 .track-icon {
-  font-size: 1.85rem;
+  font-size: 1.75rem;
   line-height: 1;
 }
 
 .track-badge {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.05em;
-  padding: 0.25rem 0.65rem;
+  padding: 0.2rem 0.6rem;
   border-radius: var(--r-pill);
   background: var(--accent-light);
   color: var(--accent);
@@ -183,31 +210,31 @@
 
 .track-card-title {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 500;
   color: var(--text-primary);
-  margin: 0 0 0.45rem;
-  line-height: 1.3;
+  margin: 0 0 0.35rem;
+  line-height: 1.25;
 }
 
 .track-card-desc {
   font-family: var(--font-body);
-  font-size: 0.94rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.5;
   margin: 0;
 }
 
 .track-card-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.35rem;
 }
 
 .track-meta-chip {
   font-family: var(--font-mono);
-  font-size: 0.73rem;
-  padding: 0.25rem 0.6rem;
+  font-size: 0.7rem;
+  padding: 0.18rem 0.5rem;
   background: var(--bg-surface);
   color: var(--text-muted);
   border: 1px solid var(--border);
@@ -220,28 +247,31 @@
   color: var(--text-primary);
   border: 1px solid var(--border-strong);
   border-radius: var(--r-pill);
-  padding: 0.5rem 1.15rem;
+  padding: 0.42rem 1rem;
   font-family: var(--font-body);
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
   transition: all var(--t-fast);
-  margin-top: 0.25rem;
+  margin-top: 0.2rem;
 }
 
-.landing-track-card.is-active-track .track-card-cta,
 .landing-track-card:hover .track-card-cta {
   background: var(--accent);
   color: #ffffff;
   border-color: var(--accent);
 }
 
-/* ── ACTIVE TRACK BANNER (DIVIDER & CONTEXT) ─────────────────────── */
+/* ── DEDICATED TRACK VIEW & ACTIVE BANNER ────────────────────────── */
+.track-view {
+  width: 100%;
+}
+
 .active-track-banner {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
-  padding: 0.9rem 1.35rem;
+  padding: 0.85rem 1.35rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -295,13 +325,18 @@
 }
 
 @media (max-width: 860px) {
+  .landing-view {
+    min-height: auto;
+    padding: 1.25rem 0;
+  }
+
   .landing-tracks-grid {
     grid-template-columns: 1fr;
     gap: 1.15rem;
   }
 
   .landing-track-card {
-    padding: 1.35rem 1.45rem;
+    padding: 1.25rem 1.35rem;
   }
 
   .active-track-banner {
@@ -309,15 +344,6 @@
     align-items: flex-start;
     gap: 0.45rem;
     padding: 0.85rem 1.1rem;
-  }
-
-  .nav-track-switcher {
-    padding: 0.2rem;
-  }
-
-  .nav-track-tab {
-    padding: 0.3rem 0.75rem;
-    font-size: 0.8rem;
   }
 
   .topics-stack {
@@ -1214,16 +1240,6 @@ figure.diagram-frame,
 }
 
 @media (max-width: 480px) {
-  .nav-track-switcher {
-    gap: 0.15rem;
-    padding: 0.15rem;
-  }
-
-  .nav-track-tab {
-    padding: 0.25rem 0.55rem;
-    font-size: 0.74rem;
-  }
-
   .landing-track-card {
     padding: 1.15rem 1rem;
     gap: 1rem;

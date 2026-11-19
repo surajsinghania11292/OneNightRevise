@@ -662,6 +662,541 @@ document.body.appendChild(h1);</pre>
           `
         }
       ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 4: WHY IMPORT & EXPORT ARE NEEDED & ENABLING MODULES
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-04-import-export-modules",
+      number: "04",
+      shortLabel: "Import, Export & Modules",
+      title: "Why Import & Export Are Needed & Enabling Modules",
+      summary: "The multi-file isolation bottleneck (app.js vs script.js), sending and receiving data across files, and enabling ES6 modules via <script type='module'>.",
+      subtopicLabels: ["4.1 The Multi-File Problem", "4.2 What Are Import & Export?", "4.3 Enabling type='module'"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "4.1",
+          title: "The Multi-File Problem (Lexical File Isolation)",
+          content: `
+            <div class="callout-highlight-box">
+              <span class="callout-highlight-tag">The Multi-File Dilemma</span>
+              <p style="margin-top:0.4rem; color:var(--text-secondary);">
+                Before jumping into React components, we must understand how code communicates across multiple JavaScript files.
+              </p>
+            </div>
+
+            <ul class="notes-bullet-list" style="margin-top:1rem;">
+              <li><strong>The Scenario:</strong>
+                <ul class="notes-sub-list">
+                  <li>Suppose your project has two separate JavaScript files: <code>app.js</code> and <code>script.js</code> (linked in your <code>index.html</code>).</li>
+                  <li>Inside <code>app.js</code>, you define a variable:
+                    <pre style="background:var(--bg-frame); padding:0.6rem 0.85rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">var a = 20;</pre>
+                  </li>
+                  <li>Inside <code>script.js</code>, you attempt to print that variable to the browser console:
+                    <pre style="background:var(--bg-frame); padding:0.6rem 0.85rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">console.log(a);</pre>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>What Happens in the Console?</strong>
+                <ul class="notes-sub-list">
+                  <li>You instantly get a runtime crash: <code style="color:var(--danger); font-weight:600;">Uncaught ReferenceError: a is not defined</code>.</li>
+                </ul>
+              </li>
+              <li><strong>Why Does This Happen?</strong>
+                <ul class="notes-sub-list">
+                  <li>By default, each JavaScript file has its own isolated file scope or executes in a separate lexical context.</li>
+                  <li><code>script.js</code> has zero access or visibility into variables created inside <code>app.js</code> unless a bridge is explicitly constructed.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 4.1 · Multi-File Isolation Problem vs. ES Module Export/Import Bridge</span>
+                <span class="diagram-frame-tag">CROSS-FILE DATA COMMUNICATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing isolated files causing ReferenceError on the left vs ES6 module export and import bridge allowing data flow on the right">
+                  <!-- LEFT: Without Import/Export -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.6"/>
+                    <text x="200" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">DEFAULT ISOLATION (NO BRIDGE)</text>
+                    <text x="200" y="52" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Multi-File ReferenceError</text>
+
+                    <!-- File 1: app.js -->
+                    <rect x="25" y="70" width="150" height="60" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="100" y="92" text-anchor="middle" class="svg-mono-xs" style="font-weight:700;">📄 app.js</text>
+                    <text x="100" y="112" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">var a = 20;</text>
+
+                    <!-- Wall Barrier -->
+                    <line x1="200" y1="70" x2="200" y2="130" stroke="var(--danger)" stroke-width="2.5" stroke-dasharray="4 4"/>
+                    <text x="200" y="104" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-size:9px;">WALL</text>
+
+                    <!-- File 2: script.js -->
+                    <rect x="225" y="70" width="150" height="60" rx="8" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="300" y="92" text-anchor="middle" class="svg-mono-xs" style="font-weight:700;">📄 script.js</text>
+                    <text x="300" y="112" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger);">console.log(a);</text>
+
+                    <rect x="25" y="142" width="350" height="36" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="200" y="165" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:600;">💥 ReferenceError: a is not defined</text>
+                  </g>
+
+                  <!-- RIGHT: With Import/Export -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="200" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">WITH ES6 MODULES (EXPLICIT CONTRACT)</text>
+                    <text x="200" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Seamless Cross-File Data Flow</text>
+
+                    <!-- File 1: app.js with Export -->
+                    <rect x="25" y="70" width="155" height="60" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="102" y="92" text-anchor="middle" class="svg-mono-xs" style="font-weight:700; fill:var(--success);">📄 app.js (Sender)</text>
+                    <text x="102" y="112" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:600;">export default a;</text>
+
+                    <!-- Arrow Bridge -->
+                    <path d="M 185 100 L 220 100" class="svg-arrow" stroke="var(--success)"/>
+                    <text x="202" y="92" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-size:9px;">data</text>
+
+                    <!-- File 2: script.js with Import -->
+                    <rect x="225" y="70" width="155" height="60" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="302" y="92" text-anchor="middle" class="svg-mono-xs" style="font-weight:700; fill:var(--success);">📄 script.js (Receiver)</text>
+                    <text x="302" y="112" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:600;">import a from './app'</text>
+
+                    <rect x="25" y="142" width="350" height="36" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="200" y="165" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:600;">✓ Output: 20 printed perfectly in console</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "4.2",
+          title: "What Are Import and Export?",
+          content: `
+            <p style="color:var(--text-secondary); margin-bottom:1rem;">
+              <strong>Import</strong> and <strong>Export</strong> are the official ES6 mechanism allowing JavaScript files to share, send, and receive data cleanly between one another:
+            </p>
+
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">Action 01 · Giver</div>
+                <div class="sub-box__title">📤 Export = Giving / Sending</div>
+                <div class="sub-box__body">
+                  <ul class="notes-sub-list" style="padding-left:1rem;">
+                    <li><strong>Role:</strong> Makes variables, functions, arrays, objects, or components available to the outside world.</li>
+                    <li><strong>Example:</strong> In <code>app.js</code>, writing <code>export default a</code> gives permission to other files to borrow <code>a</code>.</li>
+                    <li><strong>Analogy:</strong> Like setting up an outbound parcel delivery dispatch center.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="sub-box">
+                <div class="sub-box__tag">Action 02 · Receiver</div>
+                <div class="sub-box__title">📥 Import = Taking / Receiving</div>
+                <div class="sub-box__body">
+                  <ul class="notes-sub-list" style="padding-left:1rem;">
+                    <li><strong>Role:</strong> Pulls in exported data from another file into the current file's execution scope.</li>
+                    <li><strong>Example:</strong> In <code>script.js</code>, writing <code>import a from './app.js'</code> receives that parcel and makes <code>a</code> ready to use.</li>
+                    <li><strong>Analogy:</strong> Like accepting the delivered package at your doorstep and opening it.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "4.3",
+          title: "Enabling Modules with type=\"module\"",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Browser Default Limitation:</strong>
+                <ul class="notes-sub-list">
+                  <li>By default, a standard HTML script tag like <code>&lt;script src="script.js"&gt;&lt;/script&gt;</code> runs as a traditional, non-modular script.</li>
+                  <li>If you write <code>import</code> or <code>export</code> inside a normal script, the browser rejects it with:
+                    <br><code style="color:var(--danger); font-weight:600;">Uncaught SyntaxError: Cannot use import statement outside a module</code>.
+                  </li>
+                </ul>
+              </li>
+              <li><strong>How to Enable Modules in HTML:</strong>
+                <ul class="notes-sub-list">
+                  <li>You must explicitly tell the browser that the JavaScript file is an ES6 Module by adding <strong><code>type="module"</code></strong>:</li>
+                </ul>
+                <pre style="background:var(--bg-frame); padding:0.75rem 1rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.88rem; margin:0.6rem 0;">&lt;script type="module" src="script.js"&gt;&lt;/script&gt;</pre>
+              </li>
+              <li><strong>Key Architectural Superpowers of <code>type="module"</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Native Import / Export:</strong> Unlocks modern modular syntax natively in all modern browsers without requiring Webpack, Babel, or Vite during early learning.</li>
+                  <li><strong>Automatic Strict Mode:</strong> Modules automatically execute in <code>'use strict'</code> mode, eliminating silent bugs and legacy quirks.</li>
+                  <li><strong>Isolated Top-Level Scope:</strong> Variables declared at the top level of a module do NOT pollute the global <code>window</code> object.</li>
+                  <li><strong>Automatic Deferred Execution:</strong> Module scripts download in parallel with HTML parsing and execute automatically after the DOM is ready (identical to <code>defer</code>).</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame" style="margin-top:1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 4.2 · The type="module" Browser Pipeline & Strict Execution Environment</span>
+                <span class="diagram-frame-tag">BROWSER RUNTIME ARCHITECTURE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 210" class="arch-svg" role="img" aria-label="Diagram showing browser HTML parser encountering type module, resolving dependency graph, enabling strict mode, and executing imports cleanly">
+                  <!-- Step 1: HTML Tag -->
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="240" height="160" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                    <text x="120" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">HTML ENTRYPOINT</text>
+                    <text x="120" y="54" text-anchor="middle" class="svg-title">script type="module"</text>
+                    <rect x="15" y="70" width="210" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="120" y="96" text-anchor="middle" class="svg-mono-xs">&lt;script type="module" ...&gt;</text>
+                    <text x="120" y="132" text-anchor="middle" class="svg-sub">Informs browser JS engine</text>
+                    <text x="120" y="148" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent);">Auto-deferred execution</text>
+                  </g>
+
+                  <!-- Arrow 1 -->
+                  <g transform="translate(275, 95)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--accent)" stroke-width="2"/>
+                    <polygon points="35,5 45,10 35,15" fill="var(--accent)"/>
+                  </g>
+
+                  <!-- Step 2: Dependency Resolution -->
+                  <g transform="translate(325, 25)">
+                    <rect x="0" y="0" width="240" height="160" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="120" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">BROWSER LOADER</text>
+                    <text x="120" y="54" text-anchor="middle" class="svg-title">Module Graph Fetch</text>
+                    <rect x="15" y="70" width="210" height="42" rx="6" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                    <text x="120" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:600;">Fetches ./app.js via HTTP</text>
+                    <text x="120" y="132" text-anchor="middle" class="svg-sub">Pre-parses export signatures</text>
+                    <text x="120" y="148" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary);">Builds module dependency tree</text>
+                  </g>
+
+                  <!-- Arrow 2 -->
+                  <g transform="translate(570, 95)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="35,5 45,10 35,15" fill="var(--success)"/>
+                  </g>
+
+                  <!-- Step 3: Strict Execution -->
+                  <g transform="translate(620, 25)">
+                    <rect x="0" y="0" width="230" height="160" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="115" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">RUNTIME SANDBOX</text>
+                    <text x="115" y="54" text-anchor="middle" class="svg-title">Strict Mode Execution</text>
+                    <rect x="15" y="70" width="200" height="42" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="115" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:600;">'use strict' enforced</text>
+                    <text x="115" y="132" text-anchor="middle" class="svg-sub">No window pollution</text>
+                    <text x="115" y="148" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:600;">✓ Safe Component Architecture</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 5: DEFAULT EXPORT VS. NAMED EXPORT
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-05-default-vs-named-export",
+      number: "05",
+      shortLabel: "Default vs. Named Export",
+      title: "Default Export vs. Named Export",
+      summary: "Single primary exports with flexible alias naming (export default) vs multiple exact-match exports ({ named }), and combining both in a single module.",
+      subtopicLabels: ["5.1 Two Export Types", "5.2 Default Export", "5.3 Named Export", "5.4 Combining Default & Named", "5.5 Summary & Comparison"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "5.1",
+          title: "Two Types of Exports in JavaScript",
+          content: `
+            <p style="color:var(--text-secondary); margin-bottom:1rem;">
+              Whenever you share data from a JavaScript file, ES Modules give you <strong>two distinct export flavors</strong>:
+            </p>
+
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">Type 01 · Single Primary</div>
+                <div class="sub-box__title">⭐ Default Export</div>
+                <div class="sub-box__body">
+                  Exporting <strong>one main, primary value</strong> as the signature payload of that file. Imported with any custom name, with <strong>no curly braces</strong>.
+                </div>
+              </div>
+
+              <div class="sub-box">
+                <div class="sub-box__tag">Type 02 · Multiple Exact</div>
+                <div class="sub-box__title">🏷️ Named Export</div>
+                <div class="sub-box__body">
+                  Exporting <strong>multiple specific values</strong> by their exact variable names. Imported inside <strong>curly braces <code>{}</code></strong> matching their exact exported identifier.
+                </div>
+              </div>
+            </div>
+          `
+        },
+        {
+          num: "5.2",
+          title: "Default Export (export default)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>When to Use:</strong> When a file is dedicated to one primary entity—like a major React component (e.g. <code>App</code>, <code>Navbar</code>) or a single config object.</li>
+              <li><strong>How to Export (in <code>app.js</code>):</strong>
+                <pre style="background:var(--bg-frame); padding:0.65rem 0.85rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">const a = 10;
+export default a;</pre>
+              </li>
+              <li><strong>How to Import (in <code>script.js</code>):</strong>
+                <pre style="background:var(--bg-frame); padding:0.65rem 0.85rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">import a from './app.js';</pre>
+              </li>
+              <li><strong>The Flexible Naming Rule (Super Important!):</strong>
+                <ul class="notes-sub-list">
+                  <li>Because <code>app.js</code> sends only <strong>one single default export</strong>, there is zero ambiguity about what is being received.</li>
+                  <li>Therefore, the receiving file can assign it <strong>ANY custom name</strong> during import!</li>
+                  <li>All of the following work identically:
+                    <pre style="background:var(--bg-frame); padding:0.65rem 0.85rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">import b from './app.js';        // Works! b = 10
+import chacha from './app.js';   // Works! chacha = 10
+import username from './app.js'; // Works! username = 10</pre>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>Real-World Example (<code>arr</code> vs <code>user</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>Suppose <code>app.js</code> declares an array <code>arr</code> and a variable <code>const user = 'Sarthak'</code>, but only writes <code>export default arr</code>.</li>
+                  <li>In <code>script.js</code>, <code>import array from './app.js'</code> successfully prints the array.</li>
+                  <li>However, attempting to access <code>user</code> in <code>script.js</code> throws <code style="color:var(--danger);">user is not defined</code> because <code>user</code> was never exported!</li>
+                  <li>If you change <code>app.js</code> to <code>export default user</code>, importing <code>import username from './app.js'</code> will output <code>'Sarthak'</code>.</li>
+                </ul>
+              </li>
+              <li><strong>Hard Limit:</strong> A file can have at most <strong>ONE default export</strong>. Attempting multiple <code>export default</code> statements throws a SyntaxError.</li>
+            </ul>
+          `
+        },
+        {
+          num: "5.3",
+          title: "Named Export (export const ...)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>When to Use:</strong> When a file contains <strong>multiple helper utilities, icons, functions, or constants</strong> that multiple consumers might need individually.</li>
+              <li><strong>How to Export (in <code>app.js</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>Simply prepend the keyword <strong><code>export</code></strong> right in front of your variable or function declaration:</li>
+                </ul>
+                <pre style="background:var(--bg-frame); padding:0.65rem 0.85rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">export const arr = [10, 20, 30, 40];
+export const API_URL = 'https://api.example.com';</pre>
+              </li>
+              <li><strong>How to Import (in <code>script.js</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>You <strong>MUST wrap the imported identifiers in curly braces <code>{}</code></strong>:</li>
+                </ul>
+                <pre style="background:var(--bg-frame); padding:0.65rem 0.85rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">import { arr, API_URL } from './app.js';</pre>
+              </li>
+              <li><strong>The Strict Naming Rule:</strong>
+                <ul class="notes-sub-list">
+                  <li>Unlike default imports, you <strong>cannot rename a named import arbitrarily</strong> inside <code>{}</code> without the explicit <code>as</code> keyword.</li>
+                  <li>The name inside <code>{ arr }</code> must <strong>exactly match</strong> the variable name exported from <code>app.js</code>, because JavaScript relies on that name to pull the correct value out of the module's export record.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 5.1 · Default Export (Single Custom Alias) vs. Named Export (Exact Destructuring)</span>
+                <span class="diagram-frame-tag">EXPORT PARADIGM COMPARISON</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram contrasting default export with custom import alias vs named exports requiring curly braces and exact matching names">
+                  <!-- LEFT: Default Export -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="200" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">DEFAULT EXPORT (MAX 1 PER FILE)</text>
+                    <text x="200" y="52" text-anchor="middle" class="svg-title">Single Channel · Flexible Naming</text>
+
+                    <rect x="25" y="68" width="150" height="56" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="100" y="90" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">export default user;</text>
+                    <text x="100" y="110" text-anchor="middle" class="svg-sub">user = 'Sarthak'</text>
+
+                    <path d="M 185 96 L 225 96" class="svg-arrow" stroke="var(--accent)"/>
+
+                    <rect x="235" y="68" width="140" height="56" rx="6" fill="var(--accent-light)" stroke="var(--accent)"/>
+                    <text x="305" y="90" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">import naam from '...'</text>
+                    <text x="305" y="110" text-anchor="middle" class="svg-mono-xs" style="font-size:10px;">No { } needed</text>
+
+                    <rect x="25" y="136" width="350" height="36" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="200" y="159" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:600;">✓ Can name it 'naam', 'chacha', or 'user'</text>
+                  </g>
+
+                  <!-- RIGHT: Named Export -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="200" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">NAMED EXPORTS (MULTIPLE PER FILE)</text>
+                    <text x="200" y="52" text-anchor="middle" class="svg-title">Multi-Channel · Exact Name Matching</text>
+
+                    <rect x="25" y="68" width="150" height="56" rx="6" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                    <text x="100" y="90" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">export const age = 89</text>
+                    <text x="100" y="110" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary);">export const skills</text>
+
+                    <path d="M 185 96 L 225 96" class="svg-arrow" stroke="var(--primary)"/>
+
+                    <rect x="235" y="68" width="140" height="56" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="305" y="90" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">import { age, skills }</text>
+                    <text x="305" y="110" text-anchor="middle" class="svg-mono-xs" style="font-size:10px;">Strict { } required</text>
+
+                    <rect x="25" y="136" width="350" height="36" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="200" y="159" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:600;">⚠ Names inside { } MUST match exports</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "5.4",
+          title: "Combining Default & Multiple Named Exports (Practice Example)",
+          content: `
+            <p style="color:var(--text-secondary); margin-bottom:1rem;">
+              In production React development, you will frequently combine <strong>one default export</strong> (usually the React component) with <strong>multiple named exports</strong> (subcomponents, action creators, or constants) from the exact same file.
+            </p>
+
+            <div class="sub-card-grid-2">
+              <div class="sub-box">
+                <div class="sub-box__tag">File 01 · Producer</div>
+                <div class="sub-box__title">app.js (Exporting Everything)</div>
+                <div class="sub-box__body">
+                  <pre style="background:var(--bg-frame); padding:0.75rem 0.9rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">const user = 'Sarthak';
+export const age = 89;
+export const skills = ['Frontend', 'Backend', 'UI/UX'];
+
+// Default export at the bottom
+export default user;</pre>
+                </div>
+              </div>
+
+              <div class="sub-box">
+                <div class="sub-box__tag">File 02 · Consumer</div>
+                <div class="sub-box__title">script.js (Single Unified Import)</div>
+                <div class="sub-box__body">
+                  <pre style="background:var(--bg-frame); padding:0.75rem 0.9rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">// Default import first, then { named } imports!
+import naam, { age, skills } from './app.js';
+
+console.log(naam);   // 'Sarthak'
+console.log(age);    // 89
+console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
+                </div>
+              </div>
+            </div>
+
+            <figure class="diagram-frame" style="margin-top:1.25rem;">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 5.2 · Unified Import Architecture: Combining Default & Named Exports</span>
+                <span class="diagram-frame-tag">PRODUCTION MODULE PATTERN</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Diagram showing app.js exporting 1 default user and 2 named exports age and skills, and script.js receiving them in a single combined import statement">
+                  <!-- Producer: app.js -->
+                  <g transform="translate(30, 20)">
+                    <rect x="0" y="0" width="370" height="210" rx="12" fill="var(--bg-subsection)" stroke="var(--border-strong)" stroke-width="1.6"/>
+                    <text x="185" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">PRODUCER MODULE · app.js</text>
+                    <text x="185" y="52" text-anchor="middle" class="svg-title">1 Default + 2 Named Exports</text>
+
+                    <!-- Default Channel -->
+                    <rect x="25" y="70" width="320" height="40" rx="6" fill="var(--accent-light)" stroke="var(--accent)"/>
+                    <text x="185" y="95" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">export default user ('Sarthak')</text>
+
+                    <!-- Named Channel 1 -->
+                    <rect x="25" y="118" width="155" height="40" rx="6" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                    <text x="102" y="143" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:600;">export const age = 89</text>
+
+                    <!-- Named Channel 2 -->
+                    <rect x="190" y="118" width="155" height="40" rx="6" fill="var(--primary-bg)" stroke="var(--primary)"/>
+                    <text x="267" y="143" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:600;">export const skills = [...]</text>
+
+                    <text x="185" y="190" text-anchor="middle" class="svg-sub" style="font-size:11px;">Single module serves multiple consumer requirements</text>
+                  </g>
+
+                  <!-- Bridges -->
+                  <g transform="translate(415, 75)">
+                    <!-- Arrow 1 Default -->
+                    <line x1="0" y1="15" x2="45" y2="15" stroke="var(--accent)" stroke-width="2"/>
+                    <polygon points="45,10 55,15 45,20" fill="var(--accent)"/>
+                    <!-- Arrow 2 Named -->
+                    <line x1="0" y1="65" x2="45" y2="65" stroke="var(--primary)" stroke-width="2"/>
+                    <polygon points="45,60 55,65 45,70" fill="var(--primary)"/>
+                  </g>
+
+                  <!-- Consumer: script.js -->
+                  <g transform="translate(480, 20)">
+                    <rect x="0" y="0" width="370" height="210" rx="12" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="185" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">CONSUMER MODULE · script.js</text>
+                    <text x="185" y="52" text-anchor="middle" class="svg-title">Single Combined Import</text>
+
+                    <rect x="20" y="70" width="330" height="50" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="185" y="100" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700; font-size:12px;">import naam, { age, skills } from './app.js'</text>
+
+                    <rect x="20" y="130" width="330" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="35" y="152" class="svg-mono-xs" style="fill:var(--accent);">naam → 'Sarthak' (Default, aliased)</text>
+                    <text x="35" y="172" class="svg-mono-xs" style="fill:var(--primary);">age → 89 · skills → ['Frontend', ...]</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "5.5",
+          title: "Quick Summary: Default Export vs. Named Export",
+          content: `
+            <div style="overflow-x:auto; margin:0.5rem 0 1rem;">
+              <table class="spec-table" style="width:100%; border-collapse:collapse;">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Default Export (export default)</th>
+                    <th>Named Export (export const ...)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Export Syntax</strong></td>
+                    <td><code>export default user;</code></td>
+                    <td><code>export const age = 89;</code></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Import Syntax</strong></td>
+                    <td><code>import anyName from './app.js';</code></td>
+                    <td><code>import { age, skills } from './app.js';</code></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Curly Braces <code>{}</code></strong></td>
+                    <td><span style="color:var(--success); font-weight:600;">NO curly braces</span></td>
+                    <td><span style="color:var(--danger); font-weight:600;">MUST use curly braces {}</span></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Naming Freedom</strong></td>
+                    <td>Can use <strong>ANY custom name</strong> on import</td>
+                    <td>Must match <strong>exact exported name</strong></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Limit Per File</strong></td>
+                    <td><strong>Strictly 1</strong> default export per file</td>
+                    <td><strong>Multiple</strong> named exports allowed</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Typical React Use Case</strong></td>
+                    <td>Main React Component (e.g. <code>export default Button</code>)</td>
+                    <td>Helper utils, constants, icons, sub-types</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="callout-highlight-box">
+              <span class="callout-highlight-tag">Golden Rule for React Engineers</span>
+              <p style="margin-top:0.4rem; color:var(--text-secondary); font-weight:500;">
+                If you are importing a <strong>Default Export</strong>, write the name directly with <strong>no curly braces</strong> (e.g., <code>import React from 'react'</code>).<br>
+                If you are importing <strong>Named Exports</strong>, always put them inside <strong>curly braces <code>{}</code></strong> (e.g., <code>import { useState, useEffect } from 'react'</code>).
+              </p>
+            </div>
+          `
+        }
+      ]
     }
   ]
 };

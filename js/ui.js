@@ -71,17 +71,9 @@ const UI = (() => {
     }
   };
 
-  /* ── 3. SCROLL PROGRESS BAR ─────────────────────────────────── */
+  /* ── 3. SCROLL PROGRESS BAR (REMOVED) ───────────────────────── */
   function initProgressBar() {
-    const bar = document.getElementById('progress-bar');
-    if (!bar) return;
-
-    window.addEventListener('scroll', () => {
-      const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrolled = (winScroll / height) * 100;
-      bar.style.width = scrolled + '%';
-    }, { passive: true });
+    // Disabled per user request (distracting scroll bar removed)
   }
 
   /* ── 4. QUICK JUMP CAPSULE ACTIVE TRACKER ───────────────────── */

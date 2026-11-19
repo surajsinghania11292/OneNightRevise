@@ -54,16 +54,9 @@ code {
   border-radius: 5px;
 }
 
-/* ── PROGRESS BAR ─────────────────────────────────────────────── */
+/* ── PROGRESS BAR (DISABLED PER USER PREFERENCE) ──────────────── */
 #progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  width: 0%;
-  background: var(--accent);
-  z-index: 9999;
-  transition: width 0.08s linear;
+  display: none !important;
 }
 
 /* ── HEADER / FLOATING PILL NAVBAR (NON-STICKY) ────────────────── */

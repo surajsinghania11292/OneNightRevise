@@ -143,21 +143,11 @@ const StudyApp = (() => {
           <div class="topic-card-body">
             ${sectionsHtml}
 
-            <!-- Bottom Close & Navigation Footer -->
+            <!-- Bottom Close Button (Clean light pill, Next Topic removed) -->
             <div class="topic-footer-bar">
-              <button type="button" class="topbar-btn topbar-btn--close" data-footer-close="${topic.id}">
+              <button type="button" class="topic-close-btn-bottom" data-footer-close="${topic.id}">
                 ✕ Close Topic
               </button>
-
-              ${nextTopic ? `
-                <button type="button" class="topbar-btn topbar-btn--next" data-next-topic="${nextTopic.id}">
-                  Next: Topic ${nextTopic.number} →
-                </button>
-              ` : `
-                <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--text-muted);">
-                  End of revision notes
-                </span>
-              `}
             </div>
           </div>
         </article>
@@ -194,25 +184,6 @@ const StudyApp = (() => {
         closeTopic(id, true);
       });
     });
-
-    // Footer Next Topic buttons
-    document.querySelectorAll('[data-next-topic]').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const nextId = btn.getAttribute('data-next-topic');
-        openTopic(nextId, true);
-      });
-    });
-
-    // Sticky Topbar Close button
-    const topbarClose = document.getElementById('btn-topbar-close');
-    if (topbarClose) {
-      topbarClose.addEventListener('click', () => {
-        if (topbarActiveTopicId) {
-          closeTopic(topbarActiveTopicId, true);
-        }
-      });
-    }
 
     // Close on Escape key (closes whichever open topic is currently in view)
     document.addEventListener('keydown', (e) => {
@@ -314,17 +285,6 @@ const StudyApp = (() => {
         const titleEl = document.getElementById('active-topbar-title');
         if (numEl) numEl.textContent = `TOPIC ${topic.number}`;
         if (titleEl) titleEl.textContent = topic.title;
-
-        // Calculate scroll progress inside this open topic
-        const card = document.getElementById(currentInView);
-        if (card) {
-          const rect = card.getBoundingClientRect();
-          const scrollable = Math.max(1, rect.height - window.innerHeight + 100);
-          const scrolled = Math.max(0, 80 - rect.top);
-          const pct = Math.min(100, Math.max(0, Math.round((scrolled / scrollable) * 100)));
-          const fillEl = document.getElementById('active-topbar-fill');
-          if (fillEl) fillEl.style.width = `${pct}%`;
-        }
       }
 
       topbar.classList.add('is-visible');

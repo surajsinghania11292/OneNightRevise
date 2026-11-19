@@ -329,8 +329,14 @@ pre.notes-code-block {
 }
 
 [data-theme="dark"] .pill-btn-primary {
-  color: #131916;
-  background: var(--accent);
+  color: #f4f1e8;
+  background: #173425;
+  border: 1px solid #2e5942;
+}
+
+[data-theme="dark"] .pill-btn-primary:hover {
+  background: #204432;
+  border-color: #3e7557;
 }
 
 .pill-btn-primary:hover {

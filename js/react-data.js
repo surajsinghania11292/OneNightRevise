@@ -6887,5 +6887,822 @@ export default App</code></pre>
         }
       ]
     }
+,
+    {
+      id: 'react-35',
+      number: 35,
+      shortLabel: 'React 35',
+      title: 'Understanding useEffect (The Road & Truck Analogy)',
+      summary: 'Demystifying side effects in React: Why API calls, DOM manipulation, and timers must not execute directly within the component body, and how useEffect offloads non-rendering operations into an asynchronous side stack.',
+      subtopicLabels: [
+        '35.1 Side Effects & Execution Cost',
+        '35.2 The Road & Truck Analogy'
+      ],
+      diagramCount: 2,
+      sections: [
+        {
+          id: 'react-35-1',
+          index: '35.1',
+          title: 'What Are Side Effects & Why Running Them Directly Fails',
+          content: `
+            <p>
+              In React, a component's primary responsibility is <strong>pure rendering</strong>: accepting props and state, computing the corresponding JSX structure, and returning a Virtual DOM tree for the browser to display.
+            </p>
+            <p>
+              A <strong>Side Effect</strong> is any operation that reaches outside the pure render cycle to interact with the external environment or mutate external systems. Standard examples include:
+            </p>
+            <ul>
+              <li><strong>Network Requests:</strong> Fetching data from a REST endpoint or GraphQL service via <code>axios</code> or <code>fetch()</code>.</li>
+              <li><strong>Direct DOM Mutations:</strong> Setting <code>document.title</code>, manually scrolling the viewport, or interfacing with external canvas libraries.</li>
+              <li><strong>Asynchronous Timers:</strong> Setting intervals or timeouts via <code>setInterval</code> or <code>setTimeout</code>.</li>
+              <li><strong>Event Subscriptions:</strong> Attaching global listeners to <code>window.addEventListener('resize', ...)</code> or WebSockets.</li>
+            </ul>
+
+            <div class="callout-card callout-warning">
+              <div class="callout-title">The Danger of Direct Execution Inside the Component Body</div>
+              <p>
+                If an asynchronous operation (such as an API call or timer) is executed directly in the body of a functional component, it triggers on <strong>every single render</strong>. If that operation updates state, it causes an immediate re-render, creating an <strong>infinite execution loop</strong> that crashes the browser tab and overwhelms backend APIs.
+              </p>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 35.1 · Main Render Thread vs. Asynchronous Side-Effect Stack</span>
+                <span class="diagram-frame-tag">THREAD ARCHITECTURE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Main UI render thread executing Pure JSX vs isolated useEffect queue running after paint">
+                  <!-- Main UI Thread -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="150" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="90" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PRIMARY RENDER THREAD</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Pure UI Pipeline (60 FPS Goal)</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">1. Component Function Call: App()</text>
+                    <text x="25" y="118" class="svg-mono-xs">2. Compute Virtual DOM &amp; Diffing</text>
+                    <text x="25" y="138" class="svg-mono-xs">3. Commit DOM Mutation to Screen</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">Synchronous &amp; deterministic ✓</text>
+                  </g>
+
+                  <!-- Side-Effect Stack -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">EFFECT TASK QUEUE</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Asynchronous Side Stack</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">• API Network Stream (Axios / Fetch)</text>
+                    <text x="25" y="118" class="svg-mono-xs">• Subscriptions &amp; Window Event Handlers</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Document Title &amp; LocalStorage Sync</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-muted);">Runs AFTER browser layout paint</text>
+                  </g>
+
+                  <!-- Connection Bridge -->
+                  <path d="M 425 115 L 455 115" fill="none" stroke="var(--border)" stroke-width="2" stroke-dasharray="4 3"/>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          id: 'react-35-2',
+          index: '35.2',
+          title: 'The Road & Truck Analogy: Main UI Highway vs. Decoupled Side Stack',
+          content: `
+            <p>
+              To visualize why React introduces <code>useEffect</code>, consider the <strong>Road and Truck Analogy</strong>:
+            </p>
+            <ul>
+              <li><strong>The Highway:</strong> Represents the browser’s render process. It must remain fluid, unobstructed, and fast to maintain a responsive 60 frames per second.</li>
+              <li><strong>The Delivery Truck:</strong> Represents React’s main rendering engine. Its sole purpose is delivering and displaying UI pixels on screen without delay.</li>
+              <li><strong>The Cargo (Side Effects):</strong> Represents heavyweight, unpredictable asynchronous operations—such as remote API latency, database queries, and timers.</li>
+            </ul>
+            <p>
+              If heavy cargo is loaded directly into the driver’s cabin while the truck is navigating rush hour traffic, the truck stalls, creating a massive traffic jam (frozen UI frames).
+            </p>
+            <p>
+              <strong>The Solution:</strong> <code>useEffect</code> acts as a dedicated <strong>side service lane</strong>. React tells the truck: <em>"Finish delivering the UI pixels to the screen first. Once the road is clear and the user sees the page, I will process the cargo in the side lane."</em>
+            </p>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 35.2 · The Highway Bottleneck: Direct Execution vs. Decoupled useEffect Queue</span>
+                <span class="diagram-frame-tag">EXECUTION TOPOLOGY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Visual analogy of direct body execution blocking rendering vs useEffect side-stack isolation">
+                  <!-- Anti Pattern -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
+                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">UNCONTROLLED EXECUTION</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Direct In-Body Call (Bottleneck)</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">const App = () =&gt; {</text>
+                    <text x="35" y="118" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">  axios.get('/api') // ⚠ Runs every render!</text>
+                    <text x="35" y="138" class="svg-mono-xs">  setData(...)     // Triggers re-render!</text>
+                    <text x="25" y="158" class="svg-mono-xs">} // Result: Infinite Loop &amp; Stalled UI</text>
+                  </g>
+
+                  <!-- Production Pattern -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">USEEFFECT SHIELD</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Decoupled Side Lane Execution</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">useEffect(() =&gt; {</text>
+                    <text x="35" y="118" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">  axios.get('/api').then(...) // Isolated</text>
+                    <text x="25" y="138" class="svg-mono-xs">}, []) // Controlled dependency array</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-muted);">Zero blocking on primary UI paint</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+
+            <div class="takeaways-box">
+              <div class="takeaways-title">Key Architectural Principles</div>
+              <ul>
+                <li><strong>Render Purity:</strong> Component bodies must remain pure mathematical functions mapping state/props to JSX.</li>
+                <li><strong>Deferred Execution:</strong> <code>useEffect</code> callbacks execute strictly after the browser paints the current frame, ensuring zero input latency for user clicks and keyboard events.</li>
+              </ul>
+            </div>
+          `
+        }
+      ]
+    },
+    {
+      id: 'react-36',
+      number: 36,
+      shortLabel: 'React 36',
+      title: 'The Dependency Array & Lifecycle Execution Patterns',
+      summary: 'Mastering the three execution modes of useEffect via the dependency array: Unbounded execution, initial mount only (componentDidMount), and surgical re-execution on state mutation, plus cleanup functions and StrictMode dev behavior.',
+      subtopicLabels: [
+        '36.1 The 3 Dependency Array Modes',
+        '36.2 Practical State-Watching Pattern',
+        '36.3 Multiple Hooks, StrictMode & Cleanup'
+      ],
+      diagramCount: 2,
+      sections: [
+        {
+          id: 'react-36-1',
+          index: '36.1',
+          title: 'The 3 Execution Modes of useEffect Controlled by Dependencies',
+          content: `
+            <p>
+              The <code>useEffect</code> hook accepts two arguments:
+            </p>
+            <ol>
+              <li><strong>Effect Callback:</strong> The function encapsulating the side-effect logic.</li>
+              <li><strong>Dependency Array (Optional):</strong> An array of values (state or props) that React tracks between renders.</li>
+            </ol>
+            <p>
+              The presence and structure of this array determines which of the three lifecycle execution modes React activates:
+            </p>
+
+            <div class="table-wrap">
+              <table class="notes-table">
+                <thead>
+                  <tr>
+                    <th>Syntax</th>
+                    <th>Execution Trigger</th>
+                    <th>Lifecycle Equivalent</th>
+                    <th>Standard Use Case</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>useEffect(fn)</code></td>
+                    <td>After <strong>every single render</strong> and state mutation</td>
+                    <td><code>componentDidMount</code> + <code>componentDidUpdate</code></td>
+                    <td>Global logging, metrics tracking (rarely needed)</td>
+                  </tr>
+                  <tr>
+                    <td><code>useEffect(fn, [])</code></td>
+                    <td>Runs <strong>exactly once</strong> when component mounts</td>
+                    <td><code>componentDidMount</code></td>
+                    <td>Initial API load, WebSocket init, event listener bind</td>
+                  </tr>
+                  <tr>
+                    <td><code>useEffect(fn, [a, b])</code></td>
+                    <td>Runs on mount AND when <code>a</code> or <code>b</code> mutates</td>
+                    <td>Targeted <code>componentDidUpdate</code></td>
+                    <td>Filtered search query, page pagination, id-based fetching</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 36.1 · Dependency Array Execution Matrix (3 Core Modes)</span>
+                <span class="diagram-frame-tag">EXECUTION MODES</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Visual comparison of the three useEffect dependency array states: no array, empty array, and dependency array">
+                  <!-- Mode 1: No Deps -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="260" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">MODE 01</text>
+                    <text x="130" y="56" text-anchor="middle" class="svg-title">No Array [ ]</text>
+                    <rect x="15" y="70" width="230" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">useEffect(() =&gt; {</text>
+                    <text x="25" y="114" class="svg-mono-xs">  // Runs every render</text>
+                    <text x="25" y="134" class="svg-mono-xs">})</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">Unbounded execution</text>
+                  </g>
+
+                  <!-- Mode 2: Empty Array -->
+                  <g transform="translate(310, 20)">
+                    <rect x="0" y="0" width="260" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">MODE 02</text>
+                    <text x="130" y="56" text-anchor="middle" class="svg-title">Empty Array [ ]</text>
+                    <rect x="15" y="70" width="230" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">useEffect(() =&gt; {</text>
+                    <text x="25" y="114" class="svg-mono-xs">  // Initial mount only</text>
+                    <text x="25" y="134" class="svg-mono-xs">}, [])</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">Mount once ✓</text>
+                  </g>
+
+                  <!-- Mode 3: With Dependencies -->
+                  <g transform="translate(595, 20)">
+                    <rect x="0" y="0" width="260" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">MODE 03</text>
+                    <text x="130" y="56" text-anchor="middle" class="svg-title">Watched [ a, b ]</text>
+                    <rect x="15" y="70" width="230" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">useEffect(() =&gt; {</text>
+                    <text x="25" y="114" class="svg-mono-xs">  // Mount + 'a' changed</text>
+                    <text x="25" y="134" class="svg-mono-xs">}, [a])</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">Surgical re-run ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          id: 'react-36-2',
+          index: '36.2',
+          title: 'Practical State-Watching Implementation',
+          content: `
+            <p>
+              In production, components frequently maintain multiple state variables (e.g., <code>a</code> and <code>b</code>). By passing specific variables into the dependency array, React ignores mutations to other states:
+            </p>
+
+            <pre class="notes-code-block"><code>import React, { useEffect, useState } from 'react'
+
+const CounterComparison = () => {
+  const [a, setA] = useState(0)
+  const [b, setB] = useState(0)
+
+  // Subscribed specifically to 'a'
+  // Ignores all changes to 'b' entirely
+  useEffect(() => {
+    console.log('State a updated to:', a)
+  }, [a]) // Dependency array watches 'a' only
+
+  return (
+    &lt;div className="p-6 border rounded-lg"&gt;
+      &lt;h2&gt;A: {a} | B: {b}&lt;/h2&gt;
+      &lt;button onClick={() =&gt; setA(prev =&gt; prev + 1)}&gt;Increment A (Triggers Effect)&lt;/button&gt;
+      &lt;button onClick={() =&gt; setB(prev =&gt; prev - 1)}&gt;Decrement B (Zero Effect)&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default CounterComparison</code></pre>
+          `
+        },
+        {
+          id: 'react-36-3',
+          index: '36.3',
+          title: 'Multiple Hooks, StrictMode Double Invocations & Cleanup Functions',
+          content: `
+            <p>
+              To maintain robust applications, senior engineers follow three essential <code>useEffect</code> guidelines:
+            </p>
+            <ul>
+              <li><strong>Separation of Concerns:</strong> You are not restricted to one hook. Split independent concerns into distinct <code>useEffect</code> hooks (e.g., one for user session heartbeat, another for page search query updates).</li>
+              <li><strong>Why Does useEffect Run Twice in Dev Mode?</strong> When wrapped with <code>&lt;React.StrictMode&gt;</code> in <code>main.jsx</code>, React intentionally mounts, unmounts, and re-mounts every component during local development to expose memory leaks and missing cleanup functions. In production builds, this double invocation is automatically disabled.</li>
+              <li><strong>The Cleanup Function:</strong> When an effect sets up subscriptions, intervals, or WebSocket connections, it must return a cleanup function. React invokes this cleanup before re-running the effect on dependency change and when the component unmounts from the DOM.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 36.2 · Lifecycle Execution &amp; Cleanup Pipeline</span>
+                <span class="diagram-frame-tag">LIFECYCLE PIPELINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="End to end lifecycle timeline showing initial mount, effect execution, dependency update, cleanup function call, and unmount">
+                  <!-- Step 1: Mount -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 1</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Initial Mount</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">1. Component Mount</text>
+                    <text x="25" y="114" class="svg-mono-xs">2. DOM Rendered</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">3. Run Effect fn()</text>
+                  </g>
+
+                  <!-- Step 2: Delta -->
+                  <g transform="translate(245, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 2</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">State Mutation</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">State 'a' changes</text>
+                    <text x="25" y="114" class="svg-mono-xs">Re-render executes</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">React flags delta</text>
+                  </g>
+
+                  <!-- Step 3: Cleanup -->
+                  <g transform="translate(465, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 3</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Run Cleanup</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">return () =&gt; {</text>
+                    <text x="35" y="114" class="svg-mono-xs">  cleanOldData()</text>
+                    <text x="25" y="134" class="svg-mono-xs">}</text>
+                  </g>
+
+                  <!-- Step 4: Re-execution -->
+                  <g transform="translate(675, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 4</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Re-Run Effect</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">Effect re-runs</text>
+                    <text x="25" y="114" class="svg-mono-xs">with new state</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">Memory safe ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+    {
+      id: 'react-37',
+      number: 37,
+      shortLabel: 'React 37',
+      title: 'HTTP Methods, JSON Wire Protocol & Cookie Storage',
+      summary: 'Client-server communication fundamentals for frontend engineers: RESTful HTTP verbs (GET, POST, PATCH, DELETE) mapped to Axios methods, JSON wire serialization, and why production authentication relies on browser Cookies over LocalStorage.',
+      subtopicLabels: [
+        '37.1 HTTP Verbs & Axios Method Mapping',
+        '37.2 Cookies vs. LocalStorage for Auth Tokens'
+      ],
+      diagramCount: 2,
+      sections: [
+        {
+          id: 'react-37-1',
+          index: '37.1',
+          title: 'How Data Moves Across the Web: HTTP Verbs & Axios Mappings',
+          content: `
+            <p>
+              Modern frontend client applications exchange data with cloud backend microservices using the <strong>HTTP (Hypertext Transfer Protocol)</strong> suite. Information is serialized primarily as <strong>JSON</strong> (JavaScript Object Notation) or occasionally XML.
+            </p>
+            <p>
+              When issuing requests via <strong>Axios</strong>, developers select specific HTTP verbs matching the CRUD (Create, Read, Update, Delete) intent of the operation:
+            </p>
+
+            <div class="table-wrap">
+              <table class="notes-table">
+                <thead>
+                  <tr>
+                    <th>HTTP Method</th>
+                    <th>Axios Signature</th>
+                    <th>Operation Intent</th>
+                    <th>Payload Body?</th>
+                    <th>Idempotent?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>GET</strong></td>
+                    <td><code>axios.get(url)</code></td>
+                    <td>Read/Retrieve resources from database</td>
+                    <td>No (URL Query Strings only)</td>
+                    <td>Yes (Repeated calls return identical state)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>POST</strong></td>
+                    <td><code>axios.post(url, payload)</code></td>
+                    <td>Submit new record / trigger business logic</td>
+                    <td>Yes (Request Body: <code>{ user, pass }</code>)</td>
+                    <td>No (Repeated calls create duplicate records)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>PATCH</strong></td>
+                    <td><code>axios.patch(url, delta)</code></td>
+                    <td>Partial update of an existing resource</td>
+                    <td>Yes (Only modified fields sent)</td>
+                    <td>No</td>
+                  </tr>
+                  <tr>
+                    <td><strong>DELETE</strong></td>
+                    <td><code>axios.delete(url)</code></td>
+                    <td>Permanently destroy a resource by ID</td>
+                    <td>No (Identifier passed in URL)</td>
+                    <td>Yes (Deleting an already deleted item has no further side effect)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <pre class="notes-code-block"><code>// Example: Dispatching an authenticated login payload via POST
+const handleLogin = async (credentials) =&gt; {
+  try {
+    const response = await axios.post('https://api.domain.com/v1/auth/login', {
+      username: credentials.email,
+      password: credentials.password
+    })
+    console.log('Session established:', response.data)
+  } catch (err) {
+    console.error('Authentication rejected:', err.response?.data?.message)
+  }
+}</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 37.1 · Client-Server HTTP Method Architecture</span>
+                <span class="diagram-frame-tag">REST TOPOLOGY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Visual representation of four HTTP methods GET POST PATCH DELETE mapped to their operational intents">
+                  <!-- GET -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="55" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="42" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">GET</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Read Resource</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">axios.get('/photos')</text>
+                    <text x="25" y="114" class="svg-mono-xs">No body attached</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">Cached &amp; Idempotent</text>
+                  </g>
+
+                  <!-- POST -->
+                  <g transform="translate(245, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="55" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="42" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">POST</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Create Record</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">axios.post('/auth')</text>
+                    <text x="25" y="114" class="svg-mono-xs">Payload JSON body</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">Non-Idempotent</text>
+                  </g>
+
+                  <!-- PATCH -->
+                  <g transform="translate(465, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="60" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="45" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PATCH</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Partial Delta</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">axios.patch('/user')</text>
+                    <text x="25" y="114" class="svg-mono-xs">Sends updated fields</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">Minimal bandwidth</text>
+                  </g>
+
+                  <!-- DELETE -->
+                  <g transform="translate(675, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="65" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="47" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">DELETE</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Remove Item</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">axios.delete('/card')</text>
+                    <text x="25" y="114" class="svg-mono-xs">Resource destroyed</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--text-muted);">Status 204 No Content</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          id: 'react-37-2',
+          index: '37.2',
+          title: 'Cookies vs. LocalStorage for Production Authentication',
+          content: `
+            <p>
+              In production engineering interviews, a classic question asks: <em>"Where should JWT auth tokens (accessToken, refreshToken) be stored in the client browser?"</em>
+            </p>
+            <p>
+              While beginner tutorials save tokens in <code>localStorage</code>, production applications universally favor <strong>HTTP-Only, Secure Cookies</strong>:
+            </p>
+            <ul>
+              <li><strong>The Vulnerability of LocalStorage:</strong> Any script running on your page (including third-party tracking libraries or compromised npm packages) has direct read access to <code>localStorage.getItem('token')</code>. An attacker injecting malicious JavaScript (Cross-Site Scripting, or XSS) can instantly exfiltrate tokens and hijack user accounts.</li>
+              <li><strong>The Security of HttpOnly Cookies:</strong> When a server flags a cookie as <code>HttpOnly; Secure; SameSite=Lax</code>, client-side JavaScript is completely blocked from reading the cookie value (preventing XSS theft). The browser automatically includes the cookie in every outgoing HTTP request header without manual code intervention.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 37.2 · Session Security Topology: HttpOnly Cookies vs. Insecure LocalStorage</span>
+                <span class="diagram-frame-tag">SECURITY TOPOLOGY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Comparison diagram showing how HttpOnly cookies block malicious JavaScript access vs LocalStorage vulnerability to XSS attacks">
+                  <!-- LocalStorage (Insecure) -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">LOCALSTORAGE APPROACH</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Client-Readable (XSS Vulnerable)</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">• Accessible to ALL client JS: window.localStorage</text>
+                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">• Vulnerable to third-party script injection (XSS)</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Requires manual 'Authorization: Bearer' headers</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-muted);">Convenient for prototypes, unsafe for production</text>
+                  </g>
+
+                  <!-- HttpOnly Cookies (Secure) -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">HTTPONLY COOKIE APPROACH</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Browser-Enforced (Production Standard)</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">• JavaScript CANNOT read token (XSS immune) ✓</text>
+                    <text x="25" y="118" class="svg-mono-xs">• Browser automatically attaches to matching domain</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Protected via SameSite=Lax &amp; Secure HTTPS flags</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">Industry standard for enterprise session auth</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+    {
+      id: 'react-38',
+      number: 38,
+      shortLabel: 'React 38',
+      title: 'Building the Gallery App (useEffect + Axios + Pagination)',
+      summary: 'Architecting a real-world asynchronous Photo Gallery in Vite + Tailwind CSS: Managing dual state (userData and index), wiring declarative re-fetching with useEffect([index]), boundary guarding, and comparing page pagination with infinite scroll streams.',
+      subtopicLabels: [
+        '38.1 Project Architecture & Setup',
+        '38.2 Core State & Fetching Logic (App.jsx)',
+        '38.3 Defensive State Clearing & Boundary Guards',
+        '38.4 Production Concept: Infinite Scrolling Streams'
+      ],
+      diagramCount: 2,
+      sections: [
+        {
+          id: 'react-38-1',
+          index: '38.1',
+          title: 'Project Setup & Architectural Flow',
+          content: `
+            <p>
+              In this hands-on project, we combine <strong>React State</strong>, <strong>Axios</strong>, and <strong>useEffect</strong> to engineer a paginated Photo Gallery consuming the Lorem Picsum public REST API:
+            </p>
+            <pre class="notes-code-block"><code>npm create vite@latest 08-gallery-app -- --template react
+cd 08-gallery-app
+npm install axios</code></pre>
+            <p>
+              The application dynamically interpolates the current page number into the query string using JavaScript template literals:
+            </p>
+            <pre class="notes-code-block"><code>'https://picsum.photos/v2/list?page=' + index + '&amp;limit=15'</code></pre>
+          `
+        },
+        {
+          id: 'react-38-2',
+          index: '38.2',
+          title: 'Complete Application Source Code (App.jsx)',
+          content: `
+            <pre class="notes-code-block"><code>import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+
+const App = () => {
+  // 1. Dual Reactive State Engine
+  const [userData, setUserData] = useState([]) // Stores fetched photo objects
+  const [index, setIndex] = useState(1)        // Current page counter (starts at 1)
+
+  // 2. Asynchronous API Service Function
+  const getData = async () => {
+    try {
+      const response = await axios.get(
+        'https://picsum.photos/v2/list?page=' + index + '&limit=15'
+      )
+      setUserData(response.data) // Hydrate state array
+    } catch (err) {
+      console.error('Failed to load gallery assets:', err)
+    }
+  }
+
+  // 3. Declarative Effect Trigger
+  // Runs once on mount AND automatically re-runs whenever 'index' mutates
+  useEffect(() => {
+    getData()
+  }, [index])
+
+  // 4. Fallback / Loading UI Indicator
+  let printUserData = &lt;h3 className="text-gray-400 font-mono"&gt;Loading Gallery Assets...&lt;/h3&gt;
+
+  // 5. Array Mapping for Visual Card Grid
+  if (userData.length &gt; 0) {
+    printUserData = userData.map((item) =&gt; {
+      return (
+        &lt;div key={item.id} className="gallery-card rounded-lg overflow-hidden border shadow-sm"&gt;
+          &lt;a href={item.url} target="_blank" rel="noreferrer"&gt;
+            &lt;img 
+              src={item.download_url} 
+              alt={item.author} 
+              className="w-full h-48 object-cover" 
+            /&gt;
+            &lt;div className="p-3"&gt;
+              &lt;h4 className="font-semibold text-sm"&gt;{item.author}&lt;/h4&gt;
+            &lt;/div&gt;
+          &lt;/a&gt;
+        &lt;/div&gt;
+      )
+    })
+  }
+
+  return (
+    &lt;div className="max-w-6xl mx-auto p-6"&gt;
+      &lt;h1 className="text-3xl font-bold mb-6"&gt;Engineering Gallery&lt;/h1&gt;
+
+      {/* Gallery Cards Grid */}
+      &lt;div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8"&gt;
+        {printUserData}
+      &lt;/div&gt;
+
+      {/* Pagination Controller */}
+      &lt;div className="flex items-center justify-center gap-6"&gt;
+        &lt;button
+          disabled={index === 1}
+          style={{ opacity: index === 1 ? 0.4 : 1 }}
+          onClick={() =&gt; {
+            if (index &gt; 1) {
+              setUserData([])      // Purge stale photos to expose fallback state
+              setIndex(prev =&gt; prev - 1) // Decrement page (triggers useEffect)
+            }
+          }}
+          className="px-5 py-2 border rounded font-mono"
+        &gt;
+          Prev Page
+        &lt;/button&gt;
+
+        &lt;span className="font-mono font-bold"&gt;Page {index}&lt;/span&gt;
+
+        &lt;button
+          onClick={() =&gt; {
+            setUserData([])      // Purge stale photos
+            setIndex(prev =&gt; prev + 1) // Increment page (triggers useEffect)
+          }}
+          className="px-5 py-2 border rounded font-mono"
+        &gt;
+          Next Page
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default App</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 38.1 · Paginated Gallery Reactive Engine</span>
+                <span class="diagram-frame-tag">REACTIVE PIPELINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="End to end reactive data pipeline showing user click, page index state mutation, useEffect trigger, Axios GET response, and DOM grid reconciliation">
+                  <!-- Step 1: User Click -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 01</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Click 'Next'</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">setIndex(index + 1)</text>
+                    <text x="25" y="114" class="svg-mono-xs">setUserData([])</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--text-muted);">Purges stale UI</text>
+                  </g>
+
+                  <!-- Step 2: Reactive Effect -->
+                  <g transform="translate(245, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 02</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Effect Fires</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">useEffect([index])</text>
+                    <text x="25" y="114" class="svg-mono-xs">Detects index: 1-&gt;2</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">Calls getData() ✓</text>
+                  </g>
+
+                  <!-- Step 3: Axios Query -->
+                  <g transform="translate(465, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 03</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Axios Stream</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">GET ?page=2&amp;limit=15</text>
+                    <text x="25" y="114" class="svg-mono-xs">Awaits JSON array</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">15 Photo Objects</text>
+                  </g>
+
+                  <!-- Step 4: DOM Grid Paint -->
+                  <g transform="translate(675, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 04</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Grid Paint</text>
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">setUserData(data)</text>
+                    <text x="25" y="114" class="svg-mono-xs">Virtual DOM diff</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">15 Cards Rendered ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          id: 'react-38-3',
+          index: '38.3',
+          title: 'Defensive State Clearing & Boundary Guard Patterns',
+          content: `
+            <p>
+              Two critical engineering patterns are implemented in this gallery architecture:
+            </p>
+            <ul>
+              <li><strong>Immediate State Clearing (<code>setUserData([])</code>):</strong> When switching pages over a high-latency network connection, stale cards from the previous page might linger on screen for 1–2 seconds before new cards arrive. Resetting the array immediately on click forces the component into its fallback state (<code>"Loading Gallery Assets..."</code>), preventing visual dissonance.</li>
+              <li><strong>Boundary Guard (<code>if (index &gt; 1)</code>):</strong> Prevents invalid API requests (such as <code>page=0</code> or <code>page=-1</code>). Combining logic guards with the HTML <code>disabled={index === 1}</code> attribute and reduced opacity creates accessible, error-free navigation.</li>
+            </ul>
+          `
+        },
+        {
+          id: 'react-38-4',
+          index: '38.4',
+          title: 'Production Concept: Discrete Pagination vs. Infinite Scrolling',
+          content: `
+            <p>
+              In modern applications, content feeds (Instagram, Twitter, YouTube) utilize <strong>Infinite Scrolling</strong> rather than manual pagination buttons:
+            </p>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 38.2 · Discrete Pagination vs. Continuous Infinite Scroll Architecture</span>
+                <span class="diagram-frame-tag">STREAM COMPARISON</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Comparison diagram showing Discrete Page Navigation replacing state array vs Infinite Scrolling appending items via Intersection Observer">
+                  <!-- Discrete Pagination -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">DISCRETE PAGINATION</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Page-by-Page State Replacement</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">• Controlled via explicit Prev / Next buttons</text>
+                    <text x="25" y="118" class="svg-mono-xs">• Overwrites state: setUserData(newPageItems)</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Memory constant: exactly 15 items in DOM</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">Ideal for data tables &amp; administrative panels ✓</text>
+                  </g>
+
+                  <!-- Infinite Scrolling -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">INFINITE STREAMING</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Intersection Observer Accumulation</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">• Triggered when user scrolls to bottom sentinel</text>
+                    <text x="25" y="118" class="svg-mono-xs">• Appends state: setUserData([...prev, ...next])</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Growing DOM footprint (requires virtual list)</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">Standard for social media &amp; media feeds ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    }
   ]
 };

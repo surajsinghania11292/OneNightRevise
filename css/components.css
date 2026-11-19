@@ -1327,53 +1327,74 @@ figure.diagram-frame,
 }
 
 /* ── DARK THEME POLISH OVERRIDES ─────────────────────────────── */
-/* SVG Diagram Pill Badges (Dark, subtle, fully visible, non-glaring) */
+/* ── DARK THEME HARMONIZATION (Zero Neon Light Green, Sophisticated Obsidian / Pine) ── */
 [data-theme="dark"] .arch-svg rect[fill="var(--primary)"],
-[data-theme="dark"] .arch-svg rect[fill="var(--accent)"] {
-  fill: rgba(52, 211, 153, 0.16) !important;
-  stroke: rgba(52, 211, 153, 0.45) !important;
-  stroke-width: 1.2px !important;
-}
-
+[data-theme="dark"] .arch-svg rect[fill="var(--accent)"],
 [data-theme="dark"] .arch-svg rect[fill="var(--success)"] {
-  fill: rgba(52, 211, 153, 0.16) !important;
-  stroke: rgba(52, 211, 153, 0.45) !important;
+  fill: rgba(26, 44, 34, 0.95) !important;
+  stroke: rgba(214, 178, 92, 0.35) !important;
   stroke-width: 1.2px !important;
 }
 
 [data-theme="dark"] .arch-svg rect[fill="var(--danger)"] {
-  fill: rgba(248, 113, 113, 0.16) !important;
+  fill: rgba(60, 24, 24, 0.85) !important;
   stroke: rgba(248, 113, 113, 0.45) !important;
   stroke-width: 1.2px !important;
 }
 
+/* Override rightmost/target box fills & strokes so they render with dark surfaces */
+[data-theme="dark"] .arch-svg rect[fill="var(--success-bg)"],
+[data-theme="dark"] .arch-svg rect[fill="var(--primary-bg)"] {
+  fill: var(--bg-subsection) !important;
+}
+
+[data-theme="dark"] .arch-svg rect[stroke="var(--success)"],
+[data-theme="dark"] .arch-svg rect[stroke="var(--primary)"] {
+  stroke: rgba(214, 178, 92, 0.35) !important;
+}
+
+/* Clean, crisp off-white for diagram text in dark mode (no bright neon green text) */
 [data-theme="dark"] .arch-svg rect[fill="var(--primary)"] + text,
-[data-theme="dark"] .arch-svg rect[fill="var(--accent)"] + text {
-  fill: #34d399 !important;
-  font-weight: 700 !important;
-}
-
+[data-theme="dark"] .arch-svg rect[fill="var(--accent)"] + text,
 [data-theme="dark"] .arch-svg rect[fill="var(--success)"] + text {
-  fill: #34d399 !important;
+  fill: var(--text-primary) !important;
   font-weight: 700 !important;
 }
 
-[data-theme="dark"] .arch-svg rect[fill="var(--danger)"] + text {
-  fill: #f87171 !important;
+[data-theme="dark"] .arch-svg text[style*="fill:var(--success)"],
+[data-theme="dark"] .arch-svg text[style*="fill:var(--primary)"],
+[data-theme="dark"] .arch-svg text.svg-title[style*="fill:var(--success)"] {
+  fill: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .arch-svg text[style*="fill:var(--danger)"] {
+  fill: #fca5a5 !important;
   font-weight: 700 !important;
 }
 
+/* Subtle muted arrows & markers in dark mode */
+[data-theme="dark"] .arch-svg path[stroke="var(--primary)"],
+[data-theme="dark"] .arch-svg path[stroke="var(--accent)"],
+[data-theme="dark"] .arch-svg path[stroke="var(--success)"] {
+  stroke: rgba(214, 178, 92, 0.45) !important;
+}
+
+[data-theme="dark"] .arch-svg marker polygon {
+  fill: rgba(214, 178, 92, 0.65) !important;
+}
+
+/* Dark Pine CTA Buttons in Dark Mode (No Light Green) */
 [data-theme="dark"] .track-card-cta {
-  background: var(--accent);
-  color: #0b1811;
-  border-color: var(--accent);
-  font-weight: 700;
+  background: #173425;
+  color: #f4f1e8;
+  border: 1px solid #2e5942;
+  font-weight: 600;
 }
 
 [data-theme="dark"] .track-card-cta:hover {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
-  color: #050c08;
+  background: #204432;
+  border-color: #3e7557;
+  color: #ffffff;
 }
 
 [data-theme="dark"] .track-badge--new {
@@ -1384,9 +1405,9 @@ figure.diagram-frame,
 
 [data-theme="dark"] .nav-back-btn:hover,
 [data-theme="dark"] .track-back-pill:hover {
-  background: var(--accent);
-  color: #0b1811;
-  border-color: var(--accent);
+  background: #1c3628;
+  color: #f4f1e8;
+  border-color: #2e5942;
   font-weight: 600;
 }
 
@@ -1396,11 +1417,12 @@ figure.diagram-frame,
 
 [data-theme="dark"] .topic-close-btn-bottom {
   background: var(--bg-surface);
-  color: var(--accent);
-  border-color: var(--border-strong);
+  color: var(--text-secondary);
+  border-color: var(--border);
 }
 
 [data-theme="dark"] .topic-close-btn-bottom:hover {
-  background: var(--accent-light);
-  color: var(--accent-hover);
+  background: var(--bg-card-raised);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
 }

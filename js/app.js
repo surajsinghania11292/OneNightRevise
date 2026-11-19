@@ -1,38 +1,19 @@
 /* ═══════════════════════════════════════════════════════════════
-   APP.JS — Expandable Topic Study Engine
+   APP.JS — Expandable Topic Study Engine (OneNightRevise)
    Features:
-   • Collapsed Rectangular Preview Cards (Click to Expand)
-   • Sticky Active-Topic Topbar with Live Per-Topic Scroll Progress
-   • One-Click Close Topic & Mark Complete (Persisted in localStorage)
-   • Overall Revision Progress Bar
+   • Compact 2-per-row Rectangular Preview Cards
+   • Arrow Down Icon Button / Whole Card Click to Expand & Collapse
+   • Multi-Open Topics: Opened topics stay open until closed by user
+   • Smooth Scrolling & Responsive Viewport Fitting
+   • Sticky Active-Topic Topbar showing Current Open Topic in View
    ═══════════════════════════════════════════════════════════════ */
 
 const StudyApp = (() => {
-  const STORAGE_KEY = 'onr-completed-topics';
-  let activeTopicId = null;
-  let completedTopics = new Set();
+  // Track all currently open topic IDs (allows multiple topics open simultaneously)
+  const openTopicIds = new Set();
+  let topbarActiveTopicId = null;
 
-  function loadCompleted() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) {
-          completedTopics = new Set(parsed);
-        }
-      }
-    } catch (e) {
-      completedTopics = new Set();
-    }
-  }
-
-  function saveCompleted() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...completedTopics]));
-    } catch (e) { }
-  }
-
-  /* ── 1. RENDER NAVBAR LINKS DYNAMICALLY (CLEAN CHAPTER JUMPS) ── */
+  /* ── 1. RENDER NAVBAR LINKS DYNAMICALLY ────────────────────── */
   function renderNavbarLinks() {
     const navMount = document.getElementById('nav-links-mount');
     if (!navMount) return;
@@ -78,16 +59,14 @@ const StudyApp = (() => {
     });
   }
 
-  /* ── 2. RENDER ALL EXPANDABLE RECTANGULAR TOPIC CARDS ───────── */
+  /* ── 2. RENDER ALL TOPIC CARDS ──────────────────────────────── */
   function renderTopics() {
     const mount = document.getElementById('topics-mount');
     if (!mount) return;
 
-    const total = SYSTEM_DESIGN_NOTES.topics.length;
     let html = '';
 
     SYSTEM_DESIGN_NOTES.topics.forEach((topic, idx) => {
-      const isDone = completedTopics.has(topic.id);
       const nextTopic = SYSTEM_DESIGN_NOTES.topics[idx + 1] || null;
       const subCount = topic.sections.length;
       const diagText = topic.diagramCount === 1 ? '1 Diagram' : `${topic.diagramCount} Diagrams`;
@@ -133,13 +112,12 @@ const StudyApp = (() => {
       });
 
       html += `
-        <article class="topic-card ${isDone ? 'is-completed' : ''}" id="${topic.id}" data-topic-id="${topic.id}">
-          <!-- Clickable Rectangular Summary Header -->
+        <article class="topic-card" id="${topic.id}" data-topic-id="${topic.id}">
+          <!-- Compact Clickable Header Summary Box -->
           <div class="topic-card-summary" role="button" tabindex="0" aria-expanded="false" data-toggle-topic="${topic.id}">
             <div class="topic-summary-main">
               <div class="topic-summary-top-row">
-                <span class="topic-num-pill">TOPIC ${topic.number} OF ${String(total).padStart(2, '0')}</span>
-                <span class="topic-done-badge">✓ Completed</span>
+                <span class="topic-num-pill">TOPIC ${topic.number}</span>
                 <span class="topic-meta-count">${subCount} Subtopics · ${diagText}</span>
               </div>
 
@@ -151,8 +129,13 @@ const StudyApp = (() => {
               </div>
             </div>
 
+            <!-- Clean Circular Arrow Down Button (Rotates to Up when open) -->
             <div class="topic-summary-action">
-              <span class="topic-expand-btn" data-expand-label="${topic.id}">Read Topic ↓</span>
+              <span class="topic-toggle-arrow" aria-hidden="true" title="Toggle Topic">
+                <svg class="topic-arrow-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </span>
             </div>
           </div>
 
@@ -160,24 +143,19 @@ const StudyApp = (() => {
           <div class="topic-card-body">
             ${sectionsHtml}
 
-            <!-- Bottom Completion & Close Footer -->
+            <!-- Bottom Close & Navigation Footer -->
             <div class="topic-footer-bar">
-              <div style="display:flex; gap:0.75rem; flex-wrap:wrap; align-items:center;">
-                <button type="button" class="topbar-btn topbar-btn--complete ${isDone ? 'is-done' : ''}" data-footer-complete="${topic.id}">
-                  ${isDone ? '✓ Completed' : '✓ Mark Topic Complete'}
-                </button>
-                <button type="button" class="topbar-btn topbar-btn--close" data-footer-close="${topic.id}">
-                  ✕ Close Topic
-                </button>
-              </div>
+              <button type="button" class="topbar-btn topbar-btn--close" data-footer-close="${topic.id}">
+                ✕ Close Topic
+              </button>
 
               ${nextTopic ? `
-                <button type="button" class="topbar-btn topbar-btn--complete" data-next-topic="${nextTopic.id}">
+                <button type="button" class="topbar-btn topbar-btn--next" data-next-topic="${nextTopic.id}">
                   Next: Topic ${nextTopic.number} →
                 </button>
               ` : `
                 <span style="font-family:var(--font-mono); font-size:0.78rem; color:var(--text-muted);">
-                  End of current notes
+                  End of revision notes
                 </span>
               `}
             </div>
@@ -188,20 +166,15 @@ const StudyApp = (() => {
 
     mount.innerHTML = html;
     bindCardEvents();
-    updateOverallProgress();
   }
 
-  /* ── 3. BIND CLICK & KEYBOARD EVENTS ────────────────────────── */
+  /* ── 3. BIND CARD EVENTS ────────────────────────────────────── */
   function bindCardEvents() {
-    // Expand / Collapse on rectangular card click
+    // Expand / Collapse on clicking the header summary
     document.querySelectorAll('[data-toggle-topic]').forEach(header => {
       const handleToggle = () => {
         const id = header.getAttribute('data-toggle-topic');
-        if (activeTopicId === id) {
-          closeActiveTopic(false);
-        } else {
-          openTopic(id, true);
-        }
+        toggleTopic(id);
       };
 
       header.addEventListener('click', handleToggle);
@@ -213,215 +186,162 @@ const StudyApp = (() => {
       });
     });
 
-    // Footer Mark Complete buttons
-    document.querySelectorAll('[data-footer-complete]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-footer-complete');
-        toggleComplete(id);
-      });
-    });
-
     // Footer Close Topic buttons
     document.querySelectorAll('[data-footer-close]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        closeActiveTopic(true);
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = btn.getAttribute('data-footer-close');
+        closeTopic(id, true);
       });
     });
 
     // Footer Next Topic buttons
     document.querySelectorAll('[data-next-topic]').forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const nextId = btn.getAttribute('data-next-topic');
-        if (activeTopicId && !completedTopics.has(activeTopicId)) {
-          toggleComplete(activeTopicId, true);
-        }
         openTopic(nextId, true);
       });
     });
 
-    // Sticky Topbar buttons
+    // Sticky Topbar Close button
     const topbarClose = document.getElementById('btn-topbar-close');
     if (topbarClose) {
-      topbarClose.addEventListener('click', () => closeActiveTopic(true));
-    }
-
-    const topbarComplete = document.getElementById('btn-topbar-complete');
-    if (topbarComplete) {
-      topbarComplete.addEventListener('click', () => {
-        if (activeTopicId) toggleComplete(activeTopicId);
+      topbarClose.addEventListener('click', () => {
+        if (topbarActiveTopicId) {
+          closeTopic(topbarActiveTopicId, true);
+        }
       });
     }
 
-    // Close active topic on Escape key
+    // Close on Escape key (closes whichever open topic is currently in view)
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && activeTopicId) {
-        closeActiveTopic(true);
+      if (e.key === 'Escape' && topbarActiveTopicId) {
+        closeTopic(topbarActiveTopicId, true);
       }
     });
 
-    // Live scroll progress tracking inside expanded topic
-    window.addEventListener('scroll', updateActiveTopicScrollProgress, { passive: true });
-    window.addEventListener('resize', updateActiveTopicScrollProgress, { passive: true });
+    // Live scroll tracking for Sticky Active-Topic Topbar
+    window.addEventListener('scroll', updateStickyTopbarOnScroll, { passive: true });
+    window.addEventListener('resize', updateStickyTopbarOnScroll, { passive: true });
   }
 
-  /* ── 4. OPEN & CLOSE TOPIC LOGIC ────────────────────────────── */
-  function openTopic(topicId, shouldScroll) {
-    // Collapse any previously open topic
-    if (activeTopicId && activeTopicId !== topicId) {
-      collapseCardDOM(activeTopicId);
+  /* ── 4. INDEPENDENT TOPIC TOGGLE / OPEN / CLOSE ─────────────── */
+  function toggleTopic(topicId) {
+    if (openTopicIds.has(topicId)) {
+      closeTopic(topicId, false);
+    } else {
+      openTopic(topicId, false);
     }
+  }
 
-    activeTopicId = topicId;
+  function openTopic(topicId, shouldScroll = false) {
+    // Add to open set — does NOT close any previously opened topics!
+    openTopicIds.add(topicId);
+
     const card = document.getElementById(topicId);
-    const topic = SYSTEM_DESIGN_NOTES.topics.find(t => t.id === topicId);
-    if (!card || !topic) return;
+    if (!card) return;
 
     card.classList.add('is-expanded');
     const summary = card.querySelector('.topic-card-summary');
     if (summary) summary.setAttribute('aria-expanded', 'true');
 
-    const label = card.querySelector(`[data-expand-label="${topicId}"]`);
-    if (label) label.textContent = 'Close Topic ↑';
-
-    // Show & populate Sticky Active-Topic Topbar
-    updateTopbarState(topic);
-    const topbar = document.getElementById('active-topic-topbar');
-    if (topbar) {
-      topbar.classList.add('is-visible');
-      topbar.setAttribute('aria-hidden', 'false');
-    }
-
     if (shouldScroll) {
       requestAnimationFrame(() => {
-        const y = card.getBoundingClientRect().top + window.scrollY - 82;
+        const y = card.getBoundingClientRect().top + window.scrollY - 36;
         window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
       });
     }
 
-    updateActiveTopicScrollProgress();
+    updateStickyTopbarOnScroll();
   }
 
-  function collapseCardDOM(topicId) {
+  function closeTopic(topicId, scrollBackToCard = false) {
+    openTopicIds.delete(topicId);
+
     const card = document.getElementById(topicId);
     if (!card) return;
-    card.classList.remove('is-expanded');
 
+    card.classList.remove('is-expanded');
     const summary = card.querySelector('.topic-card-summary');
     if (summary) summary.setAttribute('aria-expanded', 'false');
 
-    const label = card.querySelector(`[data-expand-label="${topicId}"]`);
-    if (label) label.textContent = 'Read Topic ↓';
+    if (scrollBackToCard) {
+      requestAnimationFrame(() => {
+        const y = card.getBoundingClientRect().top + window.scrollY - 36;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      });
+    }
+
+    updateStickyTopbarOnScroll();
   }
 
-  function closeActiveTopic(scrollBackToCard) {
-    if (!activeTopicId) return;
-    const closingId = activeTopicId;
-    collapseCardDOM(closingId);
-    activeTopicId = null;
-
+  /* ── 5. STICKY ACTIVE-TOPIC TOPBAR SYNC ──────────────────────── */
+  function updateStickyTopbarOnScroll() {
     const topbar = document.getElementById('active-topic-topbar');
-    if (topbar) {
+    if (!topbar) return;
+
+    if (openTopicIds.size === 0) {
       topbar.classList.remove('is-visible');
       topbar.setAttribute('aria-hidden', 'true');
+      topbarActiveTopicId = null;
+      return;
     }
 
-    if (scrollBackToCard) {
-      const card = document.getElementById(closingId);
-      if (card) {
-        requestAnimationFrame(() => {
-          const y = card.getBoundingClientRect().top + window.scrollY - 28;
-          window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
-        });
+    // Find which open topic is currently in the reading viewport
+    let currentInView = null;
+    let closestTop = -Infinity;
+
+    openTopicIds.forEach(id => {
+      const card = document.getElementById(id);
+      if (!card) return;
+      const rect = card.getBoundingClientRect();
+
+      // Card is currently active if top is near or above header line, and bottom is below header line
+      if (rect.top <= 120 && rect.bottom >= 100) {
+        if (rect.top > closestTop) {
+          closestTop = rect.top;
+          currentInView = id;
+        }
       }
-    }
-  }
+    });
 
-  /* ── 5. COMPLETION TRACKING & TOPBAR SYNC ───────────────────── */
-  function toggleComplete(topicId, forceComplete = false) {
-    if (forceComplete) {
-      completedTopics.add(topicId);
-    } else if (completedTopics.has(topicId)) {
-      completedTopics.delete(topicId);
+    if (currentInView) {
+      topbarActiveTopicId = currentInView;
+      const topic = SYSTEM_DESIGN_NOTES.topics.find(t => t.id === currentInView);
+      if (topic) {
+        const numEl = document.getElementById('active-topbar-num');
+        const titleEl = document.getElementById('active-topbar-title');
+        if (numEl) numEl.textContent = `TOPIC ${topic.number}`;
+        if (titleEl) titleEl.textContent = topic.title;
+
+        // Calculate scroll progress inside this open topic
+        const card = document.getElementById(currentInView);
+        if (card) {
+          const rect = card.getBoundingClientRect();
+          const scrollable = Math.max(1, rect.height - window.innerHeight + 100);
+          const scrolled = Math.max(0, 80 - rect.top);
+          const pct = Math.min(100, Math.max(0, Math.round((scrolled / scrollable) * 100)));
+          const fillEl = document.getElementById('active-topbar-fill');
+          if (fillEl) fillEl.style.width = `${pct}%`;
+        }
+      }
+
+      topbar.classList.add('is-visible');
+      topbar.setAttribute('aria-hidden', 'false');
     } else {
-      completedTopics.add(topicId);
+      topbar.classList.remove('is-visible');
+      topbar.setAttribute('aria-hidden', 'true');
+      topbarActiveTopicId = null;
     }
-
-    saveCompleted();
-    const isDone = completedTopics.has(topicId);
-
-    const card = document.getElementById(topicId);
-    if (card) {
-      card.classList.toggle('is-completed', isDone);
-      const footerBtn = card.querySelector(`[data-footer-complete="${topicId}"]`);
-      if (footerBtn) {
-        footerBtn.classList.toggle('is-done', isDone);
-        footerBtn.textContent = isDone ? '✓ Completed' : '✓ Mark Topic Complete';
-      }
-    }
-
-    if (activeTopicId === topicId) {
-      const topic = SYSTEM_DESIGN_NOTES.topics.find(t => t.id === topicId);
-      if (topic) updateTopbarState(topic);
-    }
-
-    updateOverallProgress();
-  }
-
-  function updateTopbarState(topic) {
-    const numEl = document.getElementById('active-topbar-num');
-    const titleEl = document.getElementById('active-topbar-title');
-    const completeBtn = document.getElementById('btn-topbar-complete');
-
-    if (numEl) numEl.textContent = `TOPIC ${topic.number}`;
-    if (titleEl) titleEl.textContent = topic.title;
-
-    if (completeBtn) {
-      const isDone = completedTopics.has(topic.id);
-      completeBtn.classList.toggle('is-done', isDone);
-      completeBtn.textContent = isDone ? '✓ Completed' : '✓ Mark Complete';
-    }
-  }
-
-  function updateOverallProgress() {
-    const total = SYSTEM_DESIGN_NOTES.topics.length;
-    const validCompleted = SYSTEM_DESIGN_NOTES.topics.filter(t => completedTopics.has(t.id)).length;
-    const pct = total > 0 ? Math.round((validCompleted / total) * 100) : 0;
-
-    const headingEl = document.getElementById('overall-progress-heading');
-    const pctEl = document.getElementById('overall-progress-pct');
-    const fillEl = document.getElementById('overall-progress-fill');
-
-    if (headingEl) headingEl.textContent = `${validCompleted} of ${total} Topics Completed`;
-    if (pctEl) pctEl.textContent = `${pct}%`;
-    if (fillEl) fillEl.style.width = `${pct}%`;
-  }
-
-  /* ── 6. LIVE PER-TOPIC SCROLL READING PROGRESS ──────────────── */
-  function updateActiveTopicScrollProgress() {
-    if (!activeTopicId) return;
-    const card = document.getElementById(activeTopicId);
-    if (!card) return;
-
-    const rect = card.getBoundingClientRect();
-    const viewH = window.innerHeight;
-    const scrollable = Math.max(1, rect.height - viewH + 140);
-    const scrolled = Math.max(0, 82 - rect.top);
-    const pct = Math.min(100, Math.max(0, Math.round((scrolled / scrollable) * 100)));
-
-    const pctEl = document.getElementById('active-topbar-pct');
-    const fillEl = document.getElementById('active-topbar-fill');
-
-    if (pctEl) pctEl.textContent = `${pct}% read`;
-    if (fillEl) fillEl.style.width = `${pct}%`;
   }
 
   function init() {
-    loadCompleted();
     renderNavbarLinks();
     renderTopics();
   }
 
-  return { init, openTopic, closeActiveTopic };
+  return { init, openTopic, closeTopic, toggleTopic };
 })();
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -39,10 +39,6 @@
       </div>
 
       <div class="active-topbar-right">
-        <span class="active-topbar-progress-text" id="active-topbar-pct">0% read</span>
-        <button id="btn-topbar-complete" class="topbar-btn topbar-btn--complete" type="button">
-          ✓ Mark Complete
-        </button>
         <button id="btn-topbar-close" class="topbar-btn topbar-btn--close" type="button">
           ✕ Close Topic
         </button>
@@ -74,37 +70,21 @@
       <div class="hero-kicker">SYSTEM DESIGN REVISION NOTES</div>
       <h1 class="hero-headline">Master System Design, One Topic at a Time.</h1>
       <p class="hero-subtext">
-        Structured revision notes with visual architecture diagrams. Click any topic card below to expand, study with a pinned reading bar, and track your completion.
+        Structured revision notes with 180+ visual architecture diagrams. Click any topic card below to expand and revise key distributed system concepts.
       </p>
 
       <div class="hero-pills-row">
-        <a href="#topics-section" class="pill-btn-primary">Start Studying ↓</a>
+        <a href="#topics-mount" class="pill-btn-primary">Start Studying ↓</a>
       </div>
     </section>
 
-    <!-- OVERALL REVISION PROGRESS STRIP -->
-    <section class="study-progress-bar-box" id="topics-section" aria-label="Revision Progress">
-      <div class="study-progress-top">
-        <div>
-          <span class="study-progress-label">REVISION PROGRESS</span>
-          <h2 class="study-progress-heading" id="overall-progress-heading">0 of 6 Topics Completed</h2>
-        </div>
-        <div class="study-progress-meta">
-          <span class="study-progress-pct" id="overall-progress-pct">0%</span>
-        </div>
-      </div>
-      <div class="study-progress-track">
-        <div class="study-progress-fill" id="overall-progress-fill"></div>
-      </div>
-    </section>
-
-    <!-- ── EXPANDABLE RECTANGULAR TOPIC CARDS ── -->
-    <div id="topics-mount" class="topics-stack"></div>
+    <!-- ── EXPANDABLE RECTANGULAR TOPIC CARDS (2-COLUMN GRID) ── -->
+    <div id="topics-mount" class="topics-stack" role="region" aria-label="System Design Revision Topics"></div>
 
     <!-- ── CLEAN FOOTER ── -->
     <footer style="text-align: center; padding: 2.5rem 0 1.5rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.9rem;">
       <p><strong>OneNightRevise</strong> · Personal System Design Study Notes</p>
-      <p style="font-size: 0.78rem; font-family: var(--font-mono); margin-top: 0.45rem;">Click any topic card to expand · Mark topics complete as you revise</p>
+      <p style="font-size: 0.78rem; font-family: var(--font-mono); margin-top: 0.45rem;">72 Topics & 180+ Architecture Diagrams · Click any topic card to expand</p>
     </footer>
   </main>
 

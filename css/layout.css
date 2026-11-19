@@ -13,6 +13,8 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 32px;
   font-synthesis: none;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
@@ -27,6 +29,9 @@ body {
   font-weight: 400;
   line-height: 1.8;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
   transition: background-color var(--t-normal), color var(--t-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -163,17 +168,26 @@ code {
   max-width: 1560px;
   width: 100%;
   margin: 0 auto;
-  padding: 2.5rem 2.25rem 6rem;
+  padding: 2.25rem 2rem 6rem;
   display: flex;
   flex-direction: column;
-  gap: 4.5rem;
+  gap: 3.5rem;
 }
 
-/* Generous unmistakable separation gap between Topic Boxes */
+/* 2-Column Responsive Topics Grid (2 Topics per Row on Desktop) */
 .topics-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 5rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.35rem;
+  align-items: start;
+  width: 100%;
+}
+
+@media (max-width: 860px) {
+  .topics-stack {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
 }
 
 /* ── SAUCELABS STYLE HERO BANNER ──────────────────────────────── */
@@ -306,15 +320,28 @@ code {
 }
 
 @media (max-width: 768px) {
+  #main-nav {
+    padding: 1rem 0.75rem 0.25rem;
+  }
   .nav-capsule {
     border-radius: var(--r-md);
-    padding: 0.65rem 1rem;
+    padding: 0.6rem 0.9rem;
   }
   .nav-links {
     display: none;
   }
   .reading-canvas {
-    padding: 1.5rem 1rem 4rem;
-    gap: 2.5rem;
+    padding: 1.25rem 0.75rem 4rem;
+    gap: 2rem;
+  }
+  .hero-banner {
+    padding: 2.25rem 0.75rem 1.5rem;
+  }
+  .hero-headline {
+    font-size: clamp(1.85rem, 7vw, 2.4rem);
+  }
+  .hero-subtext {
+    font-size: 1rem;
+    line-height: 1.65;
   }
 }

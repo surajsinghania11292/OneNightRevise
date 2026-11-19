@@ -6201,6 +6201,691 @@ export default App</code></pre>
           `
         }
       ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 31: BROWSER STORAGE — LOCALSTORAGE VS. SESSIONSTORAGE & CORE METHODS
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-31-localstorage-vs-sessionstorage",
+      number: "31",
+      shortLabel: "LocalStorage vs. SessionStorage",
+      title: "Browser Storage — LocalStorage vs. SessionStorage & Core Methods",
+      summary: "Client-side persistence mechanics, key-value storage lifecycles, SessionStorage ephemeral tabs vs. LocalStorage permanent disk persistence, and the 4 core CRUD methods.",
+      subtopicLabels: ["31.1 Storage Lifecycles", "31.2 Core Storage Methods", "31.3 DevTools Inspection"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "31.1",
+          title: "LocalStorage vs. SessionStorage: Key Differences",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>What Is Client-Side Web Storage?</strong>
+                <ul class="notes-sub-list">
+                  <li>Both <strong>LocalStorage</strong> and <strong>SessionStorage</strong> are synchronous, sandboxed key-value databases built directly into the browser (via Web Storage API).</li>
+                  <li>Storage is scoped per <strong>Origin</strong> (Protocol + Domain + Port). Neither transmits data over HTTP headers like cookies do, giving fast local access up to <strong>5MB - 10MB</strong>.</li>
+                </ul>
+              </li>
+              <li><strong>Storage Lifespan Comparison:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>SessionStorage:</strong> Data lives <strong>only for the duration of the browser tab session</strong>. Closing the tab or browser immediately destroys all stored records. Duplicating a tab creates a new isolated copy.</li>
+                  <li><strong>LocalStorage:</strong> Data persists <strong>permanently across sessions</strong>. Survives tab closures, browser restarts, and operating system reboots until programmatically cleared or manually wiped by the user.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 31.1 · Browser Client Storage Comparison: LocalStorage vs. SessionStorage Lifecycle</span>
+                <span class="diagram-frame-tag">CLIENT PERSISTENCE LIFECYCLE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Comparison between SessionStorage ephemeral lifecycle and LocalStorage permanent disk persistence">
+                  <!-- SessionStorage -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--warning)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="150" height="22" rx="4" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.2"/>
+                    <text x="90" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">SESSIONSTORAGE</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--warning);">Ephemeral Tab Memory</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">• Active only while tab stays open</text>
+                    <text x="25" y="118" class="svg-mono-xs">• Closing tab wipes 100% of data ⚠</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Scoped strictly to current window</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-muted);">Use Case: One-time form wizards</text>
+                  </g>
+
+                  <!-- LocalStorage -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">LOCALSTORAGE</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">Permanent Disk Storage</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="98" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">• Survives closing tabs &amp; restarts ✓</text>
+                    <text x="25" y="118" class="svg-mono-xs">• Shared across all tabs same origin</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Capacity: ~5MB - 10MB per origin</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-muted);">Use Case: Notes, Auth Tokens, Themes</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "31.2",
+          title: "The 4 Essential LocalStorage CRUD Methods",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Key-Value String Protocol:</strong> Both the <code>key</code> and the <code>value</code> passed to storage methods <strong>must be strings</strong>.</li>
+              <li><strong>The 4 Storage Operations:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong><code>setItem(key, value)</code>:</strong> Inserts a new key-value pair, or overwrites existing key with new value.</li>
+                  <li><strong><code>getItem(key)</code>:</strong> Retrieves the saved string value. If key doesn't exist, returns <code>null</code>.</li>
+                  <li><strong><code>removeItem(key)</code>:</strong> Deletes one specific target key without affecting other keys.</li>
+                  <li><strong><code>clear()</code>:</strong> Wipes all stored keys for that origin simultaneously.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>// 1. Create / Update (both key &amp; value must be strings)
+localStorage.setItem('user', 'Sarthak');
+
+// 2. Read (returns string, or null if key does not exist)
+const user = localStorage.getItem('user'); // 'Sarthak'
+
+// 3. Delete a specific key
+localStorage.removeItem('user');
+
+// 4. Wipe all keys for this domain
+localStorage.clear();
+
+// Note: The identical 4 methods work on sessionStorage:
+// sessionStorage.setItem('token', 'xyz123');</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 31.2 · LocalStorage CRUD Operations &amp; DevTools Application Tab Pipeline</span>
+                <span class="diagram-frame-tag">STORAGE PROTOCOL INTERFACE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Visual representation of the 4 CRUD operations interacting with the browser LocalStorage store and DevTools inspection">
+                  <!-- JS Operations -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="270" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">JS API CALLS</text>
+                    <text x="135" y="56" text-anchor="middle" class="svg-title">4 Storage Methods</text>
+
+                    <rect x="15" y="70" width="240" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="92" class="svg-mono-xs">• setItem(key, val)</text>
+                    <text x="25" y="112" class="svg-mono-xs">• getItem(key)</text>
+                    <text x="25" y="132" class="svg-mono-xs">• removeItem(key)</text>
+                    <text x="25" y="152" class="svg-mono-xs">• clear()</text>
+                  </g>
+
+                  <!-- Arrow 1 -->
+                  <line x1="295" y1="110" x2="325" y2="110" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="325,106 333,110 325,114" fill="var(--primary)"/>
+
+                  <!-- Browser Disk Storage Engine -->
+                  <g transform="translate(335, 20)">
+                    <rect x="0" y="0" width="250" height="180" rx="10" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="125" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">ORIGIN ISOLATED STORE</text>
+                    <text x="125" y="52" text-anchor="middle" class="svg-title">Key-Value Pairs</text>
+
+                    <rect x="15" y="68" width="220" height="96" rx="6" fill="var(--bg-subsection)" stroke="var(--border)"/>
+                    <text x="25" y="92" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">'user' : 'Sarthak'</text>
+                    <text x="25" y="112" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">'theme' : 'dark'</text>
+                    <text x="25" y="132" class="svg-mono-xs">• 5MB - 10MB Disk Buffer</text>
+                    <text x="25" y="150" class="svg-mono-xs" style="fill:var(--text-muted);">Synchronous Disk Access</text>
+                  </g>
+
+                  <!-- Arrow 2 -->
+                  <line x1="585" y1="110" x2="615" y2="110" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="615,106 623,110 615,114" fill="var(--success)"/>
+
+                  <!-- Chrome DevTools -->
+                  <g transform="translate(625, 20)">
+                    <rect x="0" y="0" width="230" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">LIVE INSPECTION</text>
+                    <text x="115" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Application Tab</text>
+
+                    <rect x="15" y="70" width="200" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="94" class="svg-mono-xs">1. Press F12 / Inspect</text>
+                    <text x="25" y="114" class="svg-mono-xs">2. Application tab</text>
+                    <text x="25" y="134" class="svg-mono-xs">3. Storage &gt; Local Storage</text>
+                    <text x="25" y="152" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">View &amp; Edit Keys Live ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 32: STORING & RETRIEVING OBJECTS/ARRAYS WITH JSON.STRINGIFY & JSON.PARSE
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-32-json-stringify-and-parse",
+      number: "32",
+      shortLabel: "JSON.stringify & parse",
+      title: "Storing & Retrieving Objects/Arrays With JSON.stringify & JSON.parse",
+      summary: "Solving the [object Object] serialization bottleneck, converting JavaScript memory trees into JSON strings, and rehydrating arrays and objects on application mount.",
+      subtopicLabels: ["32.1 The [object Object] Trap", "32.2 Serialization Pipeline", "32.3 Array & Object Hydration"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "32.1",
+          title: "The [object Object] Trap (Why Direct Storage Fails)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Underlying Problem:</strong>
+                <ul class="notes-sub-list">
+                  <li>LocalStorage accepts <strong>only primitive strings</strong> as storage values.</li>
+                  <li>When you pass a raw JavaScript object into <code>localStorage.setItem('user', user)</code>, JavaScript implicitly invokes its default string coercion: <code>user.toString()</code>.</li>
+                  <li>The default <code>toString()</code> on generic JS objects produces the useless literal string <strong><code>&quot;[object Object]&quot;</code></strong>!</li>
+                  <li>All your keys (<code>username</code>, <code>age</code>, <code>city</code>) are permanently lost because the data structure was flattened into an opaque string token.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 32.1 · The [object Object] Serialization Trap vs. JSON Stringification</span>
+                <span class="diagram-frame-tag">SERIALIZATION DATA INTEGRITY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Contrast between passing raw object resulting in [object Object] failure vs JSON.stringify saving structured JSON string">
+                  <!-- BAD: Implicit toString() -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">INCORRECT WAY ✕</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Direct Object Coercion</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="98" class="svg-mono-xs">localStorage.setItem('user', user)</text>
+                    <text x="25" y="118" class="svg-mono-xs">• Implicitly runs: user.toString()</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">• Stored Value: &quot;[object Object]&quot; ✕</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--danger);">Fatal: All properties erased!</text>
+                  </g>
+
+                  <!-- GOOD: JSON.stringify -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="120" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="75" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">CORRECT WAY ✓</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">JSON Serialization</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="98" class="svg-mono-xs">setItem('user', JSON.stringify(user))</text>
+                    <text x="25" y="118" class="svg-mono-xs">• Serializes to valid JSON text</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">• '{&quot;username&quot;:&quot;Sarthak&quot;,&quot;age&quot;:18}'</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--success);">100% data fidelity preserved ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "32.2",
+          title: "Saving & Reading Objects Properly With stringify & parse",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Two-Step Persistence Handshake:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Write Phase (Heap Object → Storage):</strong> Use <strong><code>JSON.stringify(data)</code></strong> to encode your JavaScript object or array into a valid JSON string.</li>
+                  <li><strong>Read Phase (Storage → Heap Object):</strong> Use <strong><code>JSON.parse(string)</code></strong> to rehydrate the stored string back into a live JavaScript memory object.</li>
+                </ul>
+              </li>
+              <li><strong>Critical Production Guardrail:</strong> Always safeguard <code>JSON.parse()</code> with fallback initialization (e.g. <code>JSON.parse(localStorage.getItem('tasks')) || []</code>) to prevent parsing <code>null</code> when a user visits the app for the first time.</li>
+            </ul>
+
+            <pre class="notes-code-block"><code>// Sample user object in JavaScript memory
+const user = {
+  username: 'Sarthak',
+  age: 18,
+  city: 'Bhopal'
+};
+
+// 1. SAVE: Convert Object -&gt; JSON string before saving
+localStorage.setItem('user', JSON.stringify(user));
+
+// 2. RETRIEVE: Read JSON string and parse back -&gt; JS Object
+const storedUser = JSON.parse(localStorage.getItem('user'));
+
+console.log(storedUser.username); // 'Sarthak'
+console.log(storedUser.city);     // 'Bhopal'
+
+// Persisting Arrays of Objects (Notes App Tasks pattern):
+const tasks = [
+  { id: 1, title: 'Learn React State' },
+  { id: 2, title: 'Master LocalStorage' }
+];
+
+localStorage.setItem('all-tasks', JSON.stringify(tasks));
+const loadedTasks = JSON.parse(localStorage.getItem('all-tasks')) || [];</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 32.2 · Bidirectional Object Storage Pipeline: Heap Object ↔ Serialized JSON String</span>
+                <span class="diagram-frame-tag">SERIALIZATION DATA PIPELINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Bidirectional pipeline showing serialization to JSON string on write and deserialization with parse on read">
+                  <!-- JavaScript In-Memory Heap -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="260" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">JS IN-MEMORY HEAP</text>
+                    <text x="130" y="58" text-anchor="middle" class="svg-title">Live Object / Array</text>
+
+                    <rect x="15" y="74" width="230" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">{</text>
+                    <text x="35" y="118" class="svg-mono-xs">  username: &quot;Sarthak&quot;,</text>
+                    <text x="35" y="138" class="svg-mono-xs">  age: 18, city: &quot;Bhopal&quot;</text>
+                    <text x="25" y="158" class="svg-mono-xs">}</text>
+                  </g>
+
+                  <!-- Top Arrow: JSON.stringify() -->
+                  <path d="M 295 85 L 435 85" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="435,81 443,85 435,89" fill="var(--primary)"/>
+                  <rect x="305" y="62" width="130" height="20" rx="4" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="370" y="76" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">JSON.stringify()</text>
+
+                  <!-- Bottom Arrow: JSON.parse() -->
+                  <path d="M 435 155 L 295 155" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="295,151 287,155 295,159" fill="var(--success)"/>
+                  <rect x="315" y="160" width="110" height="20" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="370" y="174" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">JSON.parse()</text>
+
+                  <!-- Browser LocalStorage Disk -->
+                  <g transform="translate(450, 20)">
+                    <rect x="0" y="0" width="405" height="190" rx="10" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">BROWSER LOCALSTORAGE</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">Serialized String Buffer</text>
+
+                    <rect x="15" y="74" width="375" height="100" rx="6" fill="var(--bg-subsection)" stroke="var(--success)"/>
+                    <text x="25" y="98" class="svg-mono-xs">Key: &quot;user&quot;</text>
+                    <text x="25" y="122" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Val: '{&quot;username&quot;:&quot;Sarthak&quot;,&quot;age&quot;:18}'</text>
+                    <text x="25" y="148" class="svg-mono-xs" style="fill:var(--text-muted);">Survives reloads, tabs &amp; laptop restarts</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 33: CALLING APIS WITH FETCH() & ASYNC / AWAIT
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-33-calling-apis-with-fetch-async-await",
+      number: "33",
+      shortLabel: "APIs With fetch() & async",
+      title: "Calling APIs With fetch() & async / await",
+      summary: "Client-server API architectures, native fetch() vs. Axios, understanding pending asynchronous promises, and the two-stage await stream handshake.",
+      subtopicLabels: ["33.1 fetch vs Axios", "33.2 Sync vs Async Promises", "33.3 Two-Stage await Stream"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "33.1",
+          title: "Two Ways to Call APIs in React (fetch vs. axios)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Role of the Frontend:</strong> Real-world frontend applications rarely store master data on the client. The backend server provides REST or GraphQL endpoints (JSON), and the frontend's job is to fetch, transform, and render that data.</li>
+              <li><strong>The Two Primary API Tools:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong><code>fetch()</code>:</strong> Native browser API built into JavaScript. Requires <strong>zero npm packages</strong>, but demands a 2-step async process (HTTP stream handshake + <code>response.json()</code> stream consumption).</li>
+                  <li><strong><code>axios</code>:</strong> Popular third-party HTTP client library (<code>npm i axios</code>). Streamlines requests into a <strong>single <code>await</code></strong>, automatically converts JSON responses into objects inside <code>response.data</code>, and offers clean interceptors.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 33.1 · Synchronous JS Call Stack vs. Asynchronous Promise &amp; Event Loop Pipeline</span>
+                <span class="diagram-frame-tag">EVENT LOOP &amp; ASYNC HANDSHAKE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Visualizing synchronous JavaScript execution delegating fetch network call to browser Web APIs and resolving via Microtask Queue">
+                  <!-- Main Call Stack -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="240" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">JS CALL STACK</text>
+                    <text x="120" y="58" text-anchor="middle" class="svg-title">Single Threaded</text>
+
+                    <rect x="15" y="74" width="210" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">1. Runs synchronously</text>
+                    <text x="25" y="118" class="svg-mono-xs">2. Calls fetch(url)</text>
+                    <text x="25" y="138" class="svg-mono-xs">3. Cannot freeze UI</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">→ Offloads to Web API</text>
+                  </g>
+
+                  <!-- Arrow 1 -->
+                  <line x1="270" y1="115" x2="305" y2="115" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="305,111 313,115 305,119" fill="var(--primary)"/>
+
+                  <!-- Browser Web API Engine -->
+                  <g transform="translate(315, 20)">
+                    <rect x="0" y="0" width="250" height="190" rx="10" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">BROWSER WEB APIS</text>
+                    <text x="125" y="58" text-anchor="middle" class="svg-title" style="fill:var(--warning);">Network Thread</text>
+
+                    <rect x="15" y="74" width="220" height="100" rx="6" fill="var(--bg-subsection)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">• Sends HTTP GET to API</text>
+                    <text x="25" y="118" class="svg-mono-xs">• Returns Promise: Pending</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Waits for network (200ms)</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">→ Resolves to Microtask</text>
+                  </g>
+
+                  <!-- Arrow 2 -->
+                  <line x1="570" y1="115" x2="605" y2="115" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="605,111 613,115 605,119" fill="var(--success)"/>
+
+                  <!-- Microtask Queue & await resume -->
+                  <g transform="translate(615, 20)">
+                    <rect x="0" y="0" width="240" height="190" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">MICROTASK QUEUE</text>
+                    <text x="120" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">await Resume</text>
+
+                    <rect x="15" y="74" width="210" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="98" class="svg-mono-xs">1. Promise fulfilled ✓</text>
+                    <text x="25" y="118" class="svg-mono-xs">2. Event Loop pushes back</text>
+                    <text x="25" y="138" class="svg-mono-xs">3. await unpauses code</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">4. response is returned</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "33.2",
+          title: "The Two-Stage await Stream in Native fetch()",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Why <code>fetch()</code> Needs <code>await</code> Twice:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Stage 01 (<code>const response = await fetch(url)</code>):</strong> Pauses until the HTTP headers and status code arrive from the remote server (e.g. <code>200 OK</code>). At this point, the response body is still an open, unread network byte stream.</li>
+                  <li><strong>Stage 02 (<code>const data = await response.json()</code>):</strong> Reading and parsing that incoming byte stream into a JavaScript JSON object is itself asynchronous. Thus, you must <code>await</code> the stream parser before using the resulting object!</li>
+                </ul>
+              </li>
+              <li><strong>Async Function Requirement:</strong> You cannot use <code>await</code> at top-level within regular functions. The enclosing function must always be marked with the <strong><code>async</code></strong> keyword.</li>
+            </ul>
+
+            <pre class="notes-code-block"><code>// The enclosing function must be marked async
+const getData = async () => {
+  try {
+    // 1. First await: Wait for initial HTTP response stream headers
+    const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
+
+    // 2. Second await: Wait for response body stream to parse into JSON
+    const data = await response.json();
+
+    console.log(data); // { userId: 1, id: 1, title: 'delectus aut autem', completed: false }
+  } catch (error) {
+    console.error('API Fetch failed:', error);
+  }
+};</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 33.2 · Two-Stage fetch() Pipeline: Network Stream Handshake &amp; JSON Stream Body Parsing</span>
+                <span class="diagram-frame-tag">STREAM HANDSHAKE PIPELINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 210" class="arch-svg" role="img" aria-label="Two-stage fetch process showing first await resolving HTTP headers and second await consuming response body stream">
+                  <!-- Stage 1 -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="380" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STAGE 1: AWAIT FETCH(URL)</text>
+                    <text x="190" y="56" text-anchor="middle" class="svg-title">HTTP Stream Handshake</text>
+
+                    <rect x="15" y="72" width="350" height="82" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">• Resolves HTTP Status (200 OK)</text>
+                    <text x="25" y="114" class="svg-mono-xs">• Reads response headers &amp; metadata</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">• Body is still unread ReadableStream!</text>
+                  </g>
+
+                  <!-- Arrow -->
+                  <line x1="410" y1="105" x2="465" y2="105" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="465,101 473,105 465,109" fill="var(--success)"/>
+                  <text x="440" y="92" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted); font-size:10px;">Streams Body</text>
+
+                  <!-- Stage 2 -->
+                  <g transform="translate(475, 20)">
+                    <rect x="0" y="0" width="380" height="170" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">STAGE 2: AWAIT RES.JSON()</text>
+                    <text x="190" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Stream Body Deserialization</text>
+
+                    <rect x="15" y="72" width="350" height="82" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="94" class="svg-mono-xs">• Reads incoming byte stream to end</text>
+                    <text x="25" y="114" class="svg-mono-xs">• Parses JSON syntax into JS Object</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">• Returns final JS Object / Array ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 34: CALLING APIS WITH AXIOS (CLEANER & SHORTER METHOD)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-34-calling-apis-with-axios",
+      number: "34",
+      shortLabel: "APIs With Axios",
+      title: "Calling APIs With Axios (Cleaner & Shorter Method)",
+      summary: "Installing and leveraging Axios for automatic JSON deserialization, saving HTTP responses into useState arrays, and rendering dynamic API data cards with key props.",
+      subtopicLabels: ["34.1 Why Axios Beats fetch", "34.2 Axios State Pipeline", "34.3 Dynamic Rendering & useEffect Teaser"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "34.1",
+          title: "Installing Axios & Why It Beats Native fetch()",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Installation &amp; Setup:</strong> Install in your project terminal: <code>npm i axios</code>, then import at the top of your component: <code>import axios from 'axios';</code>.</li>
+              <li><strong>Why Developers Prefer Axios Over Native <code>fetch()</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Single <code>await</code> Step:</strong> You only write <code>const response = await axios.get(url)</code>. No second <code>response.json()</code> await is required!</li>
+                  <li><strong>Automatic JSON Transformation:</strong> Axios inspects the response headers and automatically deserializes JSON into a clean JavaScript object or array directly on <strong><code>response.data</code></strong>.</li>
+                  <li><strong>Automatic Error Rejection:</strong> Unlike <code>fetch()</code> (which considers HTTP <code>404</code> or <code>500</code> as successful promises), Axios automatically throws an error for any status code outside the 2xx range, jumping straight into your <code>catch</code> block.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 34.1 · Native fetch() vs. Axios Execution Pipeline: 2-Stage Stream vs. 1-Stage Auto-Deserialization</span>
+                <span class="diagram-frame-tag">HTTP CLIENT ARCHITECTURE COMPARISON</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Comparison showing fetch requiring two await steps vs Axios executing in one await step with response.data ready">
+                  <!-- Native fetch() -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">NATIVE FETCH()</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">2-Step Manual Stream Parsing</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">1. const res = await fetch(url)</text>
+                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">2. const data = await res.json() ⚠</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Manual 2-stage stream consumption</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-muted);">Built-in, but more boilerplate</text>
+                  </g>
+
+                  <!-- Axios -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="120" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="75" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">AXIOS LIBRARY</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">1-Step Auto-Deserialization</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="98" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">1. const res = await axios.get(url) ✓</text>
+                    <text x="25" y="118" class="svg-mono-xs">• res.data is ALREADY parsed JS data</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Zero second await needed</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Cleaner, faster &amp; production standard ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "34.2",
+          title: "Fetching & Storing API Data With Axios + useState",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The 3-Step API-to-UI Pattern:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Step 1 (State Initialization):</strong> Create an empty array state: <code>const [data, setData] = useState([]);</code> to hold incoming objects.</li>
+                  <li><strong>Step 2 (Data Fetch &amp; State Dispatch):</strong> When triggered, <code>axios.get('https://picsum.photos/v2/list')</code> receives the array of 30 image objects and updates state: <code>setData(response.data)</code>.</li>
+                  <li><strong>Step 3 (Re-render &amp; Array Mapping):</strong> React re-renders the component and runs <code>data.map((item, idx) =&gt; ...)</code>, projecting each object dynamically onto UI elements.</li>
+                </ul>
+              </li>
+              <li><strong>Upcoming Chapter Teaser (<code>useEffect</code>):</strong> In this practice example, the API only triggers when the user clicks a button. In production, we usually want data to load <strong>automatically on initial page mount</strong>—which brings us to the fundamental <strong><code>useEffect</code> Hook</strong>!</li>
+            </ul>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react'
+import axios from 'axios'
+
+const App = () => {
+  // 1. Initialize empty state array to hold fetched API records
+  const [data, setData] = useState([])
+
+  const getData = async () => {
+    try {
+      // 2. Fetch data with Axios (Lorem Picsum public API)
+      const response = await axios.get('https://picsum.photos/v2/list')
+
+      // 3. Save directly into state (response.data is already an array of 30 items)
+      setData(response.data)
+      console.log('Fetched', response.data.length, 'records')
+    } catch (err) {
+      console.error('API call failed:', err)
+    }
+  }
+
+  return (
+    &lt;div style={{ padding: '2rem' }}&gt;
+      &lt;button onClick={getData}&gt;Get Data&lt;/button&gt;
+
+      {/* 4. Render array items dynamically on screen */}
+      &lt;div style={{ marginTop: '1.5rem', display: 'flex', flexWrap: 'wrap', gap: '1rem' }}&gt;
+        {data.map((elem, idx) =&gt; (
+          &lt;div key={idx} style={{ border: '1px solid #ccc', padding: '1rem', borderRadius: '8px' }}&gt;
+            &lt;h4&gt;Author: {elem.author}&lt;/h4&gt;
+            &lt;img src={elem.download_url} alt={elem.author} width="160" height="100" style={{ objectFit: 'cover' }} /&gt;
+          &lt;/div&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default App</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 34.2 · React API State Pipeline: Network Response to State Setter to DOM Card Render</span>
+                <span class="diagram-frame-tag">API TO DOM STATE LIFECYCLE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="End to end React pipeline from button click to axios get, state setter dispatch, re-render, and array mapping cards into the DOM">
+                  <!-- Step 1: User Click -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STEP 01</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">Trigger Action</text>
+
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">&lt;button onClick&gt;</text>
+                    <text x="25" y="114" class="svg-mono-xs">Fires getData()</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">await axios.get()</text>
+                    <text x="25" y="150" class="svg-mono-xs" style="fill:var(--text-muted);">Hits Picsum API</text>
+                  </g>
+
+                  <!-- Arrow 1 -->
+                  <line x1="205" y1="110" x2="235" y2="110" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="235,106 243,110 235,114" fill="var(--primary)"/>
+
+                  <!-- Step 2: State Dispatch -->
+                  <g transform="translate(245, 20)">
+                    <rect x="0" y="0" width="200" height="180" rx="10" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STEP 02</text>
+                    <text x="100" y="56" text-anchor="middle" class="svg-title">State Mutation</text>
+
+                    <rect x="15" y="70" width="170" height="92" rx="6" fill="var(--bg-subsection)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">setData(res.data)</text>
+                    <text x="25" y="114" class="svg-mono-xs">• Array of 30 items</text>
+                    <text x="25" y="134" class="svg-mono-xs">• Triggers re-render</text>
+                    <text x="25" y="150" class="svg-mono-xs" style="fill:var(--text-muted);">Reconciliation runs</text>
+                  </g>
+
+                  <!-- Arrow 2 -->
+                  <line x1="445" y1="110" x2="475" y2="110" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="475,106 483,110 475,114" fill="var(--primary)"/>
+
+                  <!-- Step 3: Array Mapping -->
+                  <g transform="translate(485, 20)">
+                    <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STEP 03</text>
+                    <text x="90" y="56" text-anchor="middle" class="svg-title">JSX Projection</text>
+
+                    <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">data.map(elem =&gt;)</text>
+                    <text x="25" y="114" class="svg-mono-xs">• Returns Card JSX</text>
+                    <text x="25" y="134" class="svg-mono-xs">• Assigns key={idx}</text>
+                    <text x="25" y="150" class="svg-mono-xs" style="fill:var(--text-muted);">30 virtual cards</text>
+                  </g>
+
+                  <!-- Arrow 3 -->
+                  <line x1="665" y1="110" x2="695" y2="110" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="695,106 703,110 695,114" fill="var(--success)"/>
+
+                  <!-- Step 4: Live DOM Render -->
+                  <g transform="translate(705, 20)">
+                    <rect x="0" y="0" width="150" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">STEP 04</text>
+                    <text x="75" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">DOM Render</text>
+
+                    <rect x="15" y="70" width="120" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="94" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Live Screen</text>
+                    <text x="25" y="114" class="svg-mono-xs">30 Image Cards</text>
+                    <text x="25" y="134" class="svg-mono-xs">Authors &amp; photos</text>
+                    <text x="25" y="150" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Rendered ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
     }
   ]
 };

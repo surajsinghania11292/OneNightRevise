@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Deep midnight obsidian-pine backdrop -->
+    <linearGradient id="logoBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14261C"/>
+      <stop offset="50%" stop-color="#0D1A13"/>
+      <stop offset="100%" stop-color="#060E0A"/>
+    </linearGradient>
+
+    <!-- Liquid Sunlit Gold to Amber Metallic Gradient -->
+    <linearGradient id="lunarGold" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#FFFDF2"/>
+      <stop offset="25%" stop-color="#FDE68A"/>
+      <stop offset="65%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+
+    <!-- Luminous Emerald Clarity Spark Gradient -->
+    <linearGradient id="emeraldSpark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A7F3D0"/>
+      <stop offset="45%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+
+    <!-- Refined Dual-Tone Hairline Rim -->
+    <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A" stop-opacity="0.75"/>
+      <stop offset="50%" stop-color="#34D399" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Squircle Canvas with Fine Luxury Rim -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#logoBg)" stroke="url(#rimGrad)" stroke-width="1.4"/>
+
+  <!-- Subtle Harmonic Orbital Ring (Engineering Precision) -->
+  <circle cx="32" cy="32" r="21" fill="none" stroke="#FDE68A" stroke-width="0.8" stroke-opacity="0.14" stroke-dasharray="2 3"/>
+
+  <!-- Precision Aerodynamic Lunar Crescent (OneNight) -->
+  <path d="M 33 13 C 21.5 13 13 21.5 13 32 C 13 42.5 21.5 51 33 51 C 23 47 18 39.5 18 32 C 18 24.5 23 17 33 13 Z" fill="url(#lunarGold)"/>
+
+  <!-- 4-Point Nocturnal Focus Spark (Technical Clarity) -->
+  <path d="M 41 22 Q 41 32 51 32 Q 41 32 41 42 Q 41 32 31 32 Q 41 32 41 22 Z" fill="url(#emeraldSpark)"/>
+
+  <!-- Precision Synapse Nodes -->
+  <circle cx="44.5" cy="17.5" r="1.8" fill="#FDE68A" opacity="0.9"/>
+  <circle cx="46" cy="45" r="1.5" fill="#34D399" opacity="0.8"/>
+</svg>

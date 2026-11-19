@@ -1402,7 +1402,7 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
         },
         {
           num: "7.2",
-          title: "How Virtual DOM Works Step-by-Step (<button> & <h1> Example)",
+          title: "How Virtual DOM Works Step-by-Step (Example)",
           content: `
             <div class="callout-highlight-box">
               <span class="callout-highlight-tag">The 3-Step Reconciliation Pipeline</span>
@@ -1960,7 +1960,7 @@ body {
         },
         {
           num: "9.3",
-          title: "JSX Basics, <App /> vs. App(), & the rafce Shortcut",
+          title: "JSX Basics, &lt;App /&gt; vs. App(), &amp; the rafce Shortcut",
           content: `
             <ul class="notes-bullet-list">
               <li><strong>What Is JSX (JavaScript XML)?</strong>
@@ -2492,6 +2492,841 @@ export default Navbar;</code></pre>
                     <text x="35" y="114" class="svg-mono-xs" style="fill:var(--accent);">user="alice_dev"</text>
                     <text x="35" y="132" class="svg-mono-xs" style="fill:var(--accent);">likes={1240}</text>
                     <text x="25" y="152" class="svg-mono-xs" style="font-weight:700; fill:var(--primary);">/&gt;</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 12: WHAT ARE PROPS? (THE FUNCTION PARAMETER ANALOGY)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-12-what-are-props-function-parameter",
+      number: "12",
+      shortLabel: "What Are Props?",
+      title: "What Are Props? (The Function Parameter Analogy)",
+      summary: "Definition of Props (Properties), the abc(10) JavaScript function argument analogy, passing props from parent App.jsx to child Card.jsx, strings vs. curly braces {}.",
+      subtopicLabels: ["12.1 What Are Props?", "12.2 Function Argument Analogy", "12.3 Parent to Child Data Flow"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "12.1",
+          title: "What Are Props?",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Props Stands for "Properties":</strong>
+                <ul class="notes-sub-list">
+                  <li>When you write <code>&lt;Card user="Aman" /&gt;</code> in React, the attribute <code>user="Aman"</code> looks just like a standard HTML attribute (such as <code>class="..."</code> or <code>src="..."</code>).</li>
+                  <li>In React, these custom attributes passed into components are called <strong>Props</strong>.</li>
+                </ul>
+              </li>
+              <li><strong>The Core Purpose of Props:</strong>
+                <ul class="notes-sub-list">
+                  <li>Props enable you to reuse the <strong>exact same component structure and styling</strong> (like a reusable user card, product card, or button) while injecting <strong>different dynamic data</strong> (different usernames, ages, avatar images, prices) into each individual instance.</li>
+                  <li>Without props, component reusability would be useless because every card would show identical, hardcoded data.</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "12.2",
+          title: "How Props Work Like JavaScript Function Arguments (abc(10) Analogy)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Traditional JavaScript Function Parallel:</strong>
+                <ul class="notes-sub-list">
+                  <li>Consider a simple JavaScript function with a parameter:
+                    <pre class="notes-code-block"><code>function abc(a) {
+  console.log('Hello', a);
+}
+
+abc(10); // Prints: Hello 10</code></pre>
+                  </li>
+                  <li>Here, <code>10</code> is the <strong>argument</strong> supplied at the call site, and <code>a</code> is the <strong>parameter</strong> that receives that value inside the function body.</li>
+                </ul>
+              </li>
+              <li><strong>Applying the Exact Same Logic to React:</strong>
+                <ul class="notes-sub-list">
+                  <li>A React component (like <code>Card</code>) is fundamentally a <strong>JavaScript function</strong>.</li>
+                  <li>Writing <code>&lt;Card user="Sarthak" age={18} /&gt;</code> in JSX is simply the JSX syntax for invoking <code>Card({ user: "Sarthak", age: 18 })</code>.</li>
+                  <li>Under the hood, React collects all attributes passed to the component tag, bundles them into a single JavaScript object named <strong><code>props</code></strong>, and delivers that object as the first argument to your component function!</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 12.1 · JavaScript Function Arguments vs. React Component Props</span>
+                <span class="diagram-frame-tag">FUNCTIONAL PARALLEL & ANALOGY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing the parallel between plain JS function arguments and React component props">
+                  <!-- Left: Vanilla JS Function -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary)"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">VANILLA JAVASCRIPT</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Function Arguments: abc(10)</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--text);">function <strong style="fill:var(--primary);">abc(a)</strong> {</text>
+                    <text x="45" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">console.log('Hello', a);</text>
+                    <text x="25" y="136" class="svg-mono-xs">}</text>
+                    <text x="25" y="156" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">abc(10);  // Argument 10 maps to parameter a</text>
+                  </g>
+
+                  <!-- Right: React Component Props -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--accent)"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">REACT JS PARADIGM</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Component Props: &lt;Card user="..." /&gt;</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--text);">function <strong style="fill:var(--accent);">Card(props)</strong> {</text>
+                    <text x="45" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">return &lt;h1&gt;{props.user}&lt;/h1&gt;;</text>
+                    <text x="25" y="136" class="svg-mono-xs">}</text>
+                    <text x="25" y="156" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;Card user="Sarthak" /&gt; // Bundled as props.user</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "12.3",
+          title: "Passing Props From Parent (App.jsx) to Child (Card.jsx)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Unidirectional Data Flow (Top to Bottom):</strong>
+                <ul class="notes-sub-list">
+                  <li>In React, data strictly flows in one direction: from the <strong>Parent component</strong> down to the <strong>Child component</strong>.</li>
+                  <li><strong>Parent (<code>App.jsx</code>):</strong> Responsible for defining and passing the data when rendering each child instance:
+                    <pre class="notes-code-block"><code>// src/App.jsx
+import Card from './components/Card';
+
+function App() {
+  return (
+    &lt;div className="container"&gt;
+      &lt;Card user="Sarthak" age={18} img="https://images.unsplash.com/photo-1" /&gt;
+      &lt;Card user="Aman" age={21} img="https://images.unsplash.com/photo-2" /&gt;
+      &lt;Card user="Aditya" age={24} img="https://images.unsplash.com/photo-3" /&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>Syntax Rules for Passing Props:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>String Literals:</strong> Plain text values (like usernames or URLs) can be passed directly inside quotes: <code>user="Sarthak"</code> or <code>img="..."</code>.</li>
+                  <li><strong>Numbers, Booleans & JavaScript Expressions:</strong> Must be wrapped inside <strong>curly braces <code>{}</code></strong>: <code>age={18}</code>, <code>isMember={true}</code>, or <code>total={10 + 5}</code>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 12.2 · Parent-to-Child Unidirectional Props Data Flow</span>
+                <span class="diagram-frame-tag">COMPONENT HIERARCHY & DATA STREAM</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Diagram showing parent App.jsx passing distinct props objects down to three child Card components">
+                  <!-- Parent: App.jsx -->
+                  <g transform="translate(240, 15)">
+                    <rect x="0" y="0" width="400" height="50" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="2"/>
+                    <text x="200" y="24" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">PARENT COMPONENT</text>
+                    <text x="200" y="42" text-anchor="middle" class="svg-title">src/App.jsx (Data Source)</text>
+                  </g>
+
+                  <!-- 3 Downward Arrows with Props Labels -->
+                  <!-- Flow to Card 1 -->
+                  <path d="M 320 65 L 320 95 L 140 95 L 140 120" fill="none" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="135,120 140,128 145,120" fill="var(--primary)"/>
+                  <rect x="55" y="82" width="130" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="120" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--primary);">{user:"Sarthak", age:18}</text>
+
+                  <!-- Flow to Card 2 -->
+                  <path d="M 440 65 L 440 120" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                  <polygon points="435,120 440,128 445,120" fill="var(--accent)"/>
+                  <rect x="375" y="82" width="130" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                  <text x="440" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--accent);">{user:"Aman", age:21}</text>
+
+                  <!-- Flow to Card 3 -->
+                  <path d="M 560 65 L 560 95 L 740 95 L 740 120" fill="none" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="735,120 740,128 745,120" fill="var(--success)"/>
+                  <rect x="675" y="82" width="130" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="740" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--success);">{user:"Aditya", age:24}</text>
+
+                  <!-- Child 1 -->
+                  <g transform="translate(30, 130)">
+                    <rect x="0" y="0" width="220" height="90" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.5"/>
+                    <text x="110" y="24" text-anchor="middle" class="svg-title">&lt;Card /&gt; Instance 1</text>
+                    <rect x="15" y="36" width="190" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="110" y="54" text-anchor="middle" class="svg-mono-xs">user: "Sarthak"</text>
+                    <text x="110" y="70" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">age: 18</text>
+                  </g>
+
+                  <!-- Child 2 -->
+                  <g transform="translate(330, 130)">
+                    <rect x="0" y="0" width="220" height="90" rx="8" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                    <text x="110" y="24" text-anchor="middle" class="svg-title">&lt;Card /&gt; Instance 2</text>
+                    <rect x="15" y="36" width="190" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="110" y="54" text-anchor="middle" class="svg-mono-xs">user: "Aman"</text>
+                    <text x="110" y="70" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">age: 21</text>
+                  </g>
+
+                  <!-- Child 3 -->
+                  <g transform="translate(630, 130)">
+                    <rect x="0" y="0" width="220" height="90" rx="8" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
+                    <text x="110" y="24" text-anchor="middle" class="svg-title">&lt;Card /&gt; Instance 3</text>
+                    <rect x="15" y="36" width="190" height="42" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="110" y="54" text-anchor="middle" class="svg-mono-xs">user: "Aditya"</text>
+                    <text x="110" y="70" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">age: 24</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 13: RECEIVING, USING & RENDERING DYNAMIC DATA WITH PROPS
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-13-receiving-rendering-props",
+      number: "13",
+      shortLabel: "Receiving & Rendering Props",
+      title: "Receiving, Using & Rendering Dynamic Data With Props",
+      summary: "Accessing props via dot notation ({props.user}, {props.age}), passing dynamic image URLs, and the crucial JSX gotcha of curly braces {} vs string quotes.",
+      subtopicLabels: ["13.1 Displaying Props in Card", "13.2 Passing Dynamic Images", "13.3 Curly Braces vs Quotes Gotcha"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "13.1",
+          title: "Receiving & Displaying Props Inside Card.jsx",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Accepting <code>props</code> in the Child Component:</strong>
+                <ul class="notes-sub-list">
+                  <li>In <code>Card.jsx</code>, declare <strong><code>props</code></strong> as the parameter of your functional component:
+                    <pre class="notes-code-block"><code>// src/components/Card.jsx
+const Card = (props) => {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2&gt;{props.user}&lt;/h2&gt;
+      &lt;p&gt;Age: {props.age}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default Card;</code></pre>
+                  </li>
+                  <li>Because <code>props</code> is a standard JavaScript object (e.g. <code>{ user: "Sarthak", age: 18 }</code>), you read each property using <strong>dot notation</strong> inside JSX curly braces:
+                    <ul class="notes-sub-list">
+                      <li><code>{props.user}</code> → Dynamically renders the person's name (<em>Sarthak</em>, <em>Aman</em>, <em>Aditya</em>).</li>
+                      <li><code>{props.age}</code> → Dynamically renders their age (<em>18</em>, <em>21</em>, <em>24</em>).</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "13.2",
+          title: "Passing Dynamic Images Through Props",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Passing Image URLs Dynamically:</strong>
+                <ul class="notes-sub-list">
+                  <li>Just like text strings and numbers, image URLs (such as image addresses copied from Unsplash or a CDN) can be passed as props from <code>App.jsx</code>:
+                    <pre class="notes-code-block"><code>// In App.jsx
+&lt;Card user="Aditya" age={24} img="https://images.unsplash.com/photo-1534528741775-53994a69daeb" /&gt;</code></pre>
+                  </li>
+                  <li>Inside <code>Card.jsx</code>, bind the prop to the <code>src</code> attribute using curly braces:
+                    <pre class="notes-code-block"><code>// In Card.jsx
+const Card = (props) => {
+  return (
+    &lt;div className="card"&gt;
+      &lt;img src={props.img} alt={props.user} /&gt;
+      &lt;h2&gt;{props.user}&lt;/h2&gt;
+      &lt;p&gt;Age: {props.age}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+                  </li>
+                  <li>Now every single <code>&lt;Card /&gt;</code> shares the exact same CSS border, shadow, and layout structure, while automatically displaying its own unique photo, name, and age!</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 13.1 · Props Object Extraction & JSX DOM Data Binding Pipeline</span>
+                <span class="diagram-frame-tag">OBJECT EXTRACTION & DOM INJECTION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing props object arriving and binding to h2, p, and img DOM elements via dot notation">
+                  <!-- Props Object -->
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="240" height="175" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="120" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">PROPS OBJECT</text>
+                    <text x="120" y="52" text-anchor="middle" class="svg-title">Received Parameter</text>
+                    <rect x="15" y="66" width="210" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="88" class="svg-mono-xs">props = {</text>
+                    <text x="40" y="108" class="svg-mono-xs" style="fill:var(--primary);">user: "Aditya",</text>
+                    <text x="40" y="126" class="svg-mono-xs" style="fill:var(--accent);">age: 24,</text>
+                    <text x="40" y="144" class="svg-mono-xs" style="fill:var(--success);">img: "https://..."</text>
+                    <text x="25" y="156" class="svg-mono-xs">}</text>
+                  </g>
+
+                  <!-- Extraction Arrows -->
+                  <g transform="translate(280, 50)">
+                    <line x1="0" y1="20" x2="60" y2="0" stroke="var(--primary)" stroke-width="2"/>
+                    <polygon points="60,-4 68,0 60,4" fill="var(--primary)"/>
+                    <line x1="0" y1="65" x2="60" y2="65" stroke="var(--accent)" stroke-width="2"/>
+                    <polygon points="60,61 68,65 60,69" fill="var(--accent)"/>
+                    <line x1="0" y1="110" x2="60" y2="130" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="60,126 68,130 60,134" fill="var(--success)"/>
+                  </g>
+
+                  <!-- JSX Binding Nodes -->
+                  <g transform="translate(355, 25)">
+                    <rect x="0" y="0" width="220" height="175" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="110" y="28" text-anchor="middle" class="svg-kicker">JSX TEMPLATE</text>
+                    <text x="110" y="52" text-anchor="middle" class="svg-title">Dot Notation Binding</text>
+
+                    <rect x="15" y="66" width="190" height="28" rx="4" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="105" y="84" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">&lt;h2&gt;{props.user}&lt;/h2&gt;</text>
+
+                    <rect x="15" y="102" width="190" height="28" rx="4" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="105" y="120" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">&lt;p&gt;Age: {props.age}&lt;/p&gt;</text>
+
+                    <rect x="15" y="138" width="190" height="28" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="105" y="156" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;img src={props.img} /&gt;</text>
+                  </g>
+
+                  <!-- Render Arrow -->
+                  <g transform="translate(585, 105)">
+                    <line x1="0" y1="10" x2="40" y2="10" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="40,6 48,10 40,14" fill="var(--success)"/>
+                    <text x="20" y="2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--success);">Renders</text>
+                  </g>
+
+                  <!-- Live Rendered Output -->
+                  <g transform="translate(640, 25)">
+                    <rect x="0" y="0" width="210" height="175" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="105" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">RENDERED HTML</text>
+                    <text x="105" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Live DOM Node</text>
+
+                    <rect x="15" y="66" width="180" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="94" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">Aditya</text>
+                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">Age: 24</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--success); font-size:10px;">[Photo Rendered ✓]</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "13.3",
+          title: "Common JSX Gotcha: Curly Braces {} vs. Quotes \"\"",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Golden Rule of JSX:</strong>
+                <ul class="notes-sub-list">
+                  <li>Whenever you want to evaluate a <strong>JavaScript expression, variable, or prop</strong> inside JSX, you <strong>must wrap it in curly braces <code>{}</code></strong>.</li>
+                </ul>
+              </li>
+              <li><strong>What Happens If You Forget <code>{}</code> or Use Quotes?</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Gotcha 1 (Text):</strong> Writing <code>&lt;h1&gt;props.user&lt;/h1&gt;</code> does not evaluate the variable—it literally prints the characters <code>props.user</code> onto the screen instead of displaying <code>"Sarthak"</code>.</li>
+                  <li><strong>Gotcha 2 (Images):</strong> Writing <code>&lt;img src="props.img" /&gt;</code> instructs the browser to request an image file named literally <code>props.img</code>, resulting in a <strong>404 Not Found broken image icon</strong>! Always write <strong><code>&lt;img src={props.img} /&gt;</code></strong> without quotes.</li>
+                </ul>
+              </li>
+              <li><strong>Architecture Note (Towards Dynamic Lists):</strong>
+                <ul class="notes-sub-list">
+                  <li>Manually copy-pasting ten <code>&lt;Card /&gt;</code> components with hardcoded prop values in <code>App.jsx</code> is fine for initial practice, but in real production applications data comes from APIs as an <strong>Array of Objects</strong> and is dynamically mapped into components using <code>.map()</code>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 13.2 · JSX Evaluation Gotcha: String Literal vs. JavaScript Expression</span>
+                <span class="diagram-frame-tag">JSX SYNTAX GUARDRAIL</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 210" class="arch-svg" role="img" aria-label="Diagram contrasting incorrect string quotes causing broken image with correct curly braces evaluating prop URL">
+                  <!-- Bad: Quotes -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="170" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--danger)"/>
+                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">INCORRECT ❌</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Quotation Marks: Literal String</text>
+
+                    <rect x="15" y="70" width="365" height="78" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="94" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">&lt;img src="props.img" /&gt;</text>
+                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--text-muted);">Browser fetches GET /props.img</text>
+                    <text x="25" y="132" class="svg-mono-xs" style="fill:var(--danger);">Result: 404 Not Found (Broken Image Icon)</text>
+                  </g>
+
+                  <!-- Good: Curly Braces -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="170" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--success)"/>
+                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">CORRECT ✓</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Curly Braces: JS Expression</text>
+
+                    <rect x="15" y="70" width="365" height="78" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="94" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;img src={props.img} /&gt;</text>
+                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--text-muted);">Evaluates variable: "https://images.unsplash.com/..."</text>
+                    <text x="25" y="132" class="svg-mono-xs" style="fill:var(--success);">Result: Image loads and renders perfectly ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 14: RENDERING DYNAMIC LISTS WITH .MAP() & ARRAY OF OBJECTS
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-14-rendering-lists-map-objects",
+      number: "14",
+      shortLabel: "Lists & Array of Objects",
+      title: "Rendering Dynamic Lists With .map() & Array of Objects",
+      summary: "Why manual indexing fails, .map() inside JSX curly braces, forEach vs map, transforming items, array of objects, and fixing 'Objects are not valid as a React child'.",
+      subtopicLabels: ["14.1 Manual Indexing vs .map()", "14.2 forEach vs map", "14.3 Array of Objects & Job Cards", "14.4 Objects Not Valid Error"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "14.1",
+          title: "Why Manual Indexing Fails & Using .map() in JSX",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Failure of Manual Array Indexing:</strong>
+                <ul class="notes-sub-list">
+                  <li>When you have an array of data, manually accessing elements one-by-one (e.g. <code>arr[0]</code>, <code>arr[1]</code>, <code>arr[2]</code>) is tedious, repetitive, and fails the moment array items are added or deleted dynamically.</li>
+                </ul>
+              </li>
+              <li><strong>The Solution — <code>.map()</code> Inside JSX Curly Braces:</strong>
+                <ul class="notes-sub-list">
+                  <li>In JSX, JavaScript expressions must always be wrapped in curly braces: <code>{arr.map((elem) =&gt; ...)}</code>.</li>
+                  <li><strong>Gotcha:</strong> If you write <code>arr.map(...)</code> without curly braces, React treats it as plain text and literally outputs <code>arr.map(...)</code> on the web page instead of executing JavaScript!</li>
+                </ul>
+              </li>
+              <li><strong>How <code>.map()</code> Renders Elements Step-by-Step:</strong>
+                <ul class="notes-sub-list">
+                  <li><code>.map()</code> iterates over every item in the array and returns a new transformed value or JSX element for each one.</li>
+                  <li><strong>Example:</strong> If <code>arr = [10, 20, 30, 40]</code> (4 elements), whatever JSX you return inside <code>.map()</code> renders <strong>exactly 4 times</strong>. If the array contains 10 items, it renders 10 times automatically.</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "14.2",
+          title: "forEach vs. map & Transforming Elements",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Why Use <code>.map()</code> Instead of <code>.forEach()</code> in JSX?</strong>
+                <ul class="notes-sub-list">
+                  <li><strong><code>.forEach()</code>:</strong> Iterates through an array for side effects, but its return value is always <strong><code>undefined</code></strong>. If you place <code>arr.forEach(...)</code> inside JSX, React receives <code>undefined</code> and renders absolutely nothing on the screen!</li>
+                  <li><strong><code>.map()</code>:</strong> Returns a <strong>brand new array</strong> of JSX elements. React automatically unwraps arrays of JSX elements and renders them into the DOM.</li>
+                </ul>
+              </li>
+              <li><strong>Accessing & Transforming Each Item (<code>elem</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>The callback parameter <code>elem</code> holds the current item on each iteration.</li>
+                  <li>You can transform values dynamically:
+                    <ul class="notes-sub-list">
+                      <li><code>elem * 2</code> on <code>[10, 99, 30]</code> outputs <code>20</code>, <code>198</code>, <code>60</code>.</li>
+                      <li>Wrapping in JSX: <code>arr.map((elem) =&gt; &lt;h1&gt;{elem}&lt;/h1&gt;)</code> renders each number inside a separate heading.</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 14.1 · Array Iteration in React: .forEach() vs. .map()</span>
+                <span class="diagram-frame-tag">FUNCTIONAL TRANSFORMATION PIPELINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram contrasting forEach returning undefined with map returning an array of JSX elements">
+                  <!-- forEach: Undefined -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="120" height="20" rx="4" fill="var(--danger)"/>
+                    <text x="75" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">arr.forEach() ❌</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Returns undefined</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="94" class="svg-mono-xs">{arr.forEach(item =&gt; &lt;h1&gt;{item}&lt;/h1&gt;)}</text>
+                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--danger);">Return Value: undefined</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--text-muted);">Result: React renders blank screen with zero elements!</text>
+                  </g>
+
+                  <!-- map: Returns Array -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--success)"/>
+                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">arr.map() ✓</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Returns New JSX Array</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="94" class="svg-mono-xs">{arr.map(item =&gt; &lt;h1&gt;{item}&lt;/h1&gt;)}</text>
+                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Return Value: [&lt;h1&gt;10&lt;/h1&gt;, &lt;h1&gt;20&lt;/h1&gt;, ...]</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--text-muted);">Result: React renders each item directly into the DOM ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "14.3",
+          title: "Working With an Array of Objects (Job Openings Cards Project)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Real-World Structured Data:</strong>
+                <ul class="notes-sub-list">
+                  <li>Production applications rarely work with flat numbers like <code>[10, 20, 30]</code>. Data arrives from databases or APIs as an <strong>Array of Objects</strong>:
+                    <pre class="notes-code-block"><code>const users = [
+  { user: 'Sarthak', age: 18 },
+  { user: 'Harsh', age: 22 },
+  { user: 'Aman', age: 21 }
+];</code></pre>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>The Job Openings Cards Project (<code>04-cards-project</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>To build a real-world career portal interface, create an array of <strong>10 job opening objects</strong> for top tech enterprises: <strong>Meta, Amazon, Apple, Netflix, Google, Microsoft, IBM, Tesla, Nvidia, and Oracle</strong>.</li>
+                  <li>Each object encapsulates rich structured properties:
+                    <pre class="notes-code-block"><code>const jobOpenings = [
+  {
+    companyName: "Google",
+    logo: "https://...google-logo.svg",
+    datePosted: "2 days ago",
+    post: "Senior Frontend Engineer",
+    tag1: "Full Time",
+    tag2: "React / TS",
+    pay: "$185,000 / yr",
+    location: "Mountain View, CA"
+  },
+  // ... 9 more company opening objects
+];</code></pre>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "14.4",
+          title: "Common Error: 'Objects are not valid as a React child'",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Mistake:</strong>
+                <ul class="notes-sub-list">
+                  <li>If you map over an array of objects and write <code>{jobOpenings.map(elem =&gt; &lt;h1&gt;{elem}&lt;/h1&gt;)}</code>, React crashes immediately!</li>
+                  <li><strong>The Error Message:</strong> <code>Uncaught Error: Objects are not valid as a React child (found: object with keys {companyName, logo, ...}). If you meant to render a collection of children, use an array instead.</code></li>
+                  <li><strong>Why?</strong> React can only render primitive values (strings, numbers, JSX elements) directly into text nodes. It cannot guess how to render an entire JavaScript object dictionary.</li>
+                </ul>
+              </li>
+              <li><strong>The Two Fixes:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Fix 1 (Direct Property Access):</strong> Render primitive fields individually: <code>&lt;h1&gt;{elem.companyName}&lt;/h1&gt;</code>.</li>
+                  <li><strong>Fix 2 (Component Props Pattern):</strong> Return a reusable component (like <code>&lt;Card ... /&gt;</code>) and forward each object property as a prop: <code>&lt;Card company={elem.companyName} pay={elem.pay} /&gt;</code>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 14.2 · Array of Objects Transformation to UI Cards (Job Openings Pipeline)</span>
+                <span class="diagram-frame-tag">DATA-DRIVEN RENDERING PIPELINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Diagram showing array of 10 tech company job objects being mapped into reusable Card components">
+                  <!-- Raw Data Box -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="230" height="195" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="115" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">RAW DATA SOURCE</text>
+                    <text x="115" y="52" text-anchor="middle" class="svg-title">jobOpenings Array</text>
+                    <rect x="15" y="66" width="200" height="115" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="88" class="svg-mono-xs" style="fill:var(--primary);">[</text>
+                    <text x="35" y="106" class="svg-mono-xs">{ company: "Meta", ... },</text>
+                    <text x="35" y="124" class="svg-mono-xs">{ company: "Google", ... },</text>
+                    <text x="35" y="142" class="svg-mono-xs">{ company: "Apple", ... },</text>
+                    <text x="35" y="160" class="svg-mono-xs" style="fill:var(--text-muted);">// 7 more objects</text>
+                    <text x="25" y="174" class="svg-mono-xs" style="fill:var(--primary);">]</text>
+                  </g>
+
+                  <!-- Map Transformation Arrow -->
+                  <g transform="translate(265, 105)">
+                    <line x1="0" y1="10" x2="60" y2="10" stroke="var(--primary)" stroke-width="2.5"/>
+                    <polygon points="60,5 70,10 60,15" fill="var(--primary)"/>
+                    <rect x="5" y="-12" width="55" height="18" rx="3" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="32" y="1" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--primary);">.map()</text>
+                  </g>
+
+                  <!-- Mapping Logic -->
+                  <g transform="translate(345, 20)">
+                    <rect x="0" y="0" width="240" height="195" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <text x="120" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">TRANSFORMATION</text>
+                    <text x="120" y="52" text-anchor="middle" class="svg-title">App.jsx Mapped Loop</text>
+                    <rect x="15" y="66" width="210" height="115" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="25" y="90" class="svg-mono-xs">jobOpenings.map(elem =&gt;</text>
+                    <text x="35" y="112" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">&lt;Card</text>
+                    <text x="45" y="130" class="svg-mono-xs">company={elem.companyName}</text>
+                    <text x="45" y="148" class="svg-mono-xs">pay={elem.pay}</text>
+                    <text x="35" y="166" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">/&gt;</text>
+                    <text x="25" y="176" class="svg-mono-xs">)</text>
+                  </g>
+
+                  <!-- Mount Arrow -->
+                  <g transform="translate(595, 105)">
+                    <line x1="0" y1="10" x2="50" y2="10" stroke="var(--success)" stroke-width="2.5"/>
+                    <polygon points="50,5 60,10 50,15" fill="var(--success)"/>
+                    <text x="25" y="-2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--success);">Renders</text>
+                  </g>
+
+                  <!-- Rendered Cards Grid -->
+                  <g transform="translate(665, 20)">
+                    <rect x="0" y="0" width="190" height="195" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="95" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">OUTPUT DOM</text>
+                    <text x="95" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">10 Dynamic Cards</text>
+
+                    <rect x="15" y="66" width="160" height="34" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="95" y="87" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">Meta · $180k</text>
+
+                    <rect x="15" y="106" width="160" height="34" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="95" y="127" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">Google · $185k</text>
+
+                    <rect x="15" y="146" width="160" height="34" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="95" y="167" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">+ 8 More Tech Cards</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 15: PASSING OBJECT PROPS & SOLVING THE MISSING KEY WARNING
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-15-object-props-key-warning",
+      number: "15",
+      shortLabel: "Object Props & Key Warning",
+      title: "Passing Object Props & Solving the Missing 'key' Prop Warning",
+      summary: "Project setup for 04-cards-project, passing multi-attribute props, the College Roll Number analogy for unique keys, fixing warnings with idx, and practice ideas.",
+      subtopicLabels: ["15.1 Cards Project Setup", "15.2 Why React Needs key (Roll Number Analogy)", "15.3 Fixing With idx & Practice Ideas"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "15.1",
+          title: "Project Setup & Rendering Reusable <Card /> Components",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Clean Project Architecture (<code>04-cards-project</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>Reset <code>App.jsx</code> and <code>index.css</code> to remove starter boilerplate.</li>
+                  <li>Create a <code>components/</code> folder inside <code>src/</code> and add <code>Card.jsx</code>.</li>
+                  <li>In <code>index.css</code>, style the outer container (e.g. <code>.parent { min-height: 100vh; width: 100%; background-color: #111; padding: 2rem; display: flex; flex-wrap: wrap; gap: 1.5rem; }</code>).</li>
+                </ul>
+              </li>
+              <li><strong>Mapping Objects to Component Props:</strong>
+                <ul class="notes-sub-list">
+                  <li>Render <code>&lt;Card /&gt;</code> inside <code>.map()</code> over the 10-item <code>jobOpenings</code> array:
+                    <pre class="notes-code-block"><code>// src/App.jsx
+import Card from './components/Card';
+
+function App() {
+  return (
+    &lt;div className="parent"&gt;
+      {jobOpenings.map((elem, idx) =&gt; (
+        &lt;Card
+          key={idx}
+          companyName={elem.companyName}
+          logo={elem.logo}
+          datePosted={elem.datePosted}
+          post={elem.post}
+          tag1={elem.tag1}
+          tag2={elem.tag2}
+          pay={elem.pay}
+          location={elem.location}
+        /&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+                  </li>
+                  <li><strong>Notice on Image URLs:</strong> Placeholder image links (like Clearbit CDN logos) can occasionally break. Always verify URLs in a browser tab and replace any broken links with working assets.</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "15.2",
+          title: "Why React Needs a Unique 'key' Prop (College Roll Number Analogy)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Dreaded Console Warning:</strong>
+                <ul class="notes-sub-list">
+                  <li>When you render lists using <code>.map()</code> without a key, React prints: <code>Warning: Each child in a list should have a unique "key" prop. See https://react.dev/link/warning-keys for more information.</code></li>
+                </ul>
+              </li>
+              <li><strong>Why React Demands a Unique Key:</strong>
+                <ul class="notes-sub-list">
+                  <li>When an array updates (e.g. a new item is inserted at the beginning, an item is deleted, or the list is sorted), React compares the old Virtual DOM tree with the new Virtual DOM tree.</li>
+                  <li>Without unique identifiers, React cannot determine which item moved, which item was added, or which item was removed—forcing it to discard and destructively rebuild the entire list of DOM nodes.</li>
+                </ul>
+              </li>
+              <li><strong>The College Roll Number Analogy:</strong>
+                <ul class="notes-sub-list">
+                  <li>Imagine a classroom of 100 students wearing identical school uniforms. To a substitute teacher, every student looks indistinguishable.</li>
+                  <li>If the college assigns each student a permanent, unique <strong>Roll Number / Student ID Card</strong>, the teacher can instantly identify and update the record of one specific student without inspecting all 100 students!</li>
+                  <li>In the exact same way, the <strong><code>key</code> prop</strong> acts as an internal ID badge that tells React's reconciliation engine exactly which DOM node corresponds to which data item.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 15.1 · The College Roll Number Analogy: Why the React Reconciler Demands Unique Keys</span>
+                <span class="diagram-frame-tag">DIFFING ALGORITHM & IDENTITY RECONCILIATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing college roll number analogy where keys uniquely identify list items during updates">
+                  <!-- Without Keys -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--danger)"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">WITHOUT KEYS ❌</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">No Roll Numbers / Anonymous Items</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">Students have no ID cards</text>
+                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">When Student 1 shifts seat, teacher must re-examine all 100!</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--danger);">React re-renders entire DOM list · Loses form focus/state</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--text-muted);">Console Warning: Each child should have a unique "key"</text>
+                  </g>
+
+                  <!-- With Keys -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--success)"/>
+                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">WITH KEY={ID} ✓</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">Unique Roll Number Identity</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;Card key={idx} ... /&gt;</text>
+                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--text);">Each student holds unique Roll No: [0, 1, 2, ...]</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">React reconciles surgical in-place updates</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--text-muted);">Zero warnings · 60fps silky smooth list performance</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "15.3",
+          title: "Fixing the Warning With idx (key={idx}) & Practice Ideas",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>How to Fix the Warning Using <code>idx</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li>The second argument of <code>.map()</code> provides the zero-based index of each item in the array: <code>array.map((elem, idx) =&gt; ...)</code>.</li>
+                  <li>Pass <strong><code>key={idx}</code></strong> to the top-level element returned inside the callback:
+                    <pre class="notes-code-block"><code>{jobOpenings.map((elem, idx) =&gt; (
+  &lt;Card key={idx} {...elem} /&gt;
+))}</code></pre>
+                  </li>
+                  <li><strong>Invisible in the DOM:</strong> Notice that React uses <code>key</code> solely for its internal reconciliation engine. If you inspect the rendered HTML in Chrome DevTools, you will see that <code>key</code> does <strong>not</strong> appear as an attribute on the physical DOM node!</li>
+                </ul>
+              </li>
+              <li><strong>Recommended Production Practice:</strong>
+                <ul class="notes-sub-list">
+                  <li>While <code>key={idx}</code> eliminates the console warning for static lists, for dynamic lists that support deletion, insertion, or reordering, always prefer a stable unique database ID: <code>key={elem.id}</code>.</li>
+                </ul>
+              </li>
+              <li><strong>Interactive Practice Ideas:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Contact Directory:</strong> Render 20 contacts with avatar, full name, phone number, and an "Active" badge.</li>
+                  <li><strong>Freelancer Profile Cards:</strong> Render freelancer profiles showing hourly rate, rating stars, location, and a list of skill chips (<code>React</code>, <code>Tailwind</code>, <code>Node.js</code>).</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 15.2 · Reconciliation Diffing Engine: List Updates With Keys vs. Without Keys</span>
+                <span class="diagram-frame-tag">VIRTUAL DOM RECONCILIATION BENCHMARK</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing list insertion at beginning: without keys all elements are destroyed and recreated, with keys only the new element is inserted">
+                  <!-- Case A: Without Keys -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.5"/>
+                    <text x="200" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">MUTATION WITHOUT KEYS</text>
+                    <text x="200" y="50" text-anchor="middle" class="svg-title">Prepending Item to List</text>
+
+                    <!-- Old vs New Nodes -->
+                    <rect x="15" y="65" width="170" height="30" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="100" y="85" text-anchor="middle" class="svg-mono-xs">[A, B, C]</text>
+
+                    <text x="200" y="85" text-anchor="middle" class="svg-title" style="fill:var(--danger);">→</text>
+
+                    <rect x="215" y="65" width="165" height="30" rx="4" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                    <text x="297" y="85" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">[NEW, A, B, C]</text>
+
+                    <rect x="15" y="105" width="365" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="125" class="svg-mono-xs" style="fill:var(--danger);">React compares index 0 (A vs NEW) → Mutates!</text>
+                    <text x="25" y="143" class="svg-mono-xs" style="fill:var(--danger);">React compares index 1 (B vs A) → Mutates!</text>
+                    <text x="25" y="161" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">Total: 4 Destructive DOM Updates (Inefficient)</text>
+                  </g>
+
+                  <!-- Case B: With Keys -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="200" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">SURGICAL RECONCILIATION WITH KEYS</text>
+                    <text x="200" y="50" text-anchor="middle" class="svg-title">Key-Guided Minimal Patch</text>
+
+                    <rect x="15" y="65" width="170" height="30" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="100" y="85" text-anchor="middle" class="svg-mono-xs">{key:A}, {key:B}</text>
+
+                    <text x="200" y="85" text-anchor="middle" class="svg-title" style="fill:var(--success);">→</text>
+
+                    <rect x="215" y="65" width="165" height="30" rx="4" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="297" y="85" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">{key:NEW}, {key:A}, ...</text>
+
+                    <rect x="15" y="105" width="365" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="125" class="svg-mono-xs" style="fill:var(--success);">React matches key:A and key:B existing nodes ✓</text>
+                    <text x="25" y="143" class="svg-mono-xs" style="fill:var(--success);">Moves existing nodes without touching their state ✓</text>
+                    <text x="25" y="161" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Total: Only 1 Surgical Insertion (Sub-millisecond)</text>
                   </g>
                 </svg>
               </div>

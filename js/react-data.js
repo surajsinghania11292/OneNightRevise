@@ -151,7 +151,7 @@ const REACT_NOTES = {
 
                     <rect x="25" y="148" width="350" height="48" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-dasharray="4 3"/>
                     <text x="200" y="170" text-anchor="middle" class="svg-node" style="fill:var(--danger); font-weight:600;">💥 Must Hit F5 / Reload Entire Webpage</text>
-                    <text x="200" y="186" text-anchor="middle" class="svg-sub">White flicker · destroys DOM · re-downloads all feeds & ads</text>
+                    <text x="200" y="186" text-anchor="middle" class="svg-sub">White screen flicker · Destroys DOM tree</text>
                   </g>
 
                   <!-- GOOD PANEL: ReactJS Surgical Patch -->
@@ -172,7 +172,7 @@ const REACT_NOTES = {
 
                     <rect x="25" y="148" width="350" height="48" rx="8" fill="var(--bg-surface)" stroke="var(--success)"/>
                     <text x="200" y="170" text-anchor="middle" class="svg-node" style="fill:var(--success); font-weight:600;">✨ Zero Page Reload · Surgically Patched</text>
-                    <text x="200" y="186" text-anchor="middle" class="svg-sub">Feeds, videos, and ads stay intact without re-rendering</text>
+                    <text x="200" y="186" text-anchor="middle" class="svg-sub">Feeds & videos stay intact without reflow</text>
                   </g>
                 </svg>
               </div>
@@ -1020,7 +1020,7 @@ export const API_URL = 'https://api.example.com';</pre>
                     <text x="305" y="110" text-anchor="middle" class="svg-mono-xs" style="font-size:10px;">No { } needed</text>
 
                     <rect x="25" y="136" width="350" height="36" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
-                    <text x="200" y="159" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:600;">✓ Can name it 'naam', 'chacha', or 'user'</text>
+                    <text x="200" y="159" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:600;">✓ Alias freely: 'naam', 'user', or 'chacha'</text>
                   </g>
 
                   <!-- RIGHT: Named Export -->
@@ -1074,7 +1074,7 @@ export default user;</pre>
                 <div class="sub-box__title">script.js (Single Unified Import)</div>
                 <div class="sub-box__body">
                   <pre style="background:var(--bg-frame); padding:0.75rem 0.9rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">// Default import first, then { named } imports!
-import naam, { age, skills } from './app.js';
+import naam, { age, skills } from './app';
 
 console.log(naam);   // 'Sarthak'
 console.log(age);    // 89
@@ -1108,7 +1108,7 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
                     <rect x="190" y="118" width="155" height="40" rx="6" fill="var(--primary-bg)" stroke="var(--primary)"/>
                     <text x="267" y="143" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:600;">export const skills = [...]</text>
 
-                    <text x="185" y="190" text-anchor="middle" class="svg-sub" style="font-size:11px;">Single module serves multiple consumer requirements</text>
+                    <text x="185" y="190" text-anchor="middle" class="svg-sub" style="font-size:11px;">Single module serves multiple consumers</text>
                   </g>
 
                   <!-- Bridges -->
@@ -1295,7 +1295,7 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
 
                     <rect x="20" y="112" width="270" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--danger)" stroke-dasharray="3 3"/>
                     <text x="155" y="132" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:600;">💥 Unnecessary Full-Tree Re-render</text>
-                    <text x="155" y="148" text-anchor="middle" class="svg-sub">Unchanged elements forced through style recalculation</text>
+                    <text x="155" y="148" text-anchor="middle" class="svg-sub">Unchanged elements forced to recalculate layout</text>
                   </g>
 
                   <!-- Pipe 2 -->
@@ -1555,12 +1555,12 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
 
                     <!-- Search Bar Node (Untouched) -->
                     <rect x="25" y="70" width="350" height="42" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
-                    <text x="200" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">🔍 Search: "Sheryians Coding School" [UNTOUCHED ✓]</text>
+                    <text x="200" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">🔍 Search input preserved [UNTOUCHED ✓]</text>
 
                     <!-- Feeds Node (Updated) -->
                     <rect x="25" y="122" width="350" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
                     <text x="200" y="142" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary);">Video Player & Comments Updated Dynamically</text>
-                    <text x="200" y="158" text-anchor="middle" class="svg-sub">Search input never re-renders or loses typed cursor</text>
+                    <text x="200" y="158" text-anchor="middle" class="svg-sub">Search input never loses focus or typed text</text>
                   </g>
 
                   <!-- Instagram Panel -->
@@ -1571,12 +1571,12 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
 
                     <!-- Badge Node (Only updated part) -->
                     <rect x="25" y="70" width="350" height="42" rx="6" fill="var(--accent-light)" stroke="var(--accent)"/>
-                    <text x="200" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">💬 Messages Badge: [ 4 ] → [ 5 ] (Patched in 2ms)</text>
+                    <text x="200" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">💬 Badge: [ 4 ] → [ 5 ] (Patched in 2ms)</text>
 
                     <!-- Feed Node (Untouched) -->
                     <rect x="25" y="122" width="350" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="200" y="142" text-anchor="middle" class="svg-mono-xs">Photo Feed, Stories & Sidebar 100% Intact</text>
-                    <text x="200" y="158" text-anchor="middle" class="svg-sub">Zero page flicker · zero unnecessary network requests</text>
+                    <text x="200" y="158" text-anchor="middle" class="svg-sub">Zero page flicker · zero redundant requests</text>
                   </g>
                 </svg>
               </div>
@@ -2141,9 +2141,9 @@ export default App</code></pre>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
                     <text x="25" y="94" class="svg-mono-xs" style="fill:var(--danger);">App.jsx (500+ Lines of Clutter)</text>
-                    <text x="35" y="112" class="svg-mono-xs" style="fill:var(--text-muted);">├── 50 lines: &lt;div className="nav"&gt;...&lt;/div&gt;</text>
-                    <text x="35" y="130" class="svg-mono-xs" style="fill:var(--text-muted);">├── 120 lines: Card 1, Card 2, Card 3 (Duplicate HTML)</text>
-                    <text x="35" y="148" class="svg-mono-xs" style="fill:var(--text-muted);">└── 80 lines: &lt;footer&gt;...&lt;/footer&gt;</text>
+                    <text x="35" y="112" class="svg-mono-xs" style="fill:var(--text-muted);">├── 50 lines: Nav markup clutter</text>
+                    <text x="35" y="130" class="svg-mono-xs" style="fill:var(--text-muted);">├── 120 lines: Duplicate Card HTML</text>
+                    <text x="35" y="148" class="svg-mono-xs" style="fill:var(--text-muted);">└── 80 lines: Footer markup clutter</text>
                   </g>
 
                   <!-- Good: Modular Components -->
@@ -2250,8 +2250,8 @@ export default App</code></pre>
                   <!-- Callout note on right -->
                   <g transform="translate(370, 175)">
                     <rect x="0" y="0" width="480" height="48" rx="8" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-dasharray="3 3"/>
-                    <text x="240" y="22" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">GRANULAR ISOLATION: Only the mutated &lt;Badge&gt; re-renders!</text>
-                    <text x="240" y="38" text-anchor="middle" class="svg-sub">All sibling nodes and parent components remain 100% idle with zero layout shifts.</text>
+                    <text x="240" y="22" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">GRANULAR ISOLATION: Only <Badge> re-renders</text>
+                    <text x="240" y="38" text-anchor="middle" class="svg-sub">All sibling components remain 100% idle with zero layout shifts.</text>
                   </g>
                 </svg>
               </div>
@@ -2401,7 +2401,7 @@ export default Navbar;</code></pre>
                     <text x="35" y="70" class="svg-mono-xs" style="fill:var(--primary);">import Navbar from './components/Navbar';</text>
                     <text x="35" y="88" class="svg-mono-xs" style="fill:var(--accent);">import Card from './components/Card';</text>
                     <text x="35" y="112" class="svg-mono-xs" style="fill:var(--text);">function App() {</text>
-                    <text x="50" y="130" class="svg-mono-xs" style="fill:var(--text);">return (&lt;div&gt; &lt;Navbar /&gt; &lt;Card /&gt; &lt;Card /&gt; &lt;/div&gt;);</text>
+                    <text x="50" y="130" class="svg-mono-xs" style="fill:var(--text);">return &lt;div&gt;&lt;Navbar /&gt;&lt;Card /&gt;&lt;/div&gt;;</text>
                     <text x="35" y="148" class="svg-mono-xs" style="fill:var(--text);">}</text>
                     <text x="35" y="166" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">export default App;</text>
                   </g>
@@ -2577,7 +2577,7 @@ abc(10); // Prints: Hello 10</code></pre>
                     <text x="25" y="96" class="svg-mono-xs" style="fill:var(--text);">function <strong style="fill:var(--primary);">abc(a)</strong> {</text>
                     <text x="45" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">console.log('Hello', a);</text>
                     <text x="25" y="136" class="svg-mono-xs">}</text>
-                    <text x="25" y="156" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">abc(10);  // Argument 10 maps to parameter a</text>
+                    <text x="25" y="156" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">abc(10); // Argument 10 maps to a</text>
                   </g>
 
                   <!-- Right: React Component Props -->
@@ -2591,7 +2591,7 @@ abc(10); // Prints: Hello 10</code></pre>
                     <text x="25" y="96" class="svg-mono-xs" style="fill:var(--text);">function <strong style="fill:var(--accent);">Card(props)</strong> {</text>
                     <text x="45" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">return &lt;h1&gt;{props.user}&lt;/h1&gt;;</text>
                     <text x="25" y="136" class="svg-mono-xs">}</text>
-                    <text x="25" y="156" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;Card user="Sarthak" /&gt; // Bundled as props.user</text>
+                    <text x="25" y="156" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;Card user="Sarthak" /&gt; // props.user</text>
                   </g>
                 </svg>
               </div>
@@ -2650,20 +2650,20 @@ export default App;</code></pre>
                   <!-- Flow to Card 1 -->
                   <path d="M 320 65 L 320 95 L 140 95 L 140 120" fill="none" stroke="var(--primary)" stroke-width="2"/>
                   <polygon points="135,120 140,128 145,120" fill="var(--primary)"/>
-                  <rect x="55" y="82" width="130" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--primary)"/>
-                  <text x="120" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--primary);">{user:"Sarthak", age:18}</text>
+                  <rect x="40" y="82" width="200" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="140" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--primary);">{ user: "Sarthak", age: 18 }</text>
 
                   <!-- Flow to Card 2 -->
                   <path d="M 440 65 L 440 120" fill="none" stroke="var(--accent)" stroke-width="2"/>
                   <polygon points="435,120 440,128 445,120" fill="var(--accent)"/>
-                  <rect x="375" y="82" width="130" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--accent)"/>
-                  <text x="440" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--accent);">{user:"Aman", age:21}</text>
+                  <rect x="340" y="82" width="200" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                  <text x="440" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--accent);">{ user: "Aman", age: 21 }</text>
 
                   <!-- Flow to Card 3 -->
                   <path d="M 560 65 L 560 95 L 740 95 L 740 120" fill="none" stroke="var(--success)" stroke-width="2"/>
                   <polygon points="735,120 740,128 745,120" fill="var(--success)"/>
-                  <rect x="675" y="82" width="130" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
-                  <text x="740" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--success);">{user:"Aditya", age:24}</text>
+                  <rect x="640" y="82" width="200" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="740" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--success);">{ user: "Aditya", age: 24 }</text>
 
                   <!-- Child 1 -->
                   <g transform="translate(30, 130)">
@@ -2879,7 +2879,7 @@ const Card = (props) => {
                     <rect x="15" y="70" width="365" height="78" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
                     <text x="25" y="94" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">&lt;img src="props.img" /&gt;</text>
                     <text x="25" y="114" class="svg-mono-xs" style="fill:var(--text-muted);">Browser fetches GET /props.img</text>
-                    <text x="25" y="132" class="svg-mono-xs" style="fill:var(--danger);">Result: 404 Not Found (Broken Image Icon)</text>
+                    <text x="25" y="132" class="svg-mono-xs" style="fill:var(--danger);">Result: 404 Not Found (Broken Image)</text>
                   </g>
 
                   <!-- Good: Curly Braces -->
@@ -2891,8 +2891,8 @@ const Card = (props) => {
 
                     <rect x="15" y="70" width="365" height="78" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
                     <text x="25" y="94" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;img src={props.img} /&gt;</text>
-                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--text-muted);">Evaluates variable: "https://images.unsplash.com/..."</text>
-                    <text x="25" y="132" class="svg-mono-xs" style="fill:var(--success);">Result: Image loads and renders perfectly ✓</text>
+                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--text-muted);">Evaluates prop variable to image URL</text>
+                    <text x="25" y="132" class="svg-mono-xs" style="fill:var(--success);">Result: Photo renders successfully ✓</text>
                   </g>
                 </svg>
               </div>
@@ -2980,7 +2980,7 @@ const Card = (props) => {
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
                     <text x="25" y="94" class="svg-mono-xs">{arr.forEach(item =&gt; &lt;h1&gt;{item}&lt;/h1&gt;)}</text>
                     <text x="25" y="116" class="svg-mono-xs" style="fill:var(--danger);">Return Value: undefined</text>
-                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--text-muted);">Result: React renders blank screen with zero elements!</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--text-muted);">Result: Blank screen (zero items rendered)</text>
                   </g>
 
                   <!-- map: Returns Array -->
@@ -2992,8 +2992,8 @@ const Card = (props) => {
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
                     <text x="25" y="94" class="svg-mono-xs">{arr.map(item =&gt; &lt;h1&gt;{item}&lt;/h1&gt;)}</text>
-                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Return Value: [&lt;h1&gt;10&lt;/h1&gt;, &lt;h1&gt;20&lt;/h1&gt;, ...]</text>
-                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--text-muted);">Result: React renders each item directly into the DOM ✓</text>
+                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Return Value: [&lt;h1&gt;10&lt;/h1&gt;, &lt;h1&gt;20&lt;/h1&gt;]</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--text-muted);">Result: Renders each item in DOM ✓</text>
                   </g>
                 </svg>
               </div>
@@ -3229,9 +3229,9 @@ function App() {
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
                     <text x="25" y="96" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">Students have no ID cards</text>
-                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">When Student 1 shifts seat, teacher must re-examine all 100!</text>
-                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--danger);">React re-renders entire DOM list · Loses form focus/state</text>
-                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--text-muted);">Console Warning: Each child should have a unique "key"</text>
+                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">Teacher cannot identify individuals</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--danger);">React tears down & recreates DOM list</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--danger);">Warning: Child must have unique "key"</text>
                   </g>
 
                   <!-- With Keys -->
@@ -3243,9 +3243,9 @@ function App() {
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
                     <text x="25" y="96" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;Card key={idx} ... /&gt;</text>
-                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--text);">Each student holds unique Roll No: [0, 1, 2, ...]</text>
-                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">React reconciles surgical in-place updates</text>
-                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--text-muted);">Zero warnings · 60fps silky smooth list performance</text>
+                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--text);">Unique ID per student: [0, 1, 2, ...]</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">React does surgical in-place updates</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--text-muted);">Zero warnings · 60fps silky performance</text>
                   </g>
                 </svg>
               </div>
@@ -3304,9 +3304,9 @@ function App() {
                     <text x="297" y="85" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">[NEW, A, B, C]</text>
 
                     <rect x="15" y="105" width="365" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
-                    <text x="25" y="125" class="svg-mono-xs" style="fill:var(--danger);">React compares index 0 (A vs NEW) → Mutates!</text>
-                    <text x="25" y="143" class="svg-mono-xs" style="fill:var(--danger);">React compares index 1 (B vs A) → Mutates!</text>
-                    <text x="25" y="161" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">Total: 4 Destructive DOM Updates (Inefficient)</text>
+                    <text x="25" y="125" class="svg-mono-xs" style="fill:var(--danger);">Index 0: A vs NEW → Mutates DOM</text>
+                    <text x="25" y="143" class="svg-mono-xs" style="fill:var(--danger);">Index 1: B vs A → Mutates DOM</text>
+                    <text x="25" y="161" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">Total: 4 Destructive DOM Repaints</text>
                   </g>
 
                   <!-- Case B: With Keys -->
@@ -3324,9 +3324,9 @@ function App() {
                     <text x="297" y="85" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">{key:NEW}, {key:A}, ...</text>
 
                     <rect x="15" y="105" width="365" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
-                    <text x="25" y="125" class="svg-mono-xs" style="fill:var(--success);">React matches key:A and key:B existing nodes ✓</text>
-                    <text x="25" y="143" class="svg-mono-xs" style="fill:var(--success);">Moves existing nodes without touching their state ✓</text>
-                    <text x="25" y="161" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Total: Only 1 Surgical Insertion (Sub-millisecond)</text>
+                    <text x="25" y="125" class="svg-mono-xs" style="fill:var(--success);">Matches key:A & key:B nodes in-place ✓</text>
+                    <text x="25" y="143" class="svg-mono-xs" style="fill:var(--success);">Preserves internal DOM node state ✓</text>
+                    <text x="25" y="161" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Total: Only 1 surgical prepend operation</text>
                   </g>
                 </svg>
               </div>
@@ -3415,9 +3415,9 @@ import '../styles/Header.css';</code></pre>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
                     <text x="25" y="96" class="svg-mono-xs" style="fill:var(--danger);">src/index.css (2,000+ Lines)</text>
-                    <text x="35" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">/* Mixed Button, Card, Modal, Nav styles */</text>
+                    <text x="35" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">/* Mixed Button, Nav, Modal styles */</text>
                     <text x="35" y="134" class="svg-mono-xs" style="fill:var(--danger);">Zero encapsulation · High regression risk</text>
-                    <text x="35" y="152" class="svg-mono-xs" style="fill:var(--text-muted);">Dead styles linger forever after components delete</text>
+                    <text x="35" y="152" class="svg-mono-xs" style="fill:var(--text-muted);">Dead CSS accumulates indefinitely</text>
                   </g>
 
                   <!-- Separate Files -->
@@ -3703,10 +3703,10 @@ const Header = () => {
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Button.module.css (.btn)</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
-                    <text x="25" y="96" class="svg-mono-xs">CSS rule: .btn { background: royalblue; }</text>
-                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">Compiled Hash: ._btn_btnScope_a1</text>
-                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--success);">✓ Applies ONLY to &lt;Button /&gt; elements</text>
-                    <text x="25" y="154" class="svg-sub">Cannot affect any other component in the tree</text>
+                    <text x="25" y="96" class="svg-mono-xs">Rule: .btn { background: royalblue; }</text>
+                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">Hash: ._btn_btnScope_a1</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--success);">✓ Scoped strictly to &lt;Button /&gt;</text>
+                    <text x="25" y="154" class="svg-sub">Cannot affect any other component in tree</text>
                   </g>
 
                   <!-- Header Component Scope -->
@@ -3717,10 +3717,10 @@ const Header = () => {
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Header.module.css (.btn)</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
-                    <text x="25" y="96" class="svg-mono-xs">CSS rule: .btn { background: transparent; }</text>
-                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">Compiled Hash: ._btn_hdrScope_x9</text>
-                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--success);">✓ Applies ONLY to &lt;Header /&gt; elements</text>
-                    <text x="25" y="154" class="svg-sub">Zero namespace pollution · 100% collision proof</text>
+                    <text x="25" y="96" class="svg-mono-xs">Rule: .btn { background: transparent; }</text>
+                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">Hash: ._btn_hdrScope_x9</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--success);">✓ Scoped strictly to &lt;Header /&gt;</text>
+                    <text x="25" y="154" class="svg-sub">Zero namespace pollution · 100% scoped</text>
                   </g>
                 </svg>
               </div>
@@ -3854,9 +3854,9 @@ const Header = () => {
                     <text x="200" y="52" text-anchor="middle" class="svg-title">Tailwind CSS v3 (JavaScript/PostCSS)</text>
 
                     <rect x="15" y="66" width="365" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
-                    <text x="25" y="88" class="svg-mono-xs">• Required tailwind.config.js + postcss.config.js</text>
-                    <text x="25" y="106" class="svg-mono-xs">• Manual content glob paths: ['./src/**/*.{jsx,js}']</text>
-                    <text x="25" y="124" class="svg-mono-xs">• JavaScript-based regex template scanner</text>
+                    <text x="25" y="88" class="svg-mono-xs">• Requires tailwind.config & postcss</text>
+                    <text x="25" y="106" class="svg-mono-xs">• Manual content globs configuration</text>
+                    <text x="25" y="124" class="svg-mono-xs">• JavaScript-based template scanner</text>
                     <text x="25" y="144" class="svg-mono-xs" style="fill:var(--text-muted);">Build Speed: Standard (~300ms HMR)</text>
                   </g>
 
@@ -3960,8 +3960,8 @@ export default defineConfig({
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
                     <text x="25" y="96" class="svg-mono-xs" style="fill:var(--danger);">plugins: [tailwindcss()]</text>
                     <text x="25" y="116" class="svg-mono-xs" style="fill:var(--danger);">⚠ Removed: react() plugin deleted!</text>
-                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--text-muted);">Result: Vite fails to parse JSX files.</text>
-                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">Browser Error: Unexpected token &lt; in App.jsx</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--text-muted);">Result: Vite cannot transpile JSX</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">Error: Unexpected token &lt; in App.jsx</text>
                   </g>
 
                   <!-- Good: Additive -->
@@ -3973,9 +3973,9 @@ export default defineConfig({
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
                     <text x="25" y="96" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">plugins: [react(), tailwindcss()]</text>
-                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--primary);">✓ react(): Transpiles JSX to Virtual DOM</text>
-                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--accent);">✓ tailwindcss(): Scans classes & injects CSS</text>
-                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Result: Sub-millisecond HMR with live styles</text>
+                    <text x="25" y="116" class="svg-mono-xs" style="fill:var(--primary);">✓ react(): Transpiles JSX tags</text>
+                    <text x="25" y="136" class="svg-mono-xs" style="fill:var(--accent);">✓ tailwindcss(): Scans & injects CSS</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Result: Instant HMR with live styles</text>
                   </g>
                 </svg>
               </div>

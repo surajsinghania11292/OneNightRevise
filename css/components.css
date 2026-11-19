@@ -925,8 +925,9 @@ figure.diagram-frame,
 
 .svg-mono-xs {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 400;
+  letter-spacing: -0.01em;
   fill: var(--text-primary);
 }
 

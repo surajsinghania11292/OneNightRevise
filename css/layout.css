@@ -206,12 +206,15 @@ code {
 }
 
 /* ── CODE BLOCKS IN NOTES ─────────────────────────────────────── */
+pre,
 pre.notes-code-block {
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   padding: 1.2rem 1.5rem;
-  overflow-x: auto;
+  overflow-x: auto !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
   font-family: var(--font-mono);
   font-size: 0.88rem;
   line-height: 1.65;
@@ -220,15 +223,23 @@ pre.notes-code-block {
   box-shadow: var(--shadow-sm);
 }
 
+.sub-box pre {
+  padding: 0.75rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.82rem;
+  margin: 0.4rem 0;
+  box-shadow: none;
+}
+
 /* ── FOCUSED READING CANVAS (MAXIMUM SCREEN UTILIZATION) ──────── */
 .reading-canvas {
   max-width: 1560px;
   width: 100%;
   margin: 0 auto;
-  padding: 2.25rem 2rem 6rem;
+  padding: 1.5rem 2rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 3.5rem;
+  gap: 1.5rem;
 }
 
 /* 2-Column Responsive Topics Grid (2 Topics per Row on Desktop) */
@@ -389,8 +400,8 @@ pre.notes-code-block {
     display: none;
   }
   .reading-canvas {
-    padding: 1.25rem 0.75rem 4rem;
-    gap: 2rem;
+    padding: 1rem 0.75rem 1.25rem;
+    gap: 1.25rem;
   }
   .hero-banner {
     padding: 2.25rem 0.75rem 1.5rem;

@@ -1060,11 +1060,13 @@ export const API_URL = 'https://api.example.com';</pre>
                 <div class="sub-box__tag">File 01 · Producer</div>
                 <div class="sub-box__title">app.js (Exporting Everything)</div>
                 <div class="sub-box__body">
-                  <pre style="background:var(--bg-frame); padding:0.75rem 0.9rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">const user = 'Sarthak';
+                  <pre style="background:var(--bg-frame); padding:0.75rem 0.9rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.82rem; margin:0.4rem 0; overflow-x:auto; max-width:100%;">const user = 'Sarthak';
 export const age = 89;
-export const skills = ['Frontend', 'Backend', 'UI/UX'];
+export const skills = [
+  'Frontend', 'Backend', 'UI/UX'
+];
 
-// Default export at the bottom
+// Default export at bottom
 export default user;</pre>
                 </div>
               </div>
@@ -1073,12 +1075,13 @@ export default user;</pre>
                 <div class="sub-box__tag">File 02 · Consumer</div>
                 <div class="sub-box__title">script.js (Single Unified Import)</div>
                 <div class="sub-box__body">
-                  <pre style="background:var(--bg-frame); padding:0.75rem 0.9rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.85rem; margin:0.4rem 0;">// Default import first, then { named } imports!
+                  <pre style="background:var(--bg-frame); padding:0.75rem 0.9rem; border-radius:6px; border:1px solid var(--border); font-family:var(--font-mono); font-size:0.82rem; margin:0.4rem 0; overflow-x:auto; max-width:100%;">// Default first, then named { }
 import naam, { age, skills } from './app';
 
 console.log(naam);   // 'Sarthak'
 console.log(age);    // 89
-console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
+console.log(skills);
+// ['Frontend', 'Backend', 'UI/UX']</pre>
                 </div>
               </div>
             </div>
@@ -1284,8 +1287,8 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
                     <text x="155" y="52" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Cascading Tree Mutation</text>
 
                     <!-- Tree Nodes -->
-                    <rect x="20" y="68" width="80" height="32" rx="4" fill="var(--danger)" stroke="var(--danger)"/>
-                    <text x="60" y="89" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">&lt;h1&gt; *</text>
+                    <rect x="20" y="68" width="80" height="32" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2" stroke="var(--danger)"/>
+                    <text x="60" y="89" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">&lt;h1&gt; *</text>
 
                     <rect x="115" y="68" width="80" height="32" rx="4" fill="var(--bg-surface)" stroke="var(--danger)"/>
                     <text x="155" y="89" text-anchor="middle" class="svg-mono-xs">&lt;button&gt;</text>
@@ -1403,8 +1406,8 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
                   <!-- Stage 4: Layout / Reflow (HEAVY) -->
                   <g transform="translate(390, 20)">
                     <rect x="0" y="0" width="165" height="145" rx="8" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="10" width="135" height="18" rx="4" fill="var(--danger)"/>
-                    <text x="82" y="23" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">STAGE 3 · BOTTLENECK</text>
+                    <rect x="15" y="10" width="135" height="18" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="82" y="23" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">STAGE 3 · BOTTLENECK</text>
                     <text x="82" y="48" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Layout / Reflow</text>
                     <rect x="10" y="60" width="145" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
                     <text x="82" y="82" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">• Exact geometry (X,Y)</text>
@@ -1742,8 +1745,8 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
                   <!-- Step 1: npm create vite -->
                   <g transform="translate(25, 25)">
                     <rect x="0" y="0" width="190" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--primary)" />
-                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">01</text>
+                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2" />
+                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">01</text>
                     <text x="65" y="30" class="svg-kicker" style="fill:var(--primary); font-weight:700;">SCAFFOLD</text>
                     <text x="95" y="62" text-anchor="middle" class="svg-title">npm create vite</text>
                     <rect x="15" y="76" width="160" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -1778,8 +1781,8 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
                   <!-- Step 3: npm i -->
                   <g transform="translate(463, 25)">
                     <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
-                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--accent)" />
-                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">03</text>
+                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2" />
+                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">03</text>
                     <text x="65" y="30" class="svg-kicker" style="fill:var(--accent); font-weight:700;">DEPENDENCIES</text>
                     <text x="90" y="62" text-anchor="middle" class="svg-title">npm i</text>
                     <rect x="15" y="76" width="150" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
@@ -1796,8 +1799,8 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
                   <!-- Step 4: npm run dev -->
                   <g transform="translate(677, 25)">
                     <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--success)" />
-                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">04</text>
+                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2" />
+                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">04</text>
                     <text x="65" y="30" class="svg-kicker" style="fill:var(--success); font-weight:700;">LIVE SERVER</text>
                     <text x="90" y="62" text-anchor="middle" class="svg-title" style="fill:var(--success);">npm run dev</text>
                     <rect x="15" y="76" width="150" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -2004,8 +2007,8 @@ body {
                   <!-- Parent: main.jsx -->
                   <g transform="translate(325, 25)">
                     <rect x="0" y="0" width="260" height="195" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="2"/>
-                    <rect x="15" y="15" width="65" height="22" rx="4" fill="var(--primary)"/>
-                    <text x="47" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">PARENT</text>
+                    <rect x="15" y="15" width="65" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="47" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">PARENT</text>
                     <text x="130" y="62" text-anchor="middle" class="svg-title">main.jsx (Papa)</text>
                     <text x="130" y="80" text-anchor="middle" class="svg-sub">Mounting & Root Engine</text>
 
@@ -2025,8 +2028,8 @@ body {
                   <!-- Child: App.jsx -->
                   <g transform="translate(635, 25)">
                     <rect x="0" y="0" width="220" height="195" rx="12" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="2"/>
-                    <rect x="15" y="15" width="55" height="22" rx="4" fill="var(--accent)"/>
-                    <text x="42" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">CHILD</text>
+                    <rect x="15" y="15" width="55" height="22" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                    <text x="42" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">CHILD</text>
                     <text x="110" y="62" text-anchor="middle" class="svg-title">App.jsx (Baccha)</text>
                     <text x="110" y="80" text-anchor="middle" class="svg-sub">UI Markup & Content</text>
 
@@ -2217,8 +2220,8 @@ export default App</code></pre>
                   <!-- Bad: Monolith -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="100" height="22" rx="4" fill="var(--danger)"/>
-                    <text x="65" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">ANTI-PATTERN</text>
+                    <rect x="15" y="15" width="100" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="65" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">ANTI-PATTERN</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Monolithic Sprawling App.jsx</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -2231,8 +2234,8 @@ export default App</code></pre>
                   <!-- Good: Modular Components -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success)"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">RECOMMENDED PATTERN</text>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">RECOMMENDED PATTERN</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">Clean Component Architecture</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -2474,8 +2477,8 @@ export default Navbar;</code></pre>
                   <!-- App.jsx Container -->
                   <g transform="translate(355, 20)">
                     <rect x="0" y="0" width="495" height="195" rx="12" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="2"/>
-                    <rect x="20" y="16" width="140" height="22" rx="4" fill="var(--success)"/>
-                    <text x="90" y="31" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">ORCHESTRATOR</text>
+                    <rect x="20" y="16" width="140" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="90" y="31" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">ORCHESTRATOR</text>
                     <text x="280" y="32" class="svg-title">src/App.jsx</text>
 
                     <!-- Code block inside App.jsx -->
@@ -2565,8 +2568,8 @@ export default Navbar;</code></pre>
                   <!-- Summary Box: Why Props -->
                   <g transform="translate(605, 20)">
                     <rect x="0" y="0" width="250" height="190" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success)"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">THE SOLUTION: PROPS</text>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">THE SOLUTION: PROPS</text>
                     <text x="125" y="60" text-anchor="middle" class="svg-title" style="fill:var(--success);">Same Shell · Dynamic Data</text>
 
                     <rect x="15" y="74" width="220" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -2651,8 +2654,8 @@ abc(10); // Prints: Hello 10</code></pre>
                   <!-- Left: Vanilla JS Function -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary)"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">VANILLA JAVASCRIPT</text>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">VANILLA JAVASCRIPT</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Function Arguments: abc(10)</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -2665,8 +2668,8 @@ abc(10); // Prints: Hello 10</code></pre>
                   <!-- Right: React Component Props -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--accent)"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">REACT JS PARADIGM</text>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">REACT JS PARADIGM</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Component Props: &lt;Card user="..." /&gt;</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
@@ -2954,8 +2957,8 @@ const Card = (props) => {
                   <!-- Bad: Quotes -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="170" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--danger)"/>
-                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">INCORRECT ❌</text>
+                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">INCORRECT ❌</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Quotation Marks: Literal String</text>
 
                     <rect x="15" y="70" width="365" height="78" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -2967,8 +2970,8 @@ const Card = (props) => {
                   <!-- Good: Curly Braces -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="170" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--success)"/>
-                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">CORRECT ✓</text>
+                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">CORRECT ✓</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Curly Braces: JS Expression</text>
 
                     <rect x="15" y="70" width="365" height="78" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -3055,8 +3058,8 @@ const Card = (props) => {
                   <!-- forEach: Undefined -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="120" height="20" rx="4" fill="var(--danger)"/>
-                    <text x="75" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">arr.forEach() ❌</text>
+                    <rect x="15" y="15" width="120" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="75" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">arr.forEach() ❌</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Returns undefined</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -3068,8 +3071,8 @@ const Card = (props) => {
                   <!-- map: Returns Array -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--success)"/>
-                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">arr.map() ✓</text>
+                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">arr.map() ✓</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Returns New JSX Array</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -3305,8 +3308,8 @@ function App() {
                   <!-- Without Keys -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--danger)"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">WITHOUT KEYS ❌</text>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">WITHOUT KEYS ❌</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">No Roll Numbers / Anonymous Items</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -3319,8 +3322,8 @@ function App() {
                   <!-- With Keys -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--success)"/>
-                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">WITH KEY={ID} ✓</text>
+                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">WITH KEY={ID} ✓</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">Unique Roll Number Identity</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -3491,8 +3494,8 @@ import '../styles/Header.css';</code></pre>
                   <!-- Global Monolith -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--danger)"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">MONOLITHIC GLOBAL CSS</text>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">MONOLITHIC GLOBAL CSS</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Single Massive index.css</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -3505,8 +3508,8 @@ import '../styles/Header.css';</code></pre>
                   <!-- Separate Files -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary)"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">COMPONENT-LINKED CSS</text>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">COMPONENT-LINKED CSS</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Split Styles Directory</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
@@ -3780,8 +3783,8 @@ const Header = () => {
                   <!-- Button Component Scope -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="170" height="22" rx="4" fill="var(--primary)"/>
-                    <text x="100" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">BUTTON SCOPE</text>
+                    <rect x="15" y="15" width="170" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="100" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">BUTTON SCOPE</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Button.module.css (.btn)</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
@@ -3794,8 +3797,8 @@ const Header = () => {
                   <!-- Header Component Scope -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="170" height="22" rx="4" fill="var(--accent)"/>
-                    <text x="100" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">HEADER SCOPE</text>
+                    <rect x="15" y="15" width="170" height="22" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                    <text x="100" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">HEADER SCOPE</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Header.module.css (.btn)</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
@@ -4035,8 +4038,8 @@ export default defineConfig({
                   <!-- Bad: Overwrite -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--danger)"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">FATAL TRAP ❌</text>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">FATAL TRAP ❌</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Overwriting vite.config.js</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -4049,8 +4052,8 @@ export default defineConfig({
                   <!-- Good: Additive -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--success)"/>
-                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">CORRECT PATTERN ✓</text>
+                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">CORRECT PATTERN ✓</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">Additive Plugin Chaining</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -4240,8 +4243,8 @@ export default defineConfig({
                   <!-- Feature-Based Box -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary)"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">FEATURE-BASED ARCH</text>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">FEATURE-BASED ARCH</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Domain Section Decomposition</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
@@ -4254,8 +4257,8 @@ export default defineConfig({
                   <!-- Atomic Structure Box -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="150" height="22" rx="4" fill="var(--accent)"/>
-                    <text x="90" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">ATOMIC DESIGN</text>
+                    <rect x="15" y="15" width="150" height="22" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                    <text x="90" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">ATOMIC DESIGN</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Hierarchical Building Blocks</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
@@ -4383,8 +4386,8 @@ export default defineConfig({
                   <!-- Outer Container -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="830" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="220" height="22" rx="4" fill="var(--primary)"/>
-                    <text x="125" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">overflow-x-auto flex flex-nowrap</text>
+                    <rect x="15" y="15" width="220" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="125" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">overflow-x-auto flex flex-nowrap</text>
 
                     <!-- Card 1 -->
                     <g transform="translate(20, 50)">
@@ -4653,8 +4656,8 @@ export default defineConfig({
                   <!-- Bad: Immediate Call -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="20" rx="4" fill="var(--danger)"/>
-                    <text x="80" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">FATAL MISTAKE ❌</text>
+                    <rect x="15" y="15" width="130" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="80" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">FATAL MISTAKE ❌</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">onClick={btnClicked()}</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -4666,8 +4669,8 @@ export default defineConfig({
                   <!-- Good: Function Reference -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="20" rx="4" fill="var(--success)"/>
-                    <text x="80" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">CORRECT PATTERN ✓</text>
+                    <rect x="15" y="15" width="130" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="80" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">CORRECT PATTERN ✓</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">onClick={btnClicked}</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -4828,8 +4831,8 @@ export default defineConfig({
                   <!-- Downward Scroll -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--primary)"/>
-                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">SCROLL DOWNWARD</text>
+                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">SCROLL DOWNWARD</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title">deltaY &gt; 0 (Positive Value)</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
@@ -4841,8 +4844,8 @@ export default defineConfig({
                   <!-- Upward Scroll -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--accent)"/>
-                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">SCROLL UPWARD</text>
+                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">SCROLL UPWARD</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title">deltaY &lt; 0 (Negative Value)</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
@@ -4994,8 +4997,8 @@ export default defineConfig({
                   <!-- Normal Variable -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--danger)"/>
-                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">NORMAL VARIABLE ❌</text>
+                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">NORMAL VARIABLE ❌</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">let count = 0; count++</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -5007,8 +5010,8 @@ export default defineConfig({
                   <!-- useState Hook -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="140" height="20" rx="4" fill="var(--success)"/>
-                    <text x="85" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">USESTATE HOOK ✓</text>
+                    <rect x="15" y="15" width="140" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="85" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">USESTATE HOOK ✓</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">const [num, setNum] = useState(0)</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -5525,8 +5528,8 @@ export default App</code></pre>
                 <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing default HTML form submission triggering full page reload and wiping SPA state">
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--danger)"/>
-                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">DEFAULT BROWSER FORM ❌</text>
+                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">DEFAULT BROWSER FORM ❌</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Hard Page Reload Triggered</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -5675,8 +5678,8 @@ export default App</code></pre>
                   <!-- React State Node -->
                   <g transform="translate(50, 40)">
                     <rect x="0" y="0" width="300" height="150" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="2"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--primary)"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">REACT STATE</text>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">REACT STATE</text>
                     <text x="150" y="65" text-anchor="middle" class="svg-title">const [title, setTitle]</text>
 
                     <rect x="15" y="80" width="270" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -5703,8 +5706,8 @@ export default App</code></pre>
                   <!-- DOM Input Node -->
                   <g transform="translate(530, 40)">
                     <rect x="0" y="0" width="300" height="150" rx="12" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="2"/>
-                    <rect x="15" y="15" width="120" height="22" rx="4" fill="var(--success)"/>
-                    <text x="75" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">DOM ELEMENT</text>
+                    <rect x="15" y="15" width="120" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="75" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">DOM ELEMENT</text>
                     <text x="150" y="65" text-anchor="middle" class="svg-title">&lt;input /&gt; on Page</text>
 
                     <rect x="15" y="80" width="270" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -5772,8 +5775,8 @@ export default App</code></pre>
                   <!-- Step 1: Keystroke to State -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="255" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <rect x="15" y="12" width="130" height="18" rx="4" fill="var(--primary)"/>
-                    <text x="80" y="25" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">DIRECTION 1: INPUT → STATE</text>
+                    <rect x="15" y="12" width="130" height="18" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="80" y="25" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">DIRECTION 1: INPUT → STATE</text>
                     <text x="127" y="50" text-anchor="middle" class="svg-title">User Keystroke</text>
                     <rect x="15" y="64" width="225" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="86" class="svg-mono-xs">1. User types in &lt;input /&gt;</text>
@@ -5805,8 +5808,8 @@ export default App</code></pre>
                   <!-- Step 3: Programmatic Reset -->
                   <g transform="translate(605, 20)">
                     <rect x="0" y="0" width="250" height="170" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="12" width="135" height="18" rx="4" fill="var(--success)"/>
-                    <text x="82" y="25" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">FORM SUBMIT &amp; RESET</text>
+                    <rect x="15" y="12" width="135" height="18" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="82" y="25" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">FORM SUBMIT &amp; RESET</text>
                     <text x="125" y="50" text-anchor="middle" class="svg-title" style="fill:var(--success);">Auto-Reset Pattern</text>
                     <rect x="15" y="64" width="220" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
                     <text x="25" y="86" class="svg-mono-xs">submitHandler(e):</text>
@@ -5864,8 +5867,8 @@ export default App</code></pre>
                   <!-- Left Form -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="380" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--primary)"/>
-                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">LEFT: FORM PANEL</text>
+                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">LEFT: FORM PANEL</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Controlled Input State</text>
 
                     <rect x="15" y="74" width="350" height="40" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -5885,8 +5888,8 @@ export default App</code></pre>
                   <!-- Right Feed -->
                   <g transform="translate(480, 20)">
                     <rect x="0" y="0" width="375" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--success)"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">RIGHT: RECENT NOTES</text>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">RIGHT: RECENT NOTES</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">task Master Array</text>
 
                     <rect x="15" y="74" width="345" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -6183,8 +6186,8 @@ export default App</code></pre>
                   <!-- LocalStorage -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--success)"/>
-                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">NEXT CHAPTER: PERSISTENCE</text>
+                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">NEXT CHAPTER: PERSISTENCE</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Browser localStorage API</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>

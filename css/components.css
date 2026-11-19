@@ -1327,6 +1327,42 @@ figure.diagram-frame,
 }
 
 /* ── DARK THEME POLISH OVERRIDES ─────────────────────────────── */
+/* SVG Diagram Pill Badges (Dark, subtle, fully visible, non-glaring) */
+[data-theme="dark"] .arch-svg rect[fill="var(--primary)"],
+[data-theme="dark"] .arch-svg rect[fill="var(--accent)"] {
+  fill: rgba(52, 211, 153, 0.16) !important;
+  stroke: rgba(52, 211, 153, 0.45) !important;
+  stroke-width: 1.2px !important;
+}
+
+[data-theme="dark"] .arch-svg rect[fill="var(--success)"] {
+  fill: rgba(52, 211, 153, 0.16) !important;
+  stroke: rgba(52, 211, 153, 0.45) !important;
+  stroke-width: 1.2px !important;
+}
+
+[data-theme="dark"] .arch-svg rect[fill="var(--danger)"] {
+  fill: rgba(248, 113, 113, 0.16) !important;
+  stroke: rgba(248, 113, 113, 0.45) !important;
+  stroke-width: 1.2px !important;
+}
+
+[data-theme="dark"] .arch-svg rect[fill="var(--primary)"] + text,
+[data-theme="dark"] .arch-svg rect[fill="var(--accent)"] + text {
+  fill: #34d399 !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="dark"] .arch-svg rect[fill="var(--success)"] + text {
+  fill: #34d399 !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="dark"] .arch-svg rect[fill="var(--danger)"] + text {
+  fill: #f87171 !important;
+  font-weight: 700 !important;
+}
+
 [data-theme="dark"] .track-card-cta {
   background: var(--accent);
   color: #0b1811;

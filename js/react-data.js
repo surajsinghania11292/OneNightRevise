@@ -1362,6 +1362,88 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
                 JavaScript itself is blazingly fast in modern engines (V8). The bottleneck is <strong>touching the Real DOM</strong>, because crossing into the browser's C++ DOM tree triggers heavy Layout and Repaint loops.
               </p>
             </div>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 6.2 · 5-Stage Browser Rendering Pipeline (DOM Mutation Cost)</span>
+                <span class="diagram-frame-tag">BROWSER RENDERING ENGINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 185" class="arch-svg" role="img" aria-label="5-stage browser rendering engine pipeline from DOM manipulation to layout, paint, and screen compositing">
+                  <!-- Stage 1 & 2: Parse & Style -->
+                  <g transform="translate(20, 20)">
+                    <rect x="0" y="0" width="155" height="145" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="77" y="24" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">STAGE 1 &amp; 2</text>
+                    <text x="77" y="46" text-anchor="middle" class="svg-title">DOM &amp; Styles</text>
+                    <rect x="10" y="60" width="135" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="77" y="82" text-anchor="middle" class="svg-mono-xs">• JS mutates DOM</text>
+                    <text x="77" y="100" text-anchor="middle" class="svg-mono-xs">• CSSOM recalculates</text>
+                    <text x="77" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">Matches all rules</text>
+                  </g>
+
+                  <!-- Arrow 1 -->
+                  <line x1="175" y1="92" x2="195" y2="92" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="195,88 203,92 195,96" fill="var(--primary)"/>
+
+                  <!-- Stage 3: Render Tree -->
+                  <g transform="translate(205, 20)">
+                    <rect x="0" y="0" width="155" height="145" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="77" y="24" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">INTERMEDIATE</text>
+                    <text x="77" y="46" text-anchor="middle" class="svg-title">Render Tree</text>
+                    <rect x="10" y="60" width="135" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="77" y="82" text-anchor="middle" class="svg-mono-xs">• Visible nodes only</text>
+                    <text x="77" y="100" text-anchor="middle" class="svg-mono-xs">• Filters display:none</text>
+                    <text x="77" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">Tree construction</text>
+                  </g>
+
+                  <!-- Arrow 2 -->
+                  <line x1="360" y1="92" x2="380" y2="92" stroke="var(--danger)" stroke-width="2"/>
+                  <polygon points="380,88 388,92 380,96" fill="var(--danger)"/>
+
+                  <!-- Stage 4: Layout / Reflow (HEAVY) -->
+                  <g transform="translate(390, 20)">
+                    <rect x="0" y="0" width="165" height="145" rx="8" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <rect x="15" y="10" width="135" height="18" rx="4" fill="var(--danger)"/>
+                    <text x="82" y="23" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">STAGE 3 · BOTTLENECK</text>
+                    <text x="82" y="48" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Layout / Reflow</text>
+                    <rect x="10" y="60" width="145" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="82" y="82" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">• Exact geometry (X,Y)</text>
+                    <text x="82" y="100" text-anchor="middle" class="svg-mono-xs">• Recalculates boxes</text>
+                    <text x="82" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger);">Heavy CPU spike ⚠</text>
+                  </g>
+
+                  <!-- Arrow 3 -->
+                  <line x1="555" y1="92" x2="575" y2="92" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="575,88 583,92 575,96" fill="var(--primary)"/>
+
+                  <!-- Stage 5: Paint -->
+                  <g transform="translate(585, 20)">
+                    <rect x="0" y="0" width="135" height="145" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="67" y="24" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">STAGE 4</text>
+                    <text x="67" y="46" text-anchor="middle" class="svg-title">Paint / Draw</text>
+                    <rect x="10" y="60" width="115" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="67" y="82" text-anchor="middle" class="svg-mono-xs">• Rasterize pixels</text>
+                    <text x="67" y="100" text-anchor="middle" class="svg-mono-xs">• Colors, borders</text>
+                    <text x="67" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">Bitmap creation</text>
+                  </g>
+
+                  <!-- Arrow 4 -->
+                  <line x1="720" y1="92" x2="735" y2="92" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="735,88 743,92 735,96" fill="var(--success)"/>
+
+                  <!-- Stage 6: Composite -->
+                  <g transform="translate(745, 20)">
+                    <rect x="0" y="0" width="115" height="145" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="57" y="24" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">STAGE 5</text>
+                    <text x="57" y="46" text-anchor="middle" class="svg-title" style="fill:var(--success);">Composite</text>
+                    <rect x="8" y="60" width="99" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="57" y="82" text-anchor="middle" class="svg-mono-xs">• GPU layers</text>
+                    <text x="57" y="100" text-anchor="middle" class="svg-mono-xs">• Hardware accel</text>
+                    <text x="57" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Screen Render ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         }
       ]
@@ -2250,7 +2332,7 @@ export default App</code></pre>
                   <!-- Callout note on right -->
                   <g transform="translate(370, 175)">
                     <rect x="0" y="0" width="480" height="48" rx="8" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-dasharray="3 3"/>
-                    <text x="240" y="22" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">GRANULAR ISOLATION: Only <Badge> re-renders</text>
+                    <text x="240" y="22" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">GRANULAR ISOLATION: Only &lt;Badge&gt; re-renders</text>
                     <text x="240" y="38" text-anchor="middle" class="svg-sub">All sibling components remain 100% idle with zero layout shifts.</text>
                   </g>
                 </svg>
@@ -4787,6 +4869,1332 @@ export default defineConfig({
               </li>
               <li><strong>Senior Engineering Foundation:</strong> Master these three core invocation patterns thoroughly before diving into React Hooks, as all interactive state updates in modern React build directly on top of them.</li>
             </ul>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 24: WHAT IS STATE & INTRODUCTION TO THE USESTATE HOOK
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-24-what-is-state-usestate-intro",
+      number: "24",
+      shortLabel: "State & useState Intro",
+      title: "What Is State & Introduction to the useState Hook",
+      summary: "Understanding UI state transitions, why standard variables fail to trigger re-renders, useState hook fundamentals, and the counter app implementation.",
+      subtopicLabels: ["24.1 Understanding State", "24.2 Variables vs useState", "24.3 Counter App Implementation"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "24.1",
+          title: "Understanding State With Real-World Examples",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>What Is Component State?</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>State</strong> represents the live data or condition held by a component at any given point in time.</li>
+                  <li>Whenever that data mutates, React transitions the component from its previous state to a <strong>new visual state</strong> by automatically re-rendering the UI.</li>
+                </ul>
+              </li>
+              <li><strong>Real-World Everyday Examples:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Counter:</strong> A badge showing <code>1</code> is State A; user clicks increase and it shows <code>2</code> (State B).</li>
+                  <li><strong>User Profile:</strong> A username showing <code>"Sarthak"</code> updates to <code>"Harsh"</code> after an API fetch.</li>
+                  <li><strong>Input Field:</strong> An empty search box is State 1; typing the letter <code>"S"</code> transitions it to State 2.</li>
+                  <li><strong>Instagram Feed:</strong> A post's like count updating from <code>26</code> to <code>27</code>, or an unread DM badge jumping from <code>7</code> to <code>8</code>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 24.1 · Component State Lifecycle: Transitions & Re-rendering</span>
+                <span class="diagram-frame-tag">STATE RECONCILIATION LIFECYCLE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing component state transitioning from State A to State B via user action and re-rendering">
+                  <!-- State A -->
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="220" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="110" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">INITIAL STATE (A)</text>
+                    <text x="110" y="52" text-anchor="middle" class="svg-title">Followers: 26</text>
+                    <rect x="15" y="66" width="190" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="110" y="95" text-anchor="middle" class="svg-mono-xs">count = 26</text>
+                    <text x="110" y="115" text-anchor="middle" class="svg-sub">Rendered in DOM</text>
+                  </g>
+
+                  <!-- User Action Arrow -->
+                  <g transform="translate(260, 90)">
+                    <line x1="0" y1="10" x2="50" y2="10" stroke="var(--accent)" stroke-width="2"/>
+                    <polygon points="50,6 58,10 50,14" fill="var(--accent)"/>
+                    <rect x="5" y="-12" width="48" height="18" rx="3" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="29" y="1" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--accent);">Click</text>
+                  </g>
+
+                  <!-- React Reconciler -->
+                  <g transform="translate(335, 25)">
+                    <rect x="0" y="0" width="230" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <text x="115" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">REACT SCHEDULER</text>
+                    <text x="115" y="52" text-anchor="middle" class="svg-title">setCount(27)</text>
+                    <rect x="15" y="66" width="200" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="115" y="92" text-anchor="middle" class="svg-mono-xs">Detects state change</text>
+                    <text x="115" y="112" text-anchor="middle" class="svg-sub">Triggers Virtual DOM diff</text>
+                  </g>
+
+                  <!-- Re-render Arrow -->
+                  <g transform="translate(580, 90)">
+                    <line x1="0" y1="10" x2="50" y2="10" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="50,6 58,10 50,14" fill="var(--success)"/>
+                    <text x="25" y="1" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--success);">Patches</text>
+                  </g>
+
+                  <!-- State B -->
+                  <g transform="translate(645, 25)">
+                    <rect x="0" y="0" width="210" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="105" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">NEW STATE (B)</text>
+                    <text x="105" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Followers: 27</text>
+                    <rect x="15" y="66" width="180" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="105" y="95" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">count = 27</text>
+                    <text x="105" y="115" text-anchor="middle" class="svg-sub">Surgical DOM update ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "24.2",
+          title: "Why We Need useState Instead of Normal Variables",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Failure of Standard JavaScript Variables:</strong>
+                <ul class="notes-sub-list">
+                  <li>If you create a normal variable (<code>let count = 0</code>) and increment it (<code>count++</code>), the value in JavaScript memory changes, but <strong>React has no mechanism to know about it</strong>.</li>
+                  <li>React never schedules a re-render, leaving the browser screen frozen showing the old value!</li>
+                </ul>
+              </li>
+              <li><strong>The Role of <code>useState</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li><code>useState</code> bridges the gap between memory and screen. When you call the setter function (<code>setCount</code>), it alerts React's reconciliation engine to trigger a fresh render with the updated value.</li>
+                  <li><strong>Common Beginner Gotcha:</strong> Calling <code>useState()</code> without importing it from <code>'react'</code> triggers a fatal error: <code>ReferenceError: useState is not defined</code>. Always import:
+                    <pre class="notes-code-block"><code>import React, { useState } from 'react';</code></pre>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 24.2 · Standard Variables vs. useState: The Re-rendering Engine</span>
+                <span class="diagram-frame-tag">ENGINEERING COMPARISON</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram contrasting regular variables with useState in React re-rendering">
+                  <!-- Normal Variable -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--danger)"/>
+                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">NORMAL VARIABLE ❌</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">let count = 0; count++</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="94" class="svg-mono-xs">• Mutates in RAM memory only</text>
+                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">• React engine is NEVER notified!</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--text-muted);">Result: Screen stays frozen at 0</text>
+                  </g>
+
+                  <!-- useState Hook -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="140" height="20" rx="4" fill="var(--success)"/>
+                    <text x="85" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">USESTATE HOOK ✓</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">const [num, setNum] = useState(0)</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="94" class="svg-mono-xs">• setNum(1) alerts React engine</text>
+                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">• Schedules immediate re-render</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--text-muted);">Result: UI updates instantly to 1 ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "24.3",
+          title: "Counter App Implementation (Exact Code)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Three Core Counter Actions:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Increase:</strong> <code>setNum(num + 1)</code></li>
+                  <li><strong>Decrease:</strong> <code>setNum(num - 1)</code></li>
+                  <li><strong>Jump by 5:</strong> <code>setNum(num + 5)</code></li>
+                  <li><strong>Rule:</strong> Never write <code>num++</code> or <code>num = num + 1</code>. Always use the setter function <code>setNum(...)</code>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react'
+
+const App = () => {
+  const [num, setNum] = useState(0)
+
+  function increaseNum() {
+    setNum(num + 1)
+  }
+
+  function decreaseNum() {
+    setNum(num - 1)
+  }
+
+  function jump5Num() {
+    setNum(num + 5)
+  }
+
+  return (
+    <div>
+      <h1>{num}</h1>
+      <button onClick={increaseNum}>increase</button>
+      <button onClick={decreaseNum}>decrease</button>
+      <button onClick={jump5Num}>Increase by 5</button>
+    </div>
+  )
+}
+
+export default App</code></pre>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 25: HOW USESTATE WORKS UNDER THE HOOD
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-25-usestate-async-arrays-objects",
+      number: "25",
+      shortLabel: "useState Async, Arrays & Objects",
+      title: "How useState Works Under the Hood (Async Updates, Arrays & Objects)",
+      summary: "Asynchronous state setter execution, immutability & the Cameraman Analogy, array updates with spread operator, and object updates with prev callback.",
+      subtopicLabels: ["25.1 Asynchronous State Setter", "25.2 Array Updates & Cameraman Analogy", "25.3 Object Updates with prev Callback"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "25.1",
+          title: "Asynchronous Behavior of the State Setter (setNum)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Synchronous vs. Asynchronous:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Synchronous:</strong> Code executes strictly sequentially line-by-line, blocking execution until the statement completes.</li>
+                  <li><strong>Asynchronous:</strong> Tasks are scheduled in the background, allowing subsequent code to execute immediately without waiting.</li>
+                </ul>
+              </li>
+              <li><strong>The Stale Log Gotcha:</strong>
+                <ul class="notes-sub-list">
+                  <li>State setters in React run <strong>asynchronously</strong>. When you call <code>setNum(30)</code>, React schedules the update for the next render.</li>
+                  <li>If you inspect <code>console.log(num)</code> on the very next line, it <strong>STILL logs the old value (10)</strong> because the current render cycle has not completed!</li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react'
+
+const App = () => {
+  const [num, setNum] = useState(10)
+
+  const btnClicked = () => {
+    console.log(num) // logs 10
+    setNum(30)
+    console.log(num) // STILL logs 10!
+  }
+
+  return (
+    <div>
+      <h1>{num}</h1>
+      <button onClick={btnClicked}>click</button>
+    </div>
+  )
+}
+
+export default App</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 25.1 · Asynchronous State Setter: Why console.log Reads Stale State</span>
+                <span class="diagram-frame-tag">EXECUTION QUEUE TIMELINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Timeline showing setNum scheduling state in background while console.log reads old render value">
+                  <!-- Step 1 -->
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="220" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="110" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">1 · SYNC CALL</text>
+                    <text x="110" y="52" text-anchor="middle" class="svg-title">setNum(30)</text>
+                    <rect x="15" y="66" width="190" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="110" y="95" text-anchor="middle" class="svg-mono-xs">Schedules update in RAM</text>
+                    <text x="110" y="115" text-anchor="middle" class="svg-sub">Does not block next line</text>
+                  </g>
+
+                  <!-- Arrow 1 -> 2 -->
+                  <g transform="translate(260, 90)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--primary)" stroke-width="2"/>
+                    <polygon points="35,6 43,10 35,14" fill="var(--primary)"/>
+                  </g>
+
+                  <!-- Step 2 -->
+                  <g transform="translate(315, 25)">
+                    <rect x="0" y="0" width="240" height="150" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <text x="120" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">2 · IMMEDIATE NEXT LINE</text>
+                    <text x="120" y="52" text-anchor="middle" class="svg-title" style="fill:var(--danger);">console.log(num)</text>
+                    <rect x="15" y="66" width="210" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="120" y="95" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">STILL LOGS: 10</text>
+                    <text x="120" y="115" text-anchor="middle" class="svg-sub">Current render snapshot</text>
+                  </g>
+
+                  <!-- Arrow 2 -> 3 -->
+                  <g transform="translate(565, 90)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="35,6 43,10 35,14" fill="var(--success)"/>
+                  </g>
+
+                  <!-- Step 3 -->
+                  <g transform="translate(620, 25)">
+                    <rect x="0" y="0" width="230" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="115" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">3 · NEXT RENDER</text>
+                    <text x="115" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">num is now 30</text>
+                    <rect x="15" y="66" width="200" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="115" y="95" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">UI Displays 30 ✓</text>
+                    <text x="115" y="115" text-anchor="middle" class="svg-sub">DOM updated cleanly</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "25.2",
+          title: "Updating Arrays in useState (Spread Operator & Cameraman Analogy)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Cameraman Analogy (Why Direct Mutation Fails):</strong>
+                <ul class="notes-sub-list">
+                  <li>Just as the instructor doesn't walk over to the studio camera to nudge it manually—they ask the cameraman to adjust it—in React, you <strong>never mutate state arrays directly</strong> (e.g. <code>num.push(99)</code>).</li>
+                  <li>In JavaScript, arrays are reference types. Mutating an array in-place keeps the <strong>exact same memory address</strong> (<code>oldRef === newRef</code>), so React's diffing engine assumes nothing changed and skips rendering!</li>
+                </ul>
+              </li>
+              <li><strong>The Immutable Pattern (Spread Operator <code>...</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>Create a new copy with <code>[...num]</code>, push the item into the copy, and pass the copy to <code>setNum</code>:</li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react'
+
+const App = () => {
+  const [num, setNum] = useState([10, 20, 30])
+
+  const btnClicked = () => {
+    const newNum = [...num]
+    newNum.push(99)
+    setNum(newNum) // New memory reference triggers re-render!
+  }
+
+  return (
+    <div>
+      <h1>{num.join(', ')}</h1>
+      <button onClick={btnClicked}>click</button>
+    </div>
+  )
+}
+
+export default App</code></pre>
+          `
+        },
+        {
+          num: "25.3",
+          title: "Updating Objects in useState (prev Callback Shorthand)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Updating Nested Object Properties Safely:</strong>
+                <ul class="notes-sub-list">
+                  <li>Just like arrays, modifying an object property directly (<code>num.age = 50</code>) does not trigger a re-render.</li>
+                  <li>Use the <strong>functional state updater with spread operator</strong> to copy all existing fields and overwrite only the target key:
+                    <pre class="notes-code-block"><code>setNum(prev => ({ ...prev, age: 50 }))</code></pre>
+                  </li>
+                  <li>This cleanly preserves <code>user: 'Rishi'</code> while immutably setting <code>age: 50</code>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react'
+
+const App = () => {
+  const [num, setNum] = useState({ user: 'Rishi', age: 17 })
+
+  const btnClicked = () => {
+    setNum(prev => ({ ...prev, age: 50 }))
+  }
+
+  return (
+    <div>
+      <h1>{num.user}, {num.age}</h1>
+      <button onClick={btnClicked}>click</button>
+    </div>
+  )
+}
+
+export default App</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 25.2 · Object State Immutability: Shallow Copy & Selective Overwrite</span>
+                <span class="diagram-frame-tag">IMMUTABLE OBJECT UPDATE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing prev object spreading properties and selectively overriding age to 50">
+                  <!-- Previous Object -->
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="220" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="110" y="28" text-anchor="middle" class="svg-kicker">PREVIOUS STATE (prev)</text>
+                    <text x="110" y="52" text-anchor="middle" class="svg-title">Original Object</text>
+                    <rect x="15" y="66" width="190" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="90" class="svg-mono-xs">user: 'Rishi'</text>
+                    <text x="25" y="112" class="svg-mono-xs" style="fill:var(--text-muted);">age: 17</text>
+                  </g>
+
+                  <!-- Spread Arrow -->
+                  <g transform="translate(265, 90)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--accent)" stroke-width="2"/>
+                    <polygon points="35,6 43,10 35,14" fill="var(--accent)"/>
+                    <text x="18" y="2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--accent);">...prev</text>
+                  </g>
+
+                  <!-- Spread & Override -->
+                  <g transform="translate(320, 25)">
+                    <rect x="0" y="0" width="240" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <text x="120" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">SHALLOW MERGE</text>
+                    <text x="120" y="52" text-anchor="middle" class="svg-title">{ ...prev, age: 50 }</text>
+                    <rect x="15" y="66" width="210" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="25" y="90" class="svg-mono-xs">user preserved: 'Rishi'</text>
+                    <text x="25" y="112" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">age overridden: 50</text>
+                  </g>
+
+                  <!-- Final State Arrow -->
+                  <g transform="translate(575, 90)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="35,6 43,10 35,14" fill="var(--success)"/>
+                  </g>
+
+                  <!-- New State Object -->
+                  <g transform="translate(625, 25)">
+                    <rect x="0" y="0" width="225" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="112" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">NEW OBJECT IN MEMORY</text>
+                    <text x="112" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">New Reference ✓</text>
+                    <rect x="15" y="66" width="195" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="90" class="svg-mono-xs">{ user: 'Rishi',</text>
+                    <text x="35" y="112" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">age: 50 }</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 26: BATCH UPDATES IN REACT (NUM + 1 VS. PREV => PREV + 1)
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-26-batch-updates-functional-state",
+      number: "26",
+      shortLabel: "Batch Updates & Functional Setters",
+      title: "Batch Updates in React (num + 1 vs. prev => prev + 1)",
+      summary: "React automatic batching mechanics, why multiple setNum(num + 1) calls collapse into one, and fixing updates with updater functions (prev => prev + 1).",
+      subtopicLabels: ["26.1 Batching Mechanics", "26.2 Functional State Updaters"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "26.1",
+          title: "Why Calling setNum(num + 1) Three Times Only Increments by 1",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Batching Puzzle:</strong>
+                <ul class="notes-sub-list">
+                  <li>If you call <code>setNum(num + 1)</code> three times sequentially inside a single click handler, you might expect <code>10</code> to jump to <code>13</code>.</li>
+                  <li><strong>What Actually Happens:</strong> The counter only increments from <strong><code>10</code> to <code>11</code></strong>!</li>
+                </ul>
+              </li>
+              <li><strong>Why This Happens (Automatic Batching):</strong>
+                <ul class="notes-sub-list">
+                  <li>To prevent excessive layout recalculations, React groups multiple state setter calls into a single batch update.</li>
+                  <li>During this render pass, the variable <code>num</code> is still closed over as <code>10</code>. All three statements compute <code>10 + 1 = 11</code> and assign <code>11</code>:</li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>const [num, setNum] = useState(10)
+
+const btnClicked = () => {
+  setNum(num + 1) // setNum(10 + 1)
+  setNum(num + 1) // setNum(10 + 1)
+  setNum(num + 1) // setNum(10 + 1)
+  // Clicking once updates 10 -> 11 (NOT 13!)
+}</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 26.1 · State Batching: Why Triple setNum(num + 1) Collapses</span>
+                <span class="diagram-frame-tag">BATCH RENDERING PIPELINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing 3 setNum(num + 1) calls reading identical num = 10 and resolving to 11">
+                  <!-- Call 1 -->
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="220" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.6"/>
+                    <text x="110" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">CALL 1 (SNAPSHOT)</text>
+                    <text x="110" y="52" text-anchor="middle" class="svg-title">setNum(num + 1)</text>
+                    <rect x="15" y="66" width="190" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="110" y="95" text-anchor="middle" class="svg-mono-xs">num is captured as 10</text>
+                    <text x="110" y="115" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger);">Resolves to: 11</text>
+                  </g>
+
+                  <!-- Call 2 -->
+                  <g transform="translate(270, 25)">
+                    <rect x="0" y="0" width="220" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.6"/>
+                    <text x="110" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">CALL 2 (SAME SNAPSHOT)</text>
+                    <text x="110" y="52" text-anchor="middle" class="svg-title">setNum(num + 1)</text>
+                    <rect x="15" y="66" width="190" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="110" y="95" text-anchor="middle" class="svg-mono-xs">num is STILL 10!</text>
+                    <text x="110" y="115" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger);">Resolves to: 11</text>
+                  </g>
+
+                  <!-- Call 3 & Result -->
+                  <g transform="translate(515, 25)">
+                    <rect x="0" y="0" width="340" height="150" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <text x="170" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">CALL 3 & FINAL BATCH VALUE</text>
+                    <text x="170" y="52" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Final Resolved Value: 11</text>
+                    <rect x="15" y="66" width="310" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="95" class="svg-mono-xs">• All three read initial snapshot 10</text>
+                    <text x="25" y="115" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">• Result: Increments 10 → 11 only</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "26.2",
+          title: "Fixing Batch Updates With prev => prev + 1",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Solution — Functional State Updaters:</strong>
+                <ul class="notes-sub-list">
+                  <li>Instead of passing a static value, pass an <strong>updater callback function</strong>: <code>setNum(prev =&gt; prev + 1)</code>.</li>
+                  <li>React places these callback functions in a pending execution queue. Each callback receives the <strong>latest resolved value from the previous updater</strong>:
+                    <ul class="notes-sub-list">
+                      <li>Call 1: receives <code>10</code> → returns <code>11</code></li>
+                      <li>Call 2: receives <code>11</code> → returns <code>12</code></li>
+                      <li>Call 3: receives <code>12</code> → returns <code>13</code></li>
+                    </ul>
+                  </li>
+                  <li><strong>Result:</strong> Clicking once cleanly jumps <strong><code>10 -&gt; 13</code></strong>!</li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react'
+
+const App = () => {
+  const [num, setNum] = useState(10)
+
+  const btnClicked = () => {
+    setNum(prev => prev + 1)
+    setNum(prev => prev + 1)
+    setNum(prev => prev + 1)
+    // Clicking once updates 10 -> 13!
+  }
+
+  return (
+    <div>
+      <h1>{num}</h1>
+      <button onClick={btnClicked}>click</button>
+    </div>
+  )
+}
+
+export default App</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 26.2 · Functional Updater Queue: How prev Chaining Increments State</span>
+                <span class="diagram-frame-tag">FUNCTIONAL QUEUE CHAIN</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Queue showing prev chaining from 10 to 11 to 12 to 13">
+                  <!-- Start -->
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="160" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="80" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">INITIAL</text>
+                    <text x="80" y="52" text-anchor="middle" class="svg-title">num = 10</text>
+                    <rect x="15" y="66" width="130" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="80" y="105" text-anchor="middle" class="svg-mono-xs">Base State</text>
+                  </g>
+
+                  <line x1="195" y1="100" x2="225" y2="100" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="225,96 233,100 225,104" fill="var(--primary)"/>
+
+                  <!-- Step 1 -->
+                  <g transform="translate(240, 25)">
+                    <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="90" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">QUEUE 1</text>
+                    <text x="90" y="52" text-anchor="middle" class="svg-title">prev =&gt; prev + 1</text>
+                    <rect x="15" y="66" width="150" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="90" y="94" text-anchor="middle" class="svg-mono-xs">10 + 1</text>
+                    <text x="90" y="114" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">Passes: 11</text>
+                  </g>
+
+                  <line x1="430" y1="100" x2="460" y2="100" stroke="var(--accent)" stroke-width="2"/>
+                  <polygon points="460,96 468,100 460,104" fill="var(--accent)"/>
+
+                  <!-- Step 2 -->
+                  <g transform="translate(475, 25)">
+                    <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="90" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">QUEUE 2</text>
+                    <text x="90" y="52" text-anchor="middle" class="svg-title">prev =&gt; prev + 1</text>
+                    <rect x="15" y="66" width="150" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="90" y="94" text-anchor="middle" class="svg-mono-xs">11 + 1</text>
+                    <text x="90" y="114" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">Passes: 12</text>
+                  </g>
+
+                  <line x1="665" y1="100" x2="695" y2="100" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="695,96 703,100 695,104" fill="var(--success)"/>
+
+                  <!-- Step 3 Final -->
+                  <g transform="translate(710, 25)">
+                    <rect x="0" y="0" width="145" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="72" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">FINAL</text>
+                    <text x="72" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">num = 13</text>
+                    <rect x="10" y="66" width="125" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="72" y="94" text-anchor="middle" class="svg-mono-xs">12 + 1</text>
+                    <text x="72" y="114" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Result: 13 ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 27: FORM HANDLING IN REACT (ONSUBMIT & E.PREVENTDEFAULT())
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-27-form-handling-prevent-default",
+      number: "27",
+      shortLabel: "Form Handling & preventDefault",
+      title: "Form Handling in React (onSubmit & e.preventDefault())",
+      summary: "Default HTML form POST behavior and page reload flaw, capturing submit events via onSubmit, and keeping the SPA alive with e.preventDefault().",
+      subtopicLabels: ["27.1 The Page Reload Problem", "27.2 Preventing Reloads with e.preventDefault()"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "27.1",
+          title: "Default Form Submission Behavior (The Page Reload Problem)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Traditional Browser Form Submission Behavior:</strong>
+                <ul class="notes-sub-list">
+                  <li>In standard HTML, submitting a <code>&lt;form&gt;</code> instructs the browser to bundle all form inputs and trigger an HTTP request, resulting in a <strong>hard page reload</strong>.</li>
+                  <li>In a Single Page Application (SPA) built with React, hard page reloads destroy the entire in-memory state tree and wipe the browser console in a fraction of a millisecond!</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 27.1 · Default HTML Form Submission: Full Page Reload Flaw</span>
+                <span class="diagram-frame-tag">BROWSER DEFAULT BEHAVIOR</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing default HTML form submission triggering full page reload and wiping SPA state">
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--danger)"/>
+                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">DEFAULT BROWSER FORM ❌</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Hard Page Reload Triggered</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="94" class="svg-mono-xs">• Browser refreshes the entire page</text>
+                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">• React in-memory state is wiped out!</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--text-muted);">• Console logs flash and disappear</text>
+                  </g>
+
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <rect x="15" y="15" width="150" height="20" rx="4" fill="var(--border)"/>
+                    <text x="90" y="29" text-anchor="middle" class="svg-mono-xs">DESIRED SPA FLOW</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title">Single Page Preservation</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">• Keep browser on current page</text>
+                    <text x="25" y="114" class="svg-mono-xs">• Process form inputs in JavaScript</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--success);">• Retain all existing component state</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "27.2",
+          title: "Preventing Reload With e.preventDefault() (Exact Code)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Solution — <code>e.preventDefault()</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li>Attach <code>onSubmit={(e) => submitHandler(e)}</code> directly onto the <code>&lt;form&gt;</code> tag.</li>
+                  <li>In the first line of your handler function, call <strong><code>e.preventDefault()</code></strong>. This cancels the browser's default document reload while keeping your event listener active.</li>
+                  <li><strong>Senior Gotcha:</strong> Ensure exact camelCase spelling: <code>e.preventDefault()</code>. A typo here causes the reload to slip through.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>import React from 'react'
+
+const App = () => {
+  const submitHandler = (e) => {
+    e.preventDefault()
+    console.log('Form Submitted')
+  }
+
+  return (
+    <div>
+      <form onSubmit={(e) => {
+        submitHandler(e)
+      }}>
+        <input type="text" placeholder="Enter your name" />
+        <button>Submit</button>
+      </form>
+    </div>
+  )
+}
+
+export default App</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 27.2 · React SPA Form Submission: Intercepting with e.preventDefault()</span>
+                <span class="diagram-frame-tag">EVENT INTERCEPTION PIPELINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing e.preventDefault cancelling default navigation and processing data in React state">
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="220" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="110" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">1 · SUBMIT EVENT</text>
+                    <text x="110" y="52" text-anchor="middle" class="svg-title">&lt;form onSubmit&gt;</text>
+                    <rect x="15" y="66" width="190" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="110" y="95" text-anchor="middle" class="svg-mono-xs">User clicks Submit</text>
+                    <text x="110" y="115" text-anchor="middle" class="svg-sub">SyntheticEvent dispatched</text>
+                  </g>
+
+                  <line x1="260" y1="100" x2="295" y2="100" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="295,96 303,100 295,104" fill="var(--primary)"/>
+
+                  <g transform="translate(315, 25)">
+                    <rect x="0" y="0" width="240" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <text x="120" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">2 · INTERCEPT</text>
+                    <text x="120" y="52" text-anchor="middle" class="svg-title">e.preventDefault()</text>
+                    <rect x="15" y="66" width="210" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="120" y="94" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">Cancels page reload</text>
+                    <text x="120" y="114" text-anchor="middle" class="svg-sub">Keeps JavaScript heap alive</text>
+                  </g>
+
+                  <line x1="565" y1="100" x2="600" y2="100" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="600,96 608,100 600,104" fill="var(--success)"/>
+
+                  <g transform="translate(620, 25)">
+                    <rect x="0" y="0" width="230" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="115" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">3 · CLIENT PROCESSING</text>
+                    <text x="115" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Seamless SPA Action</text>
+                    <rect x="15" y="66" width="200" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="115" y="94" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Logs data & saves state</text>
+                    <text x="115" y="114" text-anchor="middle" class="svg-sub">Zero page flicker ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 28: TWO-WAY BINDING IN REACT ("EK TEER SE DO NISHANE")
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-28-two-way-binding-controlled-inputs",
+      number: "28",
+      shortLabel: "Two-Way Binding & Controlled Inputs",
+      title: "Two-Way Binding in React (Controlled Inputs: Value & onChange)",
+      summary: "The 'Ek Teer Se Do Nishane' analogy, bidirectional sync between state and input (value={title} + onChange), and programmatic input clearing on submit.",
+      subtopicLabels: ["28.1 Two-Way Binding Architecture", "28.2 Controlled Input & Auto-Reset Pattern"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "28.1",
+          title: "What Is Two-Way Binding & How It Works",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Analogy: "Ek Teer Se Do Nishane" (Dual Control):</strong>
+                <ul class="notes-sub-list">
+                  <li>In traditional web forms, the DOM input stores its own private text, and React has no real-time awareness of what the user is typing.</li>
+                  <li><strong>Two-Way Binding (Controlled Component):</strong> Creates a seamless bidirectional loop between React state and the DOM input element:
+                    <ul class="notes-sub-list">
+                      <li><strong>Direction 1 (State → Input):</strong> <code>value={title}</code> locks the text displayed in the input to whatever string is stored in the <code>title</code> state variable.</li>
+                      <li><strong>Direction 2 (Input → State):</strong> Every keystroke triggers <code>onChange</code>, reads <code>e.target.value</code>, and updates <code>setTitle(e.target.value)</code>.</li>
+                    </ul>
+                  </li>
+                  <li><strong>Why Both Are Mandatory:</strong> If you attach <code>value={title}</code> without <code>onChange</code>, the input box is locked and user keystrokes cannot change anything!</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 28.1 · Controlled Component: The Bidirectional State Loop</span>
+                <span class="diagram-frame-tag">BIDIRECTIONAL DATA BINDING</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing bidirectional data binding between React useState and input element">
+                  <!-- React State Node -->
+                  <g transform="translate(50, 40)">
+                    <rect x="0" y="0" width="300" height="150" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="2"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--primary)"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">REACT STATE</text>
+                    <text x="150" y="65" text-anchor="middle" class="svg-title">const [title, setTitle]</text>
+
+                    <rect x="15" y="80" width="270" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="150" y="105" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">Single Source of Truth</text>
+                    <text x="150" y="122" text-anchor="middle" class="svg-sub">Stores live input text</text>
+                  </g>
+
+                  <!-- Top Arrow: State to Input (value={title}) -->
+                  <g transform="translate(365, 60)">
+                    <line x1="0" y1="10" x2="140" y2="10" stroke="var(--primary)" stroke-width="2.5"/>
+                    <polygon points="140,5 150,10 140,15" fill="var(--primary)"/>
+                    <rect x="15" y="-14" width="120" height="20" rx="4" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="75" y="0" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--primary); font-weight:700;">value={title}</text>
+                  </g>
+
+                  <!-- Bottom Arrow: Input to State (onChange) -->
+                  <g transform="translate(365, 140)">
+                    <line x1="150" y1="10" x2="10" y2="10" stroke="var(--accent)" stroke-width="2.5"/>
+                    <polygon points="10,5 0,10 10,15" fill="var(--accent)"/>
+                    <rect x="15" y="-14" width="120" height="20" rx="4" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="75" y="0" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--accent); font-weight:700;">onChange={e =&gt; ...}</text>
+                  </g>
+
+                  <!-- DOM Input Node -->
+                  <g transform="translate(530, 40)">
+                    <rect x="0" y="0" width="300" height="150" rx="12" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="2"/>
+                    <rect x="15" y="15" width="120" height="22" rx="4" fill="var(--success)"/>
+                    <text x="75" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">DOM ELEMENT</text>
+                    <text x="150" y="65" text-anchor="middle" class="svg-title">&lt;input /&gt; on Page</text>
+
+                    <rect x="15" y="80" width="270" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="150" y="105" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Controlled Component</text>
+                    <text x="150" y="122" text-anchor="middle" class="svg-sub">Mirrors state in real time</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "28.2",
+          title: "Binding value={title}, onChange & Clearing Input on Submit",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Auto-Reset Feature:</strong>
+                <ul class="notes-sub-list">
+                  <li>Because React owns the input value, resetting the field after submission is effortless: simply call <strong><code>setTitle('')</code></strong> inside <code>submitHandler</code>.</li>
+                  <li>The input box clears instantly on screen with zero DOM querying!</li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react'
+
+const App = () => {
+  const [title, setTitle] = useState('')
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+    console.log('Form Submitted by', title)
+
+    setTitle('') // Automatically clears input!
+  }
+
+  return (
+    <div>
+      <form onSubmit={(e) => {
+        submitHandler(e)
+      }}>
+        <input
+          type="text"
+          placeholder="Enter your name"
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value)
+          }}
+        />
+        <button>Submit</button>
+      </form>
+    </div>
+  )
+}
+
+export default App</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 28.2 · Controlled Input Lifecycle: Keystroke Event vs. Programmatic Clear</span>
+                <span class="diagram-frame-tag">CONTROLLED COMPONENT EVENT LIFECYCLE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 210" class="arch-svg" role="img" aria-label="Controlled input lifecycle showing user typing triggering onChange to state and programmatic clear via setTitle empty string on submit">
+                  <!-- Step 1: Keystroke to State -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="255" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <rect x="15" y="12" width="130" height="18" rx="4" fill="var(--primary)"/>
+                    <text x="80" y="25" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">DIRECTION 1: INPUT → STATE</text>
+                    <text x="127" y="50" text-anchor="middle" class="svg-title">User Keystroke</text>
+                    <rect x="15" y="64" width="225" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="86" class="svg-mono-xs">1. User types in &lt;input /&gt;</text>
+                    <text x="25" y="106" class="svg-mono-xs">2. Fires onChange={(e) =&gt; ...}</text>
+                    <text x="25" y="126" class="svg-mono-xs">3. Calls setTitle(e.target.value)</text>
+                    <text x="25" y="144" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">→ State updates immediately</text>
+                  </g>
+
+                  <!-- Arrow 1: To Controller -->
+                  <line x1="280" y1="105" x2="305" y2="105" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="305,101 313,105 305,109" fill="var(--primary)"/>
+
+                  <!-- Step 2: State Controls Input (Single Source of Truth) -->
+                  <g transform="translate(315, 20)">
+                    <rect x="0" y="0" width="255" height="170" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="127" y="26" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">SINGLE SOURCE OF TRUTH</text>
+                    <text x="127" y="50" text-anchor="middle" class="svg-title">React State Controller</text>
+                    <rect x="15" y="64" width="225" height="90" rx="6" fill="var(--bg-subsection)" stroke="var(--border)"/>
+                    <text x="25" y="86" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">const [title, setTitle] = useState('')</text>
+                    <text x="25" y="106" class="svg-mono-xs">&lt;input value={title} /&gt;</text>
+                    <text x="25" y="126" class="svg-mono-xs">DOM input NEVER has own state</text>
+                    <text x="25" y="144" class="svg-mono-xs" style="fill:var(--text-muted);">Input always reflects {title}</text>
+                  </g>
+
+                  <!-- Arrow 2: To Reset -->
+                  <line x1="570" y1="105" x2="595" y2="105" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="595,101 603,105 595,109" fill="var(--success)"/>
+
+                  <!-- Step 3: Programmatic Reset -->
+                  <g transform="translate(605, 20)">
+                    <rect x="0" y="0" width="250" height="170" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="12" width="135" height="18" rx="4" fill="var(--success)"/>
+                    <text x="82" y="25" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">FORM SUBMIT &amp; RESET</text>
+                    <text x="125" y="50" text-anchor="middle" class="svg-title" style="fill:var(--success);">Auto-Reset Pattern</text>
+                    <rect x="15" y="64" width="220" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="86" class="svg-mono-xs">submitHandler(e):</text>
+                    <text x="25" y="106" class="svg-mono-xs">• e.preventDefault()</text>
+                    <text x="25" y="126" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">• setTitle('') // Resets State</text>
+                    <text x="25" y="144" class="svg-mono-xs" style="fill:var(--success);">Input clears automatically! ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 29: BUILDING THE NOTES APP — STATE SETUP & ADDING NOTES
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-29-building-notes-app-adding-notes",
+      number: "29",
+      shortLabel: "Notes App: State & Adding Notes",
+      title: "Building the Notes App — State Setup, Two-Way Binding & Adding Notes",
+      summary: "Full-stack frontend architecture of 08-notes-app, three useState hooks (title, details, task), immutable note creation with copyTask, and auto-resetting form fields.",
+      subtopicLabels: ["29.1 Architecture & State Triad", "29.2 Immutable Note Creation & Reset"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "29.1",
+          title: "Project Architecture & Three State Variables (title, details, task)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Mobile-First Responsive Layout:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Left Section (Add Notes Form):</strong> A controlled <code>&lt;form&gt;</code> containing an <code>&lt;input&gt;</code> for heading, a <code>&lt;textarea&gt;</code> for detailed notes, and a submit button.</li>
+                  <li><strong>Right Section (Recent Notes Feed):</strong> Separated on desktop screens by <code>lg:border-l-2</code> with a scrollable flexbox container (<code>overflow-auto h-[90%]</code>) displaying sticky-note cards.</li>
+                </ul>
+              </li>
+              <li><strong>The Three Core State Variables:</strong>
+                <ul class="notes-sub-list">
+                  <li><code>const [title, setTitle] = useState('')</code> → Stores live heading input.</li>
+                  <li><code>const [details, setDetails] = useState('')</code> → Stores live textarea body.</li>
+                  <li><code>const [task, setTask] = useState([])</code> → Stores the master <strong>Array of Note Objects</strong>: <code>[{ title: '...', details: '...' }]</code>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 29.1 · Notes App Architecture: Form State to Master Array Stream</span>
+                <span class="diagram-frame-tag">APPLICATION STATE TOPOLOGY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing form inputs feeding into master task array and rendering sticky notes">
+                  <!-- Left Form -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="380" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--primary)"/>
+                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">LEFT: FORM PANEL</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Controlled Input State</text>
+
+                    <rect x="15" y="74" width="350" height="40" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">title: "Revise React State"</text>
+
+                    <rect x="15" y="122" width="350" height="40" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="146" class="svg-mono-xs">details: "Finish Topics 24 to 30"</text>
+                  </g>
+
+                  <!-- Down Arrow / Flow -->
+                  <g transform="translate(415, 105)">
+                    <line x1="0" y1="10" x2="45" y2="10" stroke="var(--success)" stroke-width="2.5"/>
+                    <polygon points="45,5 55,10 45,15" fill="var(--success)"/>
+                    <text x="22" y="-2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--success);">Appends</text>
+                  </g>
+
+                  <!-- Right Feed -->
+                  <g transform="translate(480, 20)">
+                    <rect x="0" y="0" width="375" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--success)"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">RIGHT: RECENT NOTES</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">task Master Array</text>
+
+                    <rect x="15" y="74" width="345" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">task = [</text>
+                    <text x="35" y="116" class="svg-mono-xs">{ title: "...", details: "..." },</text>
+                    <text x="35" y="134" class="svg-mono-xs">{ title: "...", details: "..." }</text>
+                    <text x="25" y="154" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">]</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "29.2",
+          title: "Adding Notes Immutably With copyTask & Resetting Inputs",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The 5-Step Immutable Submission Workflow:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>1. <code>e.preventDefault()</code>:</strong> Stops page reload.</li>
+                  <li><strong>2. <code>const copyTask = [...task]</code>:</strong> Clones existing array.</li>
+                  <li><strong>3. <code>copyTask.push({ title, details })</code>:</strong> Appends new note object.</li>
+                  <li><strong>4. <code>setTask(copyTask)</code>:</strong> Saves new array reference to state.</li>
+                  <li><strong>5. <code>setTitle('')</code> & <code>setDetails('')</code>:</strong> Clears both inputs automatically via two-way binding.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 29.2 · 5-Step Immutable Note Append Pipeline</span>
+                <span class="diagram-frame-tag">MUTATION GUARD PIPELINE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 210" class="arch-svg" role="img" aria-label="Diagram showing 5-step immutable note submission pipeline">
+                  <!-- Step 1 -->
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="150" height="150" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="75" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">STEP 1</text>
+                    <text x="75" y="52" text-anchor="middle" class="svg-title">preventDefault()</text>
+                    <rect x="10" y="66" width="130" height="70" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="75" y="105" text-anchor="middle" class="svg-mono-xs">Stops Reload</text>
+                  </g>
+
+                  <line x1="185" y1="100" x2="205" y2="100" stroke="var(--primary)" stroke-width="2"/>
+                  <polygon points="205,96 213,100 205,104" fill="var(--primary)"/>
+
+                  <!-- Step 2 -->
+                  <g transform="translate(218, 25)">
+                    <rect x="0" y="0" width="150" height="150" rx="8" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="75" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">STEP 2</text>
+                    <text x="75" y="52" text-anchor="middle" class="svg-title">[...task]</text>
+                    <rect x="10" y="66" width="130" height="70" rx="4" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="75" y="105" text-anchor="middle" class="svg-mono-xs">Clones Array</text>
+                  </g>
+
+                  <line x1="378" y1="100" x2="398" y2="100" stroke="var(--accent)" stroke-width="2"/>
+                  <polygon points="398,96 406,100 398,104" fill="var(--accent)"/>
+
+                  <!-- Step 3 -->
+                  <g transform="translate(411, 25)">
+                    <rect x="0" y="0" width="150" height="150" rx="8" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="75" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">STEP 3</text>
+                    <text x="75" y="52" text-anchor="middle" class="svg-title">copy.push(obj)</text>
+                    <rect x="10" y="66" width="130" height="70" rx="4" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="75" y="105" text-anchor="middle" class="svg-mono-xs">Appends Note</text>
+                  </g>
+
+                  <line x1="571" y1="100" x2="591" y2="100" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="591,96 599,100 591,104" fill="var(--success)"/>
+
+                  <!-- Step 4 -->
+                  <g transform="translate(604, 25)">
+                    <rect x="0" y="0" width="130" height="150" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
+                    <text x="65" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">STEP 4</text>
+                    <text x="65" y="52" text-anchor="middle" class="svg-title">setTask(copy)</text>
+                    <rect x="8" y="66" width="114" height="70" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="65" y="105" text-anchor="middle" class="svg-mono-xs">Triggers Render</text>
+                  </g>
+
+                  <line x1="744" y1="100" x2="759" y2="100" stroke="var(--success)" stroke-width="2"/>
+                  <polygon points="759,96 767,100 759,104" fill="var(--success)"/>
+
+                  <!-- Step 5 -->
+                  <g transform="translate(772, 25)">
+                    <rect x="0" y="0" width="85" height="150" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="42" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">STEP 5</text>
+                    <text x="42" y="52" text-anchor="middle" class="svg-title">Reset</text>
+                    <rect x="6" y="66" width="73" height="70" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="42" y="105" text-anchor="middle" class="svg-mono-xs">Clears Input</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 30: RENDERING NOTE CARDS & DELETING NOTES WITH SPLICE
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-30-rendering-deleting-notes-splice",
+      number: "30",
+      shortLabel: "Notes App: Render & Splice Delete",
+      title: "Rendering Note Cards & Deleting Notes With .splice(idx, 1)",
+      summary: "Mapping notes array to sticky note cards, delete handler with copyTask.splice(idx, 1), lexical variable scoping, and full Notes App production code.",
+      subtopicLabels: ["30.1 Deleting Notes with splice(idx, 1)", "30.2 Full Notes App Code & Memory Lifecycle"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "30.1",
+          title: "Deleting a Specific Note Using idx & copyTask.splice(idx, 1)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Targeted Deletion via Array Index (<code>idx</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>When looping with <code>task.map((elem, idx) =&gt; ...)</code>, attach an arrow function wrapper to the delete button:
+                    <pre class="notes-code-block"><code>onClick={() => deleteNote(idx)}</code></pre>
+                  </li>
+                  <li><strong>Inside <code>deleteNote(idx)</code>:</strong>
+                    <ol class="notes-sub-list">
+                      <li>Copy the master array: <code>const copyTask = [...task]</code>.</li>
+                      <li>Remove exactly 1 item at index <code>idx</code>: <code>copyTask.splice(idx, 1)</code>.</li>
+                      <li>Update state: <code>setTask(copyTask)</code>.</li>
+                    </ol>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>Lexical Scope Note:</strong> Reusing the variable name <code>copyTask</code> inside both <code>submitHandler</code> and <code>deleteNote</code> causes zero collisions because each <code>const copyTask</code> is lexically block-scoped to its own function.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 30.1 · Array Deletion: Targeted Splice & State Re-render</span>
+                <span class="diagram-frame-tag">DELETION RECONCILIATION FLOW</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing delete button clicking with index, splice removing item from copy, and state re-rendering">
+                  <!-- User Click -->
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="220" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.6"/>
+                    <text x="110" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">1 · DELETE TRIGGER</text>
+                    <text x="110" y="52" text-anchor="middle" class="svg-title">deleteNote(idx)</text>
+                    <rect x="15" y="66" width="190" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="110" y="95" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">Target Index: 1</text>
+                    <text x="110" y="115" text-anchor="middle" class="svg-sub">Click event receives index</text>
+                  </g>
+
+                  <!-- Splice Action -->
+                  <g transform="translate(315, 25)">
+                    <rect x="0" y="0" width="250" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <text x="125" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">2 · IMMUTABLE SPLICE</text>
+                    <text x="125" y="52" text-anchor="middle" class="svg-title">copy.splice(idx, 1)</text>
+                    <rect x="15" y="66" width="220" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="125" y="94" text-anchor="middle" class="svg-mono-xs">Removes 1 item at idx</text>
+                    <text x="125" y="114" text-anchor="middle" class="svg-sub">New array length: n - 1</text>
+                  </g>
+
+                  <!-- Final Re-render -->
+                  <g transform="translate(625, 25)">
+                    <rect x="0" y="0" width="225" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="112" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">3 · STATE UPDATE</text>
+                    <text x="112" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">setTask(copy)</text>
+                    <rect x="15" y="66" width="195" height="65" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="112" y="94" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Target Card Removed</text>
+                    <text x="112" y="114" text-anchor="middle" class="svg-sub">Instant surgical patch ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "30.2",
+          title: "Complete Notes App Code (App.jsx — Production Logic)",
+          content: `
+            <pre class="notes-code-block"><code>import React, { useState } from 'react'
+
+const App = () => {
+  const [title, setTitle] = useState('')
+  const [details, setDetails] = useState('')
+  const [task, setTask] = useState([])
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+
+    const copyTask = [...task]
+    copyTask.push({ title, details })
+    setTask(copyTask)
+
+    setTitle('')
+    setDetails('')
+  }
+
+  const deleteNote = (idx) => {
+    const copyTask = [...task]
+    copyTask.splice(idx, 1)
+    setTask(copyTask)
+  }
+
+  return (
+    &lt;div className="h-screen lg:flex bg-black text-white"&gt;
+      {/* Left Section: Add Notes Form */}
+      &lt;form
+        onSubmit={(e) => {
+          submitHandler(e)
+        }}
+        className="flex gap-4 lg:w-1/2 p-10 flex-col items-start"
+      &gt;
+        &lt;h1 className="text-4xl mb-2 font-bold"&gt;Add Notes&lt;/h1&gt;
+
+        &lt;input
+          type="text"
+          placeholder="Enter Notes Heading"
+          className="px-5 w-full font-medium py-2 border-2 outline-none rounded bg-neutral-900"
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value)
+          }}
+        /&gt;
+
+        &lt;textarea
+          className="px-5 w-full font-medium h-32 py-2 border-2 outline-none rounded bg-neutral-900"
+          placeholder="Write Details here"
+          value={details}
+          onChange={(e) => {
+            setDetails(e.target.value)
+          }}
+        /&gt;
+
+        &lt;button className="bg-white active:scale-95 font-medium w-full text-black px-5 py-2 rounded"&gt;
+          Add Note
+        &lt;/button&gt;
+      &lt;/form&gt;
+
+      {/* Right Section: Recent Notes */}
+      &lt;div className="lg:w-1/2 lg:border-l-2 p-10"&gt;
+        &lt;h1 className="text-4xl font-bold"&gt;Recent Notes&lt;/h1&gt;
+        &lt;div className="flex flex-wrap items-start justify-start gap-5 mt-6 h-[90%] overflow-auto"&gt;
+          {task.map(function (elem, idx) {
+            return (
+              &lt;div
+                key={idx}
+                className="flex justify-between flex-col items-start h-52 w-40 rounded-xl text-black pt-6 pb-4 px-4 bg-amber-100 shadow-md"
+              &gt;
+                &lt;div&gt;
+                  &lt;h3 className="leading-tight text-lg font-bold"&gt;{elem.title}&lt;/h3&gt;
+                  &lt;p className="mt-2 leading-tight text-xs font-semibold text-gray-700"&gt;
+                    {elem.details}
+                  &lt;/p&gt;
+                &lt;/div&gt;
+                &lt;button
+                  onClick={() => {
+                    deleteNote(idx)
+                  }}
+                  className="w-full active:scale-95 bg-red-500 py-1 text-xs rounded font-bold text-white"
+                &gt;
+                  Delete
+                &lt;/button&gt;
+              &lt;/div&gt;
+            )
+          })}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default App</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 30.2 · In-Memory State vs. Browser Persistence (LocalStorage Preview)</span>
+                <span class="diagram-frame-tag">STORAGE ARCHITECTURE EVOLUTION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram contrasting RAM in-memory state with persistent browser localStorage">
+                  <!-- Memory State -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--border)"/>
+                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">CURRENT: VOLATILE RAM</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title">useState In-Memory Heap</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">• Notes exist only in JavaScript memory</text>
+                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--danger);">• Browser reload wipes all added notes</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--text-muted);">State resets to initial useState([])</text>
+                  </g>
+
+                  <!-- LocalStorage -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--success)"/>
+                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">NEXT CHAPTER: PERSISTENCE</text>
+                    <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Browser localStorage API</text>
+
+                    <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="94" class="svg-mono-xs">• JSON.stringify() saves to disk</text>
+                    <text x="25" y="114" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">• Survives page reloads & closes ✓</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--text-muted);">Hydrates useState on initial mount</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
           `
         }
       ]

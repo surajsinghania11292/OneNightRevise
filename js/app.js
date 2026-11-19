@@ -79,7 +79,7 @@ const StudyApp = (() => {
     const statsEl = document.getElementById('active-track-stats');
 
     if (trackName === 'reactjs') {
-      const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 23;
+      const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 30;
       let diagCount = 0;
       if (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) {
         REACT_NOTES.topics.forEach(t => { diagCount += t.diagramCount || 0; });

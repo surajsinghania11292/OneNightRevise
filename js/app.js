@@ -52,7 +52,7 @@ const StudyApp = (() => {
     if (pushState) {
       try {
         history.replaceState(null, '', window.location.pathname);
-      } catch (e) {}
+      } catch (e) { }
     }
 
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -79,22 +79,22 @@ const StudyApp = (() => {
     const statsEl = document.getElementById('active-track-stats');
 
     if (trackName === 'reactjs') {
-      const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 7;
+      const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 11;
       let diagCount = 0;
       if (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) {
         REACT_NOTES.topics.forEach(t => { diagCount += t.diagramCount || 0; });
       }
       if (titleEl) titleEl.textContent = 'ReactJS Revision Notes';
-      if (statsEl) statsEl.textContent = `${count} Topics · ${diagCount || 14} Visual Architecture Diagrams`;
+      if (statsEl) statsEl.textContent = `${count} Topics · ${diagCount || 22} Visual Architecture Diagrams`;
       if (pushState) {
-        try { history.replaceState(null, '', '#reactjs'); } catch (e) {}
+        try { history.replaceState(null, '', '#reactjs'); } catch (e) { }
       }
     } else {
       const count = (typeof SYSTEM_DESIGN_NOTES !== 'undefined' && SYSTEM_DESIGN_NOTES.topics) ? SYSTEM_DESIGN_NOTES.topics.length : 72;
       if (titleEl) titleEl.textContent = 'System Design Revision Notes';
       if (statsEl) statsEl.textContent = `${count} Topics · 187 Visual Architecture Diagrams`;
       if (pushState) {
-        try { history.replaceState(null, '', '#system-design'); } catch (e) {}
+        try { history.replaceState(null, '', '#system-design'); } catch (e) { }
       }
     }
 

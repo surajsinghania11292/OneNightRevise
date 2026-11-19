@@ -1615,6 +1615,890 @@ console.log(skills); // ['Frontend', 'Backend', 'UI/UX']</pre>
           `
         }
       ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 08: CREATING & RUNNING A REACT APP WITH VITE
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-08-vite-setup",
+      number: "08",
+      shortLabel: "Vite Setup & Tooling",
+      title: "Creating & Running a React App with Vite",
+      summary: "Step-by-step Vite setup commands (npm create vite, cd, npm i, npm run dev), port 5173 dev server, index.css cleanup, and ESLint static code quality guardrails.",
+      subtopicLabels: ["8.1 Vite Setup Commands", "8.2 index.css Reset & ESLint"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "8.1",
+          title: "Step-by-Step Vite Setup Commands",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Why Vite Instead of Create-React-App (CRA)?</strong>
+                <ul class="notes-sub-list">
+                  <li>Legacy tooling like CRA bundles your entire codebase with Webpack before serving, resulting in sluggish cold starts and slow reloads as apps grow.</li>
+                  <li><strong>Vite</strong> leverages native browser <strong>ES Modules (ESM)</strong> and the ultra-fast Go-based compiler <strong>esbuild</strong> to start development servers in milliseconds with instantaneous <strong>Hot Module Replacement (HMR)</strong>.</li>
+                </ul>
+              </li>
+              <li><strong>The 4 Essential Setup Commands:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Step 1 · Initialize the Project:</strong> Run <code>npm create vite</code> in your terminal. When prompted, enter your project directory name, select <strong>React</strong> as your framework, and select <strong>JavaScript</strong> as your language variant.</li>
+                  <li><strong>Step 2 · Navigate into Folder:</strong> Run <code>cd &lt;your-project-name&gt;</code> to change your terminal working directory into the newly scaffolded project.</li>
+                  <li><strong>Step 3 · Install Dependencies:</strong> Run <code>npm i</code> (shorthand for <code>npm install</code>). This reads <code>package.json</code> and downloads React, ReactDOM, and dev dependencies into the local <code>node_modules/</code> folder.</li>
+                  <li><strong>Step 4 · Start Development Server:</strong> Run <code>npm run dev</code>. Vite compiles your code on demand and launches a live local server—typically accessible at <strong>http://localhost:5173</strong>.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 8.1 · Next-Gen Vite Build Toolchain & Terminal Execution Pipeline</span>
+                <span class="diagram-frame-tag">DEV TOOLING & LOCAL RUNTIME</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing the 4 terminal commands to create and run a React app with Vite on localhost:5173">
+                  <!-- Step 1: npm create vite -->
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="190" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--primary)" />
+                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">01</text>
+                    <text x="65" y="30" class="svg-kicker" style="fill:var(--primary); font-weight:700;">SCAFFOLD</text>
+                    <text x="95" y="62" text-anchor="middle" class="svg-title">npm create vite</text>
+                    <rect x="15" y="76" width="160" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="95" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent);">Select: React</text>
+                    <text x="95" y="112" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">Variant: JavaScript</text>
+                  </g>
+
+                  <!-- Arrow 1 -> 2 -->
+                  <g transform="translate(217, 90)">
+                    <line x1="0" y1="10" x2="22" y2="10" stroke="var(--primary)" stroke-width="2" stroke-dasharray="3 3"/>
+                    <polygon points="22,6 30,10 22,14" fill="var(--primary)"/>
+                  </g>
+
+                  <!-- Step 2: cd <dir> -->
+                  <g transform="translate(249, 25)">
+                    <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--border)" />
+                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">02</text>
+                    <text x="65" y="30" class="svg-kicker" style="font-weight:700;">NAVIGATE</text>
+                    <text x="90" y="62" text-anchor="middle" class="svg-title">cd app-name</text>
+                    <rect x="15" y="76" width="150" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="90" y="96" text-anchor="middle" class="svg-mono-xs">Switch Directory</text>
+                    <text x="90" y="112" text-anchor="middle" class="svg-sub">Enter project root</text>
+                  </g>
+
+                  <!-- Arrow 2 -> 3 -->
+                  <g transform="translate(431, 90)">
+                    <line x1="0" y1="10" x2="22" y2="10" stroke="var(--primary)" stroke-width="2" stroke-dasharray="3 3"/>
+                    <polygon points="22,6 30,10 22,14" fill="var(--primary)"/>
+                  </g>
+
+                  <!-- Step 3: npm i -->
+                  <g transform="translate(463, 25)">
+                    <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
+                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--accent)" />
+                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">03</text>
+                    <text x="65" y="30" class="svg-kicker" style="fill:var(--accent); font-weight:700;">DEPENDENCIES</text>
+                    <text x="90" y="62" text-anchor="middle" class="svg-title">npm i</text>
+                    <rect x="15" y="76" width="150" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="90" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent);">node_modules/</text>
+                    <text x="90" y="112" text-anchor="middle" class="svg-sub">react & react-dom</text>
+                  </g>
+
+                  <!-- Arrow 3 -> 4 -->
+                  <g transform="translate(645, 90)">
+                    <line x1="0" y1="10" x2="22" y2="10" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="22,6 30,10 22,14" fill="var(--success)"/>
+                  </g>
+
+                  <!-- Step 4: npm run dev -->
+                  <g transform="translate(677, 25)">
+                    <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--success)" />
+                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">04</text>
+                    <text x="65" y="30" class="svg-kicker" style="fill:var(--success); font-weight:700;">LIVE SERVER</text>
+                    <text x="90" y="62" text-anchor="middle" class="svg-title" style="fill:var(--success);">npm run dev</text>
+                    <rect x="15" y="76" width="150" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="90" y="96" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">localhost:5173</text>
+                    <text x="90" y="112" text-anchor="middle" class="svg-sub">Instant HMR Active</text>
+                  </g>
+
+                  <!-- Footer note inside diagram -->
+                  <text x="440" y="205" text-anchor="middle" class="svg-sub" style="letter-spacing:1px; fill:var(--text-muted);">
+                    NATIVE ES MODULES SERVING · SUB-MILLISECOND HOT MODULE REPLACEMENT · ZERO BUNDLE LATENCY
+                  </text>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "8.2",
+          title: "Cleaning Up Default Styles (index.css) & ESLint",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Resetting <code>index.css</code> for a Clean Canvas:</strong>
+                <ul class="notes-sub-list">
+                  <li>By default, Vite injects starter CSS styling (centered logos, default padding, button animations) inside <code>src/index.css</code>, which is imported inside <code>src/main.jsx</code>.</li>
+                  <li>To prevent unwanted style conflicts, clear out default boilerplate inside <code>index.css</code> and establish your clean base styles:
+                    <pre class="notes-code-block"><code>/* src/index.css */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #111;
+  color: #fff;
+  font-family: system-ui, -apple-system, sans-serif;
+}</code></pre>
+                  </li>
+                  <li>Since <code>main.jsx</code> imports <code>index.css</code>, these global rules automatically propagate to every component rendered inside the root element.</li>
+                </ul>
+              </li>
+              <li><strong>What Is ESLint & Why Does It Matter?</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>ESLint</strong> is a static code analysis tool that parses your JavaScript/JSX code to catch syntax bugs, unused imports, and anti-patterns before runtime.</li>
+                  <li>Vite includes ESLint by default via <code>eslint.config.js</code>.</li>
+                  <li><strong>Common Linter Warning:</strong> If you write <code>import React from 'react'</code> at the top of a modern component without calling any React method directly, ESLint displays a warning: <code>'React' is defined but never used (no-unused-vars)</code>. Since React 17's new JSX transform automatically handles compilation behind the scenes, explicit React imports are no longer necessary unless using hooks or React APIs.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 8.2 · ESLint Static Code Analysis & Developer Feedback Loop</span>
+                <span class="diagram-frame-tag">STATIC ANALYSIS & CODE HYGIENE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing ESLint inspecting JSX code for unused variables and warnings">
+                  <!-- Source Code Box -->
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="240" height="160" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="120" y="28" text-anchor="middle" class="svg-kicker">DEVELOPER CODE</text>
+                    <text x="120" y="52" text-anchor="middle" class="svg-title">src/App.jsx</text>
+                    <rect x="15" y="66" width="210" height="80" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="88" class="svg-mono-xs" style="fill:var(--danger);">import React from 'react';</text>
+                    <text x="25" y="108" class="svg-mono-xs" style="fill:var(--text);">function App() {</text>
+                    <text x="35" y="128" class="svg-mono-xs" style="fill:var(--primary);">&lt;h1&gt;Hello World&lt;/h1&gt;</text>
+                  </g>
+
+                  <!-- Arrow 1 -> 2 -->
+                  <g transform="translate(275, 95)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--primary)" stroke-width="2"/>
+                    <polygon points="35,6 43,10 35,14" fill="var(--primary)"/>
+                    <text x="22" y="3" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--primary);">AST Parse</text>
+                  </g>
+
+                  <!-- ESLint Engine Box -->
+                  <g transform="translate(325, 25)">
+                    <rect x="0" y="0" width="230" height="160" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
+                    <text x="115" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">STATIC ANALYSIS ENGINE</text>
+                    <text x="115" y="52" text-anchor="middle" class="svg-title">ESLint Rules Evaluator</text>
+                    <rect x="15" y="66" width="200" height="80" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="25" y="88" class="svg-mono-xs">✓ Detects Syntax Errors</text>
+                    <text x="25" y="108" class="svg-mono-xs">✓ Enforces Hooks Rules</text>
+                    <text x="25" y="128" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">⚠ Flags Unused Imports</text>
+                  </g>
+
+                  <!-- Arrow 2 -> 3 -->
+                  <g transform="translate(560, 95)">
+                    <line x1="0" y1="10" x2="35" y2="10" stroke="var(--accent)" stroke-width="2"/>
+                    <polygon points="35,6 43,10 35,14" fill="var(--accent)"/>
+                    <text x="22" y="3" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--accent);">Terminal Log</text>
+                  </g>
+
+                  <!-- Dev Terminal Warning Box -->
+                  <g transform="translate(605, 25)">
+                    <rect x="0" y="0" width="245" height="160" rx="10" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.6"/>
+                    <text x="122" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">DEV FEEDBACK</text>
+                    <text x="122" y="52" text-anchor="middle" class="svg-title">VS Code / Terminal</text>
+                    <rect x="15" y="66" width="215" height="80" rx="6" fill="var(--danger-bg)" stroke="var(--danger)"/>
+                    <text x="25" y="88" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">⚠ Warning (no-unused-vars):</text>
+                    <text x="25" y="108" class="svg-mono-xs" style="fill:var(--danger);">'React' is defined but</text>
+                    <text x="25" y="126" class="svg-mono-xs" style="fill:var(--danger);">never used in App.jsx</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 09: HOW A REACT VITE APP WORKS UNDER THE HOOD
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-09-how-vite-react-works",
+      number: "09",
+      shortLabel: "Vite Bootstrap Architecture",
+      title: "How a React Vite App Works Under the Hood (index.html → main.jsx → App.jsx)",
+      summary: "Single HTML entry point, createRoot DOM mounting, the 3-generation Family Tree analogy (Grandparent, Parent, Child), JSX compilation, and the rafce shortcut.",
+      subtopicLabels: ["9.1 Core File Roles", "9.2 Family Tree Analogy", "9.3 JSX & rafce Shortcut"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "9.1",
+          title: "Role of Each Core File",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Even with modern modular architecture, everything reaches the browser through a single HTML document:</strong></li>
+              <li><strong>1. <code>index.html</code> (Single Page Entry Point):</strong>
+                <ul class="notes-sub-list">
+                  <li>Contains a single empty mounting container: <code>&lt;div id="root"&gt;&lt;/div&gt;</code>.</li>
+                  <li>Loads your application code via an ES module script: <code>&lt;script type="module" src="/src/main.jsx"&gt;&lt;/script&gt;</code>.</li>
+                  <li>All React UI is dynamically rendered into this <code>#root</code> div.</li>
+                </ul>
+              </li>
+              <li><strong>2. <code>src/main.jsx</code> (The Mounting Bridge):</strong>
+                <ul class="notes-sub-list">
+                  <li>Selects the container using <code>document.getElementById('root')</code>.</li>
+                  <li>Initializes the React DOM rendering engine via <code>createRoot(...)</code> and mounts your root component with <code>.render(&lt;App /&gt;)</code>.</li>
+                  <li>Imports global styles via <code>import './index.css'</code>.</li>
+                  <li>Wraps <code>&lt;App /&gt;</code> in <code>&lt;StrictMode&gt;</code> during development to perform dual-render integrity checks.</li>
+                </ul>
+              </li>
+              <li><strong>3. <code>src/App.jsx</code> (Root Component):</strong>
+                <ul class="notes-sub-list">
+                  <li>A JavaScript function returning UI markup via <strong>JSX</strong> (e.g. <code>return &lt;h1&gt;Hello Guys&lt;/h1&gt;</code>).</li>
+                  <li>Whatever JSX is returned from <code>App.jsx</code> is converted into Virtual DOM nodes and injected into <code>#root</code>.</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "9.2",
+          title: "The Family Tree Analogy (How the Three Files Connect)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>To remember the exact connection hierarchy, think of the three files as three family generations:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong><code>index.html</code> = Grandparent (Dadaji):</strong> Owns the physical real estate (the browser HTML document) and provides the empty foundation container <code>&lt;div id="root"&gt;</code>.</li>
+                  <li><strong><code>main.jsx</code> = Parent / Father (Papa):</strong> The coordinator. It takes the child (<code>App.jsx</code>) and physically places it inside Dadaji's foundation (<code>#root</code>) using <code>createRoot().render()</code>.</li>
+                  <li><strong><code>App.jsx</code> = Child (Baccha):</strong> Creates and returns the actual visual content (headings, buttons, cards, forms).</li>
+                </ul>
+              </li>
+              <li><strong>Browser Inspect Verification:</strong>
+                <ul class="notes-sub-list">
+                  <li>Open any React Vite app in Google Chrome or Firefox, right-click, and select <strong>Inspect</strong>.</li>
+                  <li>Inside <code>&lt;body&gt;</code>, you will see <code>&lt;div id="root"&gt;</code>, and sitting directly inside it is the exact HTML generated by <code>App.jsx</code>!</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 9.1 · The Three Generations Bootstrap Architecture (Dadaji → Papa → Baccha)</span>
+                <span class="diagram-frame-tag">BOOTSTRAP HIERARCHY & MOUNTING</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Diagram showing the 3 generations: index.html (Dadaji) hosting main.jsx (Papa) which mounts App.jsx (Baccha) into div id=root">
+                  <!-- Grandparent: index.html -->
+                  <g transform="translate(25, 25)">
+                    <rect x="0" y="0" width="250" height="195" rx="12" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="85" height="22" rx="4" fill="var(--border)"/>
+                    <text x="57" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">GRANDPARENT</text>
+                    <text x="125" y="62" text-anchor="middle" class="svg-title">index.html (Dadaji)</text>
+                    <text x="125" y="80" text-anchor="middle" class="svg-sub">Physical DOM Foundation</text>
+
+                    <rect x="15" y="95" width="220" height="50" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="125" y="116" text-anchor="middle" class="svg-mono-xs" style="font-weight:700; fill:var(--primary);">&lt;div id="root"&gt;&lt;/div&gt;</text>
+                    <text x="125" y="134" text-anchor="middle" class="svg-sub">Target mounting container</text>
+
+                    <rect x="15" y="152" width="220" height="30" rx="4" fill="var(--bg-canvas)" stroke="var(--border)"/>
+                    <text x="125" y="172" text-anchor="middle" class="svg-mono-xs" style="font-size:10px;">&lt;script src="/src/main.jsx"&gt;</text>
+                  </g>
+
+                  <!-- Connect 1 -> 2 -->
+                  <g transform="translate(280, 110)">
+                    <line x1="0" y1="10" x2="30" y2="10" stroke="var(--primary)" stroke-width="2.5"/>
+                    <polygon points="30,5 40,10 30,15" fill="var(--primary)"/>
+                    <text x="20" y="-2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--primary);">Loads</text>
+                  </g>
+
+                  <!-- Parent: main.jsx -->
+                  <g transform="translate(325, 25)">
+                    <rect x="0" y="0" width="260" height="195" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="2"/>
+                    <rect x="15" y="15" width="65" height="22" rx="4" fill="var(--primary)"/>
+                    <text x="47" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">PARENT</text>
+                    <text x="130" y="62" text-anchor="middle" class="svg-title">main.jsx (Papa)</text>
+                    <text x="130" y="80" text-anchor="middle" class="svg-sub">Mounting & Root Engine</text>
+
+                    <rect x="15" y="95" width="230" height="85" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--text-muted);">const root = document...</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">createRoot(root)</text>
+                    <text x="35" y="158" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">.render(&lt;App /&gt;)</text>
+                  </g>
+
+                  <!-- Connect 2 -> 3 -->
+                  <g transform="translate(590, 110)">
+                    <line x1="0" y1="10" x2="30" y2="10" stroke="var(--accent)" stroke-width="2.5"/>
+                    <polygon points="30,5 40,10 30,15" fill="var(--accent)"/>
+                    <text x="20" y="-2" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--accent);">Mounts</text>
+                  </g>
+
+                  <!-- Child: App.jsx -->
+                  <g transform="translate(635, 25)">
+                    <rect x="0" y="0" width="220" height="195" rx="12" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="2"/>
+                    <rect x="15" y="15" width="55" height="22" rx="4" fill="var(--accent)"/>
+                    <text x="42" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">CHILD</text>
+                    <text x="110" y="62" text-anchor="middle" class="svg-title">App.jsx (Baccha)</text>
+                    <text x="110" y="80" text-anchor="middle" class="svg-sub">UI Markup & Content</text>
+
+                    <rect x="15" y="95" width="190" height="85" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="25" y="118" class="svg-mono-xs">function App() {</text>
+                    <text x="35" y="138" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">return &lt;h1&gt;Hello&lt;/h1&gt;</text>
+                    <text x="25" y="158" class="svg-mono-xs">}</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "9.3",
+          title: "JSX Basics, <App /> vs. App(), & the rafce Shortcut",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>What Is JSX (JavaScript XML)?</strong>
+                <ul class="notes-sub-list">
+                  <li>JSX is a syntax extension for JavaScript that allows you to write HTML-like tags directly inside JavaScript functions.</li>
+                  <li>JSX is not native browser JavaScript; build tools like Vite (via Babel or esbuild) compile JSX tags into standard <code>React.createElement(...)</code> function calls.</li>
+                </ul>
+              </li>
+              <li><strong>Calling Components: <code>&lt;App /&gt;</code> vs. <code>App()</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li>Under the hood, a React component is simply a <strong>JavaScript function</strong>.</li>
+                  <li>Inside <code>main.jsx</code>, calling <code>App()</code> is a standard JavaScript function call, while writing <strong><code>&lt;App /&gt;</code></strong> is the <strong>JSX syntax</strong> to invoke the component function with React lifecycle management and hooks support.</li>
+                </ul>
+              </li>
+              <li><strong>Boilerplate Shortcut (<code>rafce</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>Instead of typing out arrow functions, export statements, and return blocks manually in VS Code, install the <em>ES7+ React/Redux/React-Native snippets</em> extension.</li>
+                  <li>Type <strong><code>rafce</code></strong> and press <strong>Enter</strong> to instantly generate a complete <strong>React Arrow Function Component with Export</strong>:
+                    <pre class="notes-code-block"><code>import React from 'react'
+
+const App = () => {
+  return (
+    &lt;div&gt;App&lt;/div&gt;
+  )
+}
+
+export default App</code></pre>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 9.2 · JSX Compilation Pipeline: From JSX Tag to DOM Node</span>
+                <span class="diagram-frame-tag">COMPILATION & RUNTIME EVALUATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 210" class="arch-svg" role="img" aria-label="Diagram showing JSX code being compiled to React.createElement and rendered to live DOM">
+                  <!-- Step 1: JSX Tag -->
+                  <g transform="translate(30, 25)">
+                    <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="90" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">1 · JSX TAG</text>
+                    <text x="90" y="52" text-anchor="middle" class="svg-title">Developer Code</text>
+                    <rect x="15" y="66" width="150" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="90" y="106" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">&lt;App /&gt;</text>
+                  </g>
+
+                  <!-- Arrow 1 -> 2 -->
+                  <g transform="translate(215, 90)">
+                    <line x1="0" y1="10" x2="25" y2="10" stroke="var(--primary)" stroke-width="2"/>
+                    <polygon points="25,6 33,10 25,14" fill="var(--primary)"/>
+                    <text x="16" y="3" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--primary);">Compile</text>
+                  </g>
+
+                  <!-- Step 2: Transpiled JS -->
+                  <g transform="translate(253, 25)">
+                    <rect x="0" y="0" width="200" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="100" y="28" text-anchor="middle" class="svg-kicker">2 · COMPILER OUTPUT</text>
+                    <text x="100" y="52" text-anchor="middle" class="svg-title">React.createElement</text>
+                    <rect x="15" y="66" width="170" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="100" y="98" text-anchor="middle" class="svg-mono-xs" style="font-size:10px;">React.createElement(</text>
+                    <text x="100" y="116" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--accent);">App, null)</text>
+                  </g>
+
+                  <!-- Arrow 2 -> 3 -->
+                  <g transform="translate(458, 90)">
+                    <line x1="0" y1="10" x2="25" y2="10" stroke="var(--accent)" stroke-width="2"/>
+                    <polygon points="25,6 33,10 25,14" fill="var(--accent)"/>
+                    <text x="16" y="3" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--accent);">Execute</text>
+                  </g>
+
+                  <!-- Step 3: Virtual DOM Node -->
+                  <g transform="translate(496, 25)">
+                    <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="90" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">3 · VIRTUAL DOM</text>
+                    <text x="90" y="52" text-anchor="middle" class="svg-title">JS Object Tree</text>
+                    <rect x="15" y="66" width="150" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                    <text x="90" y="96" text-anchor="middle" class="svg-mono-xs" style="font-size:10px;">{ type: 'div',</text>
+                    <text x="90" y="114" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--accent);">props: {...} }</text>
+                  </g>
+
+                  <!-- Arrow 3 -> 4 -->
+                  <g transform="translate(681, 90)">
+                    <line x1="0" y1="10" x2="25" y2="10" stroke="var(--success)" stroke-width="2"/>
+                    <polygon points="25,6 33,10 25,14" fill="var(--success)"/>
+                    <text x="16" y="3" text-anchor="middle" class="svg-mono-xs" style="font-size:9px; fill:var(--success);">Mount</text>
+                  </g>
+
+                  <!-- Step 4: Real DOM -->
+                  <g transform="translate(719, 25)">
+                    <rect x="0" y="0" width="140" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <text x="70" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">4 · REAL DOM</text>
+                    <text x="70" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">#root Node</text>
+                    <rect x="12" y="66" width="116" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="70" y="106" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Live HTML</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 10: COMPONENT-BASED ARCHITECTURE & CLASSNAME IN JSX
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-10-component-architecture-classname",
+      number: "10",
+      shortLabel: "Component Architecture & JSX",
+      title: "Component-Based Architecture & className in JSX",
+      summary: "Why className is used over class, why App.jsx must stay clean, avoiding copy-paste anti-patterns, and sheryians.com component breakdown with isolated rendering.",
+      subtopicLabels: ["10.1 className vs class", "10.2 Clean App.jsx & Anti-Patterns", "10.3 Component Architecture"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "10.1",
+          title: "Using className Instead of class in JSX",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Reserved Keyword Collision:</strong>
+                <ul class="notes-sub-list">
+                  <li>In traditional HTML, you assign CSS styling classes with <code>class="card"</code>.</li>
+                  <li>In JSX, you <strong>cannot</strong> write <code>class="card"</code>; you must write <strong><code>className="card"</code></strong>.</li>
+                  <li><strong>Why?</strong> In JavaScript, <code>class</code> is a reserved keyword used to define ES6 classes (e.g. <code>class Car {}</code>). Because JSX compiles directly into JavaScript object representations, using <code>class</code> as an attribute name causes lexical naming collisions.</li>
+                </ul>
+              </li>
+              <li><strong>What About the <code>id</code> Attribute?</strong>
+                <ul class="notes-sub-list">
+                  <li><code>id</code> is <strong>not</strong> a reserved keyword in JavaScript.</li>
+                  <li>Therefore, <code>id="header"</code> or <code>id="root"</code> remains completely unchanged in JSX—only <code>class</code> is written as <code>className</code>.</li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "10.2",
+          title: "Why We Keep App.jsx Clean (The Copy-Paste Problem)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Copy-Paste Anti-Pattern:</strong>
+                <ul class="notes-sub-list">
+                  <li>Suppose you build a card element directly inside <code>App.jsx</code>:
+                    <pre class="notes-code-block"><code>function App() {
+  return (
+    &lt;div&gt;
+      &lt;div className="card" style={{ background: 'pink', borderRadius: 10, padding: 20 }}&gt;
+        &lt;h2&gt;Sarthak Sharma&lt;/h2&gt;
+        &lt;p&gt;Lorem ipsum dolor sit amet consectetur adipisicing.&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+                  </li>
+                  <li>If you need five more cards, you might be tempted to copy-paste that card markup five times inside <code>App.jsx</code>.</li>
+                  <li><strong>The Critical Flaw:</strong> <code>App.jsx</code> is your application's <strong>root entry orchestrator</strong>. Dumping raw markup directly into <code>App.jsx</code> creates a sprawling 500-line monolith where updating a button or card design requires making manual edits in dozens of different places.</li>
+                  <li><strong>The Solution:</strong> Embrace <strong>Component-Based Architecture</strong>—extract individual UI blocks into dedicated, single-responsibility component files.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 10.1 · Monolithic Copy-Paste Sprawl vs. Clean Modular Component Architecture</span>
+                <span class="diagram-frame-tag">ARCHITECTURAL DESIGN PATTERNS</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram contrasting a monolithic App.jsx full of copy-pasted HTML with a modular App.jsx importing separate components">
+                  <!-- Bad: Monolith -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="100" height="22" rx="4" fill="var(--danger)"/>
+                    <text x="65" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">ANTI-PATTERN</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Monolithic Sprawling App.jsx</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
+                    <text x="25" y="94" class="svg-mono-xs" style="fill:var(--danger);">App.jsx (500+ Lines of Clutter)</text>
+                    <text x="35" y="112" class="svg-mono-xs" style="fill:var(--text-muted);">├── 50 lines: &lt;div className="nav"&gt;...&lt;/div&gt;</text>
+                    <text x="35" y="130" class="svg-mono-xs" style="fill:var(--text-muted);">├── 120 lines: Card 1, Card 2, Card 3 (Duplicate HTML)</text>
+                    <text x="35" y="148" class="svg-mono-xs" style="fill:var(--text-muted);">└── 80 lines: &lt;footer&gt;...&lt;/footer&gt;</text>
+                  </g>
+
+                  <!-- Good: Modular Components -->
+                  <g transform="translate(460, 20)">
+                    <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success)"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">RECOMMENDED PATTERN</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">Clean Component Architecture</text>
+
+                    <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="94" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">App.jsx (Clean 20-Line Orchestrator)</text>
+                    <text x="35" y="112" class="svg-mono-xs" style="fill:var(--primary);">&lt;Navbar /&gt;</text>
+                    <text x="35" y="130" class="svg-mono-xs" style="fill:var(--accent);">&lt;Card /&gt;  &lt;Card /&gt;  &lt;Card /&gt;</text>
+                    <text x="35" y="148" class="svg-mono-xs" style="fill:var(--text-muted);">&lt;Footer /&gt;</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "10.3",
+          title: "What Are Components & Component-Based Architecture?",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>What Is a Component?</strong>
+                <ul class="notes-sub-list">
+                  <li>A <strong>Component</strong> is a self-contained, independent, and reusable piece of code (a JavaScript function returning JSX) responsible for rendering a specific feature of the UI.</li>
+                </ul>
+              </li>
+              <li><strong>Deconstructing a Production Website (sheryians.com Example):</strong>
+                <ul class="notes-sub-list">
+                  <li>Rather than thinking of a page as one huge HTML document, break it down into a tree of components:
+                    <ul class="notes-sub-list">
+                      <li><strong><code>&lt;Navbar /&gt;</code></strong> component (which internally contains a <code>&lt;Logo /&gt;</code> component and a <code>&lt;NavLinks /&gt;</code> component).</li>
+                      <li><strong><code>&lt;HeroSection /&gt;</code></strong> component with call-to-action buttons.</li>
+                      <li><strong><code>&lt;CourseGrid /&gt;</code></strong> component rendering multiple instances of <strong><code>&lt;CourseCard /&gt;</code></strong>.</li>
+                      <li><strong><code>&lt;Footer /&gt;</code></strong> component.</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>Major Performance & Re-Rendering Advantage:</strong>
+                <ul class="notes-sub-list">
+                  <li>Suppose a user receives an unread alert, incrementing the notification count from <code>0</code> to <code>1</code>.</li>
+                  <li>In traditional architectures, the entire navbar or whole document might re-render.</li>
+                  <li>In React's Component Architecture, <strong>only that single notification badge component re-renders</strong>! The rest of the page (Hero, Cards, Footer) remains completely untouched and idle, delivering massive performance gains.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 10.2 · Component Tree Isolation & Granular Re-rendering Efficiency</span>
+                <span class="diagram-frame-tag">TREE RECONCILIATION & ISOLATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 240" class="arch-svg" role="img" aria-label="Component tree showing App branching into Navbar, Hero, and CourseGrid. When NotificationBadge changes state, only that single node re-renders">
+                  <!-- App Root -->
+                  <g transform="translate(370, 15)">
+                    <rect x="0" y="0" width="140" height="42" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
+                    <text x="70" y="26" text-anchor="middle" class="svg-title">&lt;App /&gt;</text>
+                  </g>
+
+                  <!-- Connectors from App to 3 branches -->
+                  <path d="M 440 57 L 440 80 L 160 80 L 160 100" fill="none" stroke="var(--border)" stroke-width="1.8"/>
+                  <path d="M 440 57 L 440 100" fill="none" stroke="var(--border)" stroke-width="1.8"/>
+                  <path d="M 440 57 L 440 80 L 720 80 L 720 100" fill="none" stroke="var(--border)" stroke-width="1.8"/>
+
+                  <!-- Branch 1: Navbar -->
+                  <g transform="translate(85, 100)">
+                    <rect x="0" y="0" width="150" height="42" rx="8" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="75" y="26" text-anchor="middle" class="svg-title">&lt;Navbar /&gt;</text>
+                  </g>
+
+                  <!-- Branch 2: Hero -->
+                  <g transform="translate(365, 100)">
+                    <rect x="0" y="0" width="150" height="42" rx="8" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="75" y="26" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">&lt;HeroSection /&gt; [IDLE]</text>
+                  </g>
+
+                  <!-- Branch 3: Courses -->
+                  <g transform="translate(645, 100)">
+                    <rect x="0" y="0" width="150" height="42" rx="8" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.5"/>
+                    <text x="75" y="26" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">&lt;CourseGrid /&gt; [IDLE]</text>
+                  </g>
+
+                  <!-- Sub-connectors under Navbar -->
+                  <path d="M 160 142 L 160 165 L 80 165 L 80 180" fill="none" stroke="var(--border)" stroke-width="1.5"/>
+                  <path d="M 160 142 L 160 165 L 240 165 L 240 180" fill="none" stroke="var(--border)" stroke-width="1.5"/>
+
+                  <!-- Navbar Child 1: Logo (Idle) -->
+                  <g transform="translate(15, 180)">
+                    <rect x="0" y="0" width="130" height="38" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="65" y="24" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">&lt;Logo /&gt; [IDLE]</text>
+                  </g>
+
+                  <!-- Navbar Child 2: Notification Badge (RE-RENDERS) -->
+                  <g transform="translate(165, 180)">
+                    <rect x="0" y="0" width="170" height="38" rx="6" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="2"/>
+                    <text x="85" y="24" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">🔔 &lt;Badge [ 1 ] /&gt; ⚡</text>
+                  </g>
+
+                  <!-- Callout note on right -->
+                  <g transform="translate(370, 175)">
+                    <rect x="0" y="0" width="480" height="48" rx="8" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-dasharray="3 3"/>
+                    <text x="240" y="22" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">GRANULAR ISOLATION: Only the mutated &lt;Badge&gt; re-renders!</text>
+                    <text x="240" y="38" text-anchor="middle" class="svg-sub">All sibling nodes and parent components remain 100% idle with zero layout shifts.</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 11: CREATING, EXPORTING, IMPORTING & REUSING COMPONENTS
+       ═══════════════════════════════════════════════════════════════ */
+    {
+      id: "react-11-creating-reusing-components-props-intro",
+      number: "11",
+      shortLabel: "Component Lifecycle & Props Intro",
+      title: "Creating, Exporting, Importing & Reusing Components",
+      summary: "Building Card.jsx, Navbar.jsx with rafce, Capital Letter naming rule, VS Code auto-import gotchas, and why Props are needed (Instagram feed analogy).",
+      subtopicLabels: ["11.1 First Component Card.jsx", "11.2 Navbar.jsx & Auto-Import Rules", "11.3 Reusability & Props Motivation"],
+      diagramCount: 2,
+      sections: [
+        {
+          num: "11.1",
+          title: "Creating Your First Component (Card.jsx)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Step-by-Step Component Creation Workflow:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Step 1 · Create Components Directory:</strong> Inside your project's <code>src/</code> directory, create a dedicated folder named <strong><code>components/</code></strong> to keep your project organized.</li>
+                  <li><strong>Step 2 · Create the Component File:</strong> Inside <code>src/components/</code>, create a new file named <strong><code>Card.jsx</code></strong> (the <code>.jsx</code> extension signifies JavaScript XML).</li>
+                  <li><strong>Step 3 · Write the Component Function:</strong>
+                    <pre class="notes-code-block"><code>// src/components/Card.jsx
+function Card() {
+  return (
+    &lt;div className="card"&gt;
+      &lt;h2&gt;Sarthak Sharma&lt;/h2&gt;
+      &lt;p&gt;Full-Stack React Developer&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default Card;</code></pre>
+                  </li>
+                  <li><strong>Step 4 · Export the Component:</strong> The <code>export default Card;</code> statement exposes the component function so other files across your application can import it.</li>
+                  <li><strong>Step 5 · Import and Render Inside App.jsx:</strong>
+                    <pre class="notes-code-block"><code>// src/App.jsx
+import Card from './components/Card';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Card /&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "11.2",
+          title: "Creating Multiple Components (Navbar.jsx) & Auto-Import Rules",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>Building <code>Navbar.jsx</code> with <code>rafce</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li>Inside <code>src/components/</code>, create <code>Navbar.jsx</code>.</li>
+                  <li>Type <strong><code>rafce</code></strong> and press <strong>Enter</strong> to generate boilerplate arrow-function syntax.</li>
+                  <li>Add your navigation JSX markup and style it accordingly:
+                    <pre class="notes-code-block"><code>// src/components/Navbar.jsx
+import React from 'react';
+
+const Navbar = () => {
+  return (
+    &lt;div className="nav"&gt;
+      &lt;h3&gt;OneNightRevise Navigation&lt;/h3&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default Navbar;</code></pre>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>The Capital Letter Naming Rule (Crucial!):</strong>
+                <ul class="notes-sub-list">
+                  <li>React components <strong>MUST ALWAYS</strong> begin with an <strong>Uppercase Letter</strong> (e.g., <code>Navbar</code>, <code>Card</code>, <code>UserProfile</code>).</li>
+                  <li><strong>Why?</strong> React's JSX parser treats lowercase tags (like <code>&lt;navbar&gt;</code>, <code>&lt;div&gt;</code>, <code>&lt;button&gt;</code>) as native built-in HTML elements. If a component name starts with a lowercase letter, React attempts to find a matching HTML DOM element instead of invoking your component function!</li>
+                </ul>
+              </li>
+              <li><strong>The VS Code Auto-Import Gotcha:</strong>
+                <ul class="notes-sub-list">
+                  <li>When you start typing <code>&lt;Navbar</code> inside <code>App.jsx</code>, VS Code suggests an auto-completion that automatically inserts <code>import Navbar from './components/Navbar';</code> at the top.</li>
+                  <li><strong>Gotcha:</strong> Auto-import <strong>only works if the target component is already exported</strong> (<code>export default Navbar</code>). If you haven't written the export statement yet, VS Code has no symbol in its index and cannot offer the auto-import suggestion.</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 11.1 · Component Module Pipeline: Exporting from components/ to App.jsx</span>
+                <span class="diagram-frame-tag">MODULE EXPORT & IMPORT ORCHESTRATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing Card.jsx and Navbar.jsx exporting components and App.jsx importing them">
+                  <!-- Navbar Component File -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="240" height="90" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <text x="120" y="24" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">src/components/Navbar.jsx</text>
+                    <rect x="15" y="34" width="210" height="42" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="120" y="52" text-anchor="middle" class="svg-mono-xs">const Navbar = () =&gt; {...}</text>
+                    <text x="120" y="68" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">export default Navbar;</text>
+                  </g>
+
+                  <!-- Card Component File -->
+                  <g transform="translate(25, 125)">
+                    <rect x="0" y="0" width="240" height="90" rx="8" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <text x="120" y="24" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">src/components/Card.jsx</text>
+                    <rect x="15" y="34" width="210" height="42" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="120" y="52" text-anchor="middle" class="svg-mono-xs">function Card() {...}</text>
+                    <text x="120" y="68" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">export default Card;</text>
+                  </g>
+
+                  <!-- Arrows linking to App.jsx -->
+                  <g transform="translate(275, 65)">
+                    <line x1="0" y1="0" x2="60" y2="35" stroke="var(--primary)" stroke-width="2"/>
+                    <polygon points="60,31 68,39 57,41" fill="var(--primary)"/>
+                  </g>
+                  <g transform="translate(275, 170)">
+                    <line x1="0" y1="0" x2="60" y2="-35" stroke="var(--accent)" stroke-width="2"/>
+                    <polygon points="57,-41 68,-39 60,-31" fill="var(--accent)"/>
+                  </g>
+
+                  <!-- App.jsx Container -->
+                  <g transform="translate(355, 20)">
+                    <rect x="0" y="0" width="495" height="195" rx="12" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="2"/>
+                    <rect x="20" y="16" width="140" height="22" rx="4" fill="var(--success)"/>
+                    <text x="90" y="31" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">ORCHESTRATOR</text>
+                    <text x="280" y="32" class="svg-title">src/App.jsx</text>
+
+                    <!-- Code block inside App.jsx -->
+                    <rect x="20" y="48" width="455" height="130" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="35" y="70" class="svg-mono-xs" style="fill:var(--primary);">import Navbar from './components/Navbar';</text>
+                    <text x="35" y="88" class="svg-mono-xs" style="fill:var(--accent);">import Card from './components/Card';</text>
+                    <text x="35" y="112" class="svg-mono-xs" style="fill:var(--text);">function App() {</text>
+                    <text x="50" y="130" class="svg-mono-xs" style="fill:var(--text);">return (&lt;div&gt; &lt;Navbar /&gt; &lt;Card /&gt; &lt;Card /&gt; &lt;/div&gt;);</text>
+                    <text x="35" y="148" class="svg-mono-xs" style="fill:var(--text);">}</text>
+                    <text x="35" y="166" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">export default App;</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          num: "11.3",
+          title: "Reusability, Independent Updates & The Limitation (Why Props Exist)",
+          content: `
+            <ul class="notes-bullet-list">
+              <li><strong>The Power of Reusability & Independent Updates:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Instant Reusability:</strong> Writing <code>&lt;Card /&gt;</code> twice or three times in <code>App.jsx</code> renders three full cards instantly without duplicating any underlying HTML markup.</li>
+                  <li><strong>Fault & Update Isolation:</strong> Modifying <code>Navbar.jsx</code> will never break or trigger changes in <code>Card.jsx</code>. Each component has an isolated boundary.</li>
+                </ul>
+              </li>
+              <li><strong>The Critical Hardcoded Data Limitation:</strong>
+                <ul class="notes-sub-list">
+                  <li>Right now, every instance of <code>&lt;Card /&gt;</code> displays the exact same hardcoded data (<em>"Sarthak Sharma"</em> and the exact same bio paragraph).</li>
+                </ul>
+              </li>
+              <li><strong>The Instagram Feed Analogy (Why Props Are Essential):</strong>
+                <ul class="notes-sub-list">
+                  <li>Think of real-world applications like <strong>Instagram</strong> (Feed Posts or Stories):
+                    <ul class="notes-sub-list">
+                      <li>Every single post card in your Instagram feed shares the <strong>exact same visual shell</strong>: user avatar on top left, username, image/video container, like/comment/share buttons, and a caption section.</li>
+                      <li>However, Post 1 shows <strong>@virat.kohli</strong> with 2M likes, while Post 2 shows <strong>@nationalgeographic</strong> with wildlife photography and a custom caption!</li>
+                    </ul>
+                  </li>
+                  <li><strong>How React Solves This:</strong> To reuse one unified component shell while passing <strong>different, dynamic data</strong> into each instance, React provides <strong>Props (Properties)</strong>—the core mechanism for component customization covered next!</li>
+                </ul>
+              </li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 11.2 · Component Reusability & The Hardcoded Limitation: The Instagram Case Study</span>
+                <span class="diagram-frame-tag">REUSABILITY PATTERNS & PROPS MOTIVATION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Diagram showing identical component shells reused across Instagram feed posts, requiring Props to inject dynamic usernames and images">
+                  <!-- Post 1 -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="250" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
+                    <circle cx="35" cy="32" r="14" fill="var(--primary)"/>
+                    <text x="35" y="36" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">A</text>
+                    <text x="60" y="28" class="svg-title">@alice_dev</text>
+                    <text x="60" y="42" class="svg-sub">San Francisco · 2h ago</text>
+
+                    <!-- Image container -->
+                    <rect x="15" y="55" width="220" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="125" y="94" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">[ Photo: Workspace Setup ]</text>
+
+                    <!-- Action bar -->
+                    <text x="25" y="145" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">❤️ 1,240 likes</text>
+                    <text x="25" y="165" class="svg-sub">"Shipped my first React app today! 🚀"</text>
+                  </g>
+
+                  <!-- Post 2 -->
+                  <g transform="translate(315, 20)">
+                    <rect x="0" y="0" width="250" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
+                    <circle cx="35" cy="32" r="14" fill="var(--accent)"/>
+                    <text x="35" y="36" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">B</text>
+                    <text x="60" y="28" class="svg-title">@bob_codes</text>
+                    <text x="60" y="42" class="svg-sub">Bengaluru · 4h ago</text>
+
+                    <!-- Image container -->
+                    <rect x="15" y="55" width="220" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="125" y="94" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">[ Photo: Coffee & Algorithms ]</text>
+
+                    <!-- Action bar -->
+                    <text x="25" y="145" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">❤️ 890 likes</text>
+                    <text x="25" y="165" class="svg-sub">"Mastering System Design & Queues ☕"</text>
+                  </g>
+
+                  <!-- Summary Box: Why Props -->
+                  <g transform="translate(605, 20)">
+                    <rect x="0" y="0" width="250" height="190" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
+                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success)"/>
+                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:#fff; font-weight:700;">THE SOLUTION: PROPS</text>
+                    <text x="125" y="60" text-anchor="middle" class="svg-title" style="fill:var(--success);">Same Shell · Dynamic Data</text>
+
+                    <rect x="15" y="74" width="220" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
+                    <text x="25" y="96" class="svg-mono-xs" style="font-weight:700; fill:var(--primary);">&lt;PostCard</text>
+                    <text x="35" y="114" class="svg-mono-xs" style="fill:var(--accent);">user="alice_dev"</text>
+                    <text x="35" y="132" class="svg-mono-xs" style="fill:var(--accent);">likes={1240}</text>
+                    <text x="25" y="152" class="svg-mono-xs" style="font-weight:700; fill:var(--primary);">/&gt;</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
     }
   ]
 };

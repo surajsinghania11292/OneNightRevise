@@ -103,6 +103,15 @@ const StudyApp = (() => {
     updateStickyTopbarOnScroll();
   }
 
+  /* ── 3. SAFE HTML TEXT ESCAPER (PREVENTS <Component /> TAG STRIPPING) ── */
+  function escapeUnsafeTags(str) {
+    if (!str) return '';
+    // Escapes raw <ComponentName ...> or <tag> so the browser's innerHTML parser doesn't swallow custom tags
+    return String(str).replace(/<([A-Za-z][A-Za-z0-9]*(?:\s+[^>]*)?\/?)>/g, (m) => {
+      return m.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    });
+  }
+
   /* ── 4. RENDER TOPIC CARDS FOR CURRENT TRACK ────────────────── */
   function renderTopics() {
     const mount = document.getElementById('topics-mount');
@@ -118,7 +127,7 @@ const StudyApp = (() => {
       const diagText = topic.diagramCount === 1 ? '1 Diagram' : `${topic.diagramCount} Diagrams`;
 
       const previewChips = (topic.subtopicLabels || []).map(lbl => `
-        <span class="preview-chip">${lbl}</span>
+        <span class="preview-chip">${escapeUnsafeTags(lbl)}</span>
       `).join('');
 
       let sectionsHtml = '';
@@ -130,7 +139,7 @@ const StudyApp = (() => {
           sectionsHtml += `
             <div class="section-numbered-heading">
               <span class="section-index-badge">${badgeText}</span>
-              <h3 class="section-title-text">${sec.title}</h3>
+              <h3 class="section-title-text">${escapeUnsafeTags(sec.title)}</h3>
             </div>
           `;
         }
@@ -146,7 +155,7 @@ const StudyApp = (() => {
               <div class="workflow-step">
                 <div class="step-circle">${st.num}</div>
                 <div>
-                  <div class="workflow-step__title">${st.title}</div>
+                  <div class="workflow-step__title">${escapeUnsafeTags(st.title)}</div>
                   <div class="workflow-step__desc">${st.desc}</div>
                 </div>
               </div>
@@ -163,8 +172,8 @@ const StudyApp = (() => {
           <!-- Compact Clickable Header Summary Box -->
           <div class="topic-card-summary" role="button" tabindex="0" aria-expanded="false" data-toggle-topic="${topic.id}">
             <div class="topic-summary-main">
-              <h2 class="topic-title">${topic.number}. ${topic.title}</h2>
-              <p class="topic-subtitle">${topic.summary}</p>
+              <h2 class="topic-title">${topic.number}. ${escapeUnsafeTags(topic.title)}</h2>
+              <p class="topic-subtitle">${escapeUnsafeTags(topic.summary)}</p>
 
               <div class="topic-preview-pills">
                 ${previewChips}

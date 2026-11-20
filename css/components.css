@@ -361,6 +361,7 @@
   gap: 1.35rem;
   align-items: stretch;
   width: 100%;
+  grid-auto-flow: row dense;
 }
 
 @media (max-width: 860px) {
@@ -407,7 +408,7 @@
 
 /* Identical uniform box height across all closed topics (no big/small mismatch) */
 .topic-card:not(.is-expanded) {
-  height: 235px;
+  height: 245px;
   box-sizing: border-box;
 }
 
@@ -418,7 +419,7 @@
 }
 
 .topic-card.is-expanded {
-  grid-column: 1 / -1;
+  grid-column: 1 / -1 !important;
   border-color: var(--border-strong);
   box-shadow: var(--shadow-lg);
   margin: 0.5rem 0;
@@ -543,14 +544,14 @@
   margin-top: 0.45rem;
 }
 
-/* Clean preview chips: wrap onto up to 2 lines so subtopics never get cut off */
+/* Clean preview chips: wrap onto up to 2-3 lines so subtopics never get cut off */
 .topic-card:not(.is-expanded) .topic-preview-pills {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.35rem;
   margin-top: 0.4rem;
-  max-height: 54px;
+  max-height: 64px;
   overflow: hidden;
   flex-shrink: 0;
 }
@@ -566,7 +567,7 @@
 
 .preview-chip {
   font-family: var(--font-mono);
-  font-size: 0.69rem;
+  font-size: 0.67rem;
   color: var(--text-muted);
   background: var(--bg-surface);
   border: 1px solid var(--border-faint);
@@ -578,7 +579,7 @@
   text-overflow: ellipsis;
   box-sizing: border-box;
   display: inline-block;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 /* Clean Circular Arrow Down Toggle Button (Soft Accent Color, No Black) */

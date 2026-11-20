@@ -3231,7 +3231,7 @@ const Card = (props) => {
       sections: [
         {
           num: "15.1",
-          title: "Project Setup & Rendering Reusable <Card /> Components",
+          title: "Project Setup & Rendering Reusable &lt;Card /&gt; Components",
           content: `
             <ul class="notes-bullet-list">
               <li><strong>Clean Project Architecture (<code>04-cards-project</code>):</strong>
@@ -7461,9 +7461,9 @@ const handleLogin = async (credentials) =&gt; {
       summary: 'Architecting a real-world asynchronous Photo Gallery in Vite + Tailwind CSS: Managing dual state (userData and index), wiring declarative re-fetching with useEffect([index]), boundary guarding, and comparing page pagination with infinite scroll streams.',
       subtopicLabels: [
         '38.1 Project Architecture & Setup',
-        '38.2 Core State & Fetching Logic (App.jsx)',
-        '38.3 Defensive State Clearing & Boundary Guards',
-        '38.4 Production Concept: Infinite Scrolling Streams'
+        '38.2 Core State & Fetching Logic',
+        '38.3 Defensive State & Guarding',
+        '38.4 Discrete vs. Infinite Scroll'
       ],
       diagramCount: 2,
       sections: [
@@ -7710,11 +7710,11 @@ export default App</code></pre>
       number: 39,
       shortLabel: 'React 39',
       title: 'React Router DOM Basics & Single Page Applications (SPA)',
-      summary: 'Architecting modern Single Page Applications (SPAs): How client-side routing eliminates full-page browser reloads, setting up BrowserRouter, Routes, and Route matching, and why <Link> replaces the traditional HTML <a> tag.',
+      summary: 'Architecting modern Single Page Applications (SPAs): How client-side routing eliminates full-page browser reloads, setting up BrowserRouter, Routes, and Route matching, and why &lt;Link&gt; replaces the traditional HTML &lt;a&gt; tag.',
       subtopicLabels: [
-        '39.1 Single Page Application Architecture',
-        '39.2 Core Setup: BrowserRouter, Routes & Wildcard 404',
-        '39.3 Link Component vs. Traditional Anchor Tag'
+        '39.1 SPA Architecture',
+        '39.2 BrowserRouter & Routes',
+        '39.3 &lt;Link&gt; vs. &lt;a&gt; Tag'
       ],
       diagramCount: 2,
       sections: [
@@ -7874,7 +7874,7 @@ export default App</code></pre>
         {
           id: 'react-39-3',
           num: '39.3',
-          title: '<Link> vs. HTML <a> Tag (Preserving SPA State)',
+          title: '&lt;Link&gt; vs. HTML &lt;a&gt; Tag (Preserving SPA State)',
           content: `
             <p>
               A critical pitfall for developers migrating from vanilla HTML is using standard anchor tags:
@@ -7908,18 +7908,18 @@ export default Navbar</code></pre>
       number: 40,
       shortLabel: 'React 40',
       title: 'Advanced Routing (Nested, Dynamic & Programmatic)',
-      summary: 'Mastering production routing patterns in React Router DOM: Building sub-page layouts with Nested Routes and <Outlet />, reading dynamic URL segments via useParams(), and redirecting imperatively with useNavigate().',
+      summary: 'Mastering production routing patterns in React Router DOM: Building sub-page layouts with Nested Routes and &lt;Outlet /&gt;, reading dynamic URL segments via useParams(), and redirecting imperatively with useNavigate().',
       subtopicLabels: [
-        '40.1 Nested Routes & the <Outlet /> Component',
-        '40.2 Dynamic Routes & useParams()',
-        '40.3 Programmatic Navigation with useNavigate()'
+        '40.1 Nested Routes & &lt;Outlet /&gt;',
+        '40.2 Dynamic Routes & useParams',
+        '40.3 useNavigate Hook'
       ],
       diagramCount: 2,
       sections: [
         {
           id: 'react-40-1',
           num: '40.1',
-          title: 'Nested Routes & the <Outlet /> Component',
+          title: 'Nested Routes & the &lt;Outlet /&gt; Component',
           content: `
             <p>
               Enterprise web applications frequently have sections that share a common layout while rendering sub-pages internally (e.g., an eCommerce product catalog with persistent category filters showing <code>/product/men</code> and <code>/product/women</code>).
@@ -8137,9 +8137,9 @@ export default About</code></pre>
       title: 'Updating Parent State from a Child Component (Child-to-Parent Data Flow)',
       summary: 'Mastering unidirectional state inversion: How a child component triggers updates in a parent component by passing setter callbacks via props, handling event bindings cleanly, and identifying when Props Drilling necessitates Context API.',
       subtopicLabels: [
-        '41.1 Unidirectional Data Flow & Setter Inversion',
-        '41.2 Implementation: App.jsx to Navbar.jsx',
-        '41.3 Event Gotchas & Props Drilling Limitations'
+        '41.1 Child-to-Parent State',
+        '41.2 App to Navbar Callback',
+        '41.3 Props Drilling & Gotchas'
       ],
       diagramCount: 2,
       sections: [

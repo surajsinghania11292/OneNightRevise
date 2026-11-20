@@ -258,7 +258,13 @@ const StudyApp = (() => {
   }
 
   function openTopic(topicId, shouldScroll = false) {
-    // Add to open set — does NOT close any previously opened topics!
+    // Focused accordion: close previously open topic so chronological card order is strictly preserved
+    openTopicIds.forEach(id => {
+      if (id !== topicId) {
+        closeTopic(id, false);
+      }
+    });
+
     openTopicIds.add(topicId);
 
     const card = document.getElementById(topicId);

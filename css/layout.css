@@ -249,7 +249,6 @@ pre.notes-code-block {
   gap: 1.35rem;
   align-items: stretch;
   width: 100%;
-  grid-auto-flow: row dense;
 }
 
 @media (max-width: 860px) {

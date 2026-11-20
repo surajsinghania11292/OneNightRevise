@@ -129,6 +129,8 @@
   --bg-subtle:       rgba(246, 230, 164, 0.35);
   --bg-card-solid:   #FAF4D8;
   --bg-frame:        #FDFBF3;
+  --bg-canvas:       rgba(254, 252, 245, 0.92);
+  --text:            #141E18;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -197,5 +199,7 @@
   --primary-bg:      rgba(24, 40, 31, 0.85);
   --primary-light:   rgba(34, 56, 43, 0.8);
   --bg-subtle:       rgba(24, 34, 28, 0.65);
+  --bg-canvas:       rgba(31, 42, 35, 0.90);
+  --text:            #F4F1E8;
 }
 

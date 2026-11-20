@@ -6902,7 +6902,7 @@ export default App</code></pre>
       sections: [
         {
           id: 'react-35-1',
-          index: '35.1',
+          num: '35.1',
           title: 'What Are Side Effects & Why Running Them Directly Fails',
           content: `
             <p>
@@ -6969,7 +6969,7 @@ export default App</code></pre>
         },
         {
           id: 'react-35-2',
-          index: '35.2',
+          num: '35.2',
           title: 'The Road & Truck Analogy: Main UI Highway vs. Decoupled Side Stack',
           content: `
             <p>
@@ -7051,7 +7051,7 @@ export default App</code></pre>
       sections: [
         {
           id: 'react-36-1',
-          index: '36.1',
+          num: '36.1',
           title: 'The 3 Execution Modes of useEffect Controlled by Dependencies',
           content: `
             <p>
@@ -7150,7 +7150,7 @@ export default App</code></pre>
         },
         {
           id: 'react-36-2',
-          index: '36.2',
+          num: '36.2',
           title: 'Practical State-Watching Implementation',
           content: `
             <p>
@@ -7183,7 +7183,7 @@ export default CounterComparison</code></pre>
         },
         {
           id: 'react-36-3',
-          index: '36.3',
+          num: '36.3',
           title: 'Multiple Hooks, StrictMode Double Invocations & Cleanup Functions',
           content: `
             <p>
@@ -7270,7 +7270,7 @@ export default CounterComparison</code></pre>
       sections: [
         {
           id: 'react-37-1',
-          index: '37.1',
+          num: '37.1',
           title: 'How Data Moves Across the Web: HTTP Verbs & Axios Mappings',
           content: `
             <p>
@@ -7398,7 +7398,7 @@ const handleLogin = async (credentials) =&gt; {
         },
         {
           id: 'react-37-2',
-          index: '37.2',
+          num: '37.2',
           title: 'Cookies vs. LocalStorage for Production Authentication',
           content: `
             <p>
@@ -7469,7 +7469,7 @@ const handleLogin = async (credentials) =&gt; {
       sections: [
         {
           id: 'react-38-1',
-          index: '38.1',
+          num: '38.1',
           title: 'Project Setup & Architectural Flow',
           content: `
             <p>
@@ -7486,7 +7486,7 @@ npm install axios</code></pre>
         },
         {
           id: 'react-38-2',
-          index: '38.2',
+          num: '38.2',
           title: 'Complete Application Source Code (App.jsx)',
           content: `
             <pre class="notes-code-block"><code>import React, { useEffect, useState } from 'react'
@@ -7642,7 +7642,7 @@ export default App</code></pre>
         },
         {
           id: 'react-38-3',
-          index: '38.3',
+          num: '38.3',
           title: 'Defensive State Clearing & Boundary Guard Patterns',
           content: `
             <p>
@@ -7656,7 +7656,7 @@ export default App</code></pre>
         },
         {
           id: 'react-38-4',
-          index: '38.4',
+          num: '38.4',
           title: 'Production Concept: Discrete Pagination vs. Infinite Scrolling',
           content: `
             <p>
@@ -7696,6 +7696,608 @@ export default App</code></pre>
                     <text x="25" y="118" class="svg-mono-xs">• Appends state: setUserData([...prev, ...next])</text>
                     <text x="25" y="138" class="svg-mono-xs">• Growing DOM footprint (requires virtual list)</text>
                     <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">Standard for social media &amp; media feeds ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    }
+,
+    {
+      id: 'react-39',
+      number: 39,
+      shortLabel: 'React 39',
+      title: 'React Router DOM Basics & Single Page Applications (SPA)',
+      summary: 'Architecting modern Single Page Applications (SPAs): How client-side routing eliminates full-page browser reloads, setting up BrowserRouter, Routes, and Route matching, and why <Link> replaces the traditional HTML <a> tag.',
+      subtopicLabels: [
+        '39.1 Single Page Application Architecture',
+        '39.2 Core Setup: BrowserRouter, Routes & Wildcard 404',
+        '39.3 Link Component vs. Traditional Anchor Tag'
+      ],
+      diagramCount: 2,
+      sections: [
+        {
+          id: 'react-39-1',
+          num: '39.1',
+          title: 'What Is a Single Page Application (SPA)?',
+          content: `
+            <p>
+              In traditional <strong>Multi-Page Applications (MPAs)</strong>, every user navigation link triggers a complete round-trip network request to a web server. The browser discards its entire in-memory JavaScript heap, tears down the existing DOM, flashes a blank white screen, and parses an entirely new HTML document.
+            </p>
+            <p>
+              In a <strong>Single Page Application (SPA)</strong> built with React, the browser loads a single lightweight HTML shell (<code>index.html</code>) once. As the user navigates, a client-side router intercepts URL changes, updates the browser's <code>window.history</code> stack, and surgically mounts/unmounts components inside the existing Virtual DOM <strong>without reloading the web page</strong>.
+            </p>
+            <p>
+              <strong>React Router DOM</strong> is the enterprise standard library for implementing declarative, component-based client-side routing in React:
+            </p>
+            <pre class="notes-code-block"><code>npm install react-router-dom</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 39.1 · Multi-Page Application (MPA) vs. Single Page Application (SPA)</span>
+                <span class="diagram-frame-tag">ROUTING ARCHITECTURE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Comparison between Multi-Page Applications requesting full HTML reloads vs Single Page Applications swapping components in Virtual DOM">
+                  <!-- MPA -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">TRADITIONAL MPA (&lt;a href&gt;)</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Full Document Teardown</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">• User clicks &lt;a href="/about"&gt;</text>
+                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">• Full HTTP document fetch + white flash</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Memory wiped: all React state lost</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-muted);">Slow network round-trips for static shells</text>
+                  </g>
+
+                  <!-- SPA -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">REACT SPA (&lt;Link to&gt;)</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Client-Side Virtual DOM Swap</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">• Intercepts click: pushState(null, '', '/about') ✓</text>
+                    <text x="25" y="118" class="svg-mono-xs">• Zero browser reload / zero white screen</text>
+                    <text x="25" y="138" class="svg-mono-xs">• In-memory state &amp; caches preserved</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">Instant component mounting &amp; 60fps UX</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          id: 'react-39-2',
+          num: '39.2',
+          title: 'Core Setup: BrowserRouter, Routes & Wildcard 404 Routes',
+          content: `
+            <p>
+              Configuring client-side routing requires three foundational components working in concert:
+            </p>
+            <ol>
+              <li><strong><code>&lt;BrowserRouter&gt;</code>:</strong> The root context provider that connects your React application to the browser's HTML5 History API. It must wrap the entire component tree in <code>main.jsx</code>.</li>
+              <li><strong><code>&lt;Routes&gt;</code>:</strong> The smart container placed inside <code>App.jsx</code> that inspects the current URL pathname and renders the best single matching child <code>&lt;Route&gt;</code>.</li>
+              <li><strong><code>&lt;Route&gt;</code>:</strong> Defines the mapping between a specific URL path (e.g., <code>path="/product"</code>) and the component element to mount (<code>element={&lt;Product /&gt;}</code>).</li>
+              <li><strong>Wildcard Route (<code>path="*"</code>):</strong> Catches all unmatched paths and serves a custom 404 Not Found fallback view.</li>
+            </ol>
+
+            <pre class="notes-code-block"><code>// 1. main.jsx (Root Provider Initialization)
+import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App.jsx'
+
+createRoot(document.getElementById('root')).render(
+  // BrowserRouter synchronizes UI with browser History API
+  &lt;BrowserRouter&gt;
+    &lt;App /&gt;
+  &lt;/BrowserRouter&gt;
+)</code></pre>
+
+            <pre class="notes-code-block"><code>// 2. App.jsx (Route Matching Table)
+import { Route, Routes } from 'react-router-dom'
+import Home from './pages/Home'
+import About from './pages/About'
+import Product from './pages/Product'
+import NotFound from './pages/NotFound'
+
+const App = () => {
+  return (
+    &lt;div className="app-container"&gt;
+      &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+        &lt;Route path="/product" element={&lt;Product /&gt;} /&gt;
+        {/* Wildcard path catches any unregistered route */}
+        &lt;Route path="*" element={&lt;NotFound /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default App</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 39.2 · React Router DOM Tree Hierarchy &amp; Path Matching</span>
+                <span class="diagram-frame-tag">PROVIDER TOPOLOGY</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 220" class="arch-svg" role="img" aria-label="Hierarchy showing BrowserRouter wrapping App, containing Routes container and individual Route components mapping to pages">
+                  <!-- BrowserRouter Provider -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="220" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="140" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="85" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">ROOT PROVIDER</text>
+                    <text x="110" y="56" text-anchor="middle" class="svg-title">&lt;BrowserRouter&gt;</text>
+                    <rect x="15" y="70" width="190" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">Wraps &lt;App /&gt;</text>
+                    <text x="25" y="114" class="svg-mono-xs">Listens to popstate</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">History Context API</text>
+                  </g>
+
+                  <!-- Routes Container -->
+                  <g transform="translate(270, 20)">
+                    <rect x="0" y="0" width="250" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="120" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="75" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">DISPATCHER</text>
+                    <text x="125" y="56" text-anchor="middle" class="svg-title">&lt;Routes&gt; Switch</text>
+                    <rect x="15" y="70" width="220" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">Diffs window.location</text>
+                    <text x="25" y="114" class="svg-mono-xs">Executes path matching</text>
+                    <text x="25" y="134" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">Selects best Route</text>
+                  </g>
+
+                  <!-- Route Branches -->
+                  <g transform="translate(545, 20)">
+                    <rect x="0" y="0" width="310" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="130" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="80" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PAGE TARGETS</text>
+                    <text x="155" y="56" text-anchor="middle" class="svg-title">&lt;Route /&gt; Declarations</text>
+                    <rect x="15" y="70" width="280" height="92" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="94" class="svg-mono-xs">/          -&gt; &lt;Home /&gt;</text>
+                    <text x="25" y="114" class="svg-mono-xs">/about     -&gt; &lt;About /&gt;</text>
+                    <text x="25" y="134" class="svg-mono-xs">/product   -&gt; &lt;Product /&gt;</text>
+                    <text x="25" y="150" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">*          -&gt; &lt;NotFound /&gt; (404)</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          id: 'react-39-3',
+          num: '39.3',
+          title: '<Link> vs. HTML <a> Tag (Preserving SPA State)',
+          content: `
+            <p>
+              A critical pitfall for developers migrating from vanilla HTML is using standard anchor tags:
+            </p>
+            <ul>
+              <li><strong>The Anchor Problem:</strong> <code>&lt;a href="/about"&gt;</code> instructs the browser to bypass React Router and initiate a standard HTTP navigation, triggering a full page reload and wiping out all active state.</li>
+              <li><strong>The Link Solution:</strong> The <code>&lt;Link to="/about"&gt;</code> component renders an accessible anchor tag under the hood, but automatically calls <code>event.preventDefault()</code> on user click. It then uses the History API to push the new URL seamlessly into the address bar.</li>
+            </ul>
+
+            <pre class="notes-code-block"><code>// components/Navbar.jsx
+import { Link } from 'react-router-dom'
+
+const Navbar = () => {
+  return (
+    &lt;nav className="flex gap-4 p-4 border-b"&gt;
+      {/* Use Link + 'to' to preserve React state without reloading */}
+      &lt;Link to="/" className="hover:underline"&gt;Home&lt;/Link&gt;
+      &lt;Link to="/about" className="hover:underline"&gt;About&lt;/Link&gt;
+      &lt;Link to="/product" className="hover:underline"&gt;Product&lt;/Link&gt;
+    &lt;/nav&gt;
+  )
+}
+
+export default Navbar</code></pre>
+          `
+        }
+      ]
+    },
+    {
+      id: 'react-40',
+      number: 40,
+      shortLabel: 'React 40',
+      title: 'Advanced Routing (Nested, Dynamic & Programmatic)',
+      summary: 'Mastering production routing patterns in React Router DOM: Building sub-page layouts with Nested Routes and <Outlet />, reading dynamic URL segments via useParams(), and redirecting imperatively with useNavigate().',
+      subtopicLabels: [
+        '40.1 Nested Routes & the <Outlet /> Component',
+        '40.2 Dynamic Routes & useParams()',
+        '40.3 Programmatic Navigation with useNavigate()'
+      ],
+      diagramCount: 2,
+      sections: [
+        {
+          id: 'react-40-1',
+          num: '40.1',
+          title: 'Nested Routes & the <Outlet /> Component',
+          content: `
+            <p>
+              Enterprise web applications frequently have sections that share a common layout while rendering sub-pages internally (e.g., an eCommerce product catalog with persistent category filters showing <code>/product/men</code> and <code>/product/women</code>).
+            </p>
+            <p>
+              In React Router DOM, this is handled through <strong>Nested Routes</strong>:
+            </p>
+            <ul>
+              <li><strong>Relative Child Paths:</strong> Child routes nested inside a parent <code>&lt;Route&gt;</code> must have relative paths (omitting the leading slash). For example, <code>path="men"</code> inside <code>path="/product"</code> resolves automatically to <code>/product/men</code>.</li>
+              <li><strong>The <code>&lt;Outlet /&gt;</code> Slot:</strong> The parent component (<code>Product.jsx</code>) renders <code>&lt;Outlet /&gt;</code> where the matched child route should appear. When navigating between <code>/product/men</code> and <code>/product/women</code>, the parent component remains mounted and never re-renders, while only the inner child swaps out.</li>
+            </ul>
+
+            <pre class="notes-code-block"><code>// App.jsx (Nested Route Definition)
+&lt;Routes&gt;
+  &lt;Route path="/product" element={&lt;Product /&gt;}&gt;
+    {/* Child routes inherit parent path -> /product/men &amp; /product/women */}
+    &lt;Route path="men" element={&lt;Men /&gt;} /&gt;
+    &lt;Route path="women" element={&lt;Women /&gt;} /&gt;
+  &lt;/Route&gt;
+&lt;/Routes&gt;</code></pre>
+
+            <pre class="notes-code-block"><code>// pages/Product.jsx (Parent Shell with Outlet)
+import { Link, Outlet } from 'react-router-dom'
+
+const Product = () => {
+  return (
+    &lt;div className="product-layout"&gt;
+      &lt;h1&gt;Product Catalog&lt;/h1&gt;
+      {/* Persistent sub-navigation */}
+      &lt;nav className="subnav flex gap-4 my-4"&gt;
+        &lt;Link to="/product/men"&gt;Men's Collection&lt;/Link&gt;
+        &lt;Link to="/product/women"&gt;Women's Collection&lt;/Link&gt;
+      &lt;/nav&gt;
+
+      {/* Outlet marks the exact slot where child routes mount */}
+      &lt;div className="child-view border p-4 rounded"&gt;
+        &lt;Outlet /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Product</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 40.1 · Nested Route Topology &amp; &lt;Outlet /&gt; Slot Projection</span>
+                <span class="diagram-frame-tag">LAYOUT PROJECTION</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Visual representation of Parent Product layout containing persistent navigation while Outlet dynamically projects Men or Women child components">
+                  <!-- Parent Shell -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="150" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="90" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PARENT SHELL: /product</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Persistent Layout Frame</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">Shared Header: &lt;h1&gt;Product Catalog&lt;/h1&gt;</text>
+                    <text x="25" y="118" class="svg-mono-xs">Sub-Navigation: [Men] [Women]</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">&lt;Outlet /&gt; Projection Slot</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-muted);">Never unmounts during child navigation</text>
+                  </g>
+
+                  <!-- Dynamic Child Slot -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">OUTLET PROJECTION</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Conditional Child Mounting</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">URL = /product/men   -&gt; Mounts &lt;Men /&gt;</text>
+                    <text x="25" y="118" class="svg-mono-xs">URL = /product/women -&gt; Mounts &lt;Women /&gt;</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">Zero full-page remounting overhead ✓</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">Targeted Virtual DOM reconciliation</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          id: 'react-40-2',
+          num: '40.2',
+          title: 'Dynamic Routes & useParams()',
+          content: `
+            <p>
+              When dozens of detail pages share an identical design template (e.g., <code>/courses/frontend</code>, <code>/courses/backend</code>, <code>/courses/react</code>), creating static routes for each is anti-pattern.
+            </p>
+            <p>
+              Instead, define a <strong>Dynamic Parameter</strong> segment prefixed with a colon (<code>:id</code>) in the route path, and extract that variable inside the component using the <strong><code>useParams()</code></strong> hook:
+            </p>
+
+            <pre class="notes-code-block"><code>// 1. App.jsx: Defining the parameter token
+&lt;Route path="/courses/:id" element={&lt;CourseDetail /&gt;} /&gt;</code></pre>
+
+            <pre class="notes-code-block"><code>// 2. pages/CourseDetail.jsx: Consuming dynamic parameters
+import { useParams } from 'react-router-dom'
+
+const CourseDetail = () => {
+  // Extracts URL segment parameters into a key-value dictionary
+  // When visiting /courses/frontend -> params = { id: 'frontend' }
+  const params = useParams()
+
+  return (
+    &lt;div className="p-6"&gt;
+      &lt;h1 className="text-2xl font-bold capitalize"&gt;
+        {params.id} Course Overview
+      &lt;/h1&gt;
+      &lt;p&gt;Active route parameter: &lt;code&gt;{params.id}&lt;/code&gt;&lt;/p&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default CourseDetail</code></pre>
+          `
+        },
+        {
+          id: 'react-40-3',
+          num: '40.3',
+          title: 'Programmatic Navigation with useNavigate()',
+          content: `
+            <p>
+              While declarative <code>&lt;Link&gt;</code> elements handle standard user clicks, asynchronous workflows often require triggering navigation <strong>imperatively inside JavaScript functions</strong>:
+            </p>
+            <ul>
+              <li>Redirecting a user to <code>/dashboard</code> immediately upon successful login authentication.</li>
+              <li>Pushing the user to <code>/order-confirmation</code> after Stripe payment completes.</li>
+              <li>Implementing custom "Back" or "Forward" history controls.</li>
+            </ul>
+            <p>
+              The <strong><code>useNavigate()</code></strong> hook returns a dispatch function that executes these programmatic transitions:
+            </p>
+
+            <pre class="notes-code-block"><code>// pages/About.jsx
+import { useNavigate } from 'react-router-dom'
+
+const About = () => {
+  const navigate = useNavigate()
+
+  const handleReturnHome = () => {
+    // Perform cleanup or telemetry logging here...
+    navigate('/') // Imperative redirect to root
+  }
+
+  return (
+    &lt;div className="p-6 space-y-4"&gt;
+      &lt;h1&gt;About Engineering Portal&lt;/h1&gt;
+      &lt;button onClick={handleReturnHome} className="btn-primary"&gt;
+        Return to Home Page
+      &lt;/button&gt;
+
+      {/* Numeric arguments traverse browser history stack */}
+      &lt;div className="flex gap-2 pt-4"&gt;
+        &lt;button onClick={() =&gt; navigate(-1)} className="btn-secondary"&gt;
+          ← History Back
+        &lt;/button&gt;
+        &lt;button onClick={() =&gt; navigate(1)} className="btn-secondary"&gt;
+          History Forward →
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default About</code></pre>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 40.2 · Dynamic Route Parsing &amp; History Stack Navigation</span>
+                <span class="diagram-frame-tag">DYNAMIC &amp; IMPERATIVE ROUTING</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Visual explanation of useParams extracting tokens from URL and useNavigate pushing/popping frames on the browser history stack">
+                  <!-- Dynamic Params -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">DYNAMIC PARAMETER (useParams)</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">URL Token Deserialization</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">Route Pattern:  /courses/:id</text>
+                    <text x="25" y="118" class="svg-mono-xs">Browser URL:    /courses/frontend</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">useParams() -&gt; { id: 'frontend' }</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-muted);">Eliminates redundant static route files</text>
+                  </g>
+
+                  <!-- useNavigate -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">IMPERATIVE ROUTING (useNavigate)</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Browser History Stack Control</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">navigate('/cart')   -&gt; Pushes frame to stack</text>
+                    <text x="25" y="118" class="svg-mono-xs">navigate(-1)        -&gt; Pops 1 frame (Back)</text>
+                    <text x="25" y="138" class="svg-mono-xs">navigate(1)         -&gt; Advances 1 frame (Next)</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">Used inside async callbacks &amp; auth flows ✓</text>
+                  </g>
+                </svg>
+              </div>
+            </figure>
+          `
+        }
+      ]
+    },
+    {
+      id: 'react-41',
+      number: 41,
+      shortLabel: 'React 41',
+      title: 'Updating Parent State from a Child Component (Child-to-Parent Data Flow)',
+      summary: 'Mastering unidirectional state inversion: How a child component triggers updates in a parent component by passing setter callbacks via props, handling event bindings cleanly, and identifying when Props Drilling necessitates Context API.',
+      subtopicLabels: [
+        '41.1 Unidirectional Data Flow & Setter Inversion',
+        '41.2 Implementation: App.jsx to Navbar.jsx',
+        '41.3 Event Gotchas & Props Drilling Limitations'
+      ],
+      diagramCount: 2,
+      sections: [
+        {
+          id: 'react-41-1',
+          num: '41.1',
+          title: 'The Core Concept: Callback Setter Inversion',
+          content: `
+            <p>
+              In React, props always flow strictly in a <strong>unidirectional (top-down)</strong> direction: from Parent down to Child. A child component receives props as read-only values and is strictly forbidden from mutating them directly.
+            </p>
+            <p>
+              However, modern UI patterns frequently require user actions inside a child component (e.g., clicking a theme switch button in a <code>&lt;Navbar /&gt;</code>) to modify state owned by the root parent (<code>&lt;App /&gt;</code>).
+            </p>
+            <p>
+              <strong>The Architecture:</strong> The parent maintains the state variable and its setter function (<code>const [theme, setTheme] = useState('light')</code>). It passes the setter function down to the child as a prop. When the child detects a user event, it invokes that callback, causing the parent to update its state and trigger a top-down re-render.
+            </p>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 41.1 · Unidirectional Props Flow vs. Inverted Setter Callback Execution</span>
+                <span class="diagram-frame-tag">DATA FLOW ARCHITECTURE</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Visual diagram showing top down flow of props theme and setTheme, and bottom up execution of callback on button click">
+                  <!-- Parent Box -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="380" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">PARENT COMPONENT (App)</text>
+                    <text x="190" y="58" text-anchor="middle" class="svg-title">Single Source of Truth</text>
+
+                    <rect x="15" y="74" width="350" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">const [theme, setTheme] = useState('light')</text>
+                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">Passes: &lt;Navbar theme={theme} setTheme={setTheme} /&gt;</text>
+                    <text x="25" y="138" class="svg-mono-xs">Receives callback invocation</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-muted);">Re-renders whole tree with theme='dark'</text>
+                  </g>
+
+                  <!-- Child Box -->
+                  <g transform="translate(475, 20)">
+                    <rect x="0" y="0" width="380" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">CHILD COMPONENT (Navbar)</text>
+                    <text x="190" y="58" text-anchor="middle" class="svg-title">Event Consumer &amp; Dispatcher</text>
+
+                    <rect x="15" y="74" width="350" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">Receives props: { theme, setTheme }</text>
+                    <text x="25" y="118" class="svg-mono-xs">User clicks: &lt;button onClick={changeTheme}&gt;</text>
+                    <text x="25" y="138" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">props.setTheme('dark') is executed ✓</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">Child never mutates props directly</text>
+                  </g>
+
+                  <!-- Middle Arrow -->
+                  <path d="M 405 115 L 475 115" fill="none" stroke="var(--border)" stroke-width="2" stroke-dasharray="4 3"/>
+                </svg>
+              </div>
+            </figure>
+          `
+        },
+        {
+          id: 'react-41-2',
+          num: '41.2',
+          title: 'Implementation: Parent (App.jsx) to Child (Navbar.jsx)',
+          content: `
+            <pre class="notes-code-block"><code>// 1. App.jsx (Parent: Owns State & Passes Setter)
+import React, { useState } from 'react'
+import Navbar from './components/Navbar'
+
+const App = () => {
+  // Master state lives in parent
+  const [theme, setTheme] = useState('light')
+
+  return (
+    &lt;div className="app-shell p-6"&gt;
+      &lt;h1 className="text-xl font-bold mb-4"&gt;Current Theme: {theme}&lt;/h1&gt;
+
+      {/* Pass both the reactive value AND the setter function down as props */}
+      &lt;Navbar theme={theme} setTheme={setTheme} /&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default App</code></pre>
+
+            <pre class="notes-code-block"><code>// 2. components/Navbar.jsx (Child: Consumes Props & Triggers Setter)
+import React from 'react'
+
+const Navbar = (props) => {
+  const changeTheme = () => {
+    // Calls the parent function to invert/mutate App's state
+    props.setTheme(props.theme === 'light' ? 'dark' : 'light')
+  }
+
+  return (
+    &lt;header className="p-4 border rounded flex items-center justify-between"&gt;
+      &lt;span className="font-semibold"&gt;Brand Navigation&lt;/span&gt;
+      
+      {/* Event listener triggers callback invocation */}
+      &lt;button 
+        onClick={changeTheme}
+        className="px-4 py-2 border rounded font-mono"
+      &gt;
+        Toggle Theme
+      &lt;/button&gt;
+    &lt;/header&gt;
+  )
+}
+
+export default Navbar</code></pre>
+          `
+        },
+        {
+          id: 'react-41-3',
+          num: '41.3',
+          title: 'Event Gotchas & The Props Drilling Limitation',
+          content: `
+            <p>
+              Two essential architectural caveats every engineer must know:
+            </p>
+            <ul>
+              <li><strong>Event Listener Gotcha (<code>onClick</code> vs <code>onChange</code>):</strong> Always attach <code>onClick</code> to button elements. Attaching <code>onChange</code> to a <code>&lt;button&gt;</code> will fail silently because <code>onChange</code> is exclusively dispatched by form control inputs (<code>&lt;input&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;textarea&gt;</code>).</li>
+              <li><strong>When Callback Inversion Breaks Down (Props Drilling):</strong> Passing setters through props is clean and explicit for 1–2 component levels (<code>App</code> → <code>Navbar</code>). But when deep leaf components need state (e.g., <code>App</code> → <code>Dashboard</code> → <code>Sidebar</code> → <code>UserPanel</code> → <code>ThemeButton</code>), intermediate components must manually thread props they never use. This architectural anti-pattern is called <strong>Props Drilling</strong>, and is solved globally via <strong>React Context API</strong>.</li>
+            </ul>
+
+            <figure class="diagram-frame">
+              <div class="diagram-frame-header">
+                <span class="diagram-frame-title">Diagram 41.2 · Shallow Callback Inversion vs. The Deep Props Drilling Bottleneck</span>
+                <span class="diagram-frame-tag">ARCHITECTURE COMPARISON</span>
+              </div>
+              <div class="diagram-svg-wrap">
+                <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Comparison showing clean 1-level callback inversion vs messy 4-level props drilling requiring Context API">
+                  <!-- Clean 1-Level -->
+                  <g transform="translate(25, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">SHALLOW CALLBACK (1-2 LEVELS)</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Direct Setter Delegation</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">App (Owns State) -&gt; Navbar (Consumes Callback)</text>
+                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--accent-gold); font-weight:700;">• Direct 1-hop prop connection ✓</text>
+                    <text x="25" y="138" class="svg-mono-xs">• High readability &amp; easy refactoring</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-muted);">Standard pattern for localized sibling/child UI</text>
+                  </g>
+
+                  <!-- Deep Drilling -->
+                  <g transform="translate(455, 20)">
+                    <rect x="0" y="0" width="400" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.6"/>
+                    <rect x="15" y="15" width="160" height="22" rx="4" fill="var(--bg-surface)" stroke="var(--border)" stroke-width="1.2"/>
+                    <text x="95" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">PROPS DRILLING (4+ LEVELS)</text>
+                    <text x="200" y="58" text-anchor="middle" class="svg-title">Architectural Anti-Pattern</text>
+
+                    <rect x="15" y="74" width="370" height="100" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
+                    <text x="25" y="98" class="svg-mono-xs">App -&gt; Dashboard -&gt; Nav2 -&gt; Panel -&gt; Button</text>
+                    <text x="25" y="118" class="svg-mono-xs" style="fill:var(--warning); font-weight:700;">• Intermediate components burdened with unused props</text>
+                    <text x="25" y="138" class="svg-mono-xs">• Brittle refactoring &amp; maintenance headache</text>
+                    <text x="25" y="158" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">Solution: Migrate to React Context API ✓</text>
                   </g>
                 </svg>
               </div>

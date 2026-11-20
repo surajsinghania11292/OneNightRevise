@@ -79,13 +79,13 @@ const StudyApp = (() => {
     const statsEl = document.getElementById('active-track-stats');
 
     if (trackName === 'reactjs') {
-      const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 38;
+      const count = (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) ? REACT_NOTES.topics.length : 41;
       let diagCount = 0;
       if (typeof REACT_NOTES !== 'undefined' && REACT_NOTES.topics) {
         REACT_NOTES.topics.forEach(t => { diagCount += t.diagramCount || 0; });
       }
       if (titleEl) titleEl.textContent = 'ReactJS Revision Notes';
-      if (statsEl) statsEl.textContent = `${count} Topics · ${diagCount || 76} Visual Architecture Diagrams`;
+      if (statsEl) statsEl.textContent = `${count} Topics · ${diagCount || 82} Visual Architecture Diagrams`;
       if (pushState) {
         try { history.replaceState(null, '', '#reactjs'); } catch (e) { }
       }
@@ -122,13 +122,14 @@ const StudyApp = (() => {
       `).join('');
 
       let sectionsHtml = '';
-      topic.sections.forEach((sec) => {
+      topic.sections.forEach((sec, sIdx) => {
         sectionsHtml += `<div class="section-block">`;
 
         if (sec.title) {
+          const badgeText = sec.num || sec.index || `${topic.number}.${sIdx + 1}`;
           sectionsHtml += `
             <div class="section-numbered-heading">
-              <span class="section-index-badge">${sec.num}</span>
+              <span class="section-index-badge">${badgeText}</span>
               <h3 class="section-title-text">${sec.title}</h3>
             </div>
           `;

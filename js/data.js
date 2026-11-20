@@ -8537,7 +8537,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="45" y="112" class="svg-sub">• If bucket stays full (e.g. 100 tokens),</text>
     <text x="45" y="128" class="svg-sub">• A client can fire 100 reqs in 10ms.</text>
     <text x="45" y="144" class="svg-sub">• All 100 consume tokens & pass!</text>
-    <rect x="45" y="154" width="249" height="22" rx="4" fill="var(--warning)" opacity="0.15" />
+    <rect x="40" y="154" width="230" height="22" rx="4" fill="var(--warning)" opacity="0.15" />
     <text x="50" y="169" class="svg-mono-xs" fill="var(--warning)">Downstream service overwhelmed</text>
 
     <!-- Drawback 2: Distributed Memory Overhead -->
@@ -8557,8 +8557,8 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="615" y="112" class="svg-sub">• Two parallel requests read token=1</text>
     <text x="615" y="128" class="svg-sub">• Both decrement & both pass!</text>
     <text x="615" y="144" class="svg-sub">• Requires Lua Scripting in Redis</text>
-    <rect x="615" y="154" width="272" height="22" rx="4" fill="var(--danger)" opacity="0.15" />
-    <text x="620" y="169" class="svg-mono-xs" fill="var(--danger)">Atomic Lua script or Locks needed</text>
+    <rect x="610" y="154" width="230" height="22" rx="4" fill="var(--danger)" opacity="0.15" />
+    <text x="725" y="169" text-anchor="middle" class="svg-mono-xs" fill="var(--danger)">Atomic Lua script or Locks needed</text>
 
     <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">TOKEN BUCKET ALLOWS BURSTS BUT REQUIRES DISTRIBUTED LOCKS & CACHE CAPACITY</text>
   </svg>
@@ -8614,7 +8614,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="45" y="90" class="svg-title">Unpredictable Input</text>
     <text x="45" y="112" class="svg-sub">• Sudden spikes: 30 drops</text>
     <text x="45" y="128" class="svg-sub">• Quiet pauses: 0 drops</text>
-    <rect x="45" y="140" width="189" height="22" rx="4" fill="var(--warning)" opacity="0.15" />
+    <rect x="40" y="140" width="170" height="22" rx="4" fill="var(--warning)" opacity="0.15" />
     <text x="50" y="155" class="svg-mono-xs" fill="var(--warning)">Burst: 50 requests/sec</text>
 
     <!-- Arrow Inflow -->
@@ -8652,8 +8652,8 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="655" y="90" class="svg-title">Stable Server Flow</text>
     <text x="655" y="112" class="svg-node">• Constant rate: <tspan font-weight="700">3 req/sec</tspan></text>
     <text x="655" y="128" class="svg-sub">• Backend never experiences spikes</text>
-    <rect x="655" y="140" width="227" height="22" rx="4" fill="var(--success)" opacity="0.15" />
-    <text x="660" y="155" class="svg-mono-xs" fill="var(--success)">Guaranteed predictable load</text>
+    <rect x="650" y="140" width="190" height="22" rx="4" fill="var(--success)" opacity="0.15" />
+    <text x="745" y="155" text-anchor="middle" class="svg-mono-xs" fill="var(--success)">Guaranteed predictable load</text>
 
     <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">BURST INFLOW ABSORPTION -> SMOOTH CONSTANT DISPATCH RATE (TRAFFIC SHAPING)</text>
   </svg>
@@ -9028,7 +9028,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="345" y="103" class="svg-kicker" fill="var(--accent)">2. COUNT CURRENT LOGS</text>
     <text x="345" y="123" class="svg-title">ZCARD user_id</text>
     <text x="345" y="143" class="svg-sub">• Valid remaining timestamps: 3</text>
-    <rect x="345" y="152" width="249" height="22" rx="4" fill="var(--bg-subtle)" />
+    <rect x="340" y="152" width="230" height="22" rx="4" fill="var(--bg-subtle)" />
     <text x="350" y="167" class="svg-mono-xs">[12:00:30, 12:00:50, 12:01:05]</text>
 
     <!-- Arrow 2->3 -->
@@ -9207,7 +9207,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="575" y="88" class="svg-title">Rate Estimation</text>
     <text x="575" y="108" class="svg-node font-mono">Count = (84 &times; 30%) + 36</text>
     <text x="575" y="126" class="svg-node font-mono">Count = 25.2 + 36 = <tspan font-weight="700">61.2</tspan></text>
-    <rect x="575" y="135" width="279" height="20" rx="4" fill="var(--success)" opacity="0.15" />
+    <rect x="570" y="135" width="260" height="20" rx="4" fill="var(--success)" opacity="0.15" />
     <text x="580" y="149" class="svg-mono-xs" fill="var(--success)">Limit = 100 &rarr; 61.2 &le; 100 &rarr; ALLOWED</text>
 
     <text x="440" y="205" class="svg-mono-xs" text-anchor="middle">
@@ -9439,7 +9439,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="655" y="68" class="svg-kicker" fill="var(--success)">2. SERVER DECRYPTION</text>
     <text x="655" y="88" class="svg-title">Unlocks with Secret Key K</text>
     <text x="655" y="108" class="svg-sub">Decrypts: 7a#f9!k$8x</text>
-    <rect x="655" y="118" width="204" height="25" rx="4" fill="var(--bg-subtle)" />
+    <rect x="650" y="118" width="180" height="25" rx="4" fill="var(--bg-subtle)" />
     <text x="660" y="134" class="svg-mono-xs">Plaintext: "password123"</text>
     <text x="655" y="165" class="svg-sub">Using Identical Secret Key <tspan font-weight="700">K</tspan></text>
 
@@ -9590,7 +9590,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="365" y="88" class="svg-title">Encrypts with Public Key</text>
     <text x="365" y="108" class="svg-sub">• Takes Server's Public Key</text>
     <text x="365" y="126" class="svg-sub">• Encrypts Plaintext Session Key</text>
-    <rect x="365" y="136" width="272" height="26" rx="4" fill="var(--bg-subtle)" />
+    <rect x="360" y="136" width="220" height="26" rx="4" fill="var(--bg-subtle)" />
     <text x="375" y="153" class="svg-mono-xs">Ciphertext = Encrypt(Msg, PubKey)</text>
 
     <!-- Ciphertext Transmission -->
@@ -9933,7 +9933,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="355" y="103" class="svg-node">1. Domain: <tspan font-weight="700">bank.com</tspan></text>
     <text x="355" y="121" class="svg-node">2. Server Public Key: <tspan font-weight="700">K_bank</tspan></text>
     <text x="355" y="139" class="svg-node">3. Digital Signature: <tspan font-weight="700">Sign_CA</tspan></text>
-    <rect x="355" y="148" width="242" height="24" rx="4" fill="var(--success)" opacity="0.15" />
+    <rect x="350" y="148" width="220" height="24" rx="4" fill="var(--success)" opacity="0.15" />
     <text x="365" y="164" class="svg-mono-xs" fill="var(--success)">Guarantees Identity Integrity</text>
 
     <!-- Arrow Cert to Client -->
@@ -10031,7 +10031,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="615" y="103" class="svg-node">1. <tspan font-weight="700">Domain Name</tspan> (e.g. bank.com)</text>
     <text x="615" y="121" class="svg-node">2. <tspan font-weight="700">Server Public Key</tspan></text>
     <text x="615" y="139" class="svg-node">3. <tspan font-weight="700">CA Digital Signature</tspan></text>
-    <rect x="615" y="148" width="242" height="24" rx="4" fill="var(--success)" opacity="0.15" />
+    <rect x="610" y="148" width="220" height="24" rx="4" fill="var(--success)" opacity="0.15" />
     <text x="625" y="164" class="svg-mono-xs" fill="var(--success)">Proof that Domain owns PubKey</text>
 
     <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
@@ -10231,7 +10231,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="35" y="103" class="svg-sub">• Hacker replaces bank pubkey</text>
     <text x="35" y="119" class="svg-sub">• with hacker's pubkey</text>
     <text x="35" y="135" class="svg-sub">• CA Digital Signature fails</text>
-    <rect x="35" y="145" width="219" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
+    <rect x="35" y="145" width="170" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
     <text x="40" y="161" class="svg-mono-xs" fill="var(--danger)" font-weight="700">RESULT: SIGNATURE MISMATCH</text>
 
     <!-- Trick B: Legitimate Hacker Cert -->
@@ -10241,7 +10241,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="245" y="103" class="svg-sub">• Valid CA signature present</text>
     <text x="245" y="119" class="svg-sub">• But browser URL = bank.com</text>
     <text x="245" y="135" class="svg-sub">• Domain matching check fails</text>
-    <rect x="245" y="145" width="197" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
+    <rect x="245" y="145" width="175" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
     <text x="250" y="161" class="svg-mono-xs" fill="var(--danger)" font-weight="700">RESULT: DOMAIN MISMATCH</text>
 
     <!-- Trick C: Replay Bank Cert -->
@@ -10251,7 +10251,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="460" y="103" class="svg-sub">• Serves bank.com cert to user</text>
     <text x="460" y="119" class="svg-sub">• User encrypts session key</text>
     <text x="460" y="135" class="svg-sub">• Hacker lacks Bank Private Key</text>
-    <rect x="460" y="145" width="219" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
+    <rect x="460" y="145" width="175" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
     <text x="465" y="161" class="svg-mono-xs" fill="var(--danger)" font-weight="700">RESULT: CANNOT DECRYPT KEY</text>
 
     <!-- Trick D: MITM Replay Attack -->
@@ -10261,7 +10261,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="675" y="103" class="svg-sub">• Captured previous packets</text>
     <text x="675" y="119" class="svg-sub">• TLS ClientRandom nonces</text>
     <text x="675" y="135" class="svg-sub">• Unique per connection</text>
-    <rect x="675" y="145" width="189" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
+    <rect x="675" y="145" width="170" height="24" rx="4" fill="var(--danger)" opacity="0.15" />
     <text x="680" y="161" class="svg-mono-xs" fill="var(--danger)" font-weight="700">RESULT: REPLAY BLOCKED</text>
 
     <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
@@ -10307,7 +10307,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="55" y="88" class="svg-title">Pre-Baked Trust Store</text>
     <text x="55" y="108" class="svg-sub">• Windows, macOS, Android, iOS, Chrome</text>
     <text x="55" y="126" class="svg-sub">• Ships with pre-installed Root CA certs</text>
-    <rect x="55" y="138" width="302" height="26" rx="4" fill="var(--bg-subtle)" />
+    <rect x="50" y="138" width="230" height="26" rx="4" fill="var(--bg-subtle)" />
     <text x="65" y="155" class="svg-mono-xs">DigiCert, GoDaddy, GlobalSign PubKeys</text>
 
     <!-- Network Wire with zero transit callout -->
@@ -10316,7 +10316,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="345" y="98" class="svg-title">Never Sent Over Wire!</text>
     <text x="345" y="118" class="svg-sub">• CA Public Keys do NOT travel</text>
     <text x="345" y="134" class="svg-sub">across the internet during browsing.</text>
-    <rect x="345" y="142" width="264" height="20" rx="4" fill="var(--success)" opacity="0.15" />
+    <rect x="340" y="142" width="200" height="20" rx="4" fill="var(--success)" opacity="0.15" />
     <text x="350" y="156" class="svg-mono-xs" fill="var(--success)">No packets to intercept or sniff</text>
 
     <!-- Local Offline Verification -->
@@ -11713,7 +11713,7 @@ const SYSTEM_DESIGN_NOTES = {
 
     <!-- Heartbeat sync line -->
     <line x1="205" y1="120" x2="235" y2="120" stroke="var(--primary)" stroke-width="2" stroke-dasharray="3,2" />
-    <rect x="45" y="152" width="429" height="24" rx="4" fill="var(--success)" opacity="0.15" />
+    <rect x="45" y="152" width="340" height="24" rx="4" fill="var(--success)" opacity="0.15" />
     <text x="55" y="168" class="svg-mono-xs" fill="var(--success)">Zero-Downtime Failover: Standby grabs VIP in &lt;1 second</text>
 
     <!-- Arrow Layer 2 -> Layer 1 -->
@@ -11740,8 +11740,8 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="740" y="115" class="svg-node" font-weight="700">App Node 3</text>
     <text x="740" y="132" class="svg-sub" fill="var(--danger)">&times; Crashed</text>
 
-    <rect x="495" y="152" width="407" height="24" rx="4" fill="var(--bg-subtle)" />
-    <text x="505" y="168" class="svg-mono-xs">Health Checks auto-reroute traffic away from Node 3</text>
+    <rect x="495" y="152" width="340" height="24" rx="4" fill="var(--bg-subtle)" />
+    <text x="665" y="168" text-anchor="middle" class="svg-mono-xs">Health Checks auto-reroute from Node 3</text>
 
     <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
       END-TO-END ZERO SINGLE POINT OF FAILURE: REDUNDANT INGRESS + ELASTIC COMPUTE NODES
@@ -12150,7 +12150,7 @@ const SYSTEM_DESIGN_NOTES = {
               <text x="50" y="92" class="svg-title">Order Service</text>
               <text x="50" y="114" class="svg-sub">• Accepts user checkout</text>
               <text x="50" y="132" class="svg-sub">• Publishes order event</text>
-              <rect x="50" y="142" width="204" height="24" rx="4" fill="var(--primary-bg)" />
+              <rect x="45" y="142" width="180" height="24" rx="4" fill="var(--primary-bg)" />
               <text x="55" y="158" class="svg-mono-xs" fill="var(--primary)">Enqueue: order_id: 10482</text>
 
               <!-- Arrow Producer to Queue -->
@@ -12332,7 +12332,7 @@ const SYSTEM_DESIGN_NOTES = {
               <text x="330" y="112" class="svg-sub">• Caller blocked waiting for reply</text>
               <text x="330" y="128" class="svg-sub">• 3-second bank latency stalls caller</text>
               <text x="330" y="144" class="svg-sub">• Web workers exhausted & queue locks</text>
-              <rect x="330" y="154" width="264" height="24" rx="4" fill="var(--warning-bg)" />
+              <rect x="325" y="154" width="230" height="24" rx="4" fill="var(--warning-bg)" />
               <text x="335" y="170" class="svg-mono-xs" fill="var(--warning)">High Latency & Thread Exhaustion</text>
 
               <!-- Problem 3: Data Loss -->
@@ -12342,7 +12342,7 @@ const SYSTEM_DESIGN_NOTES = {
               <text x="610" y="112" class="svg-sub">• If callee crashes during process,</text>
               <text x="610" y="128" class="svg-sub">• In-flight payload is permanently lost</text>
               <text x="610" y="144" class="svg-sub">• Requires complex rollback sagas</text>
-              <rect x="610" y="154" width="249" height="24" rx="4" fill="var(--danger-bg)" />
+              <rect x="605" y="154" width="230" height="24" rx="4" fill="var(--danger-bg)" />
               <text x="615" y="170" class="svg-mono-xs" fill="var(--danger)">Unrecoverable State Corruption</text>
 
               <text x="440" y="212" class="svg-mono-xs" text-anchor="middle">
@@ -12479,7 +12479,7 @@ const SYSTEM_DESIGN_NOTES = {
               <!-- 5. Message Anatomy -->
               <rect x="260" y="122" width="182" height="18" rx="3" fill="var(--accent)" opacity="0.25" />
               <text x="265" y="135" class="svg-mono-xs" font-weight="700">5. Payload: JSON Body</text>
-              <rect x="415" y="122" width="227" height="18" rx="3" fill="var(--accent-gold-bg)" />
+              <rect x="415" y="122" width="180" height="18" rx="3" fill="var(--accent-gold-bg)" />
               <text x="420" y="135" class="svg-mono-xs" font-weight="700">Metadata: Header / Priority</text>
 
               <text x="250" y="165" class="svg-sub">• Manages network buffers, consumer leases & persistent commit logs</text>
@@ -12493,7 +12493,7 @@ const SYSTEM_DESIGN_NOTES = {
               <text x="685" y="90" class="svg-title">Subscriber Worker</text>
               <text x="685" y="112" class="svg-sub">• Pulls messages</text>
               <text x="685" y="128" class="svg-sub">• Executes task</text>
-              <rect x="685" y="138" width="167" height="26" rx="4" fill="var(--success-bg)" />
+              <rect x="680" y="138" width="155" height="26" rx="4" fill="var(--success-bg)" />
               <text x="690" y="155" class="svg-mono-xs" fill="var(--success)">Sends ACK on finish</text>
 
               <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
@@ -12536,7 +12536,7 @@ const SYSTEM_DESIGN_NOTES = {
               <text x="62" y="74" class="svg-title">Create</text>
               <text x="35" y="98" class="svg-sub">• Producer builds</text>
               <text x="35" y="114" class="svg-sub">payload & headers</text>
-              <rect x="35" y="130" width="152" height="22" rx="4" fill="var(--bg-subtle)" />
+              <rect x="32" y="130" width="131" height="22" rx="4" fill="var(--bg-subtle)" />
               <text x="40" y="145" class="svg-mono-xs">Payload + Headers</text>
 
               <!-- Arrow 1->2 -->
@@ -12575,7 +12575,7 @@ const SYSTEM_DESIGN_NOTES = {
               <text x="572" y="74" class="svg-title">Retrieve</text>
               <text x="545" y="98" class="svg-sub">• Consumer pulls</text>
               <text x="545" y="114" class="svg-sub">and processes task</text>
-              <rect x="545" y="130" width="144" height="22" rx="4" fill="var(--warning-bg)" />
+              <rect x="540" y="130" width="135" height="22" rx="4" fill="var(--warning-bg)" />
               <text x="550" y="145" class="svg-mono-xs" fill="var(--warning)">Worker Execution</text>
 
               <!-- Arrow 4->5 -->
@@ -12726,7 +12726,7 @@ const SYSTEM_DESIGN_NOTES = {
               <text x="50" y="90" class="svg-title">Order Service</text>
               <text x="50" y="112" class="svg-sub">• Pushes task: <tspan font-family="monospace">pay_order_44</tspan></text>
               <text x="50" y="128" class="svg-sub">• Awaits no downstream logic</text>
-              <rect x="50" y="138" width="212" height="26" rx="4" fill="var(--primary-bg)" />
+              <rect x="45" y="138" width="170" height="26" rx="4" fill="var(--primary-bg)" />
               <text x="55" y="155" class="svg-mono-xs" fill="var(--primary)">Delivery Mode: Persistent</text>
 
               <!-- Arrow -->
@@ -12791,7 +12791,7 @@ const SYSTEM_DESIGN_NOTES = {
               <text x="50" y="90" class="svg-title">User Video Upload</text>
               <text x="50" y="112" class="svg-sub">• Uploads 4GB 4K raw video</text>
               <text x="50" y="128" class="svg-sub">• Instant 200 OK response</text>
-              <rect x="50" y="138" width="219" height="26" rx="4" fill="var(--success-bg)" />
+              <rect x="45" y="138" width="180" height="26" rx="4" fill="var(--success-bg)" />
               <text x="55" y="155" class="svg-mono-xs" fill="var(--success)" font-weight="700">"Uploaded! Transcoding..."</text>
 
               <!-- Arrow -->
@@ -12817,8 +12817,8 @@ const SYSTEM_DESIGN_NOTES = {
               <text x="650" y="103" class="svg-sub">• Worker 1: 1080p transcoder</text>
               <text x="650" y="121" class="svg-sub">• Worker 2: 720p transcoder</text>
               <text x="650" y="139" class="svg-sub">• Worker 3: Audio & Thumbnail</text>
-              <rect x="650" y="148" width="264" height="24" rx="4" fill="var(--primary-bg)" />
-              <text x="655" y="164" class="svg-mono-xs" fill="var(--primary)">Pushes chunks to S3 / CloudFront</text>
+              <rect x="645" y="148" width="190" height="24" rx="4" fill="var(--primary-bg)" />
+              <text x="740" y="164" text-anchor="middle" class="svg-mono-xs" fill="var(--primary)">Pushes chunks to S3 / CloudFront</text>
 
               <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
                 RATE LIMITING & BUFFERING: ACCEPT ALL USER TRAFFIC &bull; PROCESS AT HARDWARE CAPACITY WITHOUT OVERHEATING
@@ -13169,11 +13169,11 @@ const SYSTEM_DESIGN_NOTES = {
               <rect x="35" y="45" width="200" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
               <text x="50" y="68" class="svg-kicker" fill="var(--primary)">INCOMING USER KEYS</text>
               <text x="50" y="90" class="svg-title">Client User IDs</text>
-              <rect x="50" y="100" width="197" height="22" rx="3" fill="var(--bg-subtle)" />
+              <rect x="50" y="100" width="170" height="22" rx="3" fill="var(--bg-subtle)" />
               <text x="55" y="115" class="svg-mono-xs">User U1 &bull; hash(U1) = 34</text>
-              <rect x="50" y="126" width="197" height="22" rx="3" fill="var(--bg-subtle)" />
+              <rect x="50" y="126" width="170" height="22" rx="3" fill="var(--bg-subtle)" />
               <text x="55" y="141" class="svg-mono-xs">User U2 &bull; hash(U2) = 15</text>
-              <rect x="50" y="152" width="197" height="22" rx="3" fill="var(--bg-subtle)" />
+              <rect x="50" y="152" width="170" height="22" rx="3" fill="var(--bg-subtle)" />
               <text x="55" y="167" class="svg-mono-xs">User U3 &bull; hash(U3) = 20</text>
 
               <!-- Arrow -->
@@ -13825,8 +13825,8 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
               <text x="505" y="112" class="svg-sub">• In-Memory Page Cache</text>
               <text x="505" y="128" class="svg-sub">• B-Tree Indexes</text>
               <text x="505" y="144" class="svg-sub">• Read/Write Buffers</text>
-              <rect x="505" y="152" width="189" height="18" rx="3" fill="var(--bg-surface)" />
-              <text x="510" y="165" class="svg-mono-xs" fill="var(--success)">Access Time: ~10-100ns</text>
+              <rect x="505" y="152" width="145" height="18" rx="3" fill="var(--bg-surface)" />
+              <text x="577.5" y="165" text-anchor="middle" class="svg-mono-xs" fill="var(--success)">Access Time: ~10-100ns</text>
 
               <!-- Arrow RAM to Disk -->
               <path d="M 660 112 L 675 112" stroke="var(--border-strong)" stroke-width="2" />
@@ -13837,8 +13837,8 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
               <text x="685" y="112" class="svg-sub">• .ibd Table Files</text>
               <text x="685" y="128" class="svg-sub">• WAL / Redo Logs</text>
               <text x="685" y="144" class="svg-sub">• Cold Data Pages</text>
-              <rect x="685" y="152" width="197" height="18" rx="3" fill="var(--bg-surface)" />
-              <text x="690" y="165" class="svg-mono-xs" fill="var(--danger)">Access: ~1-10ms (1000x)</text>
+              <rect x="685" y="152" width="135" height="18" rx="3" fill="var(--bg-surface)" />
+              <text x="752.5" y="165" text-anchor="middle" class="svg-mono-xs" fill="var(--danger)">Access: ~1-10ms (1000x)</text>
 
               <text x="440" y="212" class="svg-mono-xs" text-anchor="middle">
                 A DATABASE IS SIMPLY A RUNNING PROCESS MANAGING RAM BUFFERS AND WRITING TO LOCAL DISK STORAGE
@@ -13961,7 +13961,7 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
               <text x="50" y="90" class="svg-title">User Outage</text>
               <text x="50" y="112" class="svg-sub">• Spinning loading icon</text>
               <text x="50" y="128" class="svg-sub">• App completely frozen</text>
-              <rect x="50" y="138" width="204" height="26" rx="4" fill="var(--danger-bg)" />
+              <rect x="45" y="138" width="160" height="26" rx="4" fill="var(--danger-bg)" />
               <text x="55" y="155" class="svg-mono-xs" fill="var(--danger)" font-weight="700">HTTP 504 Gateway Timeout</text>
 
               <!-- Reverse Arrow -->
@@ -13973,7 +13973,7 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
               <text x="310" y="90" class="svg-title">Worker Thread Depletion</text>
               <text x="310" y="112" class="svg-sub">• Connection pool exhausted (200/200)</text>
               <text x="310" y="128" class="svg-sub">• All worker threads blocked on I/O</text>
-              <rect x="310" y="138" width="257" height="26" rx="4" fill="var(--warning-bg)" />
+              <rect x="305" y="138" width="220" height="26" rx="4" fill="var(--warning-bg)" />
               <text x="315" y="155" class="svg-mono-xs" fill="var(--warning)">Cannot accept new user requests</text>
 
               <!-- Reverse Arrow -->
@@ -13985,7 +13985,7 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
               <text x="630" y="90" class="svg-title">Single Point of Collapse</text>
               <text x="630" y="112" class="svg-sub">• CPU: 100% | IOPS: Throttled</text>
               <text x="630" y="128" class="svg-sub">• Query latency: 2ms &rarr; 25,000ms</text>
-              <rect x="630" y="138" width="249" height="26" rx="4" fill="var(--danger-bg)" />
+              <rect x="625" y="138" width="210" height="26" rx="4" fill="var(--danger-bg)" />
               <text x="635" y="155" class="svg-mono-xs" fill="var(--danger)" font-weight="700">Cascading Failures to Upstream</text>
 
               <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
@@ -14402,7 +14402,7 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
               <text x="65" y="76" class="svg-title">Indexes</text>
               <text x="35" y="100" class="svg-sub">• Compound indexes</text>
               <text x="35" y="116" class="svg-sub">• Query tuning</text>
-              <rect x="35" y="132" width="152" height="24" rx="4" fill="var(--bg-subtle)" />
+              <rect x="33" y="132" width="134" height="24" rx="4" fill="var(--bg-subtle)" />
               <text x="40" y="148" class="svg-mono-xs">Cost: Free & Easy</text>
 
               <!-- Arrow -->
@@ -14428,7 +14428,7 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
               <text x="405" y="76" class="svg-title">Read Slaves</text>
               <text x="375" y="100" class="svg-sub">• Master-Slave split</text>
               <text x="375" y="116" class="svg-sub">• Offload reads</text>
-              <rect x="375" y="132" width="144" height="24" rx="4" fill="var(--success-bg)" />
+              <rect x="370" y="132" width="138" height="24" rx="4" fill="var(--success-bg)" />
               <text x="380" y="148" class="svg-mono-xs" fill="var(--success)">Scales Read Load</text>
 
               <!-- Arrow -->

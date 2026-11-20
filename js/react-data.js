@@ -51,7 +51,8 @@ const REACT_NOTES = {
                   <!-- Era 1: 2010 -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="250" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.5"/>
-                    <text x="125" y="32" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">2010 · TRADITIONAL WEB</text>
+                    <rect x="35" y="15" width="180" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="125" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">2010 · TRADITIONAL WEB</text>
                     <text x="125" y="56" text-anchor="middle" class="svg-title">Imperative jQuery / DOM</text>
                     <rect x="18" y="72" width="214" height="42" rx="6" fill="var(--danger-bg)" stroke="var(--danger)"/>
                     <text x="125" y="98" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger);">Manual Node Mutation</text>
@@ -68,7 +69,8 @@ const REACT_NOTES = {
                   <!-- Era 2: 2013 -->
                   <g transform="translate(335, 20)">
                     <rect x="0" y="0" width="250" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.8"/>
-                    <text x="125" y="32" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">2013 · META (FACEBOOK)</text>
+                    <rect x="37.5" y="15" width="175" height="22" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                    <text x="125" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">2013 · META (FACEBOOK)</text>
                     <text x="125" y="56" text-anchor="middle" class="svg-title">Jordan Walke Invents React</text>
                     <rect x="18" y="72" width="214" height="42" rx="6" fill="var(--accent-light)" stroke="var(--accent)"/>
                     <text x="125" y="98" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:600;">UI = f(State) Model</text>
@@ -85,7 +87,8 @@ const REACT_NOTES = {
                   <!-- Era 3: Present -->
                   <g transform="translate(645, 20)">
                     <rect x="0" y="0" width="210" height="180" rx="12" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.5"/>
-                    <text x="105" y="32" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">PRESENT · GLOBAL STANDARD</text>
+                    <rect x="15" y="15" width="180" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="105" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">PRESENT · STANDARD ✓</text>
                     <text x="105" y="56" text-anchor="middle" class="svg-title">Modern Ecosystem</text>
                     <rect x="15" y="72" width="180" height="42" rx="6" fill="var(--success-bg)" stroke="var(--success)"/>
                     <text x="105" y="98" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:600;">Component Architecture</text>
@@ -136,7 +139,8 @@ const REACT_NOTES = {
                   <!-- BAD PANEL: Full Page Reload -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="210" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.6"/>
-                    <text x="200" y="32" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">TRADITIONAL 2010 ARCHITECTURE (THE BOTTLENECK)</text>
+                    <rect x="60" y="15" width="280" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="200" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">TRADITIONAL 2010 (THE BOTTLENECK)</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Full Page Reload to Update 1 Number</text>
 
                     <rect x="25" y="74" width="160" height="60" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -157,7 +161,8 @@ const REACT_NOTES = {
                   <!-- GOOD PANEL: ReactJS Surgical Patch -->
                   <g transform="translate(455, 20)">
                     <rect x="0" y="0" width="400" height="210" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <text x="200" y="32" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">REACTJS DECLARATIVE SOLUTION (OUR GOAL)</text>
+                    <rect x="65" y="15" width="270" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="200" y="30" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">REACTJS DECLARATIVE SOLUTION ✓</text>
                     <text x="200" y="56" text-anchor="middle" class="svg-title" style="fill:var(--success);">Granular Virtual DOM Update</text>
 
                     <rect x="25" y="74" width="160" height="60" rx="8" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -722,7 +727,8 @@ document.body.appendChild(h1);</pre>
                   <!-- LEFT: Without Import/Export -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="12" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.6"/>
-                    <text x="200" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">DEFAULT ISOLATION (NO BRIDGE)</text>
+                    <rect x="80" y="14" width="240" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="200" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">DEFAULT ISOLATION (NO BRIDGE)</text>
                     <text x="200" y="52" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Multi-File ReferenceError</text>
 
                     <!-- File 1: app.js -->
@@ -746,7 +752,8 @@ document.body.appendChild(h1);</pre>
                   <!-- RIGHT: With Import/Export -->
                   <g transform="translate(455, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="12" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <text x="200" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">WITH ES6 MODULES (EXPLICIT CONTRACT)</text>
+                    <rect x="65" y="14" width="270" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="200" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">WITH ES6 MODULES (EXPLICIT CONTRACT)</text>
                     <text x="200" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Seamless Cross-File Data Flow</text>
 
                     <!-- File 1: app.js with Export -->
@@ -1006,7 +1013,8 @@ export const API_URL = 'https://api.example.com';</pre>
                   <!-- LEFT: Default Export -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
-                    <text x="200" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">DEFAULT EXPORT (MAX 1 PER FILE)</text>
+                    <rect x="80" y="14" width="240" height="22" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                    <text x="200" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">DEFAULT EXPORT (MAX 1 PER FILE)</text>
                     <text x="200" y="52" text-anchor="middle" class="svg-title">Single Channel · Flexible Naming</text>
 
                     <rect x="25" y="68" width="150" height="56" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
@@ -1026,7 +1034,8 @@ export const API_URL = 'https://api.example.com';</pre>
                   <!-- RIGHT: Named Export -->
                   <g transform="translate(455, 20)">
                     <rect x="0" y="0" width="400" height="190" rx="12" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <text x="200" y="30" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">NAMED EXPORTS (MULTIPLE PER FILE)</text>
+                    <rect x="75" y="14" width="250" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="200" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">NAMED EXPORTS (MULTIPLE PER FILE)</text>
                     <text x="200" y="52" text-anchor="middle" class="svg-title">Multi-Channel · Exact Name Matching</text>
 
                     <rect x="25" y="68" width="150" height="56" rx="6" fill="var(--primary-bg)" stroke="var(--primary)"/>
@@ -1376,12 +1385,13 @@ console.log(skills);
                   <!-- Stage 1 & 2: Parse & Style -->
                   <g transform="translate(20, 20)">
                     <rect x="0" y="0" width="155" height="145" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <text x="77" y="24" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">STAGE 1 &amp; 2</text>
-                    <text x="77" y="46" text-anchor="middle" class="svg-title">DOM &amp; Styles</text>
+                    <rect x="27.5" y="12" width="100" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="77.5" y="26" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STAGE 1 &amp; 2</text>
+                    <text x="77.5" y="48" text-anchor="middle" class="svg-title">DOM &amp; Styles</text>
                     <rect x="10" y="60" width="135" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
-                    <text x="77" y="82" text-anchor="middle" class="svg-mono-xs">• JS mutates DOM</text>
-                    <text x="77" y="100" text-anchor="middle" class="svg-mono-xs">• CSSOM recalculates</text>
-                    <text x="77" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">Matches all rules</text>
+                    <text x="77.5" y="82" text-anchor="middle" class="svg-mono-xs">• JS mutates DOM</text>
+                    <text x="77.5" y="100" text-anchor="middle" class="svg-mono-xs">• CSSOM recalculates</text>
+                    <text x="77.5" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">Matches all rules</text>
                   </g>
 
                   <!-- Arrow 1 -->
@@ -1391,12 +1401,13 @@ console.log(skills);
                   <!-- Stage 3: Render Tree -->
                   <g transform="translate(205, 20)">
                     <rect x="0" y="0" width="155" height="145" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <text x="77" y="24" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">INTERMEDIATE</text>
-                    <text x="77" y="46" text-anchor="middle" class="svg-title">Render Tree</text>
+                    <rect x="24.5" y="12" width="106" height="20" rx="4" fill="var(--border)"/>
+                    <text x="77.5" y="26" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">INTERMEDIATE</text>
+                    <text x="77.5" y="48" text-anchor="middle" class="svg-title">Render Tree</text>
                     <rect x="10" y="60" width="135" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
-                    <text x="77" y="82" text-anchor="middle" class="svg-mono-xs">• Visible nodes only</text>
-                    <text x="77" y="100" text-anchor="middle" class="svg-mono-xs">• Filters display:none</text>
-                    <text x="77" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">Tree construction</text>
+                    <text x="77.5" y="82" text-anchor="middle" class="svg-mono-xs">• Visible nodes only</text>
+                    <text x="77.5" y="100" text-anchor="middle" class="svg-mono-xs">• Filters display:none</text>
+                    <text x="77.5" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">Tree construction</text>
                   </g>
 
                   <!-- Arrow 2 -->
@@ -1406,13 +1417,13 @@ console.log(skills);
                   <!-- Stage 4: Layout / Reflow (HEAVY) -->
                   <g transform="translate(390, 20)">
                     <rect x="0" y="0" width="165" height="145" rx="8" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.8"/>
-                    <rect x="15" y="10" width="174" height="18" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
-                    <text x="102" y="23" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">STAGE 3 · BOTTLENECK</text>
-                    <text x="82" y="48" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Layout / Reflow</text>
+                    <rect x="10" y="12" width="145" height="20" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="82.5" y="26" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">STAGE 3 · BOTTLENECK</text>
+                    <text x="82.5" y="48" text-anchor="middle" class="svg-title" style="fill:var(--danger);">Layout / Reflow</text>
                     <rect x="10" y="60" width="145" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--danger)"/>
-                    <text x="82" y="82" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">• Exact geometry (X,Y)</text>
-                    <text x="82" y="100" text-anchor="middle" class="svg-mono-xs">• Recalculates boxes</text>
-                    <text x="82" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger);">Heavy CPU spike ⚠</text>
+                    <text x="82.5" y="82" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">• Exact geometry (X,Y)</text>
+                    <text x="82.5" y="100" text-anchor="middle" class="svg-mono-xs">• Recalculates boxes</text>
+                    <text x="82.5" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger);">Heavy CPU spike ⚠</text>
                   </g>
 
                   <!-- Arrow 3 -->
@@ -1422,12 +1433,13 @@ console.log(skills);
                   <!-- Stage 5: Paint -->
                   <g transform="translate(585, 20)">
                     <rect x="0" y="0" width="135" height="145" rx="8" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <text x="67" y="24" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">STAGE 4</text>
-                    <text x="67" y="46" text-anchor="middle" class="svg-title">Paint / Draw</text>
+                    <rect x="29.5" y="12" width="76" height="20" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="67.5" y="26" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">STAGE 4</text>
+                    <text x="67.5" y="48" text-anchor="middle" class="svg-title">Paint / Draw</text>
                     <rect x="10" y="60" width="115" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
-                    <text x="67" y="82" text-anchor="middle" class="svg-mono-xs">• Rasterize pixels</text>
-                    <text x="67" y="100" text-anchor="middle" class="svg-mono-xs">• Colors, borders</text>
-                    <text x="67" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">Bitmap creation</text>
+                    <text x="67.5" y="82" text-anchor="middle" class="svg-mono-xs">• Rasterize pixels</text>
+                    <text x="67.5" y="100" text-anchor="middle" class="svg-mono-xs">• Colors, borders</text>
+                    <text x="67.5" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted);">Bitmap creation</text>
                   </g>
 
                   <!-- Arrow 4 -->
@@ -1437,12 +1449,13 @@ console.log(skills);
                   <!-- Stage 6: Composite -->
                   <g transform="translate(745, 20)">
                     <rect x="0" y="0" width="115" height="145" rx="8" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <text x="57" y="24" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">STAGE 5</text>
-                    <text x="57" y="46" text-anchor="middle" class="svg-title" style="fill:var(--success);">Composite</text>
+                    <rect x="22.5" y="12" width="70" height="20" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="57.5" y="26" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">STAGE 5</text>
+                    <text x="57.5" y="48" text-anchor="middle" class="svg-title" style="fill:var(--success);">Composite</text>
                     <rect x="8" y="60" width="99" height="72" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
-                    <text x="57" y="82" text-anchor="middle" class="svg-mono-xs">• GPU layers</text>
-                    <text x="57" y="100" text-anchor="middle" class="svg-mono-xs">• Hardware accel</text>
-                    <text x="57" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Screen Render ✓</text>
+                    <text x="57.5" y="82" text-anchor="middle" class="svg-mono-xs">• GPU layers</text>
+                    <text x="57.5" y="100" text-anchor="middle" class="svg-mono-xs">• Hardware accel</text>
+                    <text x="57.5" y="118" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Screen Render ✓</text>
                   </g>
                 </svg>
               </div>
@@ -2088,8 +2101,9 @@ export default App</code></pre>
                   <!-- Step 1: JSX Tag -->
                   <g transform="translate(30, 25)">
                     <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--primary)" stroke-width="1.6"/>
-                    <text x="90" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--primary); font-weight:700;">1 · JSX TAG</text>
-                    <text x="90" y="52" text-anchor="middle" class="svg-title">Developer Code</text>
+                    <rect x="40" y="14" width="100" height="22" rx="4" fill="var(--primary-bg)" stroke="var(--primary)" stroke-width="1.2"/>
+                    <text x="90" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">1 · JSX TAG</text>
+                    <text x="90" y="54" text-anchor="middle" class="svg-title">Developer Code</text>
                     <rect x="15" y="66" width="150" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="90" y="106" text-anchor="middle" class="svg-mono-xs" style="fill:var(--primary); font-weight:700;">&lt;App /&gt;</text>
                   </g>
@@ -2104,8 +2118,9 @@ export default App</code></pre>
                   <!-- Step 2: Transpiled JS -->
                   <g transform="translate(253, 25)">
                     <rect x="0" y="0" width="200" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
-                    <text x="100" y="28" text-anchor="middle" class="svg-kicker">2 · COMPILER OUTPUT</text>
-                    <text x="100" y="52" text-anchor="middle" class="svg-title">React.createElement</text>
+                    <rect x="25" y="14" width="150" height="22" rx="4" fill="var(--border)"/>
+                    <text x="100" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-primary); font-weight:700;">2 · COMPILER OUTPUT</text>
+                    <text x="100" y="54" text-anchor="middle" class="svg-title">React.createElement</text>
                     <rect x="15" y="66" width="170" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
                     <text x="100" y="98" text-anchor="middle" class="svg-mono-xs" style="font-size:10px;">React.createElement(</text>
                     <text x="100" y="116" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--accent);">App, null)</text>
@@ -2121,8 +2136,9 @@ export default App</code></pre>
                   <!-- Step 3: Virtual DOM Node -->
                   <g transform="translate(496, 25)">
                     <rect x="0" y="0" width="180" height="150" rx="10" fill="var(--bg-subsection)" stroke="var(--accent)" stroke-width="1.6"/>
-                    <text x="90" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--accent); font-weight:700;">3 · VIRTUAL DOM</text>
-                    <text x="90" y="52" text-anchor="middle" class="svg-title">JS Object Tree</text>
+                    <rect x="30" y="14" width="120" height="22" rx="4" fill="var(--accent-light)" stroke="var(--accent)" stroke-width="1.2"/>
+                    <text x="90" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">3 · VIRTUAL DOM</text>
+                    <text x="90" y="54" text-anchor="middle" class="svg-title">JS Object Tree</text>
                     <rect x="15" y="66" width="150" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
                     <text x="90" y="96" text-anchor="middle" class="svg-mono-xs" style="font-size:10px;">{ type: 'div',</text>
                     <text x="90" y="114" text-anchor="middle" class="svg-mono-xs" style="font-size:10px; fill:var(--accent);">props: {...} }</text>
@@ -2138,8 +2154,9 @@ export default App</code></pre>
                   <!-- Step 4: Real DOM -->
                   <g transform="translate(719, 25)">
                     <rect x="0" y="0" width="140" height="150" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <text x="70" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">4 · REAL DOM</text>
-                    <text x="70" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">#root Node</text>
+                    <rect x="20" y="14" width="100" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="70" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">4 · REAL DOM</text>
+                    <text x="70" y="54" text-anchor="middle" class="svg-title" style="fill:var(--success);">#root Node</text>
                     <rect x="12" y="66" width="116" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
                     <text x="70" y="106" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">Live HTML</text>
                   </g>
@@ -3376,7 +3393,8 @@ function App() {
                   <!-- Case A: Without Keys -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--danger)" stroke-width="1.5"/>
-                    <text x="200" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--danger); font-weight:700;">MUTATION WITHOUT KEYS</text>
+                    <rect x="107.5" y="14" width="180" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="197.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">MUTATION WITHOUT KEYS</text>
                     <text x="200" y="50" text-anchor="middle" class="svg-title">Prepending Item to List</text>
 
                     <!-- Old vs New Nodes -->
@@ -3397,7 +3415,8 @@ function App() {
                   <!-- Case B: With Keys -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="190" rx="10" fill="var(--bg-subsection)" stroke="var(--success)" stroke-width="1.8"/>
-                    <text x="200" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">SURGICAL RECONCILIATION WITH KEYS</text>
+                    <rect x="62.5" y="14" width="270" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="197.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">SURGICAL RECONCILIATION WITH KEYS</text>
                     <text x="200" y="50" text-anchor="middle" class="svg-title">Key-Guided Minimal Patch</text>
 
                     <rect x="15" y="65" width="170" height="30" rx="4" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -3935,7 +3954,8 @@ const Header = () => {
                   <!-- Tailwind v3 -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
-                    <text x="200" y="28" text-anchor="middle" class="svg-kicker">LEGACY ENGINE</text>
+                    <rect x="132.5" y="14" width="130" height="22" rx="4" fill="var(--border)"/>
+                    <text x="197.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--text-muted); font-weight:700;">LEGACY ENGINE</text>
                     <text x="200" y="52" text-anchor="middle" class="svg-title">Tailwind CSS v3 (JavaScript/PostCSS)</text>
 
                     <rect x="15" y="66" width="365" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -3948,7 +3968,8 @@ const Header = () => {
                   <!-- Tailwind v4 -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <text x="200" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">MODERN RUST ENGINE ✓</text>
+                    <rect x="102.5" y="14" width="190" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="197.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">MODERN RUST ENGINE ✓</text>
                     <text x="200" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">Tailwind CSS v4 (Lightning CSS)</text>
 
                     <rect x="15" y="66" width="365" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>
@@ -4621,7 +4642,8 @@ export default App;</code></pre>
                   <!-- Vanilla JS -->
                   <g transform="translate(25, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--bg-subsection)" stroke="var(--border)" stroke-width="1.5"/>
-                    <text x="200" y="28" text-anchor="middle" class="svg-kicker">IMPERATIVE JAVASCRIPT</text>
+                    <rect x="112.5" y="14" width="170" height="22" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1.2"/>
+                    <text x="197.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--danger); font-weight:700;">IMPERATIVE JAVASCRIPT</text>
                     <text x="200" y="52" text-anchor="middle" class="svg-title">document.addEventListener()</text>
 
                     <rect x="15" y="66" width="365" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
@@ -4634,7 +4656,8 @@ export default App;</code></pre>
                   <!-- React JSX -->
                   <g transform="translate(460, 20)">
                     <rect x="0" y="0" width="395" height="180" rx="10" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.8"/>
-                    <text x="200" y="28" text-anchor="middle" class="svg-kicker" style="fill:var(--success); font-weight:700;">DECLARATIVE REACT ✓</text>
+                    <rect x="112.5" y="14" width="170" height="22" rx="4" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1.2"/>
+                    <text x="197.5" y="29" text-anchor="middle" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">DECLARATIVE REACT ✓</text>
                     <text x="200" y="52" text-anchor="middle" class="svg-title" style="fill:var(--success);">SyntheticEvent Props (onClick)</text>
 
                     <rect x="15" y="66" width="365" height="95" rx="6" fill="var(--bg-surface)" stroke="var(--success)"/>

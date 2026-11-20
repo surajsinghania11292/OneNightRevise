@@ -3226,7 +3226,7 @@ const Card = (props) => {
       shortLabel: "Object Props & Key Warning",
       title: "Passing Object Props & Solving the Missing 'key' Prop Warning",
       summary: "Project setup for 04-cards-project, passing multi-attribute props, the College Roll Number analogy for unique keys, fixing warnings with idx, and practice ideas.",
-      subtopicLabels: ["15.1 Cards Project Setup", "15.2 Why React Needs key (Roll Number Analogy)", "15.3 Fixing With idx & Practice Ideas"],
+      subtopicLabels: ["15.1 Cards Setup", "15.2 Why React Needs key", "15.3 Fixing With idx"],
       diagramCount: 2,
       sections: [
         {
@@ -3824,7 +3824,7 @@ const Header = () => {
       shortLabel: "Tailwind CSS Fundamentals",
       title: "What Is Tailwind CSS? (Utility-First Library vs. Bootstrap)",
       summary: "Utility-first design paradigm, utility classes vs component libraries, the Bootstrap comparison, and Tailwind v3 vs v4 architecture differences.",
-      subtopicLabels: ["18.1 Utility-First vs Component Library", "18.2 Tailwind vs Bootstrap", "18.3 Tailwind v3 vs v4 Architecture"],
+      subtopicLabels: ["18.1 Utility-First Concept", "18.2 Tailwind vs Bootstrap", "18.3 Tailwind v4 Engine"],
       diagramCount: 2,
       sections: [
         {
@@ -4560,7 +4560,7 @@ export default defineConfig({
       shortLabel: "Event Handling & Functions",
       title: "Handling Events & Calling Functions in React",
       summary: "Vanilla JS addEventListener vs. React synthetic event props, function reference vs. immediate function execution, and passing arguments via wrapper arrow functions.",
-      subtopicLabels: ["22.1 Vanilla JS vs React Events", "22.2 Reference vs Immediate Call", "22.3 Passing Arguments via Arrow Functions"],
+      subtopicLabels: ["22.1 Vanilla vs React Events", "22.2 Reference vs Call", "22.3 Passing Arguments"],
       diagramCount: 2,
       sections: [
         {
@@ -4800,7 +4800,7 @@ export default UserList;</code></pre>
       shortLabel: "Input & Wheel Events",
       title: "Working With Input Events (onChange) & Scroll Wheel Events (onWheel)",
       summary: "Extracting user keystrokes with e.target.value in onChange, tracking trackpad/mouse wheel gestures with onWheel and deltaY polarity, and event normalization across browsers.",
-      subtopicLabels: ["23.1 Input Events & e.target.value", "23.2 Scroll Wheel Events & deltaY", "23.3 Cross-Browser Normalization"],
+      subtopicLabels: ["23.1 onChange & target.value", "23.2 onWheel & deltaY", "23.3 SyntheticEvent"],
       diagramCount: 2,
       sections: [
         {
@@ -5030,7 +5030,7 @@ export default HorizontalCarousel;</code></pre>
       shortLabel: "What Is State & useState",
       title: "What Is State & Introduction to the useState Hook",
       summary: "Understanding state as dynamic component memory, why plain JS variables fail to re-render the UI, the useState hook anatomy, and the fundamental component re-render lifecycle.",
-      subtopicLabels: ["24.1 Understanding State & Real-World Mental Models", "24.2 Why Plain Variables Fail", "24.3 useState Syntax & Counter App Architecture"],
+      subtopicLabels: ["24.1 State Mental Model", "24.2 Why Plain Vars Fail", "24.3 useState & Counter"],
       diagramCount: 2,
       sections: [
         {
@@ -5250,7 +5250,7 @@ export default CounterApp;</code></pre>
       shortLabel: "useState Under the Hood",
       title: "How useState Works Under the Hood (Async Updates, Arrays & Objects)",
       summary: "Why state updates are asynchronous and batched, the stale state console.log gotcha, the rule of immutable state updates, and updating complex objects and arrays using the spread operator.",
-      subtopicLabels: ["25.1 Asynchronous State & Stale Closures", "25.2 The Immutability Rule & Reference Equality", "25.3 Updating Objects & Arrays With Spread (...)", "25.4 Complete Multi-Type State Architecture"],
+      subtopicLabels: ["25.1 Async State Updates", "25.2 Immutability Rule", "25.3 Spread Operator", "25.4 Multi-Type State"],
       diagramCount: 2,
       sections: [
         {
@@ -5533,7 +5533,7 @@ export default UserProfileCard;</code></pre>
       shortLabel: "Batch Updates & Functional State",
       title: "Batch Updates in React (num + 1 vs. prev => prev + 1)",
       summary: "React 18 automatic batching mechanics, why multiple setState calls collapse to a single render, the stale closure trap, and solving concurrency with functional updater callbacks.",
-      subtopicLabels: ["26.1 React 18 Automatic Batching", "26.2 Direct Mutation vs Functional Updater", "26.3 State Update Queue Mechanics"],
+      subtopicLabels: ["26.1 Automatic Batching", "26.2 Functional Updaters", "26.3 Fiber Queue"],
       diagramCount: 2,
       sections: [
         {
@@ -5746,7 +5746,7 @@ const handleTripleClick = () => {
       shortLabel: "Form Handling & preventDefault",
       title: "Form Handling in React (onSubmit & e.preventDefault())",
       summary: "Default HTML form POST behavior and page reload flaw, capturing submit events via onSubmit, and keeping the SPA alive with e.preventDefault().",
-      subtopicLabels: ["27.1 The Page Reload Problem", "27.2 Preventing Reloads with e.preventDefault()", "27.3 Production Validation & Keyboard Accessibility"],
+      subtopicLabels: ["27.1 Page Reload Problem", "27.2 e.preventDefault()", "27.3 Form Validation"],
       diagramCount: 2,
       sections: [
         {
@@ -5990,7 +5990,7 @@ export default ContactForm;</code></pre>
       shortLabel: "Two-Way Binding & Controlled Inputs",
       title: "Two-Way Binding in React (Controlled Inputs: Value & onChange)",
       summary: "Controlled vs. uncontrolled inputs, establishing a single source of truth between React state and the DOM input element, and handling multi-input forms with computed keys.",
-      subtopicLabels: ["28.1 Controlled vs Uncontrolled Components", "28.2 The Two-Way Binding Feedback Loop", "28.3 Dynamic Computed Form Handlers"],
+      subtopicLabels: ["28.1 Controlled Components", "28.2 Two-Way Binding Loop", "28.3 Dynamic Form Handlers"],
       diagramCount: 2,
       sections: [
         {
@@ -6210,7 +6210,7 @@ export default ControlledInput;</code></pre>
       shortLabel: "Building Notes App — State Setup",
       title: "Building the Notes App — State Setup, Two-Way Binding & Adding Notes",
       summary: "Practical full-flow project architecture: separating form state from list state, handling submission validation, pure immutable array insertion, and resetting form inputs.",
-      subtopicLabels: ["29.1 Architecture & Separation of Concerns", "29.2 Immutable Insertion & Input Reset"],
+      subtopicLabels: ["29.1 Notes State Setup", "29.2 Immutable Insertion", "29.3 Form Reset"],
       diagramCount: 2,
       sections: [
         {
@@ -6446,7 +6446,7 @@ export default NotesApp;</code></pre>
       shortLabel: "Rendering Cards & Deleting Notes",
       title: "Rendering Note Cards & Deleting Notes With .splice(idx, 1) vs. .filter()",
       summary: "Rendering collections via .map(), the subtle mutation flaw of Array.prototype.splice() in React state, and the pure immutable deletion standard using .filter().",
-      subtopicLabels: ["30.1 Rendering Collection Grids with .map()", "30.2 The .splice() Mutation Trap vs Pure .filter()"],
+      subtopicLabels: ["30.1 Rendering With .map()", "30.2 .splice() vs .filter()"],
       diagramCount: 2,
       sections: [
         {
@@ -6636,7 +6636,7 @@ export default NotesGrid;</code></pre>
       shortLabel: "Browser Storage — Local vs Session",
       title: "Browser Storage — LocalStorage vs. SessionStorage & Core Methods",
       summary: "Client-side key-value storage mechanisms, lifespan and scope comparison between localStorage and sessionStorage, synchronous API blocking gotchas, and the 4 fundamental CRUD methods.",
-      subtopicLabels: ["31.1 LocalStorage vs SessionStorage Lifespan", "31.2 The 4 Essential Storage Methods & DevTools Inspection"],
+      subtopicLabels: ["31.1 Local vs Session Storage", "31.2 4 Core Storage Methods"],
       diagramCount: 2,
       sections: [
         {
@@ -6811,7 +6811,7 @@ localStorage.clear();</code></pre>
       shortLabel: "JSON.stringify & parse in LocalStorage",
       title: "Storing & Retrieving Objects/Arrays With JSON.stringify & JSON.parse",
       summary: "Solving the [object Object] storage corruption flaw, deep serialization with JSON.stringify, deserialization with JSON.parse, and defensive try-catch fallback handling in React.",
-      subtopicLabels: ["32.1 The [object Object] Stringification Trap", "32.2 Serialization & Deserialization Pipeline (JSON.stringify & parse)"],
+      subtopicLabels: ["32.1 Object Storage Trap", "32.2 JSON.stringify & parse"],
       diagramCount: 2,
       sections: [
         {
@@ -6998,7 +6998,7 @@ export const storageService = {
       shortLabel: "APIs With fetch() & async",
       title: "Calling APIs With fetch() & async / await",
       summary: "Client-server API architectures, native fetch() vs. Axios, understanding pending asynchronous promises, the two-stage await stream handshake, and handling HTTP error statuses.",
-      subtopicLabels: ["33.1 fetch vs Axios & The Event Loop", "33.2 Synchronous Code vs Asynchronous Promises", "33.3 The Two-Stage Handshake (res.json()) & Error Handling"],
+      subtopicLabels: ["33.1 fetch() vs Axios", "33.2 Async Promises", "33.3 Two-Stage Handshake"],
       diagramCount: 2,
       sections: [
         {
@@ -7249,7 +7249,7 @@ export default UserDirectory;</code></pre>
       shortLabel: "APIs With Axios",
       title: "Calling APIs With Axios (Cleaner & Shorter Method)",
       summary: "Why production teams prefer Axios over native fetch: automatic JSON body parsing, automatic 4xx/5xx HTTP error rejection, request and response interceptors, and request cancellation.",
-      subtopicLabels: ["34.1 Why Axios Over Native fetch()", "34.2 Core Axios Syntax & Automatic Error Rejection", "34.3 Production Interceptors & Token Injection"],
+      subtopicLabels: ["34.1 Why Axios", "34.2 Automatic Error Handling", "34.3 Interceptors & Tokens"],
       diagramCount: 2,
       sections: [
         {
@@ -7499,7 +7499,7 @@ export default apiClient;</code></pre>
       shortLabel: "Understanding useEffect",
       title: "Understanding useEffect (The Road & Truck Analogy)",
       summary: "Pure rendering vs. side effects, the render phase vs. commit phase, the intuitive Road & Truck mental model, and keeping side effects from blocking the primary UI thread.",
-      subtopicLabels: ["35.1 What Are Side Effects & Pure Rendering", "35.2 The Road & Truck Mental Model", "35.3 The Infinite Loop Trap of Unshielded Effects"],
+      subtopicLabels: ["35.1 Pure UI vs Side Effects", "35.2 Road & Truck Model", "35.3 Infinite Loop Trap"],
       diagramCount: 2,
       sections: [
         {
@@ -7681,7 +7681,7 @@ export default apiClient;</code></pre>
       shortLabel: "Dependency Array & Lifecycles",
       title: "The Dependency Array & Lifecycle Execution Patterns",
       summary: "Mastering the three modes of the useEffect dependency array (no array, empty array, filled array), stale closures in effects, and cleanup functions for timers, sockets, and abort controllers.",
-      subtopicLabels: ["36.1 The 3 Dependency Modes", "36.2 The Stale Closure Trap", "36.3 Cleanup Functions & Memory Leak Prevention"],
+      subtopicLabels: ["36.1 3 Dependency Modes", "36.2 Stale Closures Trap", "36.3 Cleanup Functions"],
       diagramCount: 2,
       sections: [
         {
@@ -7923,7 +7923,7 @@ export default WindowResizeTracker;</code></pre>
       shortLabel: "HTTP Methods & Auth Storage",
       title: "HTTP Methods, JSON Wire Protocol & Cookie Storage",
       summary: "Client-server communication fundamentals for frontend engineers: RESTful HTTP verbs (GET, POST, PATCH, DELETE), JSON wire serialization, and why production authentication relies on HttpOnly cookies over LocalStorage.",
-      subtopicLabels: ["37.1 RESTful HTTP Verbs & CRUD Operations", "37.2 Security Architecture: LocalStorage vs HttpOnly Cookies"],
+      subtopicLabels: ["37.1 RESTful HTTP Verbs", "37.2 Cookies vs LocalStorage"],
       diagramCount: 2,
       sections: [
         {
@@ -8095,12 +8095,7 @@ export default WindowResizeTracker;</code></pre>
       shortLabel: 'React 38',
       title: 'Building the Gallery App (useEffect + Axios + Pagination)',
       summary: 'Architecting a real-world asynchronous Photo Gallery in Vite + Tailwind CSS: Managing dual state (userData and index), wiring declarative re-fetching with useEffect([index]), boundary guarding, and comparing page pagination with infinite scroll streams.',
-      subtopicLabels: [
-        '38.1 Project Architecture & Setup',
-        '38.2 Core State & Fetching Logic',
-        '38.3 Defensive State & Guarding',
-        '38.4 Discrete vs. Infinite Scroll'
-      ],
+      subtopicLabels: ["38.1 Setup & Architecture", "38.2 Fetching & Pagination", "38.3 Defensive Guarding", "38.4 Infinite Streams"],
       diagramCount: 2,
       sections: [
         {
@@ -8347,7 +8342,7 @@ export default App</code></pre>
       shortLabel: "React Router DOM & SPAs",
       title: "React Router DOM Basics & Single Page Applications (SPA)",
       summary: "Architecting modern Single Page Applications (SPAs): How client-side routing eliminates full-page browser reloads, HTML5 History API mechanics, setting up BrowserRouter, Routes, and wildcard 404 handlers.",
-      subtopicLabels: ["39.1 Traditional MPAs vs. React SPAs", "39.2 Core Architecture: BrowserRouter, Routes & Route", "39.3 The Fatal &lt;a href&gt; Reload Trap vs. &lt;Link&gt;"],
+      subtopicLabels: ["39.1 Traditional MPA vs SPA", "39.2 BrowserRouter & Routes", "39.3 Link vs Anchor Tag"],
       diagramCount: 2,
       sections: [
         {
@@ -8590,7 +8585,7 @@ export default Navbar;</code></pre>
       shortLabel: "Advanced Routing & Layouts",
       title: "Advanced Routing (Nested, Dynamic & Programmatic)",
       summary: "Mastering production routing patterns in React Router DOM: Building sub-page layouts with Nested Routes and &lt;Outlet /&gt;, reading dynamic URL parameters via useParams(), and redirecting imperatively with useNavigate().",
-      subtopicLabels: ["40.1 Nested Routes & the &lt;Outlet /&gt; Component", "40.2 Dynamic Routes & useParams()", "40.3 Programmatic Navigation with useNavigate()"],
+      subtopicLabels: ["40.1 Nested Routes & Outlet", "40.2 Dynamic useParams()", "40.3 useNavigate() Redirects"],
       diagramCount: 2,
       sections: [
         {
@@ -8831,7 +8826,7 @@ function LoginForm() {
       shortLabel: "Child-to-Parent Data Flow",
       title: "Updating Parent State from a Child Component (Child-to-Parent Data Flow)",
       summary: "Unidirectional data flow principles, inverted data flow mechanics via callback props, shallow callback delegation, and recognizing the props drilling bottleneck requiring Context API.",
-      subtopicLabels: ["41.1 Unidirectional Data Flow & State Inversion", "41.2 Passing State Setters & Callback Handlers", "41.3 Props Drilling Anti-Pattern vs. Context API"],
+      subtopicLabels: ["41.1 Unidirectional Data Flow", "41.2 Callback Inversion", "41.3 Props Drilling vs Context"],
       diagramCount: 2,
       sections: [
         {

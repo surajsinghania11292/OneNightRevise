@@ -407,9 +407,10 @@
   flex-direction: column;
 }
 
-/* Identical uniform box height across all closed topics (no big/small mismatch) */
+/* Identical uniform box height across all closed topics with flexible breathing room */
 .topic-card:not(.is-expanded) {
-  height: 245px;
+  min-height: 255px;
+  height: 100%;
   box-sizing: border-box;
 }
 
@@ -429,7 +430,7 @@
 
 /* Collapsed Compact Rectangular Header (Clickable) */
 .topic-card-summary {
-  padding: 1.25rem 1.35rem;
+  padding: 1.15rem 1.25rem;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -455,7 +456,8 @@
   flex: 1;
   min-width: 0;
   height: 100%;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 0.25rem;
 }
 
 .topic-summary-top-row {
@@ -545,15 +547,15 @@
   margin-top: 0.45rem;
 }
 
-/* Clean preview chips: wrap onto up to 2-3 lines so subtopics never get cut off */
+/* Clean preview chips: wrap onto up to 2-3 lines cleanly sitting within the card box */
 .topic-card:not(.is-expanded) .topic-preview-pills {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 0.35rem;
-  margin-top: 0.4rem;
-  max-height: 64px;
-  overflow: hidden;
+  margin-top: auto;
+  padding-top: 0.35rem;
+  overflow: visible;
   flex-shrink: 0;
 }
 

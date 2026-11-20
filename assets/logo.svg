@@ -1,104 +1,116 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
-    <!-- Deep midnight obsidian-pine backdrop -->
+    <!-- Rich Signature Forest Green Squircle Backdrop (Unmistakably Green, Not Black) -->
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#14261D"/>
-      <stop offset="50%" stop-color="#0C1812"/>
-      <stop offset="100%" stop-color="#050B08"/>
+      <stop offset="0%" stop-color="#145A3C"/>
+      <stop offset="45%" stop-color="#0E442B"/>
+      <stop offset="100%" stop-color="#072C1B"/>
     </linearGradient>
 
-    <!-- Warm antique gold and pine hairline rim -->
+    <!-- Warm Golden Amber & Emerald Hairline Rim -->
     <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#E5B854" stop-opacity="0.65"/>
-      <stop offset="50%" stop-color="#2E7D55" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#E5B854" stop-opacity="0.45"/>
+      <stop offset="0%" stop-color="#FDE68A" stop-opacity="0.85"/>
+      <stop offset="50%" stop-color="#34D399" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#F59E0B" stop-opacity="0.75"/>
     </linearGradient>
 
-    <!-- Facet Gradients: Forest Pine, Luminous Jade & Deep Obsidian with Sunlit Amber Crown -->
-    <linearGradient id="goldCrownFacet" x1="20%" y1="0%" x2="80%" y2="100%">
+    <!-- Balanced Gradient Color Palette for Crystal Facets (Not Too Dark, Not Too Light) -->
+    <!-- Facet A: Top Crown Crest (Sunlit Champagne to Warm Amber Gold) -->
+    <linearGradient id="crownGrad" x1="15%" y1="0%" x2="85%" y2="100%">
       <stop offset="0%" stop-color="#FFFDF2"/>
-      <stop offset="25%" stop-color="#FDE68A"/>
-      <stop offset="65%" stop-color="#F59E0B"/>
-      <stop offset="100%" stop-color="#B45309"/>
+      <stop offset="35%" stop-color="#FDE68A"/>
+      <stop offset="75%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
     </linearGradient>
 
-    <linearGradient id="jadeTopLeft" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#38B278"/>
-      <stop offset="100%" stop-color="#1C6944"/>
+    <!-- Facet B: Upper-Left Slope (Sunlit Jade to Luminous Emerald) -->
+    <linearGradient id="upperLeftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A7F3D0"/>
+      <stop offset="40%" stop-color="#34D399"/>
+      <stop offset="100%" stop-color="#059669"/>
     </linearGradient>
 
-    <linearGradient id="midLeftFacet" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#268254"/>
-      <stop offset="100%" stop-color="#124A2F"/>
+    <!-- Facet C: Mid-Left Front Face (Vibrant Emerald to Rich Jade) -->
+    <linearGradient id="midLeftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399"/>
+      <stop offset="55%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#047857"/>
     </linearGradient>
 
-    <linearGradient id="botLeftFacet" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#14472E"/>
-      <stop offset="100%" stop-color="#0A2819"/>
+    <!-- Facet D: Lower-Left Shard (Medium Forest Jade) -->
+    <linearGradient id="lowerLeftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="60%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#065F46"/>
     </linearGradient>
 
-    <linearGradient id="botTipLeft" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0F3723"/>
-      <stop offset="100%" stop-color="#06170E"/>
+    <!-- Facet E: Bottom-Left Tip (Deep Mint-Pine Jewel) -->
+    <linearGradient id="botTipLeftGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#064E3B"/>
     </linearGradient>
 
-    <linearGradient id="topRightFacet" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2EA068"/>
-      <stop offset="50%" stop-color="#1B6842"/>
-      <stop offset="100%" stop-color="#104229"/>
+    <!-- Facet F: Upper-Right Reflected Face (Golden Honey Amber to Sunlit Jade) -->
+    <linearGradient id="upperRightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="50%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#10B981"/>
     </linearGradient>
 
-    <linearGradient id="botRightFacet" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#175336"/>
-      <stop offset="100%" stop-color="#0C2F1E"/>
+    <!-- Facet G: Lower-Right Face (Warm Amber to Rich Emerald) -->
+    <linearGradient id="lowerRightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="50%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#047857"/>
     </linearGradient>
 
-    <linearGradient id="botTipRight" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0A2618"/>
-      <stop offset="100%" stop-color="#04100A"/>
+    <!-- Facet H: Bottom-Right Tip (Medium Forest Emerald) -->
+    <linearGradient id="botTipRightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#064E3B"/>
     </linearGradient>
   </defs>
 
-  <!-- Obsidian Midnight Squircle Canvas -->
-  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGrad)" stroke="url(#rimGrad)" stroke-width="1.3"/>
+  <!-- Green Squircle Canvas with Warm Metallic Rim -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGrad)" stroke="url(#rimGrad)" stroke-width="1.4"/>
 
-  <!-- Precision-Carved Obsidian Crystal Gemstone -->
+  <!-- Precision-Carved Obsidian Crystal Gemstone (Vibrant Balanced Gradients) -->
   <g id="obsidian-crystal">
-    <!-- Facet A: Top Crown Crest (Sunlit Golden Amber Reflection) -->
-    <polygon points="30,9 47,20 31,23" fill="url(#goldCrownFacet)"/>
+    <!-- Facet A: Top Crown Crest (Sunlit Gold / Amber) -->
+    <polygon points="30,9 47,20 31,23" fill="url(#crownGrad)"/>
     
-    <!-- Facet B: Top Left Facet (Radiant Jade) -->
-    <polygon points="30,9 31,23 17,18" fill="url(#jadeTopLeft)"/>
+    <!-- Facet B: Top Left Facet (Luminous Jade) -->
+    <polygon points="30,9 31,23 17,18" fill="url(#upperLeftGrad)"/>
     
-    <!-- Facet C: Mid-Left Front Face (Forest Pine) -->
-    <polygon points="17,18 31,23 33,35 12,31" fill="url(#midLeftFacet)"/>
+    <!-- Facet C: Mid-Left Front Face (Vibrant Emerald) -->
+    <polygon points="17,18 31,23 33,35 12,31" fill="url(#midLeftGrad)"/>
     
-    <!-- Facet D: Lower Left Shard (Deep Pine Shadow) -->
-    <polygon points="12,31 33,35 31,46 18,47" fill="url(#botLeftFacet)"/>
+    <!-- Facet D: Lower Left Shard (Forest Jade) -->
+    <polygon points="12,31 33,35 31,46 18,47" fill="url(#lowerLeftGrad)"/>
     
-    <!-- Facet E: Bottom Left Tip (Obsidian Base) -->
-    <polygon points="18,47 31,46 32,55" fill="url(#botTipLeft)"/>
+    <!-- Facet E: Bottom Left Tip (Jewel Pine) -->
+    <polygon points="18,47 31,46 32,55" fill="url(#botTipLeftGrad)"/>
     
-    <!-- Facet F: Upper Right Face (Emerald Facet) -->
-    <polygon points="47,20 53,33 33,35 31,23" fill="url(#topRightFacet)"/>
+    <!-- Facet F: Upper Right Face (Golden Honey Jade) -->
+    <polygon points="47,20 53,33 33,35 31,23" fill="url(#upperRightGrad)"/>
     
-    <!-- Facet G: Lower Right Face (Shadow Emerald) -->
-    <polygon points="53,33 44,49 31,46 33,35" fill="url(#botRightFacet)"/>
+    <!-- Facet G: Lower Right Face (Amber Emerald) -->
+    <polygon points="53,33 44,49 31,46 33,35" fill="url(#lowerRightGrad)"/>
     
-    <!-- Facet H: Bottom Right Tip (Deep Midnight Obsidian) -->
-    <polygon points="44,49 32,55 31,46" fill="url(#botTipRight)"/>
+    <!-- Facet H: Bottom Right Tip (Forest Emerald) -->
+    <polygon points="44,49 32,55 31,46" fill="url(#botTipRightGrad)"/>
 
-    <!-- Internal Facet Seam Hairlines (3D Crystal Depth) -->
-    <polyline points="30,9 31,23 33,35 31,46 32,55" fill="none" stroke="#FDE68A" stroke-width="0.75" stroke-opacity="0.5"/>
-    <line x1="31" y1="23" x2="17" y2="18" stroke="#FDE68A" stroke-width="0.6" stroke-opacity="0.45"/>
-    <line x1="31" y1="23" x2="47" y2="20" stroke="#FDE68A" stroke-width="0.6" stroke-opacity="0.45"/>
-    <line x1="33" y1="35" x2="12" y2="31" stroke="#38B278" stroke-width="0.6" stroke-opacity="0.35"/>
-    <line x1="33" y1="35" x2="53" y2="33" stroke="#38B278" stroke-width="0.6" stroke-opacity="0.35"/>
-    <line x1="31" y1="46" x2="18" y2="47" stroke="#1C6944" stroke-width="0.6" stroke-opacity="0.45"/>
-    <line x1="31" y1="46" x2="44" y2="49" stroke="#1C6944" stroke-width="0.6" stroke-opacity="0.45"/>
+    <!-- Precision Internal Facet Seam Hairlines (3D Crystalline Definition) -->
+    <polyline points="30,9 31,23 33,35 31,46 32,55" fill="none" stroke="#FFFDF2" stroke-width="0.75" stroke-opacity="0.65"/>
+    <line x1="31" y1="23" x2="17" y2="18" stroke="#FFFDF2" stroke-width="0.6" stroke-opacity="0.55"/>
+    <line x1="31" y1="23" x2="47" y2="20" stroke="#FFFDF2" stroke-width="0.6" stroke-opacity="0.55"/>
+    <line x1="33" y1="35" x2="12" y2="31" stroke="#A7F3D0" stroke-width="0.6" stroke-opacity="0.45"/>
+    <line x1="33" y1="35" x2="53" y2="33" stroke="#A7F3D0" stroke-width="0.6" stroke-opacity="0.45"/>
+    <line x1="31" y1="46" x2="18" y2="47" stroke="#34D399" stroke-width="0.6" stroke-opacity="0.45"/>
+    <line x1="31" y1="46" x2="44" y2="49" stroke="#34D399" stroke-width="0.6" stroke-opacity="0.45"/>
 
-    <!-- Nocturnal Clarity Core Spark on Crown Vertex -->
+    <!-- Luminous Clarity Spark on Crown Apex -->
     <circle cx="31" cy="23" r="1.3" fill="#FFFDF2" opacity="0.95"/>
-    <circle cx="30" cy="9" r="0.9" fill="#FDE68A" opacity="0.9"/>
+    <circle cx="30" cy="9" r="0.9" fill="#FFFDF2" opacity="0.9"/>
   </g>
 </svg>

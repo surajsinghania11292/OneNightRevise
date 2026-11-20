@@ -8365,7 +8365,7 @@ const SYSTEM_DESIGN_NOTES = {
     <rect x="40" y="50" width="190" height="120" rx="8" class="svg-bg" />
     <text x="55" y="73" class="svg-kicker" fill="var(--accent)">1. REFILL ENGINE</text>
     <text x="55" y="93" class="svg-title">Token Generator</text>
-    <text x="55" y="113" class="svg-node">• Rate: <b>R</b> tokens/sec</text>
+    <text x="55" y="113" class="svg-node">• Rate: <tspan font-weight="700">R</tspan> tokens/sec</text>
     <text x="55" y="131" class="svg-sub">• Timer or Lazy refill</text>
     <rect x="55" y="140" width="144" height="18" rx="4" fill="var(--accent)" opacity="0.15" />
     <text x="60" y="153" class="svg-mono-xs" fill="var(--accent)">+10 tokens / sec</text>
@@ -8385,7 +8385,7 @@ const SYSTEM_DESIGN_NOTES = {
     <circle cx="380" cy="115" r="10" fill="var(--accent)" />
     <circle cx="405" cy="115" r="10" fill="var(--accent)" />
     <text x="430" y="120" class="svg-mono-xs" font-weight="700">.. [Cap C=100]</text>
-    <text x="310" y="155" class="svg-sub">• Tokens in bucket: <b>4</b></text>
+    <text x="310" y="155" class="svg-sub">• Tokens in bucket: <tspan font-weight="700">4</tspan></text>
     <text x="310" y="173" class="svg-sub">• Excess tokens overflow & drop</text>
 
     <!-- Request Decision Gate -->
@@ -8545,8 +8545,8 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="325" y="68" class="svg-kicker" fill="var(--primary)">DRAWBACK 2: MEMORY CONSUMPTION</text>
     <text x="325" y="90" class="svg-title">Redis State per User</text>
     <text x="325" y="112" class="svg-sub">• For 10M active users, Redis stores:</text>
-    <text x="325" y="128" class="svg-sub">• Key: <code>user_id:tokens</code> (count)</text>
-    <text x="325" y="144" class="svg-sub">• Key: <code>user_id:last_refill</code> (timestamp)</text>
+    <text x="325" y="128" class="svg-sub">• Key: <tspan font-family="monospace">user_id:tokens</tspan> (count)</text>
+    <text x="325" y="144" class="svg-sub">• Key: <tspan font-family="monospace">user_id:last_refill</tspan> (timestamp)</text>
     <rect x="325" y="154" width="227" height="22" rx="4" fill="var(--bg-subtle)" />
     <text x="330" y="169" class="svg-mono-xs">10M users = ~20M Redis keys</text>
 
@@ -8650,7 +8650,7 @@ const SYSTEM_DESIGN_NOTES = {
     <rect x="640" y="45" width="210" height="135" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="1.5" />
     <text x="655" y="68" class="svg-kicker" fill="var(--success)">SMOOTH CONSTANT OUTFLOW</text>
     <text x="655" y="90" class="svg-title">Stable Server Flow</text>
-    <text x="655" y="112" class="svg-node">• Constant rate: <b>3 req/sec</b></text>
+    <text x="655" y="112" class="svg-node">• Constant rate: <tspan font-weight="700">3 req/sec</tspan></text>
     <text x="655" y="128" class="svg-sub">• Backend never experiences spikes</text>
     <rect x="655" y="140" width="227" height="22" rx="4" fill="var(--success)" opacity="0.15" />
     <text x="660" y="155" class="svg-mono-xs" fill="var(--success)">Guaranteed predictable load</text>
@@ -8800,7 +8800,7 @@ const SYSTEM_DESIGN_NOTES = {
     <rect x="50" y="70" width="240" height="120" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="1.5" />
     <text x="65" y="93" class="svg-kicker" fill="var(--success)">WINDOW 1: 1:00 - 1:01</text>
     <text x="65" y="113" class="svg-title">Requests Allowed</text>
-    <text x="65" y="133" class="svg-node">Counter: <b>3 / 5</b> (Under limit)</text>
+    <text x="65" y="133" class="svg-node">Counter: <tspan font-weight="700">3 / 5</tspan> (Under limit)</text>
     <text x="65" y="150" class="svg-sub">• 3 requests arrive</text>
     <rect x="65" y="158" width="159" height="20" rx="4" fill="var(--success)" opacity="0.15" />
     <text x="70" y="172" class="svg-mono-xs" fill="var(--success)">Status: ALL 200 OK</text>
@@ -8809,7 +8809,7 @@ const SYSTEM_DESIGN_NOTES = {
     <rect x="320" y="70" width="240" height="120" rx="8" class="svg-bg" stroke="var(--warning)" stroke-width="1.5" />
     <text x="335" y="93" class="svg-kicker" fill="var(--warning)">WINDOW 2: 1:01 - 1:02</text>
     <text x="335" y="113" class="svg-title">Limit Reached & Dropped</text>
-    <text x="335" y="133" class="svg-node">Counter: <b>5 / 5</b> (Cap reached)</text>
+    <text x="335" y="133" class="svg-node">Counter: <tspan font-weight="700">5 / 5</tspan> (Cap reached)</text>
     <text x="335" y="150" class="svg-sub">• 6th request arrives</text>
     <rect x="335" y="158" width="167" height="20" rx="4" fill="var(--danger)" opacity="0.15" />
     <text x="340" y="172" class="svg-mono-xs" fill="var(--danger)">6th Req -> HTTP 429</text>
@@ -8818,7 +8818,7 @@ const SYSTEM_DESIGN_NOTES = {
     <rect x="590" y="70" width="240" height="120" rx="8" class="svg-bg" stroke="var(--accent)" stroke-width="1.5" />
     <text x="605" y="93" class="svg-kicker" fill="var(--accent)">WINDOW 3: 1:02 - 1:03</text>
     <text x="605" y="113" class="svg-title">Window Resets to 0</text>
-    <text x="605" y="133" class="svg-node">Counter: <b>0 / 5</b> (Fresh state)</text>
+    <text x="605" y="133" class="svg-node">Counter: <tspan font-weight="700">0 / 5</tspan> (Fresh state)</text>
     <text x="605" y="150" class="svg-sub">• Redis key TTL expires</text>
     <rect x="605" y="158" width="159" height="20" rx="4" fill="var(--accent)" opacity="0.15" />
     <text x="610" y="172" class="svg-mono-xs" fill="var(--accent)">Counter reset to 0</text>
@@ -9182,7 +9182,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="55" y="68" class="svg-kicker">PREVIOUS WINDOW (10:00 - 10:01)</text>
     <text x="55" y="88" class="svg-title">Total Count: 84</text>
     <text x="55" y="108" class="svg-sub">Window Elapsed %: 70%</text>
-    <text x="55" y="125" class="svg-sub">Overlap Remaining: <b>30%</b></text>
+    <text x="55" y="125" class="svg-sub">Overlap Remaining: <tspan font-weight="700">30%</tspan></text>
     <rect x="55" y="135" width="204" height="20" rx="4" fill="var(--bg-subtle)" />
     <text x="60" y="149" class="svg-mono-xs">Weight = 1 - 0.70 = 0.30</text>
 
@@ -9206,7 +9206,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="575" y="68" class="svg-kicker" fill="var(--primary)">WEIGHTED ESTIMATION FORMULA</text>
     <text x="575" y="88" class="svg-title">Rate Estimation</text>
     <text x="575" y="108" class="svg-node font-mono">Count = (84 &times; 30%) + 36</text>
-    <text x="575" y="126" class="svg-node font-mono">Count = 25.2 + 36 = <b>61.2</b></text>
+    <text x="575" y="126" class="svg-node font-mono">Count = 25.2 + 36 = <tspan font-weight="700">61.2</tspan></text>
     <rect x="575" y="135" width="279" height="20" rx="4" fill="var(--success)" opacity="0.15" />
     <text x="580" y="149" class="svg-mono-xs" fill="var(--success)">Limit = 100 &rarr; 61.2 &le; 100 &rarr; ALLOWED</text>
 
@@ -9415,7 +9415,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="55" y="108" class="svg-sub">Plaintext: "password123"</text>
     <rect x="55" y="118" width="182" height="25" rx="4" fill="var(--success)" opacity="0.15" />
     <text x="60" y="134" class="svg-mono-xs" fill="var(--success)">Encrypted: 7a#f9!k$8x</text>
-    <text x="55" y="165" class="svg-sub">Using Shared Secret Key <b>K</b></text>
+    <text x="55" y="165" class="svg-sub">Using Shared Secret Key <tspan font-weight="700">K</tspan></text>
 
     <!-- Network Wire with Ciphertext -->
     <path d="M 260 110 L 370 110" stroke="var(--primary)" stroke-width="2.5" />
@@ -9425,7 +9425,7 @@ const SYSTEM_DESIGN_NOTES = {
     <rect x="370" y="45" width="220" height="135" rx="8" class="svg-bg" stroke="var(--warning)" stroke-width="1.5" />
     <text x="385" y="68" class="svg-kicker" fill="var(--warning)">HACKER ON NETWORK</text>
     <text x="385" y="88" class="svg-title">Sees Encrypted Gibberish</text>
-    <text x="385" y="108" class="svg-sub">Intercepts: <code>7a#f9!k$8x</code></text>
+    <text x="385" y="108" class="svg-sub">Intercepts: <tspan font-family="monospace">7a#f9!k$8x</tspan></text>
     <line x1="380" y1="120" x2="570" y2="120" stroke="var(--border-color)" />
     <text x="385" y="138" class="svg-node" fill="var(--danger)" font-weight="700">THE DILEMMA:</text>
     <text x="385" y="154" class="svg-sub" fill="var(--danger)">How did Client send Key K</text>
@@ -9441,7 +9441,7 @@ const SYSTEM_DESIGN_NOTES = {
     <text x="655" y="108" class="svg-sub">Decrypts: 7a#f9!k$8x</text>
     <rect x="655" y="118" width="204" height="25" rx="4" fill="var(--bg-subtle)" />
     <text x="660" y="134" class="svg-mono-xs">Plaintext: "password123"</text>
-    <text x="655" y="165" class="svg-sub">Using Identical Secret Key <b>K</b></text>
+    <text x="655" y="165" class="svg-sub">Using Identical Secret Key <tspan font-weight="700">K</tspan></text>
 
     <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
       SYMMETRIC ENCRYPTION IS FAST BUT CANNOT SECURELY DISTRIBUTE ITS OWN SECRET KEY ACROSS UNTRUSTED NETWORKS
@@ -9930,9 +9930,9 @@ const SYSTEM_DESIGN_NOTES = {
     <rect x="340" y="40" width="240" height="150" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="2" />
     <text x="355" y="63" class="svg-kicker" fill="var(--success)">OFFICIAL SSL CERTIFICATE</text>
     <text x="355" y="83" class="svg-title">bank.com Passport</text>
-    <text x="355" y="103" class="svg-node">1. Domain: <b>bank.com</b></text>
-    <text x="355" y="121" class="svg-node">2. Server Public Key: <b>K_bank</b></text>
-    <text x="355" y="139" class="svg-node">3. Digital Signature: <b>Sign_CA</b></text>
+    <text x="355" y="103" class="svg-node">1. Domain: <tspan font-weight="700">bank.com</tspan></text>
+    <text x="355" y="121" class="svg-node">2. Server Public Key: <tspan font-weight="700">K_bank</tspan></text>
+    <text x="355" y="139" class="svg-node">3. Digital Signature: <tspan font-weight="700">Sign_CA</tspan></text>
     <rect x="355" y="148" width="242" height="24" rx="4" fill="var(--success)" opacity="0.15" />
     <text x="365" y="164" class="svg-mono-xs" fill="var(--success)">Guarantees Identity Integrity</text>
 
@@ -10028,9 +10028,9 @@ const SYSTEM_DESIGN_NOTES = {
     <rect x="600" y="40" width="240" height="150" rx="8" class="svg-bg" stroke="var(--success)" stroke-width="2" />
     <text x="615" y="63" class="svg-kicker" fill="var(--success)">THE 3 CORE COMPONENTS</text>
     <text x="615" y="83" class="svg-title">Issued SSL Certificate</text>
-    <text x="615" y="103" class="svg-node">1. <b>Domain Name</b> (e.g. bank.com)</text>
-    <text x="615" y="121" class="svg-node">2. <b>Server Public Key</b></text>
-    <text x="615" y="139" class="svg-node">3. <b>CA Digital Signature</b></text>
+    <text x="615" y="103" class="svg-node">1. <tspan font-weight="700">Domain Name</tspan> (e.g. bank.com)</text>
+    <text x="615" y="121" class="svg-node">2. <tspan font-weight="700">Server Public Key</tspan></text>
+    <text x="615" y="139" class="svg-node">3. <tspan font-weight="700">CA Digital Signature</tspan></text>
     <rect x="615" y="148" width="242" height="24" rx="4" fill="var(--success)" opacity="0.15" />
     <text x="625" y="164" class="svg-mono-xs" fill="var(--success)">Proof that Domain owns PubKey</text>
 
@@ -12114,6 +12114,8 @@ const SYSTEM_DESIGN_NOTES = {
       id: "topic-63-message-queues-async",
       number: "63",
       title: "What are Message Queues & Why Do We Need Asynchronous Communication?",
+      summary: "Synchronous microservice call bottlenecks, cascading downtime vulnerabilities, how Message Queues decouple producers from consumers, and guaranteed asynchronous event delivery.",
+      subtopicLabels: ["63.1 Message Queue Concept","63.2 Sync vs Async","63.3 Sync Problems","63.4 Decoupled Solution"],
       tag: "Decoupling & Scalability",
       readTime: "9 min",
       difficulty: "Fundamental",
@@ -12214,54 +12216,82 @@ const SYSTEM_DESIGN_NOTES = {
               <span class="diagram-toolbar__title">Synchronous Lockstep vs. Asynchronous Event Pipeline</span>
               <span class="badge badge-accent">COMMUNICATION PARADIGMS</span>
             </div>
-            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Synchronous vs Asynchronous Communication Comparison">
-              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+            <svg viewBox="0 0 880 250" class="arch-svg" role="img" aria-label="Synchronous vs Asynchronous Communication Comparison">
+              <rect width="880" height="250" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
               <!-- Top: Synchronous Flow -->
-              <rect x="30" y="30" width="820" height="80" rx="8" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.5" />
-              <text x="45" y="52" class="svg-kicker" fill="var(--warning)">SYNCHRONOUS COMMUNICATION (REST / GRPC)</text>
+              <rect x="30" y="22" width="820" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--warning)" stroke-width="1.5" />
+              <text x="45" y="44" class="svg-kicker" fill="var(--warning)">SYNCHRONOUS COMMUNICATION (REST / GRPC) • SERIAL BLOCKING CHAIN</text>
               <!-- Flow boxes -->
-              <rect x="45" y="60" width="130" height="38" rx="6" fill="var(--warning-bg)" />
-              <text x="110" y="83" class="svg-node" text-anchor="middle" font-weight="600">Order Svc</text>
+              <rect x="45" y="54" width="130" height="38" rx="6" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1" />
+              <text x="110" y="78" class="svg-node" text-anchor="middle" font-weight="600">Order Svc</text>
 
-              <path d="M 175 79 L 235 79" stroke="var(--warning)" stroke-width="2" />
-              <text x="205" y="73" class="svg-mono-xs" text-anchor="middle" fill="var(--warning)">Block (50ms)</text>
+              <path d="M 175 73 L 235 73" stroke="var(--warning)" stroke-width="2" />
+              <text x="205" y="66" class="svg-mono-xs" text-anchor="middle" fill="var(--warning)">Block (50ms)</text>
 
-              <rect x="235" y="60" width="140" height="38" rx="6" fill="var(--warning-bg)" />
-              <text x="305" y="83" class="svg-node" text-anchor="middle" font-weight="600">Inventory Svc</text>
+              <rect x="235" y="54" width="140" height="38" rx="6" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1" />
+              <text x="305" y="78" class="svg-node" text-anchor="middle" font-weight="600">Inventory Svc</text>
 
-              <path d="M 375 79 L 435 79" stroke="var(--warning)" stroke-width="2" />
-              <text x="405" y="73" class="svg-mono-xs" text-anchor="middle" fill="var(--warning)">Block (120ms)</text>
+              <path d="M 375 73 L 435 73" stroke="var(--warning)" stroke-width="2" />
+              <text x="405" y="66" class="svg-mono-xs" text-anchor="middle" fill="var(--warning)">Block (120ms)</text>
 
-              <rect x="435" y="60" width="140" height="38" rx="6" fill="var(--warning-bg)" />
-              <text x="505" y="83" class="svg-node" text-anchor="middle" font-weight="600">Payment Svc</text>
+              <rect x="435" y="54" width="140" height="38" rx="6" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1" />
+              <text x="505" y="78" class="svg-node" text-anchor="middle" font-weight="600">Payment Svc</text>
 
-              <path d="M 575 79 L 635 79" stroke="var(--warning)" stroke-width="2" />
-              <text x="605" y="73" class="svg-mono-xs" text-anchor="middle" fill="var(--warning)">Block (40ms)</text>
+              <path d="M 575 73 L 635 73" stroke="var(--warning)" stroke-width="2" />
+              <text x="605" y="66" class="svg-mono-xs" text-anchor="middle" fill="var(--warning)">Block (40ms)</text>
 
-              <rect x="635" y="60" width="140" height="38" rx="6" fill="var(--warning-bg)" />
-              <text x="705" y="83" class="svg-node" text-anchor="middle" font-weight="600">Notify Svc</text>
+              <rect x="635" y="54" width="140" height="38" rx="6" fill="var(--warning-bg)" stroke="var(--warning)" stroke-width="1" />
+              <text x="705" y="78" class="svg-node" text-anchor="middle" font-weight="600">Notify Svc</text>
 
               <!-- Bottom: Asynchronous Flow -->
-              <rect x="30" y="125" width="820" height="85" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5" />
-              <text x="45" y="147" class="svg-kicker" fill="var(--success)">ASYNCHRONOUS COMMUNICATION (MESSAGE QUEUE)</text>
-              <rect x="45" y="155" width="140" height="42" rx="6" fill="var(--success-bg)" />
-              <text x="115" y="180" class="svg-node" text-anchor="middle" font-weight="600">Order Svc</text>
+              <rect x="30" y="122" width="820" height="110" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5" />
+              <text x="45" y="144" class="svg-kicker" fill="var(--success)">ASYNCHRONOUS COMMUNICATION (MESSAGE QUEUE) • DECOUPLED CONCURRENT PIPELINE</text>
 
-              <path d="M 185 176 L 275 176" stroke="var(--success)" stroke-width="2.5" />
-              <text x="230" y="168" class="svg-mono-xs" text-anchor="middle" fill="var(--success)">Push & Return (2ms)</text>
+              <!-- Order Service Producer -->
+              <rect x="45" y="156" width="130" height="60" rx="6" fill="var(--success-bg)" stroke="var(--success)" stroke-width="1" />
+              <text x="110" y="180" class="svg-node" text-anchor="middle" font-weight="700">Order Svc</text>
+              <rect x="55" y="190" width="110" height="18" rx="3" fill="var(--success)" opacity="0.15" />
+              <text x="110" y="203" class="svg-mono-xs" text-anchor="middle" fill="var(--success)" font-weight="600">Push &amp; Exit (2ms)</text>
 
-              <rect x="275" y="155" width="220" height="42" rx="6" fill="var(--primary-bg)" stroke="var(--primary)" />
-              <text x="385" y="180" class="svg-node" text-anchor="middle" font-weight="700" fill="var(--primary)">Message Queue Broker</text>
+              <!-- Arrow Producer -> Broker -->
+              <path d="M 175 186 L 245 186" stroke="var(--success)" stroke-width="2.5" />
+              <text x="210" y="178" class="svg-mono-xs" text-anchor="middle" fill="var(--success)" font-weight="600">Publish</text>
 
-              <path d="M 495 165 L 560 160" stroke="var(--success)" stroke-width="1.8" />
-              <path d="M 495 176 L 560 176" stroke="var(--success)" stroke-width="1.8" />
-              <path d="M 495 187 L 560 192" stroke="var(--success)" stroke-width="1.8" />
+              <!-- Message Queue Broker -->
+              <rect x="245" y="152" width="230" height="68" rx="8" fill="var(--bg-card)" stroke="var(--accent)" stroke-width="2" />
+              <text x="360" y="174" class="svg-node" text-anchor="middle" font-weight="700" fill="var(--accent)">Message Queue Broker</text>
+              <!-- FIFO Buffer slots -->
+              <g transform="translate(260, 184)">
+                <rect x="0" y="0" width="48" height="24" rx="4" fill="var(--accent)" opacity="0.25" stroke="var(--accent)" stroke-width="1" />
+                <text x="24" y="16" class="svg-mono-xs" text-anchor="middle" font-weight="700">Msg 1</text>
+                <rect x="54" y="0" width="48" height="24" rx="4" fill="var(--accent)" opacity="0.25" stroke="var(--accent)" stroke-width="1" />
+                <text x="78" y="16" class="svg-mono-xs" text-anchor="middle" font-weight="700">Msg 2</text>
+                <rect x="108" y="0" width="48" height="24" rx="4" fill="var(--accent)" opacity="0.25" stroke="var(--accent)" stroke-width="1" />
+                <text x="132" y="16" class="svg-mono-xs" text-anchor="middle" font-weight="700">Msg 3</text>
+                <text x="175" y="16" class="svg-mono-xs" fill="var(--text-muted)">Buffer</text>
+              </g>
 
-              <rect x="560" y="155" width="280" height="42" rx="6" fill="var(--bg-subtle)" />
-              <text x="700" y="180" class="svg-mono-xs" text-anchor="middle" font-weight="600">
-                Independent Concurrent Consumers
-              </text>
+              <!-- Fanout Arrows from Broker to 3 Consumers -->
+              <path d="M 475 170 C 495 170, 505 163, 525 163" stroke="var(--success)" stroke-width="2" />
+              <path d="M 475 186 L 525 186" stroke="var(--success)" stroke-width="2" />
+              <path d="M 475 202 C 495 202, 505 209, 525 209" stroke="var(--success)" stroke-width="2" />
+
+              <!-- 3 Independent Consumers -->
+              <rect x="525" y="152" width="145" height="22" rx="4" fill="var(--bg-card)" stroke="var(--border-strong)" />
+              <text x="597" y="167" class="svg-mono-xs" text-anchor="middle" font-weight="600">Inventory Worker</text>
+
+              <rect x="525" y="175" width="145" height="22" rx="4" fill="var(--bg-card)" stroke="var(--border-strong)" />
+              <text x="597" y="190" class="svg-mono-xs" text-anchor="middle" font-weight="600">Payment Worker</text>
+
+              <rect x="525" y="198" width="145" height="22" rx="4" fill="var(--bg-card)" stroke="var(--border-strong)" />
+              <text x="597" y="213" class="svg-mono-xs" text-anchor="middle" font-weight="600">Notification Worker</text>
+
+              <!-- Parallel Summary Badge -->
+              <rect x="685" y="152" width="155" height="68" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
+              <text x="762" y="172" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--success)">PARALLEL WORKERS</text>
+              <text x="762" y="190" class="svg-mono-xs" text-anchor="middle" fill="var(--text-muted)">• Non-blocking exit</text>
+              <text x="762" y="206" class="svg-mono-xs" text-anchor="middle" fill="var(--text-muted)">• Independent scale</text>
             </svg>
           </figure>
         `
@@ -12357,8 +12387,8 @@ const SYSTEM_DESIGN_NOTES = {
               <rect x="320" y="40" width="260" height="150" rx="10" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="2" />
               <text x="335" y="65" class="svg-kicker" fill="var(--success)">DURABLE BROKER BUFFER</text>
               <text x="335" y="87" class="svg-title">Persistent Message Queue</text>
-              <text x="335" y="108" class="svg-node">• <b>Disk-backed persistence:</b> Zero loss</text>
-              <text x="335" y="126" class="svg-node">• <b>Decoupled uptime:</b> Consumer agnostic</text>
+              <text x="335" y="108" class="svg-node">• <tspan font-weight="700">Disk-backed persistence:</tspan> Zero loss</text>
+              <text x="335" y="126" class="svg-node">• <tspan font-weight="700">Decoupled uptime:</tspan> Consumer agnostic</text>
               <rect x="335" y="138" width="225" height="38" rx="6" fill="var(--bg-subtle)" stroke="var(--border)" />
               <text x="345" y="155" class="svg-mono-xs">Buffer holds 100K messages safely</text>
               <text x="345" y="169" class="svg-mono-xs" fill="var(--success)">Consumer pulls at its own pace</text>
@@ -12392,6 +12422,8 @@ const SYSTEM_DESIGN_NOTES = {
       id: "topic-64-message-queue-components-lifecycle",
       number: "64",
       title: "Core Components & Working Lifecycle of a Message Queue",
+      summary: "The 5 core components of message queues (Producers, Consumers, Brokers, Exchanges, DLQs) and the end-to-end event lifecycle from publishing to ack/nack consumption.",
+      subtopicLabels: ["64.1 5 Core Components","64.2 Message Lifecycle","64.3 Delivery Guarantees"],
       tag: "Queue Internals",
       readTime: "7 min",
       difficulty: "Fundamental",
@@ -12576,6 +12608,8 @@ const SYSTEM_DESIGN_NOTES = {
       id: "topic-65-point-to-point-queue-rabbitmq",
       number: "65",
       title: "Types of Message Queues — Point-to-Point Queue (RabbitMQ)",
+      summary: "Point-to-point worker queues, exclusive single-consumer message delivery, task worker scaling with RabbitMQ, and round-robin load distribution.",
+      subtopicLabels: ["65.1 Point-to-Point Model","65.2 RabbitMQ Architecture","65.3 Worker Scaling"],
       tag: "Queue Patterns",
       readTime: "10 min",
       difficulty: "Core Architecture",
@@ -12690,7 +12724,7 @@ const SYSTEM_DESIGN_NOTES = {
               <rect x="35" y="45" width="190" height="135" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
               <text x="50" y="68" class="svg-kicker" fill="var(--primary)">1. PRODUCER ENQUEUE</text>
               <text x="50" y="90" class="svg-title">Order Service</text>
-              <text x="50" y="112" class="svg-sub">• Pushes task: <code>pay_order_44</code></text>
+              <text x="50" y="112" class="svg-sub">• Pushes task: <tspan font-family="monospace">pay_order_44</tspan></text>
               <text x="50" y="128" class="svg-sub">• Awaits no downstream logic</text>
               <rect x="50" y="138" width="212" height="26" rx="4" fill="var(--primary-bg)" />
               <text x="55" y="155" class="svg-mono-xs" fill="var(--primary)">Delivery Mode: Persistent</text>
@@ -12803,6 +12837,8 @@ const SYSTEM_DESIGN_NOTES = {
       id: "topic-66-pubsub-kafka-priority-dlq",
       number: "66",
       title: "Pub-Sub Queue (Kafka), Priority Queue, Dead Letter Queue & Using Kafka + RabbitMQ Together",
+      summary: "Publish-Subscribe log architecture with Apache Kafka, message fanout to multiple consumer groups, Dead Letter Queues (DLQ) for poison pills, and combining Kafka with RabbitMQ.",
+      subtopicLabels: ["66.1 Pub-Sub & Kafka","66.2 Kafka + RabbitMQ","66.3 Priority & DLQs"],
       tag: "Streaming & Reliability",
       readTime: "11 min",
       difficulty: "Advanced Systems",
@@ -13029,6 +13065,8 @@ const SYSTEM_DESIGN_NOTES = {
       id: "topic-67-load-balancing-modulo-hashing",
       number: "67",
       title: "The Problem With Standard Load Balancing & Simple Modulo Hashing",
+      summary: "Why round-robin load balancing destroys in-memory cache locality, implementing server affinity with modulo hashing (hash % N), and the catastrophic 100% cache invalidation flaw.",
+      subtopicLabels: ["67.1 Cache Locality Flaw","67.2 Modulo Hashing","67.3 Rehashing Storms"],
       tag: "Hashing & Routing",
       readTime: "9 min",
       difficulty: "Core Architecture",
@@ -13089,12 +13127,12 @@ const SYSTEM_DESIGN_NOTES = {
 
               <rect x="580" y="35" width="265" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.5" />
               <text x="595" y="58" class="svg-node" font-weight="700">Server 0 (Local Cache)</text>
-              <text x="595" y="76" class="svg-sub">• U1 Profile cached in RAM &bull; <b style="color:var(--success)">Cache Hit</b></text>
+              <text x="595" y="76" class="svg-sub">• U1 Profile cached in RAM &bull; <tspan style="color:var(--success)" font-weight="700">Cache Hit</tspan></text>
               <text x="595" y="92" class="svg-mono-xs" fill="var(--success)">Latency: 1ms</text>
 
               <rect x="580" y="125" width="265" height="70" rx="6" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.5" />
               <text x="595" y="148" class="svg-node" font-weight="700" fill="var(--danger)">Server 2 (Different Node)</text>
-              <text x="595" y="166" class="svg-sub">• No U1 cache present &bull; <b style="color:var(--danger)">CACHE MISS!</b></text>
+              <text x="595" y="166" class="svg-sub">• No U1 cache present &bull; <tspan style="color:var(--danger)" font-weight="700">CACHE MISS!</tspan></text>
               <text x="595" y="182" class="svg-mono-xs" fill="var(--danger)">Forces expensive DB query: 45ms</text>
 
               <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
@@ -13237,6 +13275,8 @@ const SYSTEM_DESIGN_NOTES = {
       id: "topic-68-consistent-hashing-scaling",
       number: "68",
       title: "Consistent Hashing — How It Works & Solves Server Scaling",
+      summary: "The 360-degree hash ring (0 to 2^32 - 1), clockwise key assignment, how adding or removing nodes restricts key migration to only k/N keys, and preserving cluster cache integrity.",
+      subtopicLabels: ["68.1 The Hash Ring","68.2 Clockwise Routing","68.3 Node Addition","68.4 Node Failures"],
       tag: "Distributed Algorithms",
       readTime: "12 min",
       difficulty: "Advanced Systems",
@@ -13266,7 +13306,7 @@ const SYSTEM_DESIGN_NOTES = {
               <rect x="35" y="45" width="280" height="140" rx="8" fill="var(--bg-surface)" stroke="var(--primary)" stroke-width="1.8" />
               <text x="50" y="68" class="svg-kicker" fill="var(--primary)">CIRCULAR TOPOLOGY</text>
               <text x="50" y="90" class="svg-title">Fixed Output Range</text>
-              <text x="50" y="112" class="svg-sub">• Range: <code>0</code> to <code>2^32 - 1</code></text>
+              <text x="50" y="112" class="svg-sub">• Range: <tspan font-family="monospace">0</tspan> to <tspan font-family="monospace">2^32 - 1</tspan></text>
               <text x="50" y="128" class="svg-sub">• Wrap-around: x_n connects to x_0</text>
               <rect x="50" y="138" width="250" height="30" rx="4" fill="var(--primary-bg)" />
               <text x="55" y="157" class="svg-mono-xs" fill="var(--primary)" font-weight="700">Clockwise Traversal Direction</text>
@@ -13415,8 +13455,8 @@ const SYSTEM_DESIGN_NOTES = {
               <rect x="35" y="45" width="300" height="140" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8" />
               <text x="50" y="68" class="svg-kicker" fill="var(--success)">GOLDEN RULE FOR AFFECTED KEYS</text>
               <text x="50" y="90" class="svg-title">Anti-Clockwise Scan</text>
-              <text x="50" y="112" class="svg-sub">1. Start at new node <b>S4</b></text>
-              <text x="50" y="128" class="svg-sub">2. Move anti-clockwise to predecessor <b>S0</b></text>
+              <text x="50" y="112" class="svg-sub">1. Start at new node <tspan font-weight="700">S4</tspan></text>
+              <text x="50" y="128" class="svg-sub">2. Move anti-clockwise to predecessor <tspan font-weight="700">S0</tspan></text>
               <rect x="50" y="138" width="270" height="30" rx="4" fill="var(--success-bg)" />
               <text x="55" y="157" class="svg-mono-xs" fill="var(--success)" font-weight="700">ONLY keys between S0 & S4 reassign!</text>
 
@@ -13531,6 +13571,8 @@ const SYSTEM_DESIGN_NOTES = {
       id: "topic-69-virtual-nodes-non-uniform-distribution",
       number: "69",
       title: "Non-Uniform Distribution Problem & Virtual Nodes",
+      summary: "The hash variance problem with few physical servers, catastrophic server hotspots on skewed rings, and interleaving virtual nodes (vnodes) to achieve mathematically uniform distribution.",
+      subtopicLabels: ["69.1 Skewed Gap Problem","69.2 Virtual Nodes (vnodes)","69.3 Variance Reduction"],
       tag: "Cluster Optimization",
       readTime: "8 min",
       difficulty: "Advanced Systems",
@@ -13554,46 +13596,48 @@ const SYSTEM_DESIGN_NOTES = {
               <span class="diagram-toolbar__title">Non-Uniform Distribution: Clustered Nodes & Giant Gap Hotspot</span>
               <span class="badge badge-danger">HASH VARIANCE FLAW</span>
             </div>
-            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Non-uniform distribution problem in consistent hashing">
-              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+            <svg viewBox="0 0 880 235" class="arch-svg" role="img" aria-label="Non-uniform distribution problem in consistent hashing">
+              <rect width="880" height="235" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
-              <!-- Left side explanation -->
-              <rect x="35" y="45" width="290" height="140" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.8" />
-              <text x="50" y="68" class="svg-kicker" fill="var(--danger)">THE SKEWED GAP PROBLEM</text>
-              <text x="50" y="90" class="svg-title">Server Clustering Hotspots</text>
-              <text x="50" y="112" class="svg-sub">• Few physical servers = high variance</text>
-              <text x="50" y="128" class="svg-sub">• Giant gap between S0 & S1 (70% ring)</text>
-              <rect x="50" y="138" width="260" height="30" rx="4" fill="var(--danger-bg)" />
-              <text x="55" y="157" class="svg-mono-xs" fill="var(--danger)" font-weight="700">S1 overloaded &bull; S2, S3 underutilized!</text>
+              <!-- Left Side: Explanation Card -->
+              <rect x="35" y="38" width="300" height="148" rx="8" fill="var(--bg-surface)" stroke="var(--danger)" stroke-width="1.8" />
+              <text x="50" y="63" class="svg-kicker" fill="var(--danger)">THE SKEWED GAP PROBLEM</text>
+              <text x="50" y="86" class="svg-title">Server Clustering Hotspots</text>
+              <text x="50" y="108" class="svg-sub">• Few physical servers = high variance</text>
+              <text x="50" y="126" class="svg-sub">• Giant gap between S0 &amp; S1 (70% ring)</text>
+              <rect x="50" y="136" width="270" height="34" rx="4" fill="var(--danger-bg)" />
+              <text x="60" y="157" class="svg-mono-xs" fill="var(--danger)" font-weight="700">S1 overloaded • S2, S3 underutilized!</text>
 
-              <!-- Ring representation -->
-              <g transform="translate(600, 115)">
-                <circle cx="0" cy="0" r="85" fill="none" stroke="var(--border-strong)" stroke-width="3" />
+              <!-- Center/Right: Ring representation -->
+              <g transform="translate(610, 105)">
+                <circle cx="0" cy="0" r="75" fill="none" stroke="var(--border-strong)" stroke-width="3" />
 
-                <!-- Highlight giant gap (from 0 deg all the way to 180 deg) -->
-                <path d="M 0 -85 A 85 85 0 0 1 85 0 A 85 85 0 0 1 0 85 L 0 0 Z" fill="var(--danger-bg)" opacity="0.6" stroke="var(--danger)" stroke-dasharray="3,3" />
+                <!-- Highlight giant gap (from top 0 deg around clockwise to bottom 180 deg) -->
+                <path d="M 0 -75 A 75 75 0 0 1 75 0 A 75 75 0 0 1 0 75 L 0 0 Z" fill="var(--danger-bg)" opacity="0.5" stroke="var(--danger)" stroke-dasharray="3,3" />
 
                 <!-- Server S0 at top -->
-                <circle cx="0" cy="-85" r="13" fill="var(--primary)" />
-                <text x="0" y="-81" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S0</text>
+                <circle cx="0" cy="-75" r="13" fill="var(--primary)" />
+                <text x="0" y="-71" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S0</text>
 
-                <!-- Massive empty gap -->
-                <text x="45" y="0" class="svg-mono-xs" fill="var(--danger)" font-weight="700" text-anchor="middle">GIANT GAP (70%)</text>
-                <text x="45" y="15" class="svg-mono-xs" fill="var(--danger)" text-anchor="middle">All keys hit S1!</text>
+                <!-- Massive empty gap annotation -->
+                <text x="38" y="-6" class="svg-mono-xs" fill="var(--danger)" font-weight="700" text-anchor="middle">GIANT GAP (70%)</text>
+                <text x="38" y="12" class="svg-mono-xs" fill="var(--danger)" text-anchor="middle">All keys hit S1!</text>
 
-                <!-- Clustered S1, S2, S3 on left side -->
-                <circle cx="0" cy="85" r="14" fill="var(--danger)" stroke="var(--danger)" stroke-width="2" />
-                <text x="0" y="89" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S1</text>
-                <text x="0" y="112" class="svg-mono-xs" fill="var(--danger)" text-anchor="middle" font-weight="700">HOTSPOT CRASH</text>
+                <!-- Clustered S1 at bottom with Hotspot badge -->
+                <circle cx="0" cy="75" r="14" fill="var(--danger)" stroke="var(--danger)" stroke-width="2" />
+                <text x="0" y="79" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S1</text>
+                <rect x="-54" y="93" width="108" height="18" rx="4" fill="var(--danger-bg)" stroke="var(--danger)" stroke-width="1" />
+                <text x="0" y="105" class="svg-mono-xs" fill="var(--danger)" text-anchor="middle" font-weight="700">HOTSPOT OVERLOAD</text>
 
-                <circle cx="-55" cy="65" r="12" fill="var(--primary)" />
-                <text x="-55" y="69" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S2</text>
+                <!-- Clustered S2 and S3 on left side -->
+                <circle cx="-53" cy="53" r="12" fill="var(--primary)" />
+                <text x="-53" y="57" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S2</text>
 
-                <circle cx="-80" cy="28" r="12" fill="var(--primary)" />
-                <text x="-80" y="32" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S3</text>
+                <circle cx="-72" cy="22" r="12" fill="var(--primary)" />
+                <text x="-72" y="26" class="svg-mono-xs" text-anchor="middle" fill="#fff" font-weight="700">S3</text>
               </g>
 
-              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+              <text x="440" y="222" class="svg-mono-xs" text-anchor="middle">
                 RANDOM PLACEMENT OF FEW NODES GENERATES SKEWED GAPS THAT DEFEAT UNIFORM LOAD BALANCING
               </text>
             </svg>
@@ -13622,73 +13666,79 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
               <span class="diagram-toolbar__title">Virtual Nodes (vnodes): Interleaving Slices for Mathematically Uniform Load</span>
               <span class="badge badge-success">PERFECT LOAD EQUALIZATION</span>
             </div>
-            <svg viewBox="0 0 880 230" class="arch-svg" role="img" aria-label="Virtual nodes solving non-uniform distribution">
-              <rect width="880" height="230" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
+            <svg viewBox="0 0 880 235" class="arch-svg" role="img" aria-label="Virtual nodes solving non-uniform distribution">
+              <rect width="880" height="235" fill="var(--bg-frame)" stroke="var(--border)" rx="8" />
 
               <!-- Left Side: Explanation -->
-              <rect x="35" y="45" width="300" height="140" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8" />
-              <text x="50" y="68" class="svg-kicker" fill="var(--success)">VIRTUAL NODES (VNODES)</text>
-              <text x="50" y="90" class="svg-title">Interleaved Replicas</text>
-              <text x="50" y="112" class="svg-sub">• 100–256 virtual points per server</text>
-              <text x="50" y="128" class="svg-sub">• Breaks giant gaps into tiny slices</text>
-              <rect x="50" y="138" width="270" height="30" rx="4" fill="var(--success-bg)" />
-              <text x="55" y="157" class="svg-mono-xs" fill="var(--success)" font-weight="700">Traffic variance drops to &lt; 5%!</text>
+              <rect x="35" y="38" width="300" height="148" rx="8" fill="var(--bg-surface)" stroke="var(--success)" stroke-width="1.8" />
+              <text x="50" y="63" class="svg-kicker" fill="var(--success)">VIRTUAL NODES (VNODES)</text>
+              <text x="50" y="86" class="svg-title">Interleaved Replicas</text>
+              <text x="50" y="108" class="svg-sub">• 100–256 virtual points per server</text>
+              <text x="50" y="126" class="svg-sub">• Breaks giant gaps into tiny slices</text>
+              <rect x="50" y="136" width="270" height="34" rx="4" fill="var(--success-bg)" />
+              <text x="60" y="157" class="svg-mono-xs" fill="var(--success)" font-weight="700">Traffic variance drops to &lt; 5%!</text>
 
               <!-- Center/Right: Ring with interleaved Virtual Nodes -->
-              <g transform="translate(600, 115)">
-                <circle cx="0" cy="0" r="85" fill="none" stroke="var(--accent)" stroke-width="3" />
+              <g transform="translate(610, 105)">
+                <circle cx="0" cy="0" r="72" fill="none" stroke="var(--accent)" stroke-width="3" />
 
-                <!-- Interleaved Virtual Nodes for S0 (Green), S1 (Gold), S2 (Blue) -->
-                <!-- S0_1 -->
-                <circle cx="0" cy="-85" r="10" fill="var(--primary)" />
-                <text x="0" y="-72" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--primary)">S0_1</text>
+                <!-- Center text in ring -->
+                <text x="0" y="-8" class="svg-mono-xs" font-weight="700" fill="var(--success)" text-anchor="middle">UNIFORM</text>
+                <text x="0" y="8" class="svg-mono-xs" fill="var(--text-secondary)" text-anchor="middle">360° Ring</text>
+                <text x="0" y="22" class="svg-mono-xs" fill="var(--text-muted)" font-size="8.5px" text-anchor="middle">&lt; 5% Variance</text>
 
-                <!-- S1_1 -->
-                <circle cx="43" cy="-73" r="10" fill="var(--accent-gold)" />
-                <text x="43" y="-60" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--accent-gold)">S1_1</text>
+                <!-- 12 Interleaved Virtual Nodes with centered labels -->
+                <!-- S0 vnodes (Primary Green) -->
+                <circle cx="0" cy="-72" r="11" fill="var(--primary)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="0" y="-68" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S0</text>
 
-                <!-- S2_1 -->
-                <circle cx="73" cy="-43" r="10" fill="var(--info)" />
-                <text x="73" y="-30" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--info)">S2_1</text>
+                <circle cx="72" cy="0" r="11" fill="var(--primary)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="72" y="4" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S0</text>
 
-                <!-- S0_2 -->
-                <circle cx="85" cy="0" r="10" fill="var(--primary)" />
-                <text x="68" y="4" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--primary)">S0_2</text>
+                <circle cx="0" cy="72" r="11" fill="var(--primary)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="0" y="76" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S0</text>
 
-                <!-- S1_2 -->
-                <circle cx="73" cy="43" r="10" fill="var(--accent-gold)" />
-                <text x="55" y="45" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--accent-gold)">S1_2</text>
+                <circle cx="-72" cy="0" r="11" fill="var(--primary)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="-72" y="4" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S0</text>
 
-                <!-- S2_2 -->
-                <circle cx="43" cy="73" r="10" fill="var(--info)" />
-                <text x="43" y="62" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--info)">S2_2</text>
+                <!-- S1 vnodes (Accent Gold) -->
+                <circle cx="36" cy="-62" r="11" fill="var(--accent-gold)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="36" y="-58" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S1</text>
 
-                <!-- S0_3 -->
-                <circle cx="0" cy="85" r="10" fill="var(--primary)" />
-                <text x="0" y="74" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--primary)">S0_3</text>
+                <circle cx="62" cy="36" r="11" fill="var(--accent-gold)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="62" y="40" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S1</text>
 
-                <!-- S1_3 -->
-                <circle cx="-43" cy="73" r="10" fill="var(--accent-gold)" />
-                <text x="-43" y="62" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--accent-gold)">S1_3</text>
+                <circle cx="-36" cy="62" r="11" fill="var(--accent-gold)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="-36" y="66" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S1</text>
 
-                <!-- S2_3 -->
-                <circle cx="-73" cy="43" r="10" fill="var(--info)" />
-                <text x="-55" y="45" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--info)">S2_3</text>
+                <circle cx="-62" cy="-36" r="11" fill="var(--accent-gold)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="-62" y="-32" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S1</text>
 
-                <!-- S0_4 -->
-                <circle cx="-85" cy="0" r="10" fill="var(--primary)" />
-                <text x="-68" y="4" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--primary)">S0_4</text>
+                <!-- S2 vnodes (Info Blue) -->
+                <circle cx="62" cy="-36" r="11" fill="var(--info)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="62" y="-32" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S2</text>
 
-                <!-- S1_4 -->
-                <circle cx="-73" cy="-43" r="10" fill="var(--accent-gold)" />
-                <text x="-73" y="-30" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--accent-gold)">S1_4</text>
+                <circle cx="36" cy="62" r="11" fill="var(--info)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="36" y="66" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S2</text>
 
-                <!-- S2_4 -->
-                <circle cx="-43" cy="-73" r="10" fill="var(--info)" />
-                <text x="-43" y="-60" class="svg-mono-xs" text-anchor="middle" font-weight="700" fill="var(--info)">S2_4</text>
+                <circle cx="-62" cy="36" r="11" fill="var(--info)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="-62" y="40" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S2</text>
+
+                <circle cx="-36" cy="-62" r="11" fill="var(--info)" stroke="var(--bg-frame)" stroke-width="1.5" />
+                <text x="-36" y="-58" text-anchor="middle" fill="#fff" font-size="9px" font-weight="700">S2</text>
+
+                <!-- Legend below ring -->
+                <g transform="translate(0, 96)">
+                  <circle cx="-75" cy="0" r="5" fill="var(--primary)" />
+                  <text x="-65" y="3" class="svg-mono-xs" font-size="9px" fill="var(--text-muted)">S0 vnodes</text>
+                  <circle cx="-10" cy="0" r="5" fill="var(--accent-gold)" />
+                  <text x="0" y="3" class="svg-mono-xs" font-size="9px" fill="var(--text-muted)">S1 vnodes</text>
+                  <circle cx="55" cy="0" r="5" fill="var(--info)" />
+                  <text x="65" y="3" class="svg-mono-xs" font-size="9px" fill="var(--text-muted)">S2 vnodes</text>
+                </g>
               </g>
 
-              <text x="440" y="210" class="svg-mono-xs" text-anchor="middle">
+              <text x="440" y="222" class="svg-mono-xs" text-anchor="middle">
                 INTERLEAVED VIRTUAL NODES GUARANTEE UNIFORM HASH DISTRIBUTION ACROSS PHYSICAL HARDWARE
               </text>
             </svg>
@@ -13705,6 +13755,8 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
       id: "topic-70-inside-database-bottlenecks",
       number: "70",
       title: "What Is Inside a Database & Why a Single Database Becomes a Bottleneck",
+      summary: "Internal database mechanics (B-Trees, WAL, buffer pools), the single-node resource wall (disk I/O, locks, memory, network connections), and cascading failure during traffic surges.",
+      subtopicLabels: ["70.1 DB Internals & RAM","70.2 Bottleneck Triggers","70.3 Overload Cascade"],
       tag: "Database Architecture",
       readTime: "10 min",
       difficulty: "Core Architecture",
@@ -13953,6 +14005,8 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
       id: "topic-71-vertical-vs-horizontal-sharding",
       number: "71",
       title: "Vertical Scaling vs. Horizontal Scaling (Database Sharding)",
+      summary: "Vertical scaling limits (hardware caps, exponentially increasing costs) vs. Horizontal Database Sharding, partitioning 100M+ users across independent shards, and sharding key strategies.",
+      subtopicLabels: ["71.1 Vertical Scale Limits","71.2 Sharding Architecture","71.3 100M Users Partition","71.4 Sharding Keys"],
       tag: "Database Scaling",
       readTime: "11 min",
       difficulty: "Advanced Systems",
@@ -14236,6 +14290,8 @@ S2_1, S2_2, S2_3 ... S2_256 &rarr; all point back to Physical Server 2</code></p
       id: "topic-72-sharding-ha-tradeoffs",
       number: "72",
       title: "High Availability in Shards & Challenges / Trade-offs of Sharding",
+      summary: "High availability per shard with Master-Slave replication, cross-shard join nightmares, distributed transactions (Two-Phase Commit), resharding complexity, and when to shard.",
+      subtopicLabels: ["72.1 Master-Slave Shards","72.2 Cross-Shard Joins","72.3 Trade-offs & 2PC"],
       tag: "Cluster Resiliency",
       readTime: "9 min",
       difficulty: "Advanced Systems",

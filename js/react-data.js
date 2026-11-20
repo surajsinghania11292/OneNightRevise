@@ -2659,7 +2659,7 @@ abc(10); // Prints: Hello 10</code></pre>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Function Arguments: abc(10)</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--border)"/>
-                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--text);">function <strong style="fill:var(--primary);">abc(a)</strong> {</text>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--text);">function <tspan style="fill:var(--primary);" font-weight="700">abc(a)</tspan> {</text>
                     <text x="45" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">console.log('Hello', a);</text>
                     <text x="25" y="136" class="svg-mono-xs">}</text>
                     <text x="25" y="156" class="svg-mono-xs" style="fill:var(--accent); font-weight:700;">abc(10); // Argument 10 maps to a</text>
@@ -2673,7 +2673,7 @@ abc(10); // Prints: Hello 10</code></pre>
                     <text x="200" y="58" text-anchor="middle" class="svg-title">Component Props: &lt;Card user="..." /&gt;</text>
 
                     <rect x="15" y="74" width="365" height="96" rx="6" fill="var(--bg-surface)" stroke="var(--accent)"/>
-                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--text);">function <strong style="fill:var(--accent);">Card(props)</strong> {</text>
+                    <text x="25" y="96" class="svg-mono-xs" style="fill:var(--text);">function <tspan style="fill:var(--accent);" font-weight="700">Card(props)</tspan> {</text>
                     <text x="45" y="116" class="svg-mono-xs" style="fill:var(--text-muted);">return &lt;h1&gt;{props.user}&lt;/h1&gt;;</text>
                     <text x="25" y="136" class="svg-mono-xs">}</text>
                     <text x="25" y="156" class="svg-mono-xs" style="fill:var(--success); font-weight:700;">&lt;Card user="Sarthak" /&gt; // props.user</text>

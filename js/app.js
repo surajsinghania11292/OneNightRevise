@@ -253,31 +253,47 @@ const StudyApp = (() => {
     if (openTopicIds.has(topicId)) {
       closeTopic(topicId, false);
     } else {
-      openTopic(topicId, false);
+      openTopic(topicId, true);
     }
   }
 
-  function openTopic(topicId, shouldScroll = false) {
-    // Focused accordion: close previously open topic so chronological card order is strictly preserved
+  function openTopic(topicId, shouldScroll = true) {
+    const targetCard = document.getElementById(topicId);
+    if (!targetCard) return;
+
+    // Track whether a previously open card was located above the target card
+    let hadOpenAbove = false;
     openTopicIds.forEach(id => {
       if (id !== topicId) {
+        const otherCard = document.getElementById(id);
+        if (otherCard && (otherCard.compareDocumentPosition(targetCard) & Node.DOCUMENT_POSITION_FOLLOWING)) {
+          hadOpenAbove = true;
+        }
         closeTopic(id, false);
       }
     });
 
     openTopicIds.add(topicId);
 
-    const card = document.getElementById(topicId);
-    if (!card) return;
-
-    card.classList.add('is-expanded');
-    const summary = card.querySelector('.topic-card-summary');
+    targetCard.classList.add('is-expanded');
+    const summary = targetCard.querySelector('.topic-card-summary');
     if (summary) summary.setAttribute('aria-expanded', 'true');
 
     if (shouldScroll) {
+      // Double rAF ensures the browser completes DOM reflow for both collapsed previous card and expanded target card
       requestAnimationFrame(() => {
-        const y = card.getBoundingClientRect().top + window.scrollY - 36;
-        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+        requestAnimationFrame(() => {
+          const rect = targetCard.getBoundingClientRect();
+          const targetY = Math.max(0, window.scrollY + rect.top - 24);
+
+          // If a card above collapsed (which shifts scroll position), or if card top is offscreen,
+          // jump instantly to card top so user NEVER lands in the middle or at the end of the card
+          if (hadOpenAbove || rect.top < 0 || rect.top > window.innerHeight) {
+            window.scrollTo({ top: targetY, behavior: 'instant' });
+          } else {
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
+          }
+        });
       });
     }
 
@@ -297,10 +313,11 @@ const StudyApp = (() => {
 
     if (snapToCard) {
       // 2. Compute collapsed card top offset and jump directly to it with zero scrolling motion
-      const cardTop = card.getBoundingClientRect().top + window.scrollY;
-      const targetY = Math.max(0, cardTop - 70);
-
-      window.scrollTo({ top: targetY, behavior: 'instant' });
+      requestAnimationFrame(() => {
+        const cardTop = card.getBoundingClientRect().top + window.scrollY;
+        const targetY = Math.max(0, cardTop - 24);
+        window.scrollTo({ top: targetY, behavior: 'instant' });
+      });
     }
 
     updateStickyTopbarOnScroll();

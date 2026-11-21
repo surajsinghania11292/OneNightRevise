@@ -28,11 +28,10 @@
   </script>
 
   <!-- ── STYLESHEETS ── -->
-  <link rel="stylesheet" href="css/variables.css?v=19">
-  <link rel="stylesheet" href="css/layout.css?v=19">
-  <link rel="stylesheet" href="css/components.css?v=19">
-  <link rel="stylesheet" href="css/animations.css?v=19">
-  <link rel="stylesheet" href="css/chat.css?v=19">
+  <link rel="stylesheet" href="css/variables.css?v=21">
+  <link rel="stylesheet" href="css/layout.css?v=21">
+  <link rel="stylesheet" href="css/components.css?v=21">
+  <link rel="stylesheet" href="css/animations.css?v=21">
 </head>
 
 <body>
@@ -185,78 +184,11 @@
     </footer>
   </main>
 
-  <!-- ── REVISEBOT AI COMPANION (ROBOT ANIMATION & CONTEXTUAL REVISION CHAT) ── -->
-  <div id="ts-chat-widget">
-    <!-- Floating Robot Sprite -->
-    <div class="ts-bot-container" id="ts-chat-toggle" role="button" aria-label="Open ReviseBot AI Assistant" tabindex="0">
-      <div class="ts-bot-glow-layer">
-        <img src="assets/bot/bot-body.png" class="ts-bot-body" alt="ReviseBot body">
-        <img src="assets/bot/bot-head.png" class="ts-bot-head" id="ts-bot-head" alt="ReviseBot head">
-      </div>
-    </div>
-
-    <!-- Nudge Tooltip -->
-    <div class="ts-nudge-tooltip">Need help revising? Ask ReviseBot!</div>
-
-    <!-- Chat Panel Modal -->
-    <div class="ts-chat-panel" id="ts-chat-panel" aria-hidden="true" role="dialog" aria-label="ReviseBot Chat Assistant">
-      <div class="ts-chat-header">
-        <div class="ts-chat-header-info">
-          <div id="ts-avatar-target" aria-hidden="true"></div>
-          <div class="ts-header-text">
-            <h3>ReviseBot</h3>
-            <div class="ts-header-meta">
-              <span class="ts-context-badge" id="ts-context-badge">Revision Companion</span>
-            </div>
-          </div>
-        </div>
-        <div class="ts-header-actions">
-          <button class="ts-header-btn" id="ts-chat-clear" aria-label="Clear chat" title="Clear conversation">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-              <polyline points="3 6 5 6 21 6"></polyline>
-              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-            </svg>
-          </button>
-          <button class="ts-header-btn" id="ts-chat-close" aria-label="Close chat" title="Close">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <div class="ts-chat-body" id="ts-chat-body">
-        <div class="ts-msg-row">
-          <img src="assets/bot/robot-128.png" class="ts-msg-avatar" alt="AI">
-          <div class="ts-msg ts-msg-ai">
-            <p><strong>Hi! I'm ReviseBot</strong> · your AI visual engineering revision companion.</p>
-            <p>Ask me anything about whatever topic you are currently revising — concept clarifications, diagram breakdowns, or interview quiz questions!</p>
-          </div>
-        </div>
-        <div class="ts-starter-chips" id="ts-starter-chips"></div>
-      </div>
-
-      <form class="ts-chat-footer" id="ts-chat-form">
-        <div class="ts-chat-input-wrapper">
-          <input type="text" class="ts-chat-input" id="ts-chat-input" placeholder="Ask ReviseBot anything about this topic..." autocomplete="off">
-          <button type="submit" class="ts-chat-send" id="ts-chat-send" aria-label="Send question">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <!-- ── SCRIPTS (Strict Load Order) ── -->
-  <script src="js/data.js?v=19"></script>
-  <script src="js/react-data.js?v=19"></script>
-  <script src="js/ui.js?v=19"></script>
-  <script src="js/app.js?v=19"></script>
-  <script src="js/chat.js?v=19"></script>
+  <script src="js/data.js?v=21"></script>
+  <script src="js/react-data.js?v=21"></script>
+  <script src="js/ui.js?v=21"></script>
+  <script src="js/app.js?v=21"></script>
 </body>
 
 </html>

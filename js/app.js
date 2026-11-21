@@ -432,27 +432,7 @@ const StudyApp = (() => {
     }
   }
 
-  /* ── 10. REVISEBOT CONTEXT EXPORTER ─────────────────────────── */
-  function getContext() {
-    const activeData = getActiveData();
-    let activeTopic = null;
-    if (topbarActiveTopicId && activeData && activeData.topics) {
-      activeTopic = activeData.topics.find(t => t.id === topbarActiveTopicId);
-    }
-    if (!activeTopic && openTopicIds.size > 0 && activeData && activeData.topics) {
-      const firstId = Array.from(openTopicIds)[0];
-      activeTopic = activeData.topics.find(t => t.id === firstId);
-    }
-
-    return {
-      track: currentTrack === 'reactjs' ? 'ReactJS' : (currentTrack === 'system-design' ? 'System Design' : 'Overview'),
-      topicTitle: activeTopic ? `${activeTopic.num ? `Topic ${activeTopic.num}: ` : ''}${activeTopic.title}` : null,
-      topicId: activeTopic ? activeTopic.id : (topbarActiveTopicId || null),
-      openTopicCount: openTopicIds.size
-    };
-  }
-
-  return { init, openTrack, showLandingView, openTopic, closeTopic, toggleTopic, getContext };
+  return { init, openTrack, showLandingView, openTopic, closeTopic, toggleTopic };
 })();
 
 document.addEventListener('DOMContentLoaded', () => {

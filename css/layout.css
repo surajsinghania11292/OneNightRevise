@@ -395,22 +395,25 @@ pre.notes-code-block {
 
 @media (max-width: 768px) {
   #main-nav {
-    padding: 0.85rem 0.75rem 0.25rem;
+    padding: 0.65rem 0.45rem 0.2rem;
   }
   .nav-capsule {
     border-radius: var(--r-pill);
-    padding: 0.4rem 0.85rem;
-    gap: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    gap: 0.65rem;
   }
   .nav-links {
     display: none;
   }
   .reading-canvas {
-    padding: 1rem 0.75rem 1.25rem;
-    gap: 1.25rem;
+    padding: 0.55rem 0.35rem 1rem;
+    gap: 0.85rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
   .hero-banner {
-    padding: 2.25rem 0.75rem 1.5rem;
+    padding: 2rem 0.5rem 1.25rem;
   }
   .hero-headline {
     font-size: clamp(1.85rem, 7vw, 2.4rem);
@@ -418,5 +421,29 @@ pre.notes-code-block {
   .hero-subtext {
     font-size: 1rem;
     line-height: 1.65;
+  }
+  pre,
+  pre.notes-code-block {
+    padding: 0.85rem 0.75rem;
+    font-size: 0.82rem;
+    margin: 0.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  #main-nav {
+    padding: 0.45rem 0.25rem 0.15rem;
+  }
+  .nav-capsule {
+    padding: 0.3rem 0.65rem;
+  }
+  .reading-canvas {
+    padding: 0.4rem 0.2rem 0.85rem;
+    gap: 0.75rem;
+  }
+  pre,
+  pre.notes-code-block {
+    padding: 0.75rem 0.55rem;
+    font-size: 0.76rem;
   }
 }

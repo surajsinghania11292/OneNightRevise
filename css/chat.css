@@ -189,10 +189,9 @@
 #ts-avatar-target {
   width: 48px;
   height: 48px;
-  border-radius: 50%;
-  background: var(--bg-card);
-  border: 2px solid var(--bot-avatar-ring);
-  box-shadow: 0 0 16px var(--bot-glow-color);
+  background: transparent;
+  border: none;
+  box-shadow: none;
   flex-shrink: 0;
 }
 
@@ -204,16 +203,6 @@
   color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.ts-online-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #22C55E;
-  display: inline-block;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
 }
 
 .ts-header-meta {
@@ -291,15 +280,13 @@
 }
 
 .ts-msg-avatar {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  padding: 2px;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  background: transparent;
+  border: none;
+  padding: 0;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .ts-msg {
